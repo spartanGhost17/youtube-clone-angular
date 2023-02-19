@@ -1,4 +1,4 @@
-package service;
+package com.project.youtube.service;
 
 import org.springframework.web.multipart.MultipartFile;
 

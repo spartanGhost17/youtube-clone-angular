@@ -1,10 +1,10 @@
-package service;
+package com.project.youtube.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,6 +19,7 @@ import java.util.UUID;
 public class S3Service implements FileService{
 
     public static final String BUCKET_NAME = "youtubeproject1";
+    @Autowired
     private final AmazonS3Client amazonS3Client;
 
     /**
@@ -32,7 +33,7 @@ public class S3Service implements FileService{
         // Prepare a unique key for a file to upload to aws s3
         var filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
         //create UUID to get a unique string associated with extension
-        var key = UUID.randomUUID().toString() + filenameExtension;
+        var key = UUID.randomUUID().toString() +"."+ filenameExtension;
 
         var metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());

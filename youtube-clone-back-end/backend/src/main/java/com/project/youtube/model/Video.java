@@ -1,8 +1,9 @@
-package model;
+package com.project.youtube.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Document(value = "Video") //this is a mongodb document 'equivalent of SQL table'
 @Data
+@EntityScan
 @NoArgsConstructor
 @AllArgsConstructor
 public class Video {

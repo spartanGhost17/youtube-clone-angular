@@ -1,17 +1,20 @@
-package service;
+package com.project.youtube.service;
 
+import com.project.youtube.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
-import model.Video;
+import com.project.youtube.model.Video;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import repository.VideoRepository;
 
 @Service
 @RequiredArgsConstructor
 public class VideoService {
 
     //auto-wire
+    @Autowired
     private final S3Service s3Service;
+    @Autowired
     private final VideoRepository videoRepository;
 
     public void uploadVideo(MultipartFile multipartFile){

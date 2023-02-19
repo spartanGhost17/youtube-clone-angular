@@ -1,4 +1,4 @@
-package com.project.youtube.backend;
+package main;
 
 import static org.junit.jupiter.api.Assertions.*;
 
