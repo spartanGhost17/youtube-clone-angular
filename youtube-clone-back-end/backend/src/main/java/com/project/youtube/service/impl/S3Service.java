@@ -1,8 +1,9 @@
-package com.project.youtube.service;
+package com.project.youtube.service.impl;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.project.youtube.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor //generates a construnctors with required args like non-null, final etc.
-public class S3Service implements FileService{
+public class S3Service implements FileService {
 
     public static final String BUCKET_NAME = "youtubeproject1";
     @Autowired

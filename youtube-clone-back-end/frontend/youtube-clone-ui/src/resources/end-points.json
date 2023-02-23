@@ -1,0 +1,5 @@
+{
+    "VIDEO_END_POINTS": {
+        "UPLOAD_VIDEO": "api/video/upload"
+    }
+}

@@ -1,0 +1,17 @@
+<div class="page-header-wrapper">
+    <nz-page-header [nzGhost]="false">
+        <nz-page-header-extra>
+            <nz-space>
+                <nz-input-group [nzSuffix]="suffixIconSearch">
+                    <input type="text" nz-input placeholder="Search" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <span nz-icon nzType="search"></span>
+                </ng-template>
+                <button class="header-left-buttons" nz-button nzShape="circle" nzSize="large" nzType="primary"><span nz-icon nzType="video-camera-add" nzTheme="outline"></span></button>&nbsp;
+                <button class="header-left-buttons" nz-button nzShape="circle" nzSize="large" nzType="primary"><span nz-icon nzType="bell" nzTheme="outline"></span></button>&nbsp;
+                <button class="header-left-buttons" nz-button nzShape="circle" nzSize="large" nzType="primary"><span nz-icon nzType="user" nzTheme="outline"></span></button>&nbsp;
+            </nz-space>
+        </nz-page-header-extra>
+    </nz-page-header>
+</div>
