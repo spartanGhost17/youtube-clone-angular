@@ -1,11 +1,13 @@
 package com.project.youtube.service.impl;
 
+import com.amazonaws.services.s3.model.ListNextBatchOfObjectsRequest;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.repository.VideoRepository;
 import com.project.youtube.service.VideoService;
-import com.project.youtube.service.impl.S3Service;
 import lombok.RequiredArgsConstructor;
 import com.project.youtube.model.Video;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,13 +24,17 @@ public class VideoServiceImpl implements VideoService {
     //@Autowired
     private final VideoRepository videoRepository;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(VideoServiceImpl.class);
     public void uploadVideo(MultipartFile multipartFile){
+        LOGGER.info("Entering uploadVideo in com.project.youtube.service.impl.S3Service");
         // Upload file to AWS S3
         // Save Video Data to MongoDB DataBase
         String videoURL = s3Service.uploadFile(multipartFile);//get video URL from s3 call
         Video video = new Video();
         video.setVideoUrl(videoURL);
+        LOGGER.info("Save video Url to mongoDB");
         videoRepository.save(video);//save to mongoDB
+        LOGGER.info("Leaving uploadVideo in com.project.youtube.service.impl.S3Service");
     }
 
     /**
@@ -37,13 +43,13 @@ public class VideoServiceImpl implements VideoService {
      * @return
      */
     public VideoDto updateVideoMetadata(VideoDto videoDto) {
-        System.out.println("video id : "+videoDto.getId());
+        LOGGER.info("Entering updateVideoMetadata");
+        LOGGER.info("Update mongoDB video metadata for id : "+videoDto.getId());
         // find video by videoId
-        Video videoToSave = videoRepository.findById(videoDto.getId())
-                .orElseThrow(() -> new NoSuchElementException("Cannot retreive video by id: "+videoDto.getId()));
+        Video videoToSave = getVideoById(videoDto.getId());
 
-        System.out.println("retreived videoId: "+videoToSave.getId());
-        System.out.println("retreived desc: "+videoToSave.getDescription());
+        LOGGER.info("retreived videoId: "+videoToSave.getId());
+        LOGGER.info("retreived desc: "+videoToSave.getDescription());
         // map videoDto fields to Video POJO
         videoToSave.setTitle(videoDto.getTitle());
         videoToSave.setDescription(videoDto.getDescription());
@@ -53,6 +59,29 @@ public class VideoServiceImpl implements VideoService {
 
         // save video to database
         videoRepository.save(videoToSave);
+        LOGGER.info("Leaving updateVideoMetadata");
         return videoDto;
+    }
+
+    @Override
+    public String uploadVideoThumbnail(MultipartFile multipartFile, String videoId) {
+        LOGGER.info("Entering uploadVideoThumbnail for video id: "+videoId);
+        Video videoToSave = getVideoById(videoId);
+        String thumbnailUrl = s3Service.uploadFile(multipartFile);
+        videoToSave.setThumbnailURL(thumbnailUrl);
+        videoRepository.save(videoToSave);
+        LOGGER.info("Leaving uploadVideoThumbnail");
+        return thumbnailUrl;
+    }
+
+    @Override
+    public Video getVideoById(String videoId) {
+        LOGGER.info("Entering getVideoById");
+        LOGGER.info("Getting video for video id : "+videoId);
+        return videoRepository.findById(videoId)
+                .orElseThrow(() -> {
+                    LOGGER.error("Cannot retreive video by id:" + videoId);
+                    return new NoSuchElementException("Cannot retreive video by id: " + videoId);
+                });
     }
 }

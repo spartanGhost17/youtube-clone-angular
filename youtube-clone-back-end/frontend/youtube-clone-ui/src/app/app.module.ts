@@ -22,6 +22,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { HeaderComponent } from './components/header/header.component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 registerLocaleData(uk);
 
@@ -46,7 +47,8 @@ registerLocaleData(uk);
     NzButtonModule,
     NzUploadModule,
     NzPageHeaderModule,
-    NzInputModule
+    NzInputModule,
+    NzAvatarModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }
