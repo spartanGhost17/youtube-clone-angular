@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor //generates a construnctors with required args like non-null, final etc.
 public class S3Service implements FileService {
 
-    public static final String BUCKET_NAME = "youtubeproject1";
+    public static final String BUCKET_NAME = "youtubevideostore";
     @Autowired
     private final AmazonS3Client amazonS3Client;
 

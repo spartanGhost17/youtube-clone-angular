@@ -1,7 +1,6 @@
 package com.project.youtube.controller;
 
 import com.project.youtube.dto.VideoDto;
-import com.project.youtube.service.impl.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +22,15 @@ public class VideoController {
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
     /**
      * Rest endpoint uploads video to service provider
+     *
      * @param file
+     * @return
      */
     @PostMapping(value="upload")
     @ResponseStatus(HttpStatus.CREATED)//response
-    public void uploadVideo(@RequestParam("file") MultipartFile file){
+    public VideoDto uploadVideo(@RequestParam("file") MultipartFile file){
         LOGGER.info("Entering uploadVideo");
-        videoServiceImpl.uploadVideo(file);
+       return videoServiceImpl.uploadVideo(file);
     }
 
     @PutMapping(value="updateMetadata")

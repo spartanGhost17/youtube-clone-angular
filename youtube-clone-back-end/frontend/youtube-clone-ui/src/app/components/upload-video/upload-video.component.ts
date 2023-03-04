@@ -99,7 +99,7 @@ export class UploadVideoComponent implements OnInit {
     if(this.fileEntry){
       this.fileEntry.file(file => {
         console.log(file);
-        this.videoService.postVideo(file).subscribe({
+        this.videoService.uploadVideo(file).subscribe({
           next: (res) => {console.log("success !", res)},
           error: (err) => {
             console.log(err);

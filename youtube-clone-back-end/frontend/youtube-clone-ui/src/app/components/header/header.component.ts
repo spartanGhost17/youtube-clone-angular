@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
+  @Input() showSearchBar: boolean =true;
+  @Input() openModal: () => void;
+  constructor() {}
+
 }

@@ -25,7 +25,7 @@ public class VideoServiceImpl implements VideoService {
     private final VideoRepository videoRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoServiceImpl.class);
-    public void uploadVideo(MultipartFile multipartFile){
+    public VideoDto uploadVideo(MultipartFile multipartFile){
         LOGGER.info("Entering uploadVideo in com.project.youtube.service.impl.S3Service");
         // Upload file to AWS S3
         // Save Video Data to MongoDB DataBase
@@ -33,8 +33,9 @@ public class VideoServiceImpl implements VideoService {
         Video video = new Video();
         video.setVideoUrl(videoURL);
         LOGGER.info("Save video Url to mongoDB");
-        videoRepository.save(video);//save to mongoDB
+        var savedVideo = videoRepository.save(video);//save to mongoDB
         LOGGER.info("Leaving uploadVideo in com.project.youtube.service.impl.S3Service");
+        return new VideoDto(savedVideo.getId(), null, null, null, null, null,null, savedVideo.getVideoUrl());
     }
 
     /**

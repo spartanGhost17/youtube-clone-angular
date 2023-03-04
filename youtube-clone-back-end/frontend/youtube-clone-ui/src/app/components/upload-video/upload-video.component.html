@@ -1,6 +1,5 @@
-<app-header></app-header>
 <div class="upload-content-container">
-    <!--<div class="upload-area">        
+    <div class="upload-area">        
         <ngx-file-drop [showBrowseBtn]="true" dropZoneClassName="file-drop-zone" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
         (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
@@ -25,6 +24,6 @@
             </table>
         </div>
         <button (click)="uploadVideo()" nz-button [disabled]="fileUploaded? false : true" [nzSize]="uploadBtnSize" nzShape="round" nzType="primary"><span nz-icon nzType="upload"></span>Upload Video</button>
-    </div>-->
+    </div>
 </div>
 

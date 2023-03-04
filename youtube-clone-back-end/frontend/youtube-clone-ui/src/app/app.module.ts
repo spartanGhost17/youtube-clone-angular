@@ -23,6 +23,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { ContentComponent } from './components/content/content.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 registerLocaleData(uk);
 
@@ -32,7 +34,8 @@ registerLocaleData(uk);
     UploadVideoComponent,
     HomeComponent,
     DashboardComponent,
-    HeaderComponent
+    HeaderComponent,
+    ContentComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ registerLocaleData(uk);
     NzUploadModule,
     NzPageHeaderModule,
     NzInputModule,
-    NzAvatarModule
+    NzAvatarModule,
+    NzModalModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }

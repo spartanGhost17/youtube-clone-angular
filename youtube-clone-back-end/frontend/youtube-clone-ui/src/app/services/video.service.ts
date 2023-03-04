@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import end_points  from "../../resources/end-points.json"
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, catchError } from 'rxjs';
+import { Video } from '../models/video';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class VideoService {
 
   //url: string, title: string, description: string
   //       "Content-Type": "multipart/form-data",
-  postVideo(file: File): Observable<any> {
+  uploadVideo(file: File): Observable<Video> {
     const httpOptions = {
       headers : new HttpHeaders({
         'Access-Control-Allow-Credentials' : 'true',
@@ -25,6 +26,6 @@ export class VideoService {
     //console.log(file);
     formData.append('file', file, file.name);
     //console.log("in service ",formData);
-    return this.httpClient.post(end_points.VIDEO_END_POINTS.UPLOAD_VIDEO, formData, httpOptions);
+    return this.httpClient.post<Video>(end_points.VIDEO_END_POINTS.UPLOAD_VIDEO, formData, httpOptions);
   }
 }

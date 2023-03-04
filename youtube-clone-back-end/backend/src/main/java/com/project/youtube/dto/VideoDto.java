@@ -16,6 +16,7 @@ public class VideoDto {
     private String description;
     private Set<String> tags;
     private VideoStatus videoStatus;
+    private String genre;
     private String thumbnailURL;
     private String videoUrl;
 }

@@ -5,7 +5,7 @@ import com.project.youtube.model.Video;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface VideoService {
-     void uploadVideo(MultipartFile multipartFile);
+    VideoDto uploadVideo(MultipartFile multipartFile);
 
     VideoDto updateVideoMetadata(VideoDto videoDto);
 
