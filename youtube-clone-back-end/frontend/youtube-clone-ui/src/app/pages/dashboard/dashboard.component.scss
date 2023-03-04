@@ -1,9 +1,29 @@
-.nz-modal{
-    width: 500px;
-    height: 500px;
+/*.nz-modal{
+    width: 100px;
+    height: 100px;
+}*/
+
+.modal-size {
+    max-width: 600px; // set a custom width
+    max-height: 800px;
 }
 
-.large-Modal .modal-dialog{
+.model-content {
+    width: auto;
+    height: 300px;  
+}
+
+.disclaimer {
+    font-family: "Roboto","Noto",sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.011em;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    line-height: 24px;
+}
+/*.large-Modal .modal-dialog{
     height: 400px;
     width:400px; 
     margin: auto;
@@ -12,5 +32,5 @@
     right: 0;
     bottom: 0;
     left: 0;
-}
+}*/
   

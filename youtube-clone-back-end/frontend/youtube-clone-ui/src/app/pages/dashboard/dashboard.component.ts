@@ -8,16 +8,14 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  isVisible: boolean = true;
+  isVisible: boolean = false;
   isConfirmLoading: boolean = false;
 
-  constructor(private modalService: NzModalService) {
-    //this.modalService.create({size:'xl'});
-  }
+  constructor() {}
 
-  showModal1(): void {
+  showModal(value: boolean): void {
     console.log('showModal1');
-    this.isVisible = true;
+    this.isVisible = value;
   }
   handleOk(): void {
     this.isConfirmLoading = true;
