@@ -3,12 +3,13 @@
         <ngx-file-drop [showBrowseBtn]="true" dropZoneClassName="file-drop-zone" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
         (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-                Optional custom content that replaces the the entire default content.
-                <button type="button" (click)="openFileSelector()">Browse Files</button>
+                <p class="upload-text">Drag and drop video files to upload</p>
+                <!--Optional custom content that replaces the the entire default content.-->
+                <button class="browse-video-button" type="button" (click)="openFileSelector()">Browse Files</button>
             </ng-template>
         </ngx-file-drop>
     </div>
-    <div class="button-container">
+    <div class="table-container">
         <div class="upload-table">
             <table class="table">
                 <thead>
@@ -23,6 +24,8 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="button-container">
         <button (click)="uploadVideo()" nz-button [disabled]="fileUploaded? false : true" [nzSize]="uploadBtnSize" nzShape="round" nzType="primary"><span nz-icon nzType="upload"></span>Upload Video</button>
     </div>
 </div>

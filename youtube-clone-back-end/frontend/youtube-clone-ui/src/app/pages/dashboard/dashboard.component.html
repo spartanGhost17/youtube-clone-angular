@@ -1,13 +1,14 @@
 <app-header [showSearchBar]="false" (uploadVideoButtonClicked)="showModal($event)"></app-header>
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Upload video" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Upload video" [nzBodyStyle]="{height:'70%'}" nzWidth="60%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
     <div *nzModalContent class="model-content">
         <app-upload-video></app-upload-video>
     </div>
     <div *nzModalFooter>
       <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
-      <a class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
+      <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
       and 
-      <a class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
-      Please make sure that you do not violate others' copyright or privacy rights. Learn more</p>
+      <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
+      Please make sure that you do not violate others' copyright or privacy rights. 
+      <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
     </div>
 </nz-modal>

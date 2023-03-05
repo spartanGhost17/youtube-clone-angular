@@ -1,16 +1,14 @@
-/*.nz-modal{
-    width: 100px;
-    height: 100px;
-}*/
-
 .modal-size {
-    max-width: 600px; // set a custom width
-    max-height: 800px;
+    border-radius: 5px;
+    //width: 70%;
+    //height: 80%;
 }
 
 .model-content {
+    font-family: "Roboto","Noto",sans-serif;
     width: auto;
-    height: 300px;  
+    display: block;
+    height: 550px;
 }
 
 .disclaimer {
@@ -22,6 +20,7 @@
     line-height: 16px;
     text-align: center;
     line-height: 24px;
+    height: fit-content;
 }
 /*.large-Modal .modal-dialog{
     height: 400px;
