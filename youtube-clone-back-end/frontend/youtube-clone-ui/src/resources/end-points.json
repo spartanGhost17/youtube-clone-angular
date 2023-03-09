@@ -1,5 +1,6 @@
 {
     "VIDEO_END_POINTS": {
-        "UPLOAD_VIDEO": "api/video/upload"
+        "UPLOAD_VIDEO": "/api/v1/video/upload",
+        "UPDATE_VIDEO_METADATA": "/api/v1/video/upload/updateMetadata" 
     }
 }

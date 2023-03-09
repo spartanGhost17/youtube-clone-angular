@@ -25,6 +25,12 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { ContentComponent } from './components/content/content.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { DrawerComponent } from './components/drawer/drawer.component';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { UploadVideoDetailsComponent } from './components/upload-video-details/upload-video-details.component';
+
 
 registerLocaleData(uk);
 
@@ -35,7 +41,9 @@ registerLocaleData(uk);
     HomeComponent,
     DashboardComponent,
     HeaderComponent,
-    ContentComponent
+    ContentComponent,
+    DrawerComponent,
+    UploadVideoDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +53,7 @@ registerLocaleData(uk);
     NgxFileDropModule,
     BrowserAnimationsModule,
     IconsProviderModule,
+    //think about moving some of this to a special components module
     NzLayoutModule,
     NzMenuModule,
     NzButtonModule,
@@ -52,7 +61,10 @@ registerLocaleData(uk);
     NzPageHeaderModule,
     NzInputModule,
     NzAvatarModule,
-    NzModalModule
+    NzModalModule,
+    NzDrawerModule,
+    NzDividerModule,
+    NzStepsModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }

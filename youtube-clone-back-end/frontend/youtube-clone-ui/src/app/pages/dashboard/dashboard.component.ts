@@ -10,6 +10,9 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 export class DashboardComponent {
   isVisible: boolean = false;
   isConfirmLoading: boolean = false;
+  showStep1: boolean = true;
+  showStep2: boolean = false;
+  showStep3: boolean = false;
 
   constructor() {}
 
@@ -28,4 +31,49 @@ export class DashboardComponent {
   handleCancel(): void {
     this.isVisible = false;
   }
+
+  videoUploadedSucces(event: boolean){
+    if(event)
+    this.showStep1 = false;//set to true if successfully uploaded video
+    this.showStep2 = true;
+  }
+
+  current = 0;
+
+  index = 'First-content';
+
+  pre(): void {
+    this.current -= 1;
+    this.changeContent();
+  }
+
+  next(): void {
+    this.current += 1;
+    this.changeContent();
+  }
+
+  done(): void {
+    console.log('done');
+  }
+
+  changeContent(): void {
+    switch (this.current) {
+      case 0: {
+        this.index = 'First-content';
+        break;
+      }
+      case 1: {
+        this.index = 'Second-content';
+        break;
+      }
+      case 2: {
+        this.index = 'third-content';
+        break;
+      }
+      default: {
+        this.index = 'error';
+      }
+    }
+  }
+
 }

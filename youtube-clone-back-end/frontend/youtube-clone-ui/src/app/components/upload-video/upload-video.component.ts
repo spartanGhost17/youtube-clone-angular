@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -21,6 +21,8 @@ export class UploadVideoComponent implements OnInit {
   fileEntry: FileSystemFileEntry | undefined;
   fileEntryList: FileSystemFileEntry[] = [];
   uploading: boolean = false;
+  @Output() videoUploadedSucces: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 
   constructor(private videoService : VideoService) {}
 
@@ -100,20 +102,17 @@ export class UploadVideoComponent implements OnInit {
       this.fileEntry.file(file => {
         console.log(file);
         this.videoService.uploadVideo(file).subscribe({
-          next: (res) => {console.log("success !", res)},
+          next: (data) => {console.log("success !", data.id), this.uploadSuccess()},
           error: (err) => {
             console.log(err);
           }
         });
       });
-      /*console.log(this.file);
-      this.videoService.postVideo(this.file).subscribe({
-        next: (res) => {console.log("success !", res)},
-        error: (err) => {
-          console.log(err);
-        }
-      });*/
     }
   }
+
+  uploadSuccess() {
+    this.videoUploadedSucces.emit(true);
+  } 
 
 }

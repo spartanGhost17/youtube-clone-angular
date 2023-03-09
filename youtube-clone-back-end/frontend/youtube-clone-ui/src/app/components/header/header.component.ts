@@ -10,6 +10,7 @@ export class HeaderComponent {
   @Input() showSearchBar: boolean =true;
   @Input() openModal: () => void;
   @Output() uploadVideoButtonClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() {}
 
   addVideoButtonClicked() {
