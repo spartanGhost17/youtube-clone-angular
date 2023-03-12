@@ -44,41 +44,43 @@
       </nz-breadcrumb>-->
       <div class="inner-content">Bill is a cat.</div>
     </nz-content>
-    <!--<nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>-->
   </nz-layout>
 </nz-layout>
 
 <!-- upload video modal -->
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Upload video" [nzBodyStyle]="{height:'70%'}" nzWidth="60%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Upload video" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="65%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
     <div *nzModalContent class="model-content">
-        <nz-steps [nzCurrent]="current">
+        <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
           <nz-step nzTitle="Details"></nz-step>
           <nz-step nzTitle="Video Elements"></nz-step>
-          <nz-step nzTitle="Checks"></nz-step>
+          <nz-step nzTitle="Checks" nzIcon="exclamation-circle"></nz-step>
           <nz-step nzTitle="Visibility"></nz-step>
         </nz-steps>
     
-        <div class="steps-content">{{ index }}</div>
-        <div class="steps-action">
-          <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
-            <span>Previous</span>
-          </button>
-          <button nz-button nzType="default" (click)="next()" *ngIf="current < 2">
-            <span>Next</span>
-          </button>
-          <button nz-button nzType="primary" (click)="done()" *ngIf="current === 2">
-            <span>Done</span>
-          </button>
+        <div class="steps-content">
+          <!--<app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>-->
+          <app-upload-video-details *ngIf="showVideoDetailSteps"></app-upload-video-details>
         </div>
-        <app-upload-video *ngIf="showStep1" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
-        <app-upload-video-details *ngIf="showStep2"></app-upload-video-details>
     </div>
     <div *nzModalFooter>
-      <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
-      <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
-      and 
-      <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
-      Please make sure that you do not violate others' copyright or privacy rights. 
-      <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
+      <div *ngIf="showVideoDetailSteps" class="steps-action">
+        <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
+          <span>Previous</span>
+        </button>
+        <button nz-button nzType="default" (click)="next()" *ngIf="current < 3">
+          <span>Next</span>
+        </button>
+        <button nz-button nzType="primary" (click)="done()" *ngIf="current === 3">
+          <span>Done</span>
+        </button>
+      </div>
+      <!--<div *ngIf="!showVideoDetailSteps">
+          <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
+          <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
+          and 
+          <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
+          Please make sure that you do not violate others' copyright or privacy rights. 
+          <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
+      </div>-->
     </div>
 </nz-modal>

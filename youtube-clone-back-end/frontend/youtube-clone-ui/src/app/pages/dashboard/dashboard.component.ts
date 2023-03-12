@@ -10,16 +10,23 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 export class DashboardComponent {
   isVisible: boolean = false;
   isConfirmLoading: boolean = false;
-  showStep1: boolean = true;
-  showStep2: boolean = false;
-  showStep3: boolean = false;
+  videoUploaded: boolean = false;
+  showVideoDetailSteps: boolean = true;
+  videoTitle: string = "Upload video";
+  
+  current = 0;
 
   constructor() {}
 
+  /**
+   * show upload video process if upload video button is clicked on header
+   * @param value 
+   */
   showModal(value: boolean): void {
-    console.log('showModal1');
+    console.log('showModal');
     this.isVisible = value;
   }
+
   handleOk(): void {
     this.isConfirmLoading = true;
     setTimeout(() => {
@@ -27,36 +34,45 @@ export class DashboardComponent {
       this.isConfirmLoading = false;
     }, 3000);
   }
-
+  /** hide video upload modal on view closed */
   handleCancel(): void {
     this.isVisible = false;
   }
 
+  /**
+   * Show video details steps view and hide video upload component when 
+   * video was successfully uploaded
+   * @param event 
+   */
   videoUploadedSucces(event: boolean){
-    if(event)
-    this.showStep1 = false;//set to true if successfully uploaded video
-    this.showStep2 = true;
+    if(event){
+      //this.videoUploaded = true;//set to true if successfully uploaded video
+      //this.showVideoDetailSteps = true;
+    };
   }
 
-  current = 0;
-
-  index = 'First-content';
+  videoTitleChanged(event: string): void {
+    this.videoTitle = event;
+    //if(!this.videoUploaded)
+    //  this.videoTitle = "Upload video"; 
+    console.log("video: " +this.videoTitle);
+  }
 
   pre(): void {
     this.current -= 1;
-    this.changeContent();
+    //this.changeContent();
   }
 
   next(): void {
     this.current += 1;
-    this.changeContent();
+    //this.changeContent();
   }
 
   done(): void {
     console.log('done');
   }
 
-  changeContent(): void {
+  /*changeContent(): void {
     switch (this.current) {
       case 0: {
         this.index = 'First-content';
@@ -70,10 +86,14 @@ export class DashboardComponent {
         this.index = 'third-content';
         break;
       }
+      case 3: {
+        this.index = 'fourth-content';
+        break;
+      }
       default: {
         this.index = 'error';
       }
     }
-  }
+  }*/
 
 }

@@ -1,0 +1,44 @@
+.upload-video-details-container{
+    height: 100%;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+}
+
+.left-video-detail-container{
+    margin-right: auto;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    //align-self: flex-start;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 68%;
+    //height:100%;
+}
+
+.right-video-detail-container{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    //align-items: flex-end;       /* right-align the image */
+    background-color: aqua;
+    width: 30%;
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    //align-self: flex-start;
+    top: 0;
+    overflow-y: auto;
+    height:50%;
+}
+
+//
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}

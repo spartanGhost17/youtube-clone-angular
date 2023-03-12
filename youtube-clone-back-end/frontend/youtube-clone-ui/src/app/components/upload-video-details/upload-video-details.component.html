@@ -1,1 +1,39 @@
-<p>upload-video-details works!</p>
+<div class="upload-video-details-container">
+    <div class="left-video-detail-container">
+          <h1>Details</h1>  
+          <nz-input-group [nzSuffix]="inputClearTpl">
+            <input type="text" nz-input [ngModel]="getTitleValue()" (ngModelChange)="setTitleValue($event)" placeholder="input with clear icon" />
+          </nz-input-group>
+          <ng-template #inputClearTpl>
+            <span
+              nz-icon
+              class="ant-input-clear-icon"
+              nzTheme="fill"
+              nzType="close-circle"
+              *ngIf="getTitleValue()"
+              (click)="setTitleValue(null)"
+            ></span>
+          </ng-template>
+          <br />
+          <br />
+          <nz-input-group [nzSuffix]="textAreaClearTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
+            <textarea nz-input [(ngModel)]="textValue" placeholder="Tell viewers about your video (type @ to mention a channel)"></textarea>
+          </nz-input-group>
+          <ng-template #textAreaClearTpl>
+            <span
+              nz-icon
+              class="ant-input-clear-icon"
+              nzTheme="fill"
+              nzType="close-circle"
+              *ngIf="textValue"
+              (click)="textValue = null"
+            ></span>
+          </ng-template>
+          <h2>Thumbnail</h2>
+
+          <h2>Playlists</h2>
+    </div>
+    <div class="right-video-detail-container">
+        <p>right content</p>
+    </div>
+</div>
