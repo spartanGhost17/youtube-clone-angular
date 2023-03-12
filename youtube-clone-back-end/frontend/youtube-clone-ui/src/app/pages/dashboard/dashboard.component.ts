@@ -53,8 +53,9 @@ export class DashboardComponent {
 
   videoTitleChanged(event: string): void {
     this.videoTitle = event;
-    //if(!this.videoUploaded)
-    //  this.videoTitle = "Upload video"; 
+    if(this.videoTitle=="")
+      this.videoTitle = "Upload video"; 
+    //console.log("null ",this.videoTitle=="");
     console.log("video: " +this.videoTitle);
   }
 

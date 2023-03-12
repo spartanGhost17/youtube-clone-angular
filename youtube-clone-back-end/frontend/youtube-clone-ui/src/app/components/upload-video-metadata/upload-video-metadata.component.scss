@@ -32,6 +32,18 @@
     height:50%;
 }
 
+.video-text-details {
+    padding-bottom: 12px;
+}
+
+.metadata-images-thumbnails {
+    padding-bottom: 12px;
+}
+
+.gutter-row {
+    background-color: aqua;
+}
+
 //
 h1 {
     display: block;
@@ -41,4 +53,21 @@ h1 {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    padding-bottom: 8px;
+}
+
+p {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--ytcp-text-secondary);
+    padding-bottom: 8px;
+}
+
+.grid-config {
+    height: 80px;
+    //font-size: 14px;
+    //line-height: 120px;
+    background: #0092ff;
+    border-radius: 4px;
 }

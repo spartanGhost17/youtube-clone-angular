@@ -29,8 +29,9 @@ import { DrawerComponent } from './components/drawer/drawer.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { UploadVideoDetailsComponent } from './components/upload-video-details/upload-video-details.component';
-
+import { UploadVideoMetadataComponent } from './components/upload-video-metadata/upload-video-metadata.component';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzImageModule } from 'ng-zorro-antd/image';
 
 registerLocaleData(uk);
 
@@ -43,7 +44,7 @@ registerLocaleData(uk);
     HeaderComponent,
     ContentComponent,
     DrawerComponent,
-    UploadVideoDetailsComponent
+    UploadVideoMetadataComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +65,9 @@ registerLocaleData(uk);
     NzModalModule,
     NzDrawerModule,
     NzDividerModule,
-    NzStepsModule
+    NzStepsModule,
+    NzGridModule,
+    NzImageModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }

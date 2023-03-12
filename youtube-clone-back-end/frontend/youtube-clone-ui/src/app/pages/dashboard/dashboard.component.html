@@ -47,8 +47,12 @@
   </nz-layout>
 </nz-layout>
 
+<ng-template #videoUploadTitle>
+  <span>{{videoTitle}}</span>
+</ng-template>
+
 <!-- upload video modal -->
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Upload video" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="65%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="videoUploadTitle" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="65%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
     <div *nzModalContent class="model-content">
         <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
           <nz-step nzTitle="Details"></nz-step>
@@ -59,7 +63,7 @@
     
         <div class="steps-content">
           <!--<app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>-->
-          <app-upload-video-details *ngIf="showVideoDetailSteps"></app-upload-video-details>
+          <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)" *ngIf="showVideoDetailSteps"></app-upload-video-metadata>
         </div>
     </div>
     <div *nzModalFooter>
@@ -74,13 +78,13 @@
           <span>Done</span>
         </button>
       </div>
-      <!--<div *ngIf="!showVideoDetailSteps">
+      <div *ngIf="!showVideoDetailSteps">
           <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
           <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
           and 
           <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
           Please make sure that you do not violate others' copyright or privacy rights. 
           <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
-      </div>-->
+      </div>
     </div>
 </nz-modal>
