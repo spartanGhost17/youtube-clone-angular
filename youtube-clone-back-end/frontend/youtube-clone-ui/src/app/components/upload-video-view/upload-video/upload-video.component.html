@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="button-container">
-        <button (click)="uploadVideo()" nz-button [disabled]="fileUploaded? false : true" [nzSize]="uploadBtnSize" nzShape="round" nzType="primary"><span nz-icon nzType="upload"></span>Upload Video</button>
+        <button (click)="uploadVideo()" nz-button [disabled]="fileUploaded? false : true" [nzLoading]="isLoading" [nzSize]="uploadBtnSize" nzShape="round" nzType="primary"><span nz-icon nzType="upload"></span>Upload Video</button>
     </div>
 </div>
 

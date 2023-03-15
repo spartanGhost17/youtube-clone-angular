@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UploadVideoComponent } from './components/upload-video/upload-video.component';
+import { UploadVideoComponent } from './components/upload-video-view/upload-video/upload-video.component';
 import { HomeComponent } from './pages/home/home.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FormsModule } from '@angular/forms';
@@ -29,9 +29,12 @@ import { DrawerComponent } from './components/drawer/drawer.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { UploadVideoMetadataComponent } from './components/upload-video-metadata/upload-video-metadata.component';
+import { UploadVideoMetadataComponent } from './components/upload-video-view/upload-video-metadata/upload-video-metadata.component';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzImageModule } from 'ng-zorro-antd/image';
+import { VideoElementsComponent } from './components/upload-video-view/video-elements/video-elements.component';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 registerLocaleData(uk);
 
@@ -44,7 +47,8 @@ registerLocaleData(uk);
     HeaderComponent,
     ContentComponent,
     DrawerComponent,
-    UploadVideoMetadataComponent
+    UploadVideoMetadataComponent,
+    VideoElementsComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,9 @@ registerLocaleData(uk);
     NzDividerModule,
     NzStepsModule,
     NzGridModule,
-    NzImageModule
+    NzImageModule,
+    NzDropDownModule,
+    NzCheckboxModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }

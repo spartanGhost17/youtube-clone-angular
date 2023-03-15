@@ -3,9 +3,10 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzButtonSize } from 'ng-zorro-antd/button';
-import { VideoService } from '../../services/video.service';
+import { VideoService } from '../../../services/video.service';
 import { Observable } from 'rxjs';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { Video } from '../../../models/video'
 
 
 @Component({
@@ -21,7 +22,14 @@ export class UploadVideoComponent implements OnInit {
   fileEntry: FileSystemFileEntry | undefined;
   fileEntryList: FileSystemFileEntry[] = [];
   uploading: boolean = false;
-  @Output() videoUploadedSucces: EventEmitter<boolean> = new EventEmitter<boolean>();
+  fileName: string;
+  isLoading: boolean = false;
+  videoUploadResponse: Video = {
+    id: "",
+    title: "",
+    videoStatus: "",
+  }
+  @Output() videoUploadedSucces: EventEmitter<Object> = new EventEmitter<Object>();
 
 
   constructor(private videoService : VideoService) {}
@@ -41,7 +49,8 @@ export class UploadVideoComponent implements OnInit {
         this.fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          console.log(droppedFile.relativePath, file);
+          console.log("Dropped ",droppedFile.relativePath, file);
+          this.fileName = droppedFile.relativePath;
           this.fileUploaded = true;
           /**
           // You could upload it like this:
@@ -101,9 +110,16 @@ export class UploadVideoComponent implements OnInit {
     if(this.fileEntry){
       this.fileEntry.file(file => {
         console.log(file);
+        this.isLoading = true;
         this.videoService.uploadVideo(file).subscribe({
-          next: (data) => {console.log("success !", data.id), this.uploadSuccess()},
+          next: (data) => {
+            this.isLoading = false;
+            this.videoUploadResponse = data;
+            console.log("success !", data.id), 
+            this.uploadSuccess()
+          },
           error: (err) => {
+            this.isLoading = false;
             console.log(err);
           }
         });
@@ -111,8 +127,17 @@ export class UploadVideoComponent implements OnInit {
     }
   }
 
+  /**
+   * emits file upload success and file name on file successfully uploaded
+   */
   uploadSuccess() {
-    this.videoUploadedSucces.emit(true);
+    this.videoUploadedSucces.emit(
+      {
+        uploadStatus: this.fileUploaded,
+        fileName: this.fileName,
+        videoUploadResponse: this.videoUploadResponse
+      }
+    );
   } 
 
 }

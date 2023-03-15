@@ -52,7 +52,7 @@
 </ng-template>
 
 <!-- upload video modal -->
-<nz-modal [(nzVisible)]="isVisible" [nzTitle]="videoUploadTitle" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="65%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="videoUploadTitle" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="64%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
     <div *nzModalContent class="model-content">
         <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
           <nz-step nzTitle="Details"></nz-step>
@@ -62,8 +62,9 @@
         </nz-steps>
     
         <div class="steps-content">
-          <!--<app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>-->
-          <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)" *ngIf="showVideoDetailSteps"></app-upload-video-metadata>
+          <app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
+          <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)" *ngIf="showVideoDetailSteps && current===0"></app-upload-video-metadata>
+          <app-video-elements *ngIf="showVideoDetailSteps && current===1"></app-video-elements>
         </div>
     </div>
     <div *nzModalFooter>

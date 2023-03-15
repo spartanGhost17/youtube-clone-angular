@@ -13,7 +13,7 @@
     flex-direction: column;
     //align-self: flex-start;
     background-color: rgba(255, 255, 255, 0.8);
-    width: 68%;
+    width: 65%;
     //height:100%;
 }
 
@@ -23,7 +23,7 @@
     flex-direction: column;
     //align-items: flex-end;       /* right-align the image */
     background-color: aqua;
-    width: 30%;
+    width: 34%;
     position: -webkit-sticky; /* for Safari */
     position: sticky;
     //align-self: flex-start;
@@ -33,15 +33,32 @@
 }
 
 .video-text-details {
-    padding-bottom: 12px;
+    padding-bottom: 18px;
 }
 
 .metadata-images-thumbnails {
+    padding-bottom: 18px;
+}
+
+.metadata-select-playlist {
+    padding-bottom: 18px;
+}
+
+.extra-metadata-container {
+    padding-bottom: 18px;
+}
+
+.extra-metadata-button {
     padding-bottom: 12px;
 }
 
-.gutter-row {
-    background-color: aqua;
+.extra-metadata {
+    padding-bottom: 12px;
+}
+
+.metadata-labels {
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
 
 //
@@ -56,18 +73,29 @@ h1 {
     padding-bottom: 8px;
 }
 
-p {
+.text-header {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: bold;
+    padding-bottom: 8px;
+}
+
+.text-description {
+    //letter-spacing: 0.011em;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 20px;
     color: var(--ytcp-text-secondary);
     padding-bottom: 8px;
 }
 
-.grid-config {
+.thumbnail-grid-config {
     height: 80px;
-    //font-size: 14px;
-    //line-height: 120px;
     background: #0092ff;
     border-radius: 4px;
+}
+
+.thumbnail-gutter-row {
+    background-color: aqua;
 }

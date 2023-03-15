@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-
+import { Video } from '../../models/video';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +12,13 @@ export class DashboardComponent {
   videoUploaded: boolean = false;
   showVideoDetailSteps: boolean = true;
   videoTitle: string = "Upload video";
+  staticTitle: string = "";
+  videoDto: Video = {
+    id: "",
+    title: "",
+    videoStatus: "",
+  };
+  videoId: string = "";
   
   current = 0;
 
@@ -42,12 +48,15 @@ export class DashboardComponent {
   /**
    * Show video details steps view and hide video upload component when 
    * video was successfully uploaded
-   * @param event 
+   * @param data 
    */
-  videoUploadedSucces(event: boolean){
-    if(event){
-      //this.videoUploaded = true;//set to true if successfully uploaded video
-      //this.showVideoDetailSteps = true;
+  videoUploadedSucces(data: any){
+    console.log(data.uploadStatus, " name ", data.fileName);
+    if(data){
+      this.videoTitle = data.fileName;
+      this.staticTitle = data.fileName;
+      this.showVideoDetailSteps = true;//set to true if successfully uploaded video
+      this.videoId = data.videoUploadResponse.id;
     };
   }
 

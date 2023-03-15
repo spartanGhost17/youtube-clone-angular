@@ -39,7 +39,7 @@ export class VideoService {
     return this.httpClient.post<Video>(end_points.VIDEO_END_POINTS.UPLOAD_VIDEO, formData, this.httpOptions);
   }
 
-  uploadVideoMetadata(Video: Video): Observable<String> {
-    return this.httpClient.post<String>(end_points.VIDEO_END_POINTS.UPDATE_VIDEO_METADATA, Video, this.httpOptions);
+  uploadVideoMetadata(Video: Video): Observable<Video> {
+    return this.httpClient.post<Video>(end_points.VIDEO_END_POINTS.UPDATE_VIDEO_METADATA, Video, this.httpOptions);
   }
 }

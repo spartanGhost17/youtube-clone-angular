@@ -25,6 +25,7 @@ public class Video {
     private Integer dislikes;
     private Set<String> tags;
     private VideoStatus videoStatus;
+    private VideoCategory videoCategory;
     private String genre;
     private Integer viewCount;
     private String thumbnailURL;

@@ -1,2 +1,19 @@
-package com.project.youtube.model;public enum VideoCategory {
+package com.project.youtube.model;
+
+public enum VideoCategory {
+    CARS_AND_VEHICLES,
+    COMEDY,
+    EDUCATION,
+    ENTERTAINMENT,
+    FILM_AND_ANIMATION,
+    GAMING,
+    HOW_TO_AND_STYLE,
+    MUSIC,
+    NEWS_AND_POLITICS,
+    NON_PROFITS_AND_ACTIVISM,
+    PEOPLE_AND_BLOGS,
+    PETS_AND_ANIMALS,
+    SCIENCE_AND_TECHNOLOGY,
+    SPORT,
+    TRAVEL_AND_EVENTS
 }

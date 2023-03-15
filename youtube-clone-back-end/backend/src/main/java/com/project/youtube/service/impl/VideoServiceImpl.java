@@ -35,7 +35,7 @@ public class VideoServiceImpl implements VideoService {
         LOGGER.info("Save video Url to mongoDB");
         var savedVideo = videoRepository.save(video);//save to mongoDB
         LOGGER.info("Leaving uploadVideo in com.project.youtube.service.impl.S3Service");
-        return new VideoDto(savedVideo.getId(), null, null, null, null, null,null, savedVideo.getVideoUrl());
+        return new VideoDto(savedVideo.getId(), null, null, null, null, null, null,null, savedVideo.getVideoUrl());
     }
 
     /**

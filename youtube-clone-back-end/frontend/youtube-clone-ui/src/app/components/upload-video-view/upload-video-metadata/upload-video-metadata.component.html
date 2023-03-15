@@ -1,0 +1,115 @@
+<div class="upload-video-details-container">
+  <div class="left-video-detail-container">
+        <!-- Text details -->
+        <div class="video-text-details">
+          <h1>Details</h1>  
+          <nz-input-group [nzSuffix]="inputClearTpl">
+            <input type="text" nz-input [ngModel]="getTitleValue()" (ngModelChange)="setTitleValue($event)" placeholder="input with clear icon" />
+          </nz-input-group>
+          <ng-template #inputClearTpl>
+            <span
+              nz-icon
+              class="ant-input-clear-icon"
+              nzTheme="fill"
+              nzType="close-circle"
+              *ngIf="getTitleValue()"
+              (click)="setTitleValue(null)"
+            ></span>
+          </ng-template>
+          <br />
+          <br />
+          <nz-input-group [nzSuffix]="textAreaClearTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
+            <textarea nz-input [(ngModel)]="textValue" placeholder="Tell viewers about your video (type @ to mention a channel)"></textarea>
+          </nz-input-group>
+          <ng-template #textAreaClearTpl>
+            <span
+              nz-icon
+              class="ant-input-clear-icon"
+              nzTheme="fill"
+              nzType="close-circle"
+              *ngIf="textValue"
+              (click)="textValue = null"
+            ></span>
+          </ng-template>
+        </div>
+        <!-- images-thumbnails -->
+        <div class="metadata-images-thumbnails">
+          <p class="text-header">Thumbnail</p>
+          <p class="text-description">
+            Select or upload a picture that shows what's in your video. A good thumbnail stands out and draws viewers' attention. 
+            <a target="_blank" href="https://support.google.com/youtube/answer/72431?hl=en-GB">Learn more</a>
+          </p>
+          <div nz-row [nzGutter]="[hGutter, vGutter]">
+            <div nz-col class="thumbnail-gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
+              <div class="thumbnail-grid-config">
+                <img nz-image width="100%" height="100%" nzSrc="../../../assets/goku.jpg" [nzFallback]="fallback" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Paylist -->
+        <div class="metadata-select-playlist">
+          <p class="text-header">Playlists</p>
+          <p class="text-description">
+            Add your video to one or more playlists. Playlists can help viewers to discover your content faster. 
+            <a target="_blank" href="https://support.google.com/youtube/answer/57792">Learn more</a>
+          </p>
+          <button nz-button nz-dropdown nzTrigger="click" (click)="showUserPlayLists()" nzSize="large" [nzDropdownMenu]="availablePlaylist">
+            <span>Select</span>
+            <span nz-icon nzType="caret-down"></span>
+          </button>
+          <nz-dropdown-menu #availablePlaylist="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-row nz-menu-item>
+                menu4 1st menu item
+              </li>
+              <li nz-row nz-menu-item>menu4 2nd menu item</li>
+              <li nz-row nz-menu-item>menu4 3rd menu item</li>
+            </ul>
+          </nz-dropdown-menu>          
+        </div>
+        <!-- Extra video metadata -->
+        <div class="extra-metadata-container">
+          <button class="extra-metadata-button" (click)="showExtraMetadata()" nz-button nz-dropdown nzSize="default">
+            <span>{{showExtraMetadataText}}</span>
+          </button>
+          <div *ngIf="shouldShowExtraMeta" class="extra-metadata">
+            <div class="metadata-labels">
+              <nz-input-group [nzSuffix]="metadataLabelsTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
+                <textarea nz-input [(ngModel)]="textValue" placeholder="Add tag"></textarea>
+              </nz-input-group>
+              <ng-template #metadataLabelsTpl>
+                <span
+                  nz-icon
+                  class="ant-input-clear-icon"
+                  nzTheme="fill"
+                  nzType="close-circle"
+                  *ngIf="textValue"
+                  (click)="textValue = null"
+                ></span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="right-video-detail-container">
+      <p>right content</p>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="showPlayList" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height: 'calc(100vh - 200px)', overflow: 'auto'}" nzWidth="30%" nzClassName="modal-size">
+  <div *nzModalTitle>
+    <nz-input-group [nzStyle]="{ radius: '20px'}" nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="input search text" />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+    </ng-template>
+  </div>
+  <div *nzModalContent class="model-content">
+  </div>
+  <div *nzModalFooter>
+    <div class="steps-action">
+    </div>
+  </div>
+</nz-modal>
