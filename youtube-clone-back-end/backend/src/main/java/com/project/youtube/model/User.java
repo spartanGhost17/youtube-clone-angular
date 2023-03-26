@@ -29,4 +29,5 @@ public class User {
     private List<String> videoHistory;
     private Set<String> likedVideos;
     private Set<String> dislikedVideos;
+    private List<String> userPlayListsIds;
 }

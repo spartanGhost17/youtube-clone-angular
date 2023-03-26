@@ -46,10 +46,4 @@ public class VideoController {
         LOGGER.info("Entering uploadVideoThumbnail");
         return videoServiceImpl.uploadVideoThumbnail(multipartFile, videoId);
     }
-    @GetMapping(value="test")
-    @ResponseStatus(HttpStatus.OK)
-    public String test(){
-       LOGGER.info("Entering test");
-       return "Hello world";
-    }
 }

@@ -1,0 +1,7 @@
+<div class="chip-container">
+    <input type="text" placeholder="Add a tag" [(ngModel)]="newChipLabel" (keyup.enter)="addChip()" />
+    <div class="chip" *ngFor="let chip of chips">
+        <span>{{ chip.label }}<span (click)="removeChip(chip)" style="margin-left: 4px;" nz-icon nzType="close-circle" nzTheme="outline"></span></span>
+    </div>
+</div>
+  

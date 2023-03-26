@@ -76,7 +76,8 @@
           <div *ngIf="shouldShowExtraMeta" class="extra-metadata">
             <div class="metadata-labels">
               <nz-input-group [nzSuffix]="metadataLabelsTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
-                <textarea nz-input [(ngModel)]="textValue" placeholder="Add tag"></textarea>
+                <!--<textarea nz-input [(ngModel)]="textValue" placeholder="Add tag"></textarea>-->
+                <app-chips></app-chips>
               </nz-input-group>
               <ng-template #metadataLabelsTpl>
                 <span
@@ -96,20 +97,3 @@
       <p>right content</p>
   </div>
 </div>
-
-<nz-modal [(nzVisible)]="showPlayList" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height: 'calc(100vh - 200px)', overflow: 'auto'}" nzWidth="30%" nzClassName="modal-size">
-  <div *nzModalTitle>
-    <nz-input-group [nzStyle]="{ radius: '20px'}" nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" nz-input placeholder="input search text" />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-      <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
-    </ng-template>
-  </div>
-  <div *nzModalContent class="model-content">
-  </div>
-  <div *nzModalFooter>
-    <div class="steps-action">
-    </div>
-  </div>
-</nz-modal>

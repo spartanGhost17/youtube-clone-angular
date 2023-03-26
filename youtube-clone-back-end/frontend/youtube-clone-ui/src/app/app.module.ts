@@ -35,6 +35,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { VideoElementsComponent } from './components/upload-video-view/video-elements/video-elements.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { ChipsComponent } from './components/chips/chips.component';
 
 registerLocaleData(uk);
 
@@ -48,7 +49,8 @@ registerLocaleData(uk);
     ContentComponent,
     DrawerComponent,
     UploadVideoMetadataComponent,
-    VideoElementsComponent
+    VideoElementsComponent,
+    ChipsComponent
   ],
   imports: [
     BrowserModule,
