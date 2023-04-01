@@ -1,16 +1,24 @@
-.chip-container {
-    display: flex;
+.chip-input-container {
+    display: inline-flex;
     flex-wrap: wrap;
-    padding: 8px;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
 }
-
 .chip {
-    background-color: #e0e0e0;
-    border-radius: 16px;
+    display: inline-block;
+    background-color: #eee;
     color: #333;
-    font-size: 14px;
-    font-weight: 500;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    padding: 4px 12px;
+    border-radius: 40px;
+    padding: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    float: left;
+}
+input {
+    border: none;
+    outline: none;
+    flex: 1;
+    //margin-right: 5px;
 }

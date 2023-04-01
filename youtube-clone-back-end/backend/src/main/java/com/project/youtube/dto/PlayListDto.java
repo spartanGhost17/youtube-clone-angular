@@ -13,4 +13,5 @@ import java.util.List;
 public class PlayListDto {
     private int ID;
     private List<Video> videos;
+    private String description;
 }

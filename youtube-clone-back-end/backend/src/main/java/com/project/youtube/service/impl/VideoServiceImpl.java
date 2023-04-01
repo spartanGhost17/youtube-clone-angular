@@ -9,6 +9,7 @@ import com.project.youtube.model.Video;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,12 +17,13 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Component
 public class VideoServiceImpl implements VideoService {
 
     //auto-wire
     @Autowired
     private final S3Service s3Service;
-    //@Autowired
+    @Autowired
     private final VideoRepository videoRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoServiceImpl.class);

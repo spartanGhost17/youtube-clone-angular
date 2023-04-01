@@ -22,4 +22,5 @@ public class PlayList {
     @Id
     private int ID;
     private List<String> videoIds;
+    private String description;
 }

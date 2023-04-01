@@ -9,7 +9,7 @@
 .left-video-detail-container{
     margin-right: auto;
     display: -webkit-flex;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     //align-self: flex-start;
     background-color: rgba(255, 255, 255, 0.8);
@@ -19,7 +19,7 @@
 
 .right-video-detail-container{
     display: -webkit-flex;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     //align-items: flex-end;       /* right-align the image */
     background-color: aqua;
@@ -99,3 +99,65 @@ h1 {
 .thumbnail-gutter-row {
     background-color: aqua;
 }
+
+.title-indicator {
+    font-family: "Roboto","Noto",sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: 0.011em;
+    font-size: 12px;
+    line-height: 16px;
+} 
+
+.model-content {
+    font-family: "Roboto","Noto",sans-serif;
+    width: auto;
+    display: block;
+    height: 450px;
+}
+
+.create-new-playlist-content {
+    margin-bottom: 4px;
+    padding: 4px;
+    //display: flex;
+    width: 100%;
+}
+
+.create-new-playlist-container {
+    display: inline-flex;
+    position: absolute;
+    width: 100%;
+}
+
+/*
+*
+*================================================================
+*
+*/
+textarea, input {
+    border: none; /* Remove border from the input */
+    outline: none; /* Remove outline when clicked */
+    padding: 5px; /* Add padding to the input */
+    border-radius: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+input[type='text'] {
+    width: 100%;
+}
+
+.container {
+    border: 3px solid #717171;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+.container:hover {
+    border: 3px solid #b6b6b6
+}
+.container:focus-within {
+    border-color: #3ea6ff;
+    transition: all 0.02s ease; /* Add transition for highlight*/
+}
+
+///

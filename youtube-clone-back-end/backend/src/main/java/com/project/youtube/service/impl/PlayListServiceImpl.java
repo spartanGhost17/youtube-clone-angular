@@ -7,14 +7,20 @@ import com.project.youtube.model.Video;
 import com.project.youtube.repository.PlayListRepository;
 import com.project.youtube.service.PlayListService;
 import com.project.youtube.service.VideoService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Service
+@RequiredArgsConstructor
+@Component
 public class PlayListServiceImpl implements PlayListService {
     @Autowired
     private PlayListRepository playListRepository;
@@ -35,7 +41,7 @@ public class PlayListServiceImpl implements PlayListService {
             Video video = this.videoService.getVideoById(videoId);
             playListVideos.add(video);
         }
-        return new PlayListDto(playList.getID(), playListVideos);
+        return new PlayListDto(playList.getID(), playListVideos, playList.getDescription());
     }
 
 

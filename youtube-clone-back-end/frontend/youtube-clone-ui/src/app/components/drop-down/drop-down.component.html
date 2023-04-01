@@ -1,0 +1,14 @@
+<div #drop class="dropdown" 
+  [ngStyle]="{'--dropdown-width': dropdownWidth, '--dropdown-top': top, '--dropdown-left': left}" *ngIf="showDropdown">
+  <div class="dropdown-content">
+    <div class="dropdown-header">
+      <ng-container *ngTemplateOutlet="header"></ng-container>
+    </div>
+    <div class="dropdown-body">
+      <ng-container *ngTemplateOutlet="body"></ng-container>
+    </div>
+    <div class="dropdown-footer">
+      <ng-container *ngTemplateOutlet="footer"></ng-container>
+    </div>
+  </div>
+</div>

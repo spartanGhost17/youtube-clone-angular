@@ -52,11 +52,13 @@ export class DashboardComponent {
    */
   videoUploadedSucces(data: any){
     console.log(data.uploadStatus, " name ", data.fileName);
+    
     if(data){
       this.videoTitle = data.fileName;
       this.staticTitle = data.fileName;
       this.showVideoDetailSteps = true;//set to true if successfully uploaded video
       this.videoId = data.videoUploadResponse.id;
+      //this.videoUploaded = true;
     };
   }
 

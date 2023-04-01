@@ -35,7 +35,9 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { VideoElementsComponent } from './components/upload-video-view/video-elements/video-elements.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ChipsComponent } from './components/chips/chips.component';
+import { DropDownComponent } from './components/drop-down/drop-down.component';
 
 registerLocaleData(uk);
 
@@ -50,7 +52,8 @@ registerLocaleData(uk);
     DrawerComponent,
     UploadVideoMetadataComponent,
     VideoElementsComponent,
-    ChipsComponent
+    ChipsComponent,
+    DropDownComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,7 +78,8 @@ registerLocaleData(uk);
     NzGridModule,
     NzImageModule,
     NzDropDownModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzPopoverModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }

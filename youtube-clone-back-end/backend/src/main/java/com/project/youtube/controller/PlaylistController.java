@@ -1,27 +1,26 @@
 package com.project.youtube.controller;
 
 import com.project.youtube.dto.PlayListDto;
-import com.project.youtube.dto.VideoDto;
-import com.project.youtube.service.PlayListService;
+import com.project.youtube.service.impl.PlayListServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/api/v1/playList/")
+@RequiredArgsConstructor
 public class PlaylistController {
+
     @Autowired
-    private PlayListService playListService;
+    private final PlayListServiceImpl playListServiceImpl;
 
     @GetMapping(value="/playList")
     public PlayListDto getPlayList(@RequestParam("id") String playListId) {
-        return this.playListService.getPlayList(playListId);
+        return playListServiceImpl.getPlayList(playListId);
     }
 
-    @PutMapping(value="/addVideo")
+    /*@PutMapping(value="/addVideo")
     public ResponseEntity updatePlayListVideos(@RequestParam("playListId") String playListId, @RequestParam("videoId") String videoId) {
-        return new ResponseEntity<>(this.playListService.addVideo(playListId, videoId), HttpStatus.OK);
-    }
+        return new ResponseEntity<>(playListServiceImpl.addVideo(playListId, videoId), HttpStatus.OK);
+    }*/
 }

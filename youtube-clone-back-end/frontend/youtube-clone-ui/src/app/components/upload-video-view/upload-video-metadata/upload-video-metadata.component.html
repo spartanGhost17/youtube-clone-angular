@@ -54,19 +54,89 @@
             Add your video to one or more playlists. Playlists can help viewers to discover your content faster. 
             <a target="_blank" href="https://support.google.com/youtube/answer/57792">Learn more</a>
           </p>
-          <button nz-button nz-dropdown nzTrigger="click" (click)="showUserPlayLists()" nzSize="large" [nzDropdownMenu]="availablePlaylist">
-            <span>Select</span>
-            <span nz-icon nzType="caret-down"></span>
-          </button>
-          <nz-dropdown-menu #availablePlaylist="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-row nz-menu-item>
-                menu4 1st menu item
-              </li>
-              <li nz-row nz-menu-item>menu4 2nd menu item</li>
-              <li nz-row nz-menu-item>menu4 3rd menu item</li>
-            </ul>
-          </nz-dropdown-menu>          
+          <div style="width: 100%;">
+            <button #playListBtn [(ngModel)]="showDropdown" (click)="showUserPlayLists(); toggleDropdown()" nzSize="large" ngDefaultControl>
+              <span>Select {{showDropdown}}</span>
+              <span nz-icon nzType="caret-down"></span>
+            </button>
+            <!-- Playlist dropdown -->
+            <app-drop-down 
+              [showDropdown]="showDropdown" 
+              [header]="headerTemplate" 
+              [body]="bodyTemplate" 
+              [footer]="footerTemplate" 
+              [dropdownWidth]="'500px'"
+              [buttonRef]="showPlaylistBtn">
+            </app-drop-down>
+          </div>
+
+          <ng-template #headerTemplate>
+            <div  style="text-align: center; width: 100%">
+              <input [ngStyle]="{'border-radius': '10px', 'border':'none' }" type="text" />
+            </div>
+          </ng-template>
+          
+          <ng-template #bodyTemplate>
+            <nz-table>
+              <thead>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data" style="margin-bottom: 4px;">
+                  <td>
+                    <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="selectSinglePlaylist($event, item)"></label>
+                  </td>&nbsp;&nbsp;
+                  <td  style="text-align: center; align-items: center;">
+                    <span>{{ item.label }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </ng-template>
+          
+          <ng-template #footerTemplate>
+            <button nz-button nz-popover [ngStyle]="{float:'left', border:'none'}" nzType="primary" nzPopoverTrigger="click" [nzPopoverContent]="newPlaylistPopover">
+              <span>NEW PLAYLIST</span>
+              <span nz-icon nzType="caret-down"></span>
+            </button>
+            <button nz-button [ngStyle]="{float:'right', border:'none'}">
+              <span>DONE</span>
+            </button>
+          </ng-template>
+
+          <ng-template #newPlaylistPopover>
+            <button nz-button nzSize="small" (click)="isVisibleNewPlaylist = !isVisibleNewPlaylist">
+              <span nz-icon nzType="pic-right" nzTheme="outline"></span>&nbsp;
+              <span>New Playlist</span>
+            </button>
+          </ng-template>
+          <!-- Create new playlist view -->
+          <nz-modal #createNewPlaylist [(nzVisible)]="isVisibleNewPlaylist" [nzTitle]="'Create a new playlist'" [nzStyle]="{ top: '20px'}">
+            <div *nzModalContent class="model-content">
+              <div class="container">
+                <p class="text-header">Header</p>
+                <div class="input-container">
+                  <input type="text" id="myInput" placeholder="Add title">
+                </div>
+              </div>
+              <div class="container" [ngStyle]="{height: '200px'}">
+                <p class="text-header">Description</p>
+                <div class="input-container">
+                  <input type="text" id="myInput" placeholder="Add Description">
+                </div>
+              </div>
+              <div class="container">
+                <button nz-button style="width: 100%; height: 40px; border: none">
+                  Search
+                  <span nz-icon nzType="pic-right" nzTheme="outline" style="border: none"></span>&nbsp;
+                </button>
+              </div>
+            </div>
+            <div *nzModalFooter>
+              <button nz-button (click)="closeCreateNewPlaylist()">CANCEL</button>
+              <button nz-button (click)="closeCreateNewPlaylist()">CREATE</button>
+            </div>
+          </nz-modal>
+
         </div>
         <!-- Extra video metadata -->
         <div class="extra-metadata-container">
@@ -77,7 +147,7 @@
             <div class="metadata-labels">
               <nz-input-group [nzSuffix]="metadataLabelsTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
                 <!--<textarea nz-input [(ngModel)]="textValue" placeholder="Add tag"></textarea>-->
-                <app-chips></app-chips>
+                <app-chips (chipsUpdated)="chipsUpdated($event)"></app-chips>
               </nz-input-group>
               <ng-template #metadataLabelsTpl>
                 <span
