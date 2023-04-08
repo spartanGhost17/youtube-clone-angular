@@ -1,10 +1,7 @@
 package com.project.youtube.model;
 
 import com.project.youtube.constants.ApplicationConstants;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
@@ -13,14 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(value="PlayList")
-@EntityScan
 @Data
+@EntityScan
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
 public class PlayList {
     @Id
-    private int ID;
+    private String id;
+    private String title;
     private List<String> videoIds;
     private String description;
+    private VisibilityStatus visibilityStatus;
 }

@@ -1,6 +1,5 @@
 package com.project.youtube.service.impl;
 
-import com.amazonaws.services.s3.model.ListNextBatchOfObjectsRequest;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.repository.VideoRepository;
 import com.project.youtube.service.VideoService;
@@ -58,7 +57,7 @@ public class VideoServiceImpl implements VideoService {
         videoToSave.setDescription(videoDto.getDescription());
         videoToSave.setThumbnailURL(videoDto.getThumbnailURL());
         videoToSave.setTags(videoDto.getTags());
-        videoToSave.setVideoStatus(videoDto.getVideoStatus());
+        videoToSave.setVisibilityStatus(videoDto.getVisibilityStatus());
 
         // save video to database
         videoRepository.save(videoToSave);

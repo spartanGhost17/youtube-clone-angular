@@ -18,8 +18,10 @@
     "@angular/platform-browser": "^15.2.2",
     "@angular/platform-browser-dynamic": "^15.2.2",
     "@angular/router": "^15.2.2",
+    "colorthief": "^2.2.0",
     "ng-zorro-antd": "^15.0.3",
     "ngx-file-drop": "^14.0.2",
+    "node-vibrant": "^3.1.6",
     "rxjs": "~7.8.0",
     "zone.js": "~0.12.0"
   },

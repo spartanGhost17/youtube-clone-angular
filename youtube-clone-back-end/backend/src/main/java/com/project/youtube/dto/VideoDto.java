@@ -2,7 +2,7 @@ package com.project.youtube.dto;
 
 
 import com.project.youtube.model.VideoCategory;
-import com.project.youtube.model.VideoStatus;
+import com.project.youtube.model.VisibilityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class VideoDto {
     private String title;
     private String description;
     private Set<String> tags;
-    private VideoStatus videoStatus;
+    private VisibilityStatus visibilityStatus;
     private VideoCategory videoCategory;
     private String genre;
     private String thumbnailURL;

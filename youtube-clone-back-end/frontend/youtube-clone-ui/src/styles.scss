@@ -1,9 +1,95 @@
+@import './normalize.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap');
+@import './utils.scss';
 /* You can add global styles to this file, and also import other style files */
-::ng-deep body {
-    font-family: "Roboto","Noto",sans-serif;
-    -webkit-font-smoothing: antialiased;
+:root {
+    /* colors */
+    --yt-color-theme-dark: #0f0f0f;
+    --yt-color-theme-light: #ffffff;
+    --yt-color-active-btn-dark: #f2f2f2;
+    --yt-color-active-btn-light :#272727;
+    --yt-color-innactive-btn-dark: #272727;
+    --yt-color-scroll-bar-light: #606060;
+    --yt-color-scroll-bar-dark: #aaaaaa;//#c1c1c1;
+    --yt-color-blue: #3ea6ff;
+    --yt-color-red: #FF0000;
+    --yt-spec-text-primary: #f1f1f1;
+    --yt-spec-text-secondary: #aaa;
+    --yt-endpoint-hover-color: var(--yt-spec-text-primary);//hover on secondary text
+    --yt-color-innactive-button-hover : #434242;
+
+    --yt-spec-icon-inactive: #fff;
+    --yt-spec-icon-disabled: #717171;
+    --yt-spec-brand-icon-inactive: #fff;
+
+    /* sizes*/
+
+    --size-xxs: 0.5rem;
+    --size-xs: 0.75rem;
+    --size-sm: 0.875rem;
+    --size-base: 1rem;
+    --size-lg: 1.125rem;
+    --size-xl: 1.25rem;
+    --size-2xl: 1.5rem;
+    --size-3xl: 1.875rem;
+    --size-4xl: 2.25rem;
+    --size-5xl: 3rem;
+    --size-6xl: 3.75rem;
+    --size-7xl: 4.5rem;
+    --size-8xl: 6rem;
+    --size-9xl: 8rem;
+    --size-10xl: 10rem;
+
 }
 
-.upload-video-metadata .dropdown {
-    z-index: 9999;
+* {
+    margin: 0;
+    line-height: calc(1em + 0.5rem);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--yt-color-theme-dark);
+    color: var(--yt-spec-text-primary);
+    //background-color: ;
+}
+
+img, 
+picture,
+video,
+canvas, 
+svg {
+    display: block;
+    max-width: 100%;
+    user-select: none;//no reason to select
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+caption, center, cite, code, dd, del, dfn, div, dl, dt, em, embed, fieldset, 
+font, form, h1, h2, h3, h4, h5, h6, hr, i, iframe, ins, kbd, label, legend, li, menu, 
+object, ol, p, pre, q, s, samp, small, span, strike, strong, sub, sup, table, tbody, td, tfoot, 
+th, thead, tr, tt, u, ul, var, input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+button {
+    display: inline-block;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+}
+
+div{
+    height: inherit;
 }

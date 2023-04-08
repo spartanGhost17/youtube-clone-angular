@@ -1,0 +1,87 @@
+.ytcp-button {
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: -0.05em;//-0.05 * element?
+    background-color: var(--yt-color-innactive-btn-dark);
+    color: var(--yt-spec-text-primary);
+    padding: 0.5em 1em;//left right
+    //border-radius: 6px;
+    //can add box shadow later
+
+    //add transition on property
+    transition: background-color 0.3s;
+}
+
+.ytcp-button:hover {
+    //transition: ease-in 0.3ms;
+    background-color: var(--yt-color-innactive-button-hover);//rgba(39, 39, 39, 1);
+}
+
+.container {
+    width: 100%;//only used when viewport is shrunk passed @media query
+    height: 100%;
+    margin-left: 4px;
+    margin-right: 4px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border: 1px solid red;
+}
+
+/*xs*/
+@media (min-width: 457px) {
+    .container {
+        max-width: 457px;
+    }
+}
+
+/*sm*/
+@media (min-width: 640px) {
+    .container {
+        max-width: 640px;
+    }
+}
+
+/*md*/
+@media (min-width: 768px) {
+    .container {
+        max-width: 768px;
+    }
+}
+
+/*lg*/
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+    }   
+}
+
+/*xl*/
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1280px;
+    }      
+}
+ 
+/*2xl*/
+@media (min-width: 1540px) {
+    .container {
+        max-width: 1540px;
+
+    }     
+}
+
+/*4xl*/
+@media (min-width: 1645px) {
+    .container {
+        max-width: 1645px;
+    }
+}
+
+/* mozilla 4xl*/
+
+@media (min-width: 1700px) {
+    .container {
+        max-width: 1700px;
+    } 
+}

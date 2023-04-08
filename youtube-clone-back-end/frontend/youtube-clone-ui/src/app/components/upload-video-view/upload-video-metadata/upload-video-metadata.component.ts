@@ -31,6 +31,8 @@ export class UploadVideoMetadataComponent {
   @Output() videoTitleChanged: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('playListBtn') showPlaylistBtn: ElementRef<any>;
 
+  visibility: string = 'PUBLIC';
+
   data = [
     { label: 'Item 1', checked: false },
     { label: 'Item 2', checked: false },

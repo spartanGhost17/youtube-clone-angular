@@ -38,6 +38,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ChipsComponent } from './components/chips/chips.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
+import { ContainerBgGradiantDirective } from './directives/container-bg-gradiant.directive';
+import { PlaylistMetadataComponent } from './components/playlist-metadata/playlist-metadata.component';
 
 registerLocaleData(uk);
 
@@ -54,6 +56,8 @@ registerLocaleData(uk);
     VideoElementsComponent,
     ChipsComponent,
     DropDownComponent,
+    ContainerBgGradiantDirective,
+    PlaylistMetadataComponent,
   ],
   imports: [
     BrowserModule,

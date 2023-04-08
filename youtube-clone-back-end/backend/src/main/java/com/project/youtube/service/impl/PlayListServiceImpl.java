@@ -4,6 +4,7 @@ import com.project.youtube.constants.ApplicationConstants;
 import com.project.youtube.dto.PlayListDto;
 import com.project.youtube.model.PlayList;
 import com.project.youtube.model.Video;
+import com.project.youtube.model.VisibilityStatus;
 import com.project.youtube.repository.PlayListRepository;
 import com.project.youtube.service.PlayListService;
 import com.project.youtube.service.VideoService;
@@ -32,6 +33,21 @@ public class PlayListServiceImpl implements PlayListService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayListServiceImpl.class);
 
     @Override
+    public PlayListDto createPlaylist(PlayListDto playListDto) {
+        LOGGER.info("Entering createPlaylist");
+        LOGGER.info("Tile "+playListDto.getTitle());
+        LOGGER.info("Description "+playListDto.getDescription());
+        LOGGER.info("VisibilityStatus "+playListDto.getVisibilityStatus());
+        PlayList playList = new PlayList();
+        playList.setTitle(playListDto.getTitle());
+        playList.setDescription(playListDto.getDescription());
+        playList.setVisibilityStatus(playListDto.getVisibilityStatus());
+        var savedPlayList = playListRepository.save(playList);
+        LOGGER.info("Leaving createPlaylist");
+        return new PlayListDto(savedPlayList.getId(), savedPlayList.getTitle(), new ArrayList<Video>(), savedPlayList.getDescription(), savedPlayList.getVisibilityStatus());
+    }
+
+    @Override
     public PlayListDto getPlayList(String playListId) {
         LOGGER.info("Entering getPlayList for playList id: "+playListId);
         PlayList playList = getPlayListById(playListId);
@@ -41,7 +57,7 @@ public class PlayListServiceImpl implements PlayListService {
             Video video = this.videoService.getVideoById(videoId);
             playListVideos.add(video);
         }
-        return new PlayListDto(playList.getID(), playListVideos, playList.getDescription());
+        return new PlayListDto(playList.getId(), playList.getTitle(), playListVideos, playList.getDescription(), playList.getVisibilityStatus());
     }
 
 

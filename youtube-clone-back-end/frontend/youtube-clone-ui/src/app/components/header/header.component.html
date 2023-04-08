@@ -1,4 +1,5 @@
-<nz-header>
+<!---<nz-header></nz-header>-->
+<!--<div class="header-container">
     <div class="header-right-buttons-container">
         <button class="header-right-buttons" nz-button nzShape="circle" NzButtonSize="140">
             <span nz-icon nzType="youtube" nzTheme="outline"></span>
@@ -17,4 +18,44 @@
         <button class="header-left-buttons" nz-button nzShape="circle" nzSize="large" nzType="primary"><span nz-icon nzType="bell" nzTheme="outline"></span></button>&nbsp;
         <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="avatarImage"></nz-avatar>&nbsp;
     </div>
-</nz-header>
+</div>-->
+<header>
+    <nav class="header container">
+        <div id="start">
+            <div class="burger">  
+                <button (click)="toggleSideBar()" class="ytcp-button round-button">
+                    <img class="burger-img" src="../../../assets/icons/burger/light/burger-menu.svg"/>
+                </button>
+            </div>
+            <div class="yt-icon-container">
+                <img class="yt-icon" src="../../../assets/icons/play/light/youtube.svg"/>
+            </div>
+        </div>
+        <div id="center">
+            <div class="center-container" *ngIf="showSearchBar">
+                <form class="search-form" action="/search-results">
+                    <input [(ngModel)]="searchString" type="text"
+                        placeholder="Search"
+                        name="search">
+                    <button (click)="search()" class="ytcp-button search-button">
+                        <img src="../../../assets/icons/search/light/icons8-search-50.svg"/>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div id="end">
+            <div class="end-icons">
+                <button class="ytcp-button round-button">
+                    <img src="../../../assets/icons/bell/light/bell.svg"/>
+                </button>
+                <button class="ytcp-button round-button">
+                    <img src="../../../assets/icons/camera/light/video-camera.svg"/>
+                </button>
+                <button class="ytcp-button round-button">
+                    <img src="../../../assets/goku.jpg" [ngStyle]="{'object-fit': 'cover'}" />
+                </button>
+            </div>
+            
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,39 @@
+*{
+    box-sizing: border-box;//allow to recalculate padding border margin etc. without having to change width
+}
+.thumbnail {
+    /* Set the dimensions of the container */
+    height: 20%;
+    width: 94%;
+    
+    /* Center the image inside the container */
+    //display: block;
+    //justify-content: center;
+    //align-items: center;
+    margin: 10px;
+    padding: 4px;
+    border-radius: 14px;
+    background-color: black;
+}
+  
+.img {
+    /* Set the object-fit property to contain */
+    object-fit: cover;
+    /* Set the max-width and max-height of the image to 100% */
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: blue;
+}
+  
+.playlist-metadata-container {
+    //align-items: center;
+    height: 100%;
+    width: 100%;
+    //margin-top: 80px;
+    //margin-left: 24px;
+    border-radius: 10px;
+    padding: 20px;
+}
