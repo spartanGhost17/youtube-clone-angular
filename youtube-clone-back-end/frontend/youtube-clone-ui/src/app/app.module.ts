@@ -40,6 +40,8 @@ import { ChipsComponent } from './components/chips/chips.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { ContainerBgGradiantDirective } from './directives/container-bg-gradiant.directive';
 import { PlaylistMetadataComponent } from './components/playlist-metadata/playlist-metadata.component';
+import { SidePanelComponent } from './components/side-panel/side-panel.component';
+import { FrameComponent } from './components/frame/frame.component';
 
 registerLocaleData(uk);
 
@@ -58,6 +60,8 @@ registerLocaleData(uk);
     DropDownComponent,
     ContainerBgGradiantDirective,
     PlaylistMetadataComponent,
+    SidePanelComponent,
+    FrameComponent,
   ],
   imports: [
     BrowserModule,

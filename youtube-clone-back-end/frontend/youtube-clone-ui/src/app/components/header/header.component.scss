@@ -52,6 +52,7 @@ nz-input-group{
 .header {
     height: 56px;
     //padding: 0;
+    position: fixed; /* Stay in place */
     padding: 0 16px;
     display: flex;
     flex-direction: row;
@@ -90,7 +91,7 @@ nz-input-group{
     height: inherit;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 input[type='text'] {
@@ -132,10 +133,6 @@ input[type='text']:focus {
     transition: all 0.02s ease; /* Add transition for highlight*/
 }
 
-img {
-    height: 28px;
-}
-
 .burger {
     display: flex;
     width: 50%;
@@ -165,6 +162,15 @@ img {
 .yt-icon-container {
     width: 100%;
     height: 100%;
+}
+
+.user-icon-container {
+    padding: 0;
+    border-radius: 50%;
+}
+
+.yt-logo {
+    width: 120px;
 }
 //add media queries for other view ports
 

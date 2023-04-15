@@ -11,8 +11,17 @@
 </body>
 </html>-->
 <div class="container">
-    <app-header></app-header>
-    <button class="ytcp-button">button</button>
+    <app-header (showSideBar)="toggleSidebar($event)"></app-header>
+
+    <app-side-panel [collapse]="sidebarOpen"></app-side-panel>
+    <div class="container fill-available" [ngStyle]="{'width': sidebarOpen? 'calc(100% - 74px)':'calc(100% - 240px)', 'margin-left': sidebarOpen? '72px' : '240px'}">
+        <div class="list-container">
+            <div class="video-list">
+                
+            </div>
+        </div>
+    </div>
+    <!--<button class="ytcp-button">button</button>-->
 </div>
 <!--<div id="header-banner">
     <button class="ytcp-button">show side nav</button>

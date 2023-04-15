@@ -1,0 +1,33 @@
+export class Icons {
+    BASE:string = '../../assets/icons/';
+    iconsPaths = {
+        'bell-light': this.BASE+'bell/dark/bell.svg',
+        'bell-dark': this.BASE+'bell/light/bell.svg',
+        'bell-cancel-light': this.BASE+'bell-cancel/light/bell.svg',
+        'bell-cancel-dark': this.BASE+'bell-cancel/dark/bell.svg',
+        'burger-light': this.BASE+'burger/light/burger-menu.svg',
+        'burger-dark': this.BASE+'burger/dark/burger-menu.svg',
+        'camera-light': this.BASE+'camera/light/video-camera.svg',
+        'camera-dark': this.BASE+'camera/dark/video-camera.svg',
+        'yt-logo-light': this.BASE+'play/light/youtube.svg',
+        'yt-logo-dark': this.BASE+'play/dark/youtube.svg',
+        'search-light': this.BASE+'search/light/icons8-search-50.svg',
+        'search-dark': this.BASE+'search/dark/icons8-search-50.svg',
+        'home-dark': this.BASE+'home/dark/home.svg',
+        'home-light': this.BASE+'home/light/home.svg',
+        'history-light': this.BASE+'history/light/history-time-clock.svg',
+        'history-dark': this.BASE+'history/dark/history-time-clock.svg',
+        'clock-light': this.BASE+'clock/light/clock.svg',
+        'clock-dark': this.BASE+'clock/dark/clock.svg',
+        'like-light': this.BASE+'like/light/like.svg',
+        'like-dark': this.BASE+'like/dark/like.svg',
+        'library-video-light': this.BASE+'library/light/library-videos.svg',
+        'library-video-dark': this.BASE+'library/dark/library-videos.svg',
+        'library-light': this.BASE+'library/light/library.svg',
+        'library-dark': this.BASE+'library/dark/library.svg',
+        'shorts': this.BASE+'shorts/youtube_shorts.svg',
+        'subscription-light': this.BASE+'subscription/light/subscription.svg',
+        'subscription-dark': this.BASE+'subscription/dark/subscription.svg',
+        'radio-signal': this.BASE+'radio/radio-signal.svg',
+    }
+}

@@ -24,11 +24,11 @@
         <div id="start">
             <div class="burger">  
                 <button (click)="toggleSideBar()" class="ytcp-button round-button">
-                    <img class="burger-img" src="../../../assets/icons/burger/light/burger-menu.svg"/>
+                    <img class="burger-img" alt="" [src]="ICON_BURGER"/>
                 </button>
             </div>
             <div class="yt-icon-container">
-                <img class="yt-icon" src="../../../assets/icons/play/light/youtube.svg"/>
+                <img class="yt-icon burger-img yt-logo" alt="" [src]="ICON_YOUTUBE"/>
             </div>
         </div>
         <div id="center">
@@ -37,8 +37,8 @@
                     <input [(ngModel)]="searchString" type="text"
                         placeholder="Search"
                         name="search">
-                    <button (click)="search()" class="ytcp-button search-button">
-                        <img src="../../../assets/icons/search/light/icons8-search-50.svg"/>
+                    <button (keyup.enter)="search()" (click)="search()" class="ytcp-button search-button">
+                        <img [src]='ICON_SEARCH_LIGHT' alt="" [ngStyle]="{'height': '28px'}"/>
                     </button>
                 </form>
             </div>
@@ -46,16 +46,15 @@
         <div id="end">
             <div class="end-icons">
                 <button class="ytcp-button round-button">
-                    <img src="../../../assets/icons/bell/light/bell.svg"/>
+                    <img [src]="ICON_BELL" alt=""/>
                 </button>
-                <button class="ytcp-button round-button">
-                    <img src="../../../assets/icons/camera/light/video-camera.svg"/>
+                <button class="ytcp-button round-button" (click)="addVideoButtonClicked()">
+                    <img [src]="ICON_CAMERA" alt=""/>
                 </button>
-                <button class="ytcp-button round-button">
-                    <img src="../../../assets/goku.jpg" [ngStyle]="{'object-fit': 'cover'}" />
+                <button class="ytcp-button user-icon-container">
+                    <img class="user-icon" [src]="ICON_USER" alt=""/>
                 </button>
             </div>
-            
         </div>
     </nav>
 </header>

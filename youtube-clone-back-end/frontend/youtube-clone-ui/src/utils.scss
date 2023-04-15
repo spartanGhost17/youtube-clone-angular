@@ -6,6 +6,7 @@
     background-color: var(--yt-color-innactive-btn-dark);
     color: var(--yt-spec-text-primary);
     padding: 0.5em 1em;//left right
+    cursor: pointer;
     //border-radius: 6px;
     //can add box shadow later
 
@@ -26,6 +27,18 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     border: 1px solid red;
+}
+
+.user-icon {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin: 0;
+    object-fit: cover;
+}
+
+img {
+    height: var(--icons-min-height);//20px;
 }
 
 /*xs*/
@@ -84,4 +97,10 @@
     .container {
         max-width: 1700px;
     } 
+}
+
+@media (min-width: 1829px) {
+    .container {
+        max-width: 1829px;
+    }
 }

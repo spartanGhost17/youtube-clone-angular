@@ -13,7 +13,8 @@ export class HomeComponent {
   ngOnInit(): void {
   }
 
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
+  toggleSidebar(event: any): void {
+    this.sidebarOpen = event;
+    console.log("side bar:  ", this.sidebarOpen);
   }
 }
