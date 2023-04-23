@@ -1,5 +1,78 @@
 <div appContainerBgGradiant class="playlist-metadata-container">
-    <div class="thumbnail">
-      <img class="img" src="../../../assets/goku.jpg" />
+    <div class="thumbnail-container">
+      <div class="thumbnail">
+        <img class="img" [src]="THUMBNAIL" alt=""/>
+      </div>
+      <!-- on hover thumbnail div -->
+      <div class="thumbnail thumbnail-transition">
+        <img [src]="ICON_PLAY_LIGHT" alt="" [ngStyle]="{'margin-right': '10px'}"/>
+        <p>PLAY ALL</p>
+      </div>
+    </div>
+    <!--  -->
+    <div *ngIf="editSection!=='title'" class="playlist-name">
+      <div class="title">
+        <h1 #title class="text-primary text">{{playlistTitle}}</h1>
+      </div>
+      <div (click)="onEdit('title')" #PenIcon class="ytcp-button round-button icon-container">
+        <img class="icon" [src]="ICON_PEN" alt=""/>
+      </div>
+    </div>
+    <div *ngIf="editSection==='title'" class="edit-options" [ngTemplateOutlet]="editOptions"></div>
+
+    <div class="user-name">
+      <h3 class="text-primary text no-emphasis">{{userHandle}}</h3>
+    </div>
+    <div class="visibility">
+      <p>private</p>
+    </div>
+    <div class="secondary-text metadata-text">
+      <span class="metadata">{{totalVideos}} videos  {{totalViews}} views  Last updated on 3 Apr 2023</span>
+    </div>
+    <div class="ytcp-button round-button config-playlist">
+      <img [src]="ICON_ELIPSIS" alt=""/>
+    </div>
+    <div class="play-shuffle-buttons-container">
+      <div class="ytcp-button play-btn content-alignment">
+        <img [src]="ICON_PLAY" alt="play all" [ngStyle]="{'height': '20px', 'padding-top': '2px', 'width': '20%', 'margin-right': '20px'}"/>
+        <p class="btn-text-dark">Play all</p>
+      </div>
+      <div class="ytcp-button shuffle-btn content-alignment">
+        <img [src]="ICON_SHUFFLE" alt="shuffle" [ngStyle]="{'height': '20px', 'padding-top': '2px', 'margin-right': '20px'}"/>
+        <p>Shuffle</p>
+      </div>
+    </div>
+    <!--<div class="playlist-name">
+      <div class="title">
+        <p class="text-primary text" [ngClass]="{'underline-animation': editSection==='description'}">{{description}}</p>
+      </div>
+      <div (click)="onEdit('description')" #PenIcon class="ytcp-button round-button icon-container">
+        <img class="icon" [src]="ICON_PEN" alt=""/>
+      </div>
+    </div>-->
+    <div *ngIf="editSection!=='description'" class="playlist-name">
+      <div class="title">
+        <h1 #title class="text-primary text char-count-desc">{{description}}</h1>
+      </div>
+      <div (click)="onEdit('description')" #PenIcon class="ytcp-button round-button icon-container">
+        <img class="icon" [src]="ICON_PEN" alt=""/>
+      </div>
+    </div>
+    <div *ngIf="editSection==='description'" class="edit-options desc-input" [ngTemplateOutlet]="editOptions">
+      <!-- figure this out should not be a template -->
     </div>
 </div>
+
+<!-- edit text template -->
+<ng-template #editOptions>
+  <div class="text-input underline-animation">
+    <input class="input-aligner" type="text" [(ngModel)]="editTitleText" (ngModelChange)="checkLength($event)" placeholder="Search" name="search">
+  </div>
+  <div class="char-count">
+    <p class="text-secondary">{{editTitleText.length}}/{{TITLE_MAX_CHAR_COUNT}}</p>
+  </div>
+  <div class="edit-button-container">
+    <button (click)="cancelEdit()" id="save-edit" class="ytcp-button">cancel</button>
+    <button (click)="saveEdit()" id="cancel-edit" class="ytcp-button">save</button>
+  </div>
+</ng-template>

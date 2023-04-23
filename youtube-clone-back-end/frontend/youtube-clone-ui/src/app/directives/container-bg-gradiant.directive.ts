@@ -24,7 +24,8 @@ export class ContainerBgGradiantDirective implements AfterViewInit {
         console.log("secondary color ", secondaryColor);
   
         //const gradient = `linear-gradient(to bottom, ${primaryColor}, ${secondaryColor})`;
-        const gradient = `linear-gradient(to bottom, ${primaryColor}, rgba(0, 0, 0, 0)), linear-gradient(to bottom, rgba(0, 0, 0, 0.3), ${secondaryColor})`;
+        //const gradient = `linear-gradient(to bottom, ${primaryColor}, rgba(0, 0, 0, 0)), linear-gradient(to bottom, rgba(0, 0, 0, 0.3), ${secondaryColor})`;
+        const gradient = `linear-gradient(to bottom, ${primaryColor}, rgba(0, 0, 0, 0.800)), linear-gradient(to bottom, rgba(0, 0, 0, 1.000), ${secondaryColor})`;
 
         console.log("gradient ", gradient);
         this.el.nativeElement.style.backgroundImage = gradient;

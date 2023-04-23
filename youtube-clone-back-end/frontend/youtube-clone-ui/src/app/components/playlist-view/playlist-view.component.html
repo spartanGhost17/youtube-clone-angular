@@ -1,0 +1,58 @@
+<div class="container view-container" [ngStyle]="{ 'max-width': collapsedSideBar? 'calc(var(--view-port) - calc('+sidebarWidth+' + 40px))' : 'calc(var(--view-port) - calc('+sidebarWidth+' + 38px))'}">
+    <div class="left-container">
+        <app-playlist-metadata></app-playlist-metadata>
+    </div> <!--110px 276px-->
+    <div class="right-container">
+        <div class="ytcp-button video-data-container">
+            <div id="start" class="">
+                <img [src]="ICON_BURGER" alt=""/>
+            </div>
+            <div id="center" class="">
+                <div id="thumbnail__center">
+                    <img class="img" src="../../../assets/green-lantern.jpg">
+                </div>
+                <div id="metadata__center">
+                    <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '12px'}">{{videoTitle}}</h2>
+                    <p class="text-secondary">{{channelName}} &bull; 12K views &bull; 8 months ago</p>
+                </div>
+            </div>
+            <div id="end" class="">
+                <img [src]="ICON_ELIPSIS" alt="">
+            </div>
+        </div>
+        <div class="ytcp-button video-data-container">
+            <div id="start" class="">
+                <img [src]="ICON_BURGER" alt=""/>
+            </div>
+            <div id="center" class="">
+                <div id="thumbnail__center">
+                    <img class="img" src="../../../assets/batman.jpg">
+                </div>
+                <div id="metadata__center">
+                    <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '12px'}">Batman Court Of Owl</h2>
+                    <p class="text-secondary">{{channelName}} &bull; 12K views &bull; 8 months ago</p>
+                </div>
+            </div>
+            <div id="end" class="">
+                <img [src]="ICON_ELIPSIS" alt="">
+            </div>
+        </div>
+        <div class="ytcp-button video-data-container">
+            <div id="start" class="">
+                <img [src]="ICON_BURGER" alt=""/>
+            </div>
+            <div id="center" class="">
+                <div id="thumbnail__center">
+                    <img class="img" src="../../../assets/goku_god_mode.jpg">
+                </div>
+                <div id="metadata__center">
+                    <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '12px'}">Why Battle of Gods works</h2>
+                    <p class="text-secondary">{{channelName}} &bull; 12K views &bull; 8 months ago</p>
+                </div>
+            </div>
+            <div id="end" class="">
+                <img [src]="ICON_ELIPSIS" alt="">
+            </div>
+        </div>
+    </div>
+</div>

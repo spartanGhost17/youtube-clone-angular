@@ -1,0 +1,10 @@
+.fill-available {   
+    position: fixed;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: calc( 100% - 65px );
+    top: 65px;
+    //transition: 0.5s;
+    
+    //background-color: rgba(255, 165, 0, 0.5);
+}

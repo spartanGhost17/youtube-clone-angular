@@ -1,1 +1,10 @@
-<p>frame works!</p>
+<div class="container">
+    <app-header (showSideBar)="toggleSidebar($event)"></app-header>
+    <div class="container" [ngStyle]="{'border': '2px solid green'}">
+        <app-side-panel [collapse]="sidebarOpen"></app-side-panel>
+        
+        <div class="container fill-available" [ngStyle]="{'max-width': sidebarOpen?  'calc(var(--view-port) - 100px)' : 'calc(var(--view-port) - 264px)', 'margin-left': sidebarOpen? '76px' : '242px', 'border': '2.5px solid blue'}">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

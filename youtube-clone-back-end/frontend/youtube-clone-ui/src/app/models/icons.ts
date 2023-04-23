@@ -29,5 +29,15 @@ export class Icons {
         'subscription-light': this.BASE+'subscription/light/subscription.svg',
         'subscription-dark': this.BASE+'subscription/dark/subscription.svg',
         'radio-signal': this.BASE+'radio/radio-signal.svg',
+        'pen-light': this.BASE+'pen/light/pen.svg',
+        'pen-dark': this.BASE+'pen/dark/pen.svg',
+        'elipsis-light': this.BASE+'elipsis/light/elipsis.svg',
+        'elipsis-dark': this.BASE+'elipsis/dark/elipsis.svg',
+        'shuffle-light': this.BASE+'shuffle/light/shuffle.svg',
+        'shuffle-dark': this.BASE+'shuffle/dark/shuffle.svg',
+        'play-light': this.BASE+'play2/light/play.svg',
+        'play-dark': this.BASE+'play2/dark/play.svg',
+        'playlist-light': this.BASE+'playlist/light/playlist.svg',
+        'playlist-dark': this.BASE+'playlist/dark/playlist.svg',
     }
 }

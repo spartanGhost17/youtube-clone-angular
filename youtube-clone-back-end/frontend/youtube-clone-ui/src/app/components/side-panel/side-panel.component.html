@@ -1,4 +1,4 @@
-<div class="container panel" [ngStyle]="{'width': collapse? '72px':'240px', 'padding': collapse? '0px':'4px', 'overflow-y': collapse? 'hidden': 'visible'}">
+<div class="container panel" [ngStyle]="{'width': collapse? MIN_WIDTH: MAX_WIDTH, 'padding': collapse? '0px':'4px', 'overflow-y': collapse? 'hidden': 'visible'}">
     <div class="panel-section">
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners" [ngClass]="{'strecth' : !collapse, 'collapse': collapse, 'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[0]">
             <div id="start-icon" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}"> <!--  [ngStyle]="{'height': collapse? 'var(--icons-collapsed-sidebar-height)': 'var(--icons-min-height)'}" --->

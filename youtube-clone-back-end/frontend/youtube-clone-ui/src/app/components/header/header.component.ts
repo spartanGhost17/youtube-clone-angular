@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Icons } from '../../models/icons';
+import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { Icons } from '../../models/icons';
 })
 export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
-  shouldSideBar: boolean = false;
+  collapseSideBar: boolean = false;
   searchString: string = '';
   @Input() showSearchBar: boolean = true;
   @Input() openModal: () => void;
@@ -23,8 +24,11 @@ export class HeaderComponent {
   ICON_CAMERA: string = '../'+this.icons.iconsPaths['camera-light'];
   ICON_BELL: string = '../'+this.icons.iconsPaths['bell-dark'];
   
-  constructor() {
-    console.log();
+  constructor(private componentUpdatesService :ComponentUpdatesService) {}
+
+  ngAfterViewInit() {
+    console.log("in frame construct afterViewInit =====> ", this.collapseSideBar);
+    this.componentUpdatesService.sideBarCollapsedEmit(this.collapseSideBar);
   }
 
   addVideoButtonClicked() {
@@ -41,8 +45,10 @@ export class HeaderComponent {
    * Toggle sidebar event
    */
   toggleSideBar() {
-    this.shouldSideBar = !this.shouldSideBar;
-    console.log("toggle side bar ", this.shouldSideBar);
-    this.showSideBar.emit(this.shouldSideBar);
+    this.collapseSideBar = !this.collapseSideBar;
+    console.log("toggle side bar ", this.collapseSideBar);
+    this.componentUpdatesService.sideBarCollapsedEmit(this.collapseSideBar);
+    this.showSideBar.emit(this.collapseSideBar);
+    
   }
 }

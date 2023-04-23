@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -6,15 +7,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  sidebarOpen = false;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  toggleSidebar(event: any): void {
-    this.sidebarOpen = event;
-    console.log("side bar:  ", this.sidebarOpen);
-  }
 }

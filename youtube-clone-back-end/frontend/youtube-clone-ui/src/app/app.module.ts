@@ -42,6 +42,9 @@ import { ContainerBgGradiantDirective } from './directives/container-bg-gradiant
 import { PlaylistMetadataComponent } from './components/playlist-metadata/playlist-metadata.component';
 import { SidePanelComponent } from './components/side-panel/side-panel.component';
 import { FrameComponent } from './components/frame/frame.component';
+import { VideosExplorerComponent } from './components/videos-explorer/videos-explorer.component';
+import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
+import { VideoComponent } from './components/video/video.component';
 
 registerLocaleData(uk);
 
@@ -62,6 +65,9 @@ registerLocaleData(uk);
     PlaylistMetadataComponent,
     SidePanelComponent,
     FrameComponent,
+    VideosExplorerComponent,
+    PlaylistViewComponent,
+    VideoComponent,
   ],
   imports: [
     BrowserModule,

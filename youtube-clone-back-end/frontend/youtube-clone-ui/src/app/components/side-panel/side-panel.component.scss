@@ -5,7 +5,9 @@
     top: 65px;
     position: fixed; /* Stay in place */
     //z-index: 1; /* Stay on top */
-    transition: 0.5s;
+
+    //transition: 0.5s;
+    
     overflow-x: hidden;
     padding: 4px;
     //transition: width;
@@ -93,8 +95,8 @@ h3 {
 add media query
 */
 
-@media (max-width: 1312px) {
-    .panel {
-        width: var(--yt-mini-drawer-width);
-    }
-}
+//@media (max-width: 1312px) {
+//    .panel {
+//        width: var(--yt-mini-drawer-width);
+//    }
+//}

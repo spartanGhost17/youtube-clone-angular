@@ -1,28 +1,4 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>[showSearchBar]="false"
-</head>
-<body>
 
-</body>
-</html>-->
-<div class="container">
-    <app-header (showSideBar)="toggleSidebar($event)"></app-header>
-
-    <app-side-panel [collapse]="sidebarOpen"></app-side-panel>
-    <div class="container fill-available" [ngStyle]="{'width': sidebarOpen? 'calc(100% - 74px)':'calc(100% - 240px)', 'margin-left': sidebarOpen? '72px' : '240px'}">
-        <div class="list-container">
-            <div class="video-list">
-                
-            </div>
-        </div>
-    </div>
-    <!--<button class="ytcp-button">button</button>-->
-</div>
 <!--<div id="header-banner">
     <button class="ytcp-button">show side nav</button>
     <p>Header/banner</p>
@@ -34,3 +10,4 @@
     </div>
     <div id="body-area"> body</div>
 </div>-->
+<app-frame></app-frame>

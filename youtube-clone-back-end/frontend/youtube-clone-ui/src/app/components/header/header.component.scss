@@ -51,15 +51,17 @@ nz-input-group{
 ///new css
 .header {
     height: 56px;
-    //padding: 0;
+    //width: 96.8%;    //padding: 0;
+    max-width: calc(var(--view-port) - 12px);
     position: fixed; /* Stay in place */
-    padding: 0 16px;
+    //padding: 0 16px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    //background-color: aquamarine;
 }
 
 #start {
@@ -137,16 +139,6 @@ input[type='text']:focus {
     display: flex;
     width: 50%;
     align-items: center;
-}
-
-.round-button {
-    padding: 10px;
-    background-color: inherit;
-    border-radius: 100%;
-}
-
-.round-button:hover {
-    background-color: var(--yt-color-innactive-button-hover);
 }
 
 .burger-img {
