@@ -1,9 +1,10 @@
 <div class="list-row-wrapper" [ngStyle]="{'margin-left': sibarWidth==='72px'? '72px' : '0'}">
     <div class="list-container">
         <div class="video-list">
-            <a href="">
+            <!--<a href="">
                 <img class="thumbnail" src="../../../assets/batman.jpg">
-            </a>
+            </a>-->
+            <app-video-mini [ThumbnailURL]="'../../../assets/batman.jpg'" [videoURL]="'../../../assets/test-videos/Ultra Instinct ｜ Dragon Ball Super.mp4'"></app-video-mini>
             <div class="video-info-container">
                 <div>
                     <img id="avatar" class="user-icon" src="../../../assets/goku_god_mode.jpg">

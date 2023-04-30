@@ -17,8 +17,8 @@ export class PlaylistMetadataComponent {
   //THUMBNAIL: string = '../../../assets/mr_wick.jpeg';
   //THUMBNAIL: string = '../../../assets/goku_god_mode.jpg';
   //THUMBNAIL: string = '../../../assets/batman.jpg';
-  //THUMBNAIL: string = '../../../assets/batman2.jpg';
-  THUMBNAIL: string = '../../../assets/green-lantern.jpg';
+  THUMBNAIL: string = '../../../assets/batman2.jpg';
+  //THUMBNAIL: string = '../../../assets/green-lantern.jpg';
   //THUMBNAIL: string = '../../../assets/light-yagami.png';
 
   editSection: string = '';

@@ -97,7 +97,6 @@ export class SidePanelComponent {
   makeButtonActive(button: any) {
     console.log(this.section1.indexOf(button));
     for(const section of this.sections) {
-
       this.activeButtonHelper(button, section);
     }
   }
@@ -113,6 +112,8 @@ export class SidePanelComponent {
         if(i === section.indexOf(button)){
           section[i].isActive = true;
           console.log("navigate to upload-video");
+          //const queryParams = { id: '123' };
+          //this.router.navigate([relativePath], { relativeTo: this.route, queryParams }); -> can add query params
           this.router.navigate([section[i].navigateTo],{relativeTo:this.activatedRoute});
         }
         else {

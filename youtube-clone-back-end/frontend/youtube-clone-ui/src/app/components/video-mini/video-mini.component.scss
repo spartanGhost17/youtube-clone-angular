@@ -1,0 +1,33 @@
+.thumbnail-container {
+    height: 180px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.thumbnail {
+    /* Set the dimensions of the container */
+    height: 180px;
+    width: 100%;
+    margin-bottom: 14px;
+    /* Center the image inside the container */
+    border-radius: 14px;
+}
+
+.thumbnail-transition {
+    display: flex;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease-in;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+
+.thumbnail-transition:hover {
+    opacity: 1;
+}
+
+video {
+    
+}

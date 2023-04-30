@@ -39,5 +39,6 @@ export class Icons {
         'play-dark': this.BASE+'play2/dark/play.svg',
         'playlist-light': this.BASE+'playlist/light/playlist.svg',
         'playlist-dark': this.BASE+'playlist/dark/playlist.svg',
+        'subtitles': this.BASE+'subtitles/subtitles.svg',
     }
 }

@@ -6,9 +6,10 @@ import { UploadVideoComponent } from './components/upload-video-view/upload-vide
 import { UploadVideoMetadataComponent } from './components/upload-video-view/upload-video-metadata/upload-video-metadata.component';
 import { VideosExplorerComponent } from './components/videos-explorer/videos-explorer.component';
 import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
+import { VideoComponent } from './components/video/video.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/home' },
+  { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
   {
     path: 'home', component: HomeComponent,
     children: [
@@ -22,6 +23,9 @@ const routes: Routes = [
   },
   {
     path: 'dashboard', component: DashboardComponent,
+  },
+  {
+    path: 'video-player', component: VideoComponent,
   },
   {
     path: 'upload-video', component: UploadVideoComponent,
