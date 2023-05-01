@@ -1,0 +1,40 @@
+<!-- The Modal [ngTemplateOutlet]="headerTemplate" -->
+<div #modal id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <ng-container id="start__modal_header" [ngTemplateOutlet]="headerTemplate"></ng-container>
+        <span id="end__modal_header" class="close">&times;</span>
+      </div>
+      <div class="modal-body">
+        <ng-container [ngTemplateOutlet]="bodyTemplate"></ng-container>
+      </div>
+      <div class="modal-footer">
+        <ng-container [ngTemplateOutlet]="footerTemplate"></ng-container>
+      </div>
+    </div>
+  
+</div>
+
+
+<!-- The Modal -->
+<!--<div id="Modal" class="modal">
+
+    -- Modal content --
+    <div class="modal-content">
+      <div class="modal-header">
+        <span (click)="destroy()" class="close">&times;</span>
+        <h2>Modal Header</h2>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the Modal Body</p>
+        <p>Some other text...</p>
+      </div>
+      <div class="modal-footer">
+        <div #footerContainer [ngTemplateOutlet]=""></div>
+        <h3>Modal Footer</h3>
+      </div>
+    </div>
+  
+</div>-->
