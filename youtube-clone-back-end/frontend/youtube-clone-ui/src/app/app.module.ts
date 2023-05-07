@@ -46,6 +46,9 @@ import { VideosExplorerComponent } from './components/videos-explorer/videos-exp
 import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
 import { VideoComponent } from './components/video/video.component';
 import { VideoMiniComponent } from './components/video-mini/video-mini.component';
+import { SwitchComponent } from './components/switch/switch.component';
+import { ModalComponent } from './components/modal/modal.component';
+
 
 registerLocaleData(uk);
 
@@ -70,6 +73,8 @@ registerLocaleData(uk);
     PlaylistViewComponent,
     VideoComponent,
     VideoMiniComponent,
+    SwitchComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

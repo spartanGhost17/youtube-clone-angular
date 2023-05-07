@@ -1,14 +1,32 @@
-<div #drop class="dropdown" 
+<div #dropdown class="dropdown" 
   [ngStyle]="{'--dropdown-width': dropdownWidth, '--dropdown-top': top, '--dropdown-left': left}" *ngIf="showDropdown">
-  <div class="dropdown-content">
-    <div class="dropdown-header">
-      <ng-container *ngTemplateOutlet="header"></ng-container>
+  <div (click)="toggleBody()" class="playlist-button">
+    <h3 [ngStyle]="{color:'white'}">{{selectedPlaylists}} Playlists</h3>
+    <span class="material-symbols-outlined">keyboard_arrow_down</span>
+  </div>
+  <div #dropdownBody class="dropdown-content">
+    <div class="input-container" [ngClass]="{'search': isSearchPlaylist}">
+      <input [(ngModel)]="searchString" (ngModelChange)="searchStringUpdate($event)" type="text" placeholder="Search for playlist">
+      <span class="material-symbols-outlined close-icon">Search</span>
+      <span (click)="clearSearch()" class="material-symbols-outlined search-icon">Close</span>
     </div>
-    <div class="dropdown-body">
-      <ng-container *ngTemplateOutlet="body"></ng-container>
+    <div class="checkboxes">
+      <label *ngFor="let playlist of playlists" class="container" [ngStyle]="{'display':playlist.matchSearch? 'block': 'none'}">
+        <div *ngIf="playlist.matchSearch" class="checkbox-content" [ngStyle]="{'display': playlist.matchSearch? 'block': 'none'}" (click)="toggleCheckBox(playlist, input)">
+          <p class="hide-text-overflow">{{playlist.playlist.title}}</p>
+          <input #input type="checkbox" [checked]="playlist.checked">
+          <span class="checkmark"></span>
+        </div>
+      </label>
     </div>
-    <div class="dropdown-footer">
-      <ng-container *ngTemplateOutlet="footer"></ng-container>
+    <div class="footer">
+      <div class="left__footer">
+       <h3>NEW PLAYLIST</h3> 
+       <span class="material-symbols-outlined">keyboard_arrow_down</span>
+      </div>
+      <div (click)="savedPlaylists()" class="right__footer">
+        <h3>DONE</h3>
+      </div>
     </div>
   </div>
 </div>

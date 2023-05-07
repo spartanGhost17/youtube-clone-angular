@@ -1,4 +1,5 @@
-import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild, EventEmitter, Output, HostListener } from '@angular/core';
+import { Playlist } from '../../models/playlist';
 
 @Directive({
   selector: '[header]'
@@ -18,10 +19,22 @@ export class DropDownComponent implements OnInit {
   @Input() body: TemplateRef<any>;
   @Input() footer: TemplateRef<any>;
   @Input() dropdownWidth: string = '400px';
-  @Input() buttonRef: ElementRef<any>//<HTMLButtonElement>;
+  @Input() buttonRef: ElementRef<any>;
+
+  @Input() playlists: any [];
+  
   left: string;
   top: string;
-  @ViewChild('drop') drop: ElementRef<any>;
+  searchString: string = '';
+
+  isSearchPlaylist: boolean = false;
+  isShowBody: boolean = false;
+
+  selectedPlaylists: number = 0;
+  @Output() selectedPlaylistEmit: EventEmitter<any[]> = new EventEmitter(); 
+
+  @ViewChild('dropdownBody') dropdownBody: ElementRef<any>;
+  @ViewChild('dropdown') dropdown: ElementRef<any>;
 
   ngOnInit(): void {}
 
@@ -29,32 +42,88 @@ export class DropDownComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.showDropdown) {
-      if(this.buttonRef){
-        this.test();
-        //this.top = this.buttonRef.nativeElement.getBoundingClientRect().top;
-        //this.left = this.buttonRef.nativeElement.getBoundingClientRect().left+'px';
-        this.top = this.buttonRef.nativeElement.offsetTop;
-        this.left = this.buttonRef.nativeElement.offsetRight;
-        console.log(this.buttonRef.nativeElement.getBoundingClientRect().top);
-        console.log(this.buttonRef.nativeElement.getBoundingClientRect().left);
-        if(this.showDropdown){
-          console.log(` dropdown values: top ${this.drop.nativeElement.getBoundingClient().top} left: ${this.drop.nativeElement.getBoundingClient().left} `)
-        }
-      }
-      
-      console.log("show ---->",changes.showDropdown.currentValue)
     }
   }
 
-  /*toggleDropDown(){
-    this.isVisible = !this.isVisible;
-  }*/
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    //if show body and clicked element is not inside dropdownBody
+    if (this.isShowBody && !this.dropdown.nativeElement.contains(event.target)) {
+      this.toggleBody();
+    }
+  }
 
-  test() {
-    const buttonPosition = this.buttonRef.nativeElement.getBoundingClientRect();
-    console.log(buttonPosition);
-    console.log(this.buttonRef.nativeElement.offsetTop + this.buttonRef.nativeElement.offsetHeight + 'px');
-    console.log(this.buttonRef.nativeElement.offsetLeft + 'px');
-    console.log("=============================================================================================");
+  /**
+   * clear search string & reset matchSearch field of playlist 
+  */
+  clearSearch() {
+    this.searchString = '';
+    this.searchStringUpdate(this.searchString);
+  }
+
+  /**
+   * show dropdown body
+   */
+  toggleBody() {
+    this.isShowBody = !this.isShowBody;
+    if(this.isShowBody) {
+      this.dropdownBody.nativeElement.style.display = 'block';
+    }
+    else {
+      this.dropdownBody.nativeElement.style.display = 'none';
+    }
+  }
+
+  /**
+   * On ngModel change for searchString in playlist
+   * find matching playlist titles & set non matching strings 'matchSearch' to false 
+   * @param searchString string
+   */
+  searchStringUpdate(searchString: any): void {
+    this.isSearchPlaylist = searchString.length > 0;
+    this.playlists.filter((playlist) => {
+      if(!playlist.playlist.title.toLowerCase().includes(searchString.toLowerCase())) {
+        playlist.matchSearch = false;
+      }
+      else {
+        playlist.matchSearch = true;
+      }
+    });
+  }
+
+  searchDropdown(searchString: any): void {
+
+  }
+
+  /**
+   * toggle play list checkbox
+   * @param checkbox 
+  */
+  toggleCheckBox(checkbox: any, input: HTMLInputElement) {
+    const checkboxIdx = this.playlists.indexOf(checkbox);
+    this.playlists[checkboxIdx].checked = input.checked;
+    this.selectedPlaylists = this.tallySelectedPlaylist(this.playlists);
+  }
+
+  /**
+   * tally selected playlists
+   * @param playlists list of playlist
+   * @returns number of selected playlists
+  */
+  tallySelectedPlaylist(playlists : any[]): number{
+    return playlists.filter(playlist => playlist.checked).length;
+  }
+
+  /**
+   * Emit selected playlists
+  */
+  savedPlaylists(): void {
+    const selectedPlaylist = this.playlists.filter(playlist => playlist.checked);
+    console.log("Saved Play ",selectedPlaylist);
+
+    if(selectedPlaylist.length > 0){
+      this.selectedPlaylistEmit.emit(selectedPlaylist);
+    } 
+    this.toggleBody();
   }
 }
