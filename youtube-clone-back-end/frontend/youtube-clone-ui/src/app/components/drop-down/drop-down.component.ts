@@ -91,10 +91,6 @@ export class DropDownComponent implements OnInit {
     });
   }
 
-  searchDropdown(searchString: any): void {
-
-  }
-
   /**
    * toggle play list checkbox
    * @param checkbox 
@@ -123,7 +119,7 @@ export class DropDownComponent implements OnInit {
 
     if(selectedPlaylist.length > 0){
       this.selectedPlaylistEmit.emit(selectedPlaylist);
+      this.toggleBody();
     } 
-    this.toggleBody();
   }
 }
