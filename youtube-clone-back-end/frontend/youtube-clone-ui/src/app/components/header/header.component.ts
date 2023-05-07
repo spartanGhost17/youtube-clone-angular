@@ -34,6 +34,7 @@ export class HeaderComponent {
   addVideoButtonClicked() {
     console.log("add video button");
     this.uploadVideoButtonClicked.emit(true);
+    this.componentUpdatesService.headerAddVideoEmit(true);
   }
 
   search() {
