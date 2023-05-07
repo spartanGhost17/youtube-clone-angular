@@ -8,6 +8,8 @@ export class ComponentUpdatesService {
   
   sideBarCollapsed : Subject<boolean> = new Subject<boolean>();
   sideBarCurrentWidth:  Subject<string> = new Subject<string>();
+
+  headerAddVideo: Subject<boolean> = new Subject<boolean>();
   
   constructor() { }
 
@@ -17,5 +19,9 @@ export class ComponentUpdatesService {
 
   sideBarWidthUpdate(width: string) {
     this.sideBarCurrentWidth.next(width);
-  }  
+  }
+
+  headerAddVideoEmit(addVideo: boolean) {
+    this.headerAddVideo.next(addVideo);
+  }
 }
