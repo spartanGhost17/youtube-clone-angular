@@ -1,4 +1,40 @@
-<app-header [showSearchBar]="false" (uploadVideoButtonClicked)="showModal($event)"></app-header>
+<button (click)="test()">button</button>
+
+<app-modal
+  [show]="testBool"
+  [headerTemplate]="header"
+  [bodyTemplate]="body"
+  [footerTemplate]="footer">
+</app-modal>
+
+<ng-template #header>
+    <h2 class="text-primary">Video Title</h2>
+</ng-template>
+
+<ng-template #body>
+  <div class="steps">
+    <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
+      <nz-step nzTitle="Details"></nz-step>
+      <nz-step nzTitle="Video Elements"></nz-step>
+      <nz-step nzTitle="Checks" nzIcon="exclamation-circle"></nz-step>
+      <nz-step nzTitle="Visibility"></nz-step>
+    </nz-steps>
+  </div>
+  <div class="data-views">
+    <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>
+
+    <!--<app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
+    <app-upload-video-metadata *ngIf="showVideoDetailSteps && current===0" (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>
+    <app-video-elements *ngIf="showVideoDetailSteps && current===1"></app-video-elements>-->
+    <!--<p>Some text in the Modal Body</p>
+    <p>Some other text...</p>-->
+  </div>
+
+</ng-template>
+<ng-template #footer>
+  <p class="text-secondary">Modal Footer</p>
+</ng-template>
+<!--<app-header [showSearchBar]="false" (uploadVideoButtonClicked)="showModal($event)"></app-header>
 <nz-layout>
   <nz-sider class="drawer" nzCollapsible nzWidth="200px">
     <div class="logo"></div>
@@ -38,10 +74,6 @@
   </nz-sider>
   <nz-layout>
     <nz-content>
-      <!--<nz-breadcrumb>
-        <nz-breadcrumb-item>User</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-      </nz-breadcrumb>-->
       <div class="inner-content">Bill is a cat.</div>
     </nz-content>
   </nz-layout>
@@ -51,7 +83,7 @@
   <span>{{videoTitle}}</span>
 </ng-template>
 
-<!-- upload video modal -->
+-- upload video modal --
 <nz-modal [(nzVisible)]="isVisible" [nzTitle]="videoUploadTitle" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="64%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
     <div *nzModalContent class="model-content">
         <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
@@ -88,4 +120,4 @@
           <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
       </div>
     </div>
-</nz-modal>
+</nz-modal>-->

@@ -1,4 +1,4 @@
-.modal-size {
+/*.modal-size {
     border-radius: 5px;
     //width: 70%;
     //height: 80%;
@@ -22,7 +22,7 @@
     line-height: 24px;
     height: fit-content;
 }
-/*.large-Modal .modal-dialog{
+/.large-Modal .modal-dialog{
     height: 400px;
     width:400px; 
     margin: auto;
@@ -31,7 +31,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-}*/
+}
 
 .drawer {
     margin-top: 4%;
@@ -99,17 +99,17 @@ button {
 .nz-modal-container {
     overflow-y: hidden;
 }
-/**
+**
 * change scroll bar style
 *
 /
-/* Works on Firefox */
+/ Works on Firefox *
 *{
     scrollbar-width: thin;
     scrollbar-color: #1b1b1b;//blue orange;
 }
 
-/* Works on Chrome, Edge, and Safari */
+ Works on Chrome, Edge, and Safari /
 *::-webkit-scrollbar {
     width: 12px;
 }
@@ -122,6 +122,39 @@ button {
     background-color: #606060;
     border-radius: 20px;
     //border: 3px solid orange;
+}*/
+
+//---------------------------------
+// new css
+.steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    //padding-right: 10px;
+    width: 65%;
+    height: 100px; 
+    position: fixed;
+    padding-left: 50px;
+    padding-right: 50px;
+    //border-bottom: 10px;
+    z-index: 3; 
+    //color: white;
+    background-color: rgba(40, 40, 40, 1);
 }
 
+nz-step {
+    color: white;
+}
   
+
+.data-views {
+    //margin-top: 100px;
+    top: 150px;
+    height: fit-content;
+    //height: 600px;
+    //height: calc(100vh - 180px);
+    position: relative;
+    // /position: fixed;
+    z-index: 2;
+    overflow-y: auto;
+}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Video } from '../../models/video';
+import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,16 +14,24 @@ export class DashboardComponent {
   showVideoDetailSteps: boolean = true;
   videoTitle: string = "Upload video";
   staticTitle: string = "";
+
   videoDto: Video = {
     id: "",
     title: "",
     videoStatus: "",
   };
+
   videoId: string = "";
   
   current = 0;
 
-  constructor() {}
+  testBool: boolean = false;
+
+  constructor(private componentUpdatesService : ComponentUpdatesService) {}
+
+  test() {
+    this.testBool = !this.testBool;
+  }
 
   /**
    * show upload video process if upload video button is clicked on header
