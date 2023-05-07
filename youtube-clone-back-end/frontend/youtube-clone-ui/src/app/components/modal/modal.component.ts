@@ -8,7 +8,7 @@ import { Component, ElementRef, HostListener, Input, TemplateRef, ViewChild, Vie
 export class ModalComponent {
   
   @ViewChild('header', { read: ViewContainerRef}) header!: ViewContainerRef;
-  @ViewChild('modal') modal: ElementRef<any>; 
+  @ViewChild('modal') modal!: ElementRef<any>; 
   @Input() headerTemplate!: TemplateRef<any>;
   @Input() bodyTemplate!: TemplateRef<any>;
   @Input() footerTemplate: TemplateRef<any>;
@@ -39,5 +39,9 @@ export class ModalComponent {
   }
 
   destroy() : void {
+  }
+
+  closeModal(): void {
+    this.modal.nativeElement.style.display = 'none';
   }
 }
