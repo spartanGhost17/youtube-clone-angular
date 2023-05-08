@@ -1,26 +1,30 @@
 <div #dropdown class="dropdown" 
   [ngStyle]="{'--dropdown-width': dropdownWidth, '--dropdown-top': top, '--dropdown-left': left}" *ngIf="showDropdown">
   <div (click)="toggleBody()" class="playlist-button">
-    <h3 [ngStyle]="{color:'white'}">{{selectedPlaylists}} Playlists</h3>
+    <h3 *ngIf="selectedTitle.length < 1 && !multiSelect" [ngStyle]="{color:'white'}">Select</h3>
+    <h3 *ngIf="selectedTitle.length > 0 && !multiSelect" [ngStyle]="{color:'white'}">{{selectedTitle}}</h3>
+
+    <h3 *ngIf="selectedPlaylists < 1 && multiSelect" [ngStyle]="{color:'white'}">Select</h3>
+    <h3 *ngIf="selectedPlaylists > 0 && multiSelect" [ngStyle]="{color:'white'}">{{selectedPlaylists}} Playlists</h3>
     <span class="material-symbols-outlined">keyboard_arrow_down</span>
   </div>
   <div #dropdownBody class="dropdown-content">
-    <div class="input-container" [ngClass]="{'search': isSearchPlaylist}">
+    <div *ngIf="searchable" class="input-container" [ngClass]="{'search': isSearchPlaylist}">
       <input [(ngModel)]="searchString" (ngModelChange)="searchStringUpdate($event)" type="text" placeholder="Search for playlist">
       <span class="material-symbols-outlined close-icon">Search</span>
       <span (click)="clearSearch()" class="material-symbols-outlined search-icon">Close</span>
     </div>
     <div class="checkboxes">
-      <label *ngFor="let playlist of playlists" class="container" [ngStyle]="{'display':playlist.matchSearch? 'block': 'none'}">
+      <label *ngFor="let playlist of playlists; index as i" class="container" [ngStyle]="{'display':playlist.matchSearch? 'block': 'none'}">
         <div *ngIf="playlist.matchSearch" class="checkbox-content" [ngStyle]="{'display': playlist.matchSearch? 'block': 'none'}" (click)="toggleCheckBox(playlist, input)">
           <p class="hide-text-overflow">{{playlist.playlist.title}}</p>
-          <input #input type="checkbox" [checked]="playlist.checked">
+          <input #input [id]="'checkbox'+i" type="checkbox" [checked]="playlist.checked">
           <span class="checkmark"></span>
         </div>
       </label>
     </div>
-    <div class="footer">
-      <div class="left__footer">
+    <div *ngIf="hasFooter" class="footer">
+      <div (click)="createNewPlaylist()" class="left__footer">
        <h3>NEW PLAYLIST</h3> 
        <span class="material-symbols-outlined">keyboard_arrow_down</span>
       </div>

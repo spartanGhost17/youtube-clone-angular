@@ -1,4 +1,4 @@
-import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild, EventEmitter, Output, HostListener, QueryList, ViewChildren } from '@angular/core';
 import { Playlist } from '../../models/playlist';
 
 @Directive({
@@ -15,26 +15,32 @@ export class Header {
 })
 export class DropDownComponent implements OnInit {
   @Input() showDropdown: boolean;
-  @Input() header: TemplateRef<any>;
-  @Input() body: TemplateRef<any>;
-  @Input() footer: TemplateRef<any>;
   @Input() dropdownWidth: string = '400px';
   @Input() buttonRef: ElementRef<any>;
+  @Input() searchable: boolean = true;
+  @Input() hasFooter: boolean = true;
+  @Input() multiSelect: boolean = true;
 
   @Input() playlists: any [];
   
   left: string;
   top: string;
   searchString: string = '';
+  selectedTitle: string = '';
+  previousSelected: string = '';
+  previousSelectedIdx: number = 0;
 
   isSearchPlaylist: boolean = false;
   isShowBody: boolean = false;
+  
 
   selectedPlaylists: number = 0;
-  @Output() selectedPlaylistEmit: EventEmitter<any[]> = new EventEmitter(); 
+  @Output() selectedPlaylistEmit: EventEmitter<any[]> = new EventEmitter();
+  @Output() createPlaylistEvent: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild('dropdownBody') dropdownBody: ElementRef<any>;
   @ViewChild('dropdown') dropdown: ElementRef<any>;
+  @ViewChildren('input') input: QueryList<ElementRef>;
 
   ngOnInit(): void {}
 
@@ -92,13 +98,38 @@ export class DropDownComponent implements OnInit {
   }
 
   /**
-   * toggle play list checkbox
+   * toggle playlist checkbox
+   * if multiSelect is false enforce only one checkbox to be selected at a time
+   * else allow multiple selections
    * @param checkbox 
   */
   toggleCheckBox(checkbox: any, input: HTMLInputElement) {
     const checkboxIdx = this.playlists.indexOf(checkbox);
-    this.playlists[checkboxIdx].checked = input.checked;
-    this.selectedPlaylists = this.tallySelectedPlaylist(this.playlists);
+    this.previousSelectedIdx = checkboxIdx;
+    if(this.multiSelect) {
+      this.playlists[checkboxIdx].checked = input.checked;
+      this.selectedPlaylists = this.tallySelectedPlaylist(this.playlists);
+    }
+    else{
+      console.log("multiSelect ?id ",input.id, ' selected ', input.checked);
+      for(let i = 0; i < this.playlists.length; i++){
+        if(i === checkboxIdx && input.checked) {
+          //reset previous checkbox
+          this.input.toArray().filter((input) => {
+            if(input.nativeElement.id === this.previousSelected) {
+              input.nativeElement.checked = false;
+              this.playlists[this.previousSelectedIdx].checked = false;
+            }
+          });
+          this.playlists.filter((playlist) => {playlist.checked = false});
+          this.previousSelected = input.id;//current is now previous
+          //make current checkbox active
+          this.playlists[checkboxIdx].checked = input.checked;
+          this.selectedTitle = this.playlists[checkboxIdx].playlist.title;
+        }
+      }
+      this.savedPlaylists();
+    }
   }
 
   /**
@@ -119,7 +150,14 @@ export class DropDownComponent implements OnInit {
 
     if(selectedPlaylist.length > 0){
       this.selectedPlaylistEmit.emit(selectedPlaylist);
-      this.toggleBody();
+      this.toggleBody();  
     } 
+  }
+
+  /**
+   * Create a new playlist event emitter 
+  */
+  createNewPlaylist() {
+    this.createPlaylistEvent.emit(true);
   }
 }
