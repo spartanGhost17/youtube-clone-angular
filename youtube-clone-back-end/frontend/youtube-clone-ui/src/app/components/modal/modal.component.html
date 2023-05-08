@@ -1,5 +1,5 @@
-<div #modal id="myModal" class="modal">
-
+<div #modal id="myModal" class="modal" [ngStyle]="{'width': modalWidth, 'height': modalHeight, 
+  'background-color': color, 'z-index': zIndex, 'top': top, 'left': left}">
     <!-- Modal content -->
     <div class="modal-content">
       <div class="modal-header">
@@ -13,27 +13,4 @@
         <ng-container [ngTemplateOutlet]="footerTemplate"></ng-container>
       </div>
     </div>
-  
 </div>
-
-
-<!-- The Modal -->
-<!--<div id="Modal" class="modal">
-
-    -- Modal content --
-    <div class="modal-content">
-      <div class="modal-header">
-        <span (click)="destroy()" class="close">&times;</span>
-        <h2>Modal Header</h2>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the Modal Body</p>
-        <p>Some other text...</p>
-      </div>
-      <div class="modal-footer">
-        <div #footerContainer [ngTemplateOutlet]=""></div>
-        <h3>Modal Footer</h3>
-      </div>
-    </div>
-  
-</div>-->

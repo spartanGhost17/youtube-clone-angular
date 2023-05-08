@@ -2,14 +2,15 @@
 .modal {
     // /display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: block;
+    //z-index: 1; /* Sit on top */
     padding-top: 40px; /* Location of the box */
-    left: 200px;
-    top: 0;
     right: 0;
     color: white;
     width: 85%; /* Full width */
-    height: 100%; /* Full height */
+    height: fit-content; /* Full height */
+    min-height: 200px;
+    max-height: 100%;
     overflow: hidden;
     background-color: transparent;
 }
@@ -79,7 +80,8 @@
     padding-top: 0;
     //display: block;
     color: white;
-    height: 700px;
+    height: fit-content;
+    max-height: 700px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
