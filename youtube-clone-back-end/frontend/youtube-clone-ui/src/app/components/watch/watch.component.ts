@@ -30,7 +30,7 @@ export class WatchComponent {
       console.log('Sidebar Collapsed///////// ', isSideBarCollapsed)
       this.isSibeBarCollapsed = isSideBarCollapsed;
       //this.onVideoContainerExpanded();
-      this.onSideBarCollapsed();
+      //this.onSideBarCollapsed();
       this.resizeBlurBg("side bar collapsed", !this.isSibeBarCollapsed);
       if(this.primaryColorVideoFrame) {
         this.updateBackgroundGradient(this.primaryColorVideoFrame);
@@ -41,7 +41,7 @@ export class WatchComponent {
     this.componentUpdatesService.videoTheaterMode$.subscribe((isTheaterMode) => {
       this.isCinemaMode = isTheaterMode;
       this.onVideoContainerExpanded();
-      this.onSideBarCollapsed();
+      //this.onSideBarCollapsed();
       this.resizeBlurBg("theater mode", this.isCinemaMode);
       if(this.primaryColorVideoFrame) {
         this.updateBackgroundGradient(this.primaryColorVideoFrame);
@@ -116,76 +116,13 @@ export class WatchComponent {
     if(!this.isCinemaMode) {      
       console.log("display default");
       this.recommendationContainer.nativeElement.style.top = '0';
-      if(this.isSibeBarCollapsed) {
-        this.interactionContainer.nativeElement.style.top = '700px'//'600px';
-      }
-      else {
-        this.interactionContainer.nativeElement.style.top = '650px'//'600px';
-      }
-
+      this.interactionContainer.nativeElement.style.top = '680px';
     }
     else {
-      this.interactionContainer.nativeElement.style.top = '700px';//'650px';///'600px';
-      this.recommendationContainer.nativeElement.style.top = '700px';//'650px';//'600px';
-      if(this.isSibeBarCollapsed) {
-        this.recommendationContainer.nativeElement.style.top = '700px';//650px';
-      }
+      this.interactionContainer.nativeElement.style.top = '750px';
+      this.recommendationContainer.nativeElement.style.top = '750px';
     }
   }
-
-  onSideBarCollapsed() {
-    if(!this.isSibeBarCollapsed) {
-      this.interactionContainer.nativeElement.style.top = '600px';
-    }
-    else {
-      this.interactionContainer.nativeElement.style.top = '650px';
-    }
-  }
-
-
-  //adding background color using video frame maybe make this a directive ?
-/*const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
-video.addEventListener('play', function() {
-  const width = video.videoWidth;
-  const height = video.videoHeight;
-  canvas.width = width;
-  canvas.height = height;
-
-  setInterval(function() {
-    ctx.drawImage(video, 0, 0, width, height);
-    const imageData = ctx.getImageData(0, 0, width, height);
-    const data = imageData.data;
-
-    let red = 0;
-    let green = 0;
-    let blue = 0;
-
-    for (let i = 0; i < data.length; i += 4) {
-      red += data[i];
-      green += data[i + 1];
-      blue += data[i + 2];
-    }
-
-    red /= data.length / 4;
-    green /= data.length / 4;
-    blue /= data.length / 4;
-
-    console.log(`Primary colors: rgb(${red}, ${green}, ${blue})`);
-  }, 1000 / 30);
-});
-
-This code listens for the play event on a video element with an ID of video. 
-It then sets up a canvas element with an ID of canvas and gets its context. 
-The code then sets up an interval that runs every 1000 / 30 milliseconds (30 frames per second). 
-Inside the interval, it draws the current frame of the video onto the canvas using drawImage(). 
-It then gets the pixel data of the current frame using getImageData() and calculates the average red, green, and blue values of all pixels in the frame. Finally, it logs the primary colors to the console.
-
-
-*/
-
 
 
 }

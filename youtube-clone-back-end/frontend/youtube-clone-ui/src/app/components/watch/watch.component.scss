@@ -1,83 +1,12 @@
-/*.watch-container {
-    background-color: aqua;
-    //display: flex;
-    padding-top: 20px;
-    width: 100%;
-    height: 100%;
-    max-height: 5000px;
-    //max-height: 100%;
-}
-
-.main-content-container {
-    display: grid;
-    //grid-template-columns: repeat(6, 300px);//1fr 1fr;
-    grid-template-columns: repeat(10, minmax(80px, 1fr));
-    grid-template-rows: repeat(6,  minmax(100px, 150px));
-    //grid-auto-rows: minmax(50px, auto) 1fr;
-   // grid-auto-columns: minmax(100px, auto);
-    //column-gap: 10px;
-    row-gap: 10px;
-    //align-items: stretch;
-    //justify-items: stretch;
-    // /background-color: darkgreen;
-    //overflow: scroll;
-}
-
-.video-container {
-    background-color: blueviolet;
-    grid-column: 1 / 9;
-    grid-row: 1 / span 5;
-    //height: ;
-}
-
-.recommendations-container {
-    //background-color: orange;
-    grid-column: 9 / 11;
-    grid-row: 1 / -1;
-    padding: 20px;
-    height: fit-content;
-}
-
-.interactions-container {
-    //background-color: crimson;
-    grid-column: 1 / 9;
-    grid-row: 6 / -1;
-    //grid-row: 5 / -1;
-    padding: 20px;
-    height: fit-content;
-
-    //height: 100%;
-    //height: fit-content;
-}
-
-.blur-bg::before {
-    content: '';
-    filter: blur(10px);
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-}*/  
-
 .watch-container {
-    //background-color: aqua;
-    //display: flex;
     padding-top: 20px;
     width: 100%;
     height: 100%;
-    //height: 800px;
     max-height: 100vh;
-    //margin-right: 400px;
-    //max-height: 5000px;
-    //max-height: 100%;
 }
 
 .main-content-container {
-    //background-color: beige;
     display: flex;
-    //flex-wrap: wrap;
-    //align-content: flex-end;
     position: relative;
     height: 800px;
 }
@@ -85,16 +14,13 @@
 .video-container {
     background-color: blueviolet;
     width: 70%;
-    //height: fit-content;
     height: 65vh;
     order: 1;
-    //height: ;
 }
 
 .bg-color-blur {
     position: absolute;
     filter: blur(200px);
-    //background-color: chartreuse;
 }
 
 .recommendations-container {
@@ -114,7 +40,7 @@
     width: 70%;
     order: 3;
     height: fit-content;
-    top: 600px;//600px;
+    top: 680px;//600px;
     //bottom: 0;
    // z-index: 100;
 }

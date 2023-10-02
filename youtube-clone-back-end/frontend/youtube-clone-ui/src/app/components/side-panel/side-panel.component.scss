@@ -90,7 +90,7 @@ h3 {
     position: absolute;
     z-index: 1000;    
     background-color: var(--yt-color-theme-dark);
-    transition: transform 0.5s ease-in-out;
+    transition: transform 300ms ease-in-out;
     transform: translateX(-120%); /* Initial position */
     overflow-y: scroll;
 }
