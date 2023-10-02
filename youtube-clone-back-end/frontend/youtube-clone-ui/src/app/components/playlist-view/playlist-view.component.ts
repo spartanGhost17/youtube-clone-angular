@@ -24,12 +24,12 @@ export class PlaylistViewComponent {
 
 
   constructor(private componentUpdatesService: ComponentUpdatesService) {
-    this.componentUpdatesService.sideBarCollapsed.subscribe((collapsedSideBar) => {
+    this.componentUpdatesService.sideBarCollapsed$.subscribe((collapsedSideBar) => {
       console.log("~~~~~~~~ > ",collapsedSideBar);
       this.collapsedSideBar = collapsedSideBar;
     });
 
-    this.componentUpdatesService.sideBarCurrentWidth.subscribe((sidebarWidth) => {
+    this.componentUpdatesService.sideBarCurrentWidth$.subscribe((sidebarWidth) => {
       console.log(".....> sidebarWidth ",sidebarWidth);
       this.sidebarWidth = sidebarWidth;
     });

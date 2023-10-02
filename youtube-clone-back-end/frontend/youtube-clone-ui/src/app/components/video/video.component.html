@@ -1,15 +1,13 @@
 <div #videoContainer class="video-container" [attr.data-volume-level]="volumeLevel" [ngClass]="{'paused': paused, 'full-screen': fullScreenMode, 'theater': theaterMode, 'mini-player-button': miniMode, 'scrubbing': isScrubbing}">
     <div class="video-controls-container">
-        <img #thumbnailImg src="../../../assets/goku_god_mode.jpg" alt="" class="thumbnail-img">
+        <!--<img #thumbnailImg src="../../../assets/goku_god_mode.jpg" alt="" class="thumbnail-img">-->
         <div #timelineContainer class="timeline-container"
             (mousedown)="startScrubbing($event)"
             (mouseup)="stopScrubbing($event)"
             (mousemove)="handleTimelineUpdate($event)">  
             <div class="timeline">
                 <img #previewImg src="../../../assets/green-lantern.jpg" alt="" class="preview-img">
-                <div class="thumb-indicator">
-
-                </div>
+                <div class="thumb-indicator"></div>
             </div>
         </div>
         <div class="controls">
@@ -36,10 +34,13 @@
                 <input #volumeSlider class="volume-slider" type="range" min="0" max="1" step="any" value="1" (change)="onVolumeChange($event)">
             </div>
             <div class="duration-container">
-                <div class="current-time">{{videoCurrentTime}}</div>
-                /
+                <div class="current-time">{{videoCurrentTime}} /</div>
                 <div class="total-time">{{videoDuration}}</div>
             </div>
+            <!--<button class="switch">
+                <app-switch></app-switch>
+            </button>-->
+
             <div class="captions-container" [ngClass]="{'captions': captions}">
                 {{playbackRate}}x
                 <button (click)="toggleCaptions()" class="closed-caption-button">
@@ -76,12 +77,12 @@
         </div>
     </div>
     <!--(volumechange)="onVolumeChanged()"-->
-    <video #video alt="" 
+    <video #video [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover'}" alt="" 
         (click)="togglePlay()" 
         (change)="videoVolumeChange($event)"
         (loadedmetadata)="onLoadedMetadata()"
         (timeupdate)="timeUpdated(video)">
-        <source src="../../../assets/test-videos/Ultra Instinct ｜ Dragon Ball Super.mp4">
+        <source src="../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4">
         <track kind="captions" srclang="en" src="">
     </video>
 </div>

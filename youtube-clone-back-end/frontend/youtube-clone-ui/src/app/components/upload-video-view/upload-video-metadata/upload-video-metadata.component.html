@@ -1,6 +1,167 @@
 <div class="upload-video-details-container">
   <div class="left-video-detail-container">
-        <!-- Text details -->
+    <!--text containers -->
+    <div class="text-details-container">
+      <h2 class="text-primary margin-bottom-header">Details</h2>
+      <div class="title-container">
+        <div class="input-container__title_container">
+          <div class="header-text-container">
+            <h4 class="header-text-title">Title (required) </h4>
+            <h4 class="in-circle">?</h4>
+          </div>
+          <textarea [(ngModel)]="titleText" name="text" wrap="soft" maxlength="100" required placeholder="Add a title that describes your video (type @ to mention a channel)"></textarea>
+        </div>
+        <div class="char-count-title">{{titleText.length}}/{{MAX_TITLE_COUNT}}</div>
+      </div>
+      <div class="description-container">
+        <div class="input-container__description_container">
+          <div class="header-text-container">
+            <h4 class="header-text-desc">Description</h4>
+            <h4 class="in-circle">?</h4>
+          </div>
+          <textarea [(ngModel)]="descriptionText" (keyup)="handleKeyUpDescription($event)" #descriptionTextArea name="description" placeholder="Tell Viewers about your video (type @ to mention a channel)" wrap="soft" maxlength="5000"></textarea>
+        </div>
+        <div class="char-count-desc">{{descriptionText.length}}/{{MAX_DESCRIPTION_COUNT}}</div>
+      </div>
+    </div>
+    <!--thumbnail-->
+    <div class="thumbnail-container">
+      <h4 class="margin-bottom-header">Thumbnail</h4>
+      <p class="text-secondary small-text">
+        Select or upload a picture that shows what's in your video. A good thumbnail stands out and draws viewers' attention. 
+        <a target="_blank" href="https://support.google.com/youtube/answer/72431?hl=en-GB">Learn more</a>
+      </p>
+      <div class="thumbnail-grid-container">
+        <div (click)="toggleActiveThumbnail(thumbnail)" class="thumbnail-preview" [ngClass]="{'active-thumbnail': thumbnail.isActive}" *ngFor="let thumbnail of thumbnails">
+          <img [src]="thumbnail.url">
+        </div>
+      </div>
+    </div>
+    <!-- playlist -->
+    <div class="playlist-container">
+      <h4 class="margin-bottom-header">Playlists</h4>
+      <p class="text-secondary small-text">
+        Add your video to one or more playlists. Playlists can help viewers to discover your content faster. 
+        <a target="_blank" href="https://support.google.com/youtube/answer/57792">Learn more</a>
+      </p>
+      <div class="playlist-dropdown-container">
+        <app-drop-down 
+          [showDropdown]="true" 
+          [playlists]="playlists" 
+          (selectedPlaylistEmit)="selectedPlaylists($event)"
+          (createPlaylistEvent)="showCreatePlaylistModal($event)">
+        </app-drop-down>
+      </div>
+    </div>
+
+    <!-- tags -->
+    <div class="tags-container">
+      <h4 class="margin-bottom-header">Tags</h4>
+      <p class="text-secondary small-text">
+        Tags can be useful if content in your video is commonly misspelt. Otherwise, tags play a minimal role in helping viewers to find your video. 
+        <a target="_blank" href="https://support.google.com/youtube/answer/57792">Learn more</a>
+      </p>
+      <div class="tags-item-container">
+        <app-chips (chipsUpdated)="chipsUpdated($event)"></app-chips>
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="categories-container">
+      <h4 class="margin-bottom-header">Categories</h4>
+      <p class="text-secondary small-text">
+        Add your video to a category so that viewers can find it more easily
+      </p>
+      <div class="tags-item-container">
+        <app-drop-down 
+          [showDropdown]="true"
+          [searchable]="false"
+          [hasFooter]="false"
+          [multiSelect]="false"
+          [playlists]="playlists" 
+          (selectedPlaylistEmit)="selectedPlaylists($event)"
+          (createPlaylistEvent)="showCreatePlaylistModal($event)">
+        </app-drop-down>      
+      </div>
+    </div>
+
+  </div>
+  <div class="right-video-detail-container">
+    <div class="image-container">
+      <img class="large-thumbnail" [src]="largeThumbnailURL">
+    </div>
+    <div class="metadata-container">
+      
+    </div>
+  </div>
+</div>
+
+<!-- new playlist modal -->
+<app-modal
+  [show]="isNewPlaylist"
+  [modalWidth]="'50%'"
+  [modalHeight]="'80%'"
+  [color]="'rgba(64, 64, 64, 0.4)'"
+  [zIndex]="'2'"
+  [top]="'250px'"
+  [left]="'550px'"
+  [headerTemplate]="header"
+  [bodyTemplate]="body"
+  [footerTemplate]="footer"
+  (isShowUpdateEvent)="newPlaylistShowUpdated($event)">
+</app-modal>
+
+<ng-template #header>
+    <h2 class="text-primary">Create a new playlist</h2>
+</ng-template>
+
+<ng-template #body>
+  <div class="body-container">
+    <div class="np-title-container">
+      <div class="input-container__np_title_container">
+        <div class="header-text-container">
+          <h4 class="header-text-title">Title (required) </h4>
+        </div>
+        <textarea [(ngModel)]="newPlaylistTitle" name="text" wrap="soft" maxlength="150" required placeholder="Add title"></textarea>
+      </div>
+      <div class="char-count-title">{{newPlaylistTitle.length}}/{{MAX_DESCRIPTION_COUNT}}</div>
+    </div>
+    <div class="np-description-container">
+      <div class="input-container__np_description_container">
+        <div class="header-text-container">
+          <h4 class="header-text-desc">Description</h4>
+        </div>
+        <textarea [(ngModel)]="newPlaylistDescription" name="text" wrap="soft" maxlength="5000" required placeholder="Add description"></textarea>
+      </div>
+      <div class="char-count-desc">{{newPlaylistDescription.length}}/{{MAX_DESCRIPTION_COUNT}}</div>
+    </div>
+    <div class="visibility-container">
+      <app-drop-down
+      [showDropdown]="true"
+      [searchable]="false"
+      [hasFooter]="false"
+      [multiSelect]="false"
+      [playlists]="visibility" 
+      (selectedPlaylistEmit)="selectedPlaylists($event)"
+      (createPlaylistEvent)="showCreatePlaylistModal($event)">
+      </app-drop-down>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #footer>
+  <div class="footer-container">
+    <div (click)="cancel()" class="cancel__footer_container">
+      <h3>CANCEL</h3>
+    </div>
+    <div (click)="createPlaylist()" class="create__footer_container">
+      <h3>CREATE</h3>
+    </div>
+  </div>
+</ng-template>
+<!--<div class="upload-video-details-container">
+  <div class="left-video-detail-container">
+        -- Text details --
         <div class="video-text-details">
           <h1>Details</h1>  
           <nz-input-group [nzSuffix]="inputClearTpl">
@@ -32,7 +193,7 @@
             ></span>
           </ng-template>
         </div>
-        <!-- images-thumbnails -->
+        -- images-thumbnails --
         <div class="metadata-images-thumbnails">
           <p class="text-header">Thumbnail</p>
           <p class="text-description">
@@ -47,7 +208,7 @@
             </div>
           </div>
         </div>
-        <!-- Paylist -->
+        -- Paylist --
         <div class="metadata-select-playlist">
           <p class="text-header">Playlists</p>
           <p class="text-description">
@@ -59,7 +220,7 @@
               <span>Select {{showDropdown}}</span>
               <span nz-icon nzType="caret-down"></span>
             </button>
-            <!-- Playlist dropdown -->
+            -- Playlist dropdown --
             <app-drop-down 
               [showDropdown]="showDropdown" 
               [header]="headerTemplate" 
@@ -109,7 +270,7 @@
               <span>New Playlist</span>
             </button>
           </ng-template>
-          <!-- Create new playlist view -->
+          -- Create new playlist view --
           <nz-modal #createNewPlaylist [(nzVisible)]="isVisibleNewPlaylist" [nzTitle]="'Create a new playlist'" [nzStyle]="{ top: '20px'}">
             <div *nzModalContent class="model-content">
               <div class="container">
@@ -138,7 +299,7 @@
           </nz-modal>
 
         </div>
-        <!-- Extra video metadata -->
+        -- Extra video metadata --
         <div class="extra-metadata-container">
           <button class="extra-metadata-button" (click)="showExtraMetadata()" nz-button nz-dropdown nzSize="default">
             <span>{{showExtraMetadataText}}</span>
@@ -146,7 +307,7 @@
           <div *ngIf="shouldShowExtraMeta" class="extra-metadata">
             <div class="metadata-labels">
               <nz-input-group [nzSuffix]="metadataLabelsTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
-                <!--<textarea nz-input [(ngModel)]="textValue" placeholder="Add tag"></textarea>-->
+                --<textarea nz-input [(ngModel)]="textValue" placeholder="Add tag"></textarea>--
                 <app-chips (chipsUpdated)="chipsUpdated($event)"></app-chips>
               </nz-input-group>
               <ng-template #metadataLabelsTpl>
@@ -166,4 +327,4 @@
   <div class="right-video-detail-container">
       <p>right content</p>
   </div>
-</div>
+</div>-->

@@ -25,22 +25,36 @@ export class DashboardComponent {
   
   current = 0;
 
-  testBool: boolean = false;
+  isShowModal: boolean = false;
 
   constructor(private componentUpdatesService : ComponentUpdatesService) {}
 
-  test() {
-    this.testBool = !this.testBool;
+  showModal() {
+    console.log("modal before ", this.isShowModal)
+    this.isShowModal = !this.isShowModal;
+    console.log("modal after ", this.isShowModal)
+  }
+
+  ngAfterViewInit() {
+    this.componentUpdatesService.headerAddVideo$.subscribe((addVideoClicked) => {
+      this.isShowModal  = addVideoClicked;
+      console.log("addVideoClicked ", addVideoClicked);
+    })
+  }
+
+  showModalUpdateEvent(event: boolean) {
+    console.log("  closed modal ====>  ",event);
+    this.isShowModal = event;
   }
 
   /**
    * show upload video process if upload video button is clicked on header
    * @param value 
    */
-  showModal(value: boolean): void {
-    console.log('showModal');
-    this.isVisible = value;
-  }
+  //showModal(value: boolean): void {
+  //  console.log('showModal');
+  //  this.isVisible = value;
+  //}
 
   handleOk(): void {
     this.isConfirmLoading = true;

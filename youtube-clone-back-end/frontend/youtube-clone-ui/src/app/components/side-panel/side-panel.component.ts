@@ -10,6 +10,7 @@ import { ComponentUpdatesService } from 'src/app/services/app-updates/component-
 })
 export class SidePanelComponent {
   @Input() collapse : boolean = false;
+  hoverPanel : boolean = false;
 
   MIN_WIDTH: string = '72px';
   MAX_WIDTH: string = '240px';
@@ -31,45 +32,53 @@ export class SidePanelComponent {
 
   sections: any[];
   section1 = [
-    {'isActive':true, text: 'Home', icon: this.ICON_HOME, navigateTo: 'explore'},
-    {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, navigateTo: ''},
-    {'isActive':false, text: 'Subscriptions', icon: this.ICON_SUBSCRIPTION, navigateTo: 'playlist'}
+    {'isActive':true, text: 'Home', icon: this.ICON_HOME, navigateTo: 'explore', sidebarType: 'side'},
+    {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Subscriptions', icon: this.ICON_SUBSCRIPTION, navigateTo: 'playlist', sidebarType: 'side'}
   ];
 
   section2 = [
-    {'isActive':false, text: 'Library', icon: this.ICON_LIBRARY_VIDEO, navigateTo: ''}, 
-    {'isActive':false, text: 'History', icon: this.ICON_HISTORY, navigateTo: ''},
-    {'isActive':false, text: 'Your videos', icon: this.ICON_LIBRARY, navigateTo: ''},
-    {'isActive':false, text: 'Watch Later', icon: this.ICON_WATCH_LATER, navigateTo: ''},
-    {'isActive':false, text: 'Liked Videos', icon: this.ICON_LIKE, navigateTo: ''},
+    {'isActive':false, text: 'Library', icon: this.ICON_LIBRARY_VIDEO, navigateTo: '', sidebarType: 'side'}, 
+    {'isActive':false, text: 'History', icon: this.ICON_HISTORY, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Your videos', icon: this.ICON_LIBRARY, navigateTo: 'dashboard', sidebarType: 'side'},
+    {'isActive':false, text: 'Watch Later', icon: this.ICON_WATCH_LATER, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Liked Videos', icon: this.ICON_LIKE, navigateTo: '', sidebarType: 'side'},
   ]
 
   subcribed_channels = [
-    {'isActive':false, text: 'One Piece', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'DBZ Hollo', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 3', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel4777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 5', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 6', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 7', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 8', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 9', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel 10', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Channel4 about ben solo  777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Cartoon Network kids', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'Double Champ ent.', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
-    {'isActive':false, text: 'WWE', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: ''},
+    {'isActive':false, text: 'One Piece', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'DBZ Hollo', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 3', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel4777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 5', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 6', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 7', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 8', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 9', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel 10', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Channel4 about ben solo  777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Cartoon Network kids', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'Double Champ ent.', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    {'isActive':false, text: 'WWE', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
 
   ]
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
     private componentUpdatesService :ComponentUpdatesService) {
   }
-
   /**
    * Lifecycle hook
    */
   ngOnInit() {
     this.sections = [this.section1, this.section2, this.subcribed_channels];
+
+    this.componentUpdatesService.sideBarType$.subscribe((sidebarType) => {
+      if (sidebarType === 'side') {
+        this.hoverPanel = false;
+      }
+      else {
+        this.hoverPanel = true;
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -80,13 +89,15 @@ export class SidePanelComponent {
    * Lifecycle hook
    */
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.collapse.currentValue) {
-      console.log('collapse => ', changes.collapse.currentValue);
-      this.componentUpdatesService.sideBarWidthUpdate(this.MIN_WIDTH);//broadcast width of side panel
-    }
-    else if(!changes.collapse.currentValue) {
-      console.log('false =>  ', changes.collapse.currentValue);
-      this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
+    if(!this.hoverPanel) {
+      if(changes.collapse.currentValue) {
+        console.log('collapse => ', changes.collapse.currentValue);
+        this.componentUpdatesService.sideBarWidthUpdate(this.MIN_WIDTH);//broadcast width of side panel
+      }
+      else if(!changes.collapse.currentValue) {
+        console.log('false =>  ', changes.collapse.currentValue);
+        this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
+      }
     }
   }
 
@@ -112,6 +123,7 @@ export class SidePanelComponent {
         if(i === section.indexOf(button)){
           section[i].isActive = true;
           console.log("navigate to upload-video");
+          this.componentUpdatesService.sideBarTypeUpdate(section[i].sidebarType);
           //const queryParams = { id: '123' };
           //this.router.navigate([relativePath], { relativeTo: this.route, queryParams }); -> can add query params
           this.router.navigate([section[i].navigateTo],{relativeTo:this.activatedRoute});

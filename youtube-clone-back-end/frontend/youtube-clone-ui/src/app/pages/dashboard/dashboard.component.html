@@ -1,10 +1,11 @@
-<button (click)="test()">button</button>
-
-<app-modal
-  [show]="testBool"
+<button class="ytcp-button" (click)="showModal()">button</button>
+<!--upload video modal-->
+<app-modal *ngIf="isShowModal"
+  [show]="isShowModal"
   [headerTemplate]="header"
   [bodyTemplate]="body"
-  [footerTemplate]="footer">
+  [footerTemplate]="footer"
+  (isShowUpdateEvent)="showModalUpdateEvent($event)">
 </app-modal>
 
 <ng-template #header>

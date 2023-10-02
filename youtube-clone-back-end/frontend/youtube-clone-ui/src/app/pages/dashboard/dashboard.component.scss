@@ -157,4 +157,13 @@ nz-step {
     // /position: fixed;
     z-index: 2;
     overflow-y: auto;
+    scrollbar-width: none; /* hide scrollbar on Firefox */
+    //-ms-overflow-style: none; /* hide scrollbar on Edge */
+    overflow: -moz-scrollbars-none; /* hide scrollbar on old versions of Firefox */
+}
+
+.data-views::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    background-color: transparent;
 }

@@ -1,9 +1,13 @@
 <div class="container">
     <app-header (showSideBar)="toggleSidebar($event)"></app-header>
-    <div class="container" [ngStyle]="{'border': '2px solid green'}">
+    <div class="container" [ngStyle]="{'border': '2px solid green', 'margin-right': '400px'}">
         <app-side-panel [collapse]="sidebarOpen"></app-side-panel>
         
-        <div class="container fill-available" [ngStyle]="{'max-width': sidebarOpen?  'calc(var(--view-port) - 100px)' : 'calc(var(--view-port) - 264px)', 'margin-left': sidebarOpen? '76px' : '242px', 'border': '2.5px solid blue'}">
+        <div *ngIf="sidebarType === 'side'" class="container fill-available" [ngStyle]="{'max-width': sidebarOpen?  'calc(var(--view-port) - 100px)' : 'calc(var(--view-port) - 264px)', 'margin-left': sidebarOpen? '76px' : '242px', 'border': '2.5px solid blue'}">
+            <router-outlet></router-outlet>
+        </div>
+
+        <div *ngIf="sidebarType === 'hover'" class="container fill-available" [ngStyle]="{'border': '2.5px solid blue'}">
             <router-outlet></router-outlet>
         </div>
     </div>

@@ -1,5 +1,9 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
+import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+
+import Vibrant from 'node-vibrant';// stable version node-vibrant@3.1.6
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-video',
@@ -7,6 +11,11 @@ import { Icons } from 'src/app/models/icons';
   styleUrls: ['./video.component.scss']
 })
 export class VideoComponent {
+
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
+  currentFrame = 0;
+  interval: any;
 
   VOLUME_HIGH: string = 'high';
   VOLUME_LOW: string = 'low';
@@ -30,6 +39,7 @@ export class VideoComponent {
   captionText: any;
 
   playbackRate: any;
+  frameCaptureInterval: number = 1000 / 30;
   
   //imports
   icons: Icons = new Icons();
@@ -42,7 +52,12 @@ export class VideoComponent {
   @ViewChild('thumbnailImg') thumbnailIm: ElementRef<any>;
   @ViewChild('timelineContainer') timelineContainer: ElementRef<any>;
 
-  constructor() {}
+  constructor(private componentUpdatesService: ComponentUpdatesService) {}
+  
+  ngOnInit() {
+    this.canvas = document.createElement('canvas');
+    this.context = this.canvas.getContext('2d')!;
+  }
 
   /**
    * pause video by default 
@@ -93,6 +108,9 @@ export class VideoComponent {
       case 'f':
         this.toggleFullScreenMode();
         break;
+      //case 'escape':
+      //  console.log('escape ')
+      //  break;
       case 't':
         this.toggleTheaterMode();
         break;
@@ -196,12 +214,17 @@ export class VideoComponent {
    * updates UI with the current time of the video element
    * @param video video element target
   */
-  timeUpdated(video: HTMLVideoElement) {
+  async timeUpdated(video: HTMLVideoElement) {
 
     this.videoCurrentTime = this.formatDuration(video.currentTime);
     const percentage = video.currentTime / this.videoDurationMillisec;
 
     this.timelineContainer.nativeElement.style.setProperty("--progress-position", percentage);
+    await this.captureColors();
+    //const vibrantPrimaryColor =   (await this.captureColors()).subscribe((color) => {
+    //  console.log("SUBSCRIBING TO COLOR: ", color);
+    //  this.componentUpdatesService.videoPrimaryColorUpdate(color);
+    //});
   }
 
   /**
@@ -300,8 +323,12 @@ export class VideoComponent {
     console.log("FULL SCREEN ", this.fullScreenMode);
   }
 
+  /**
+   * Toggle is theatre mode
+  */
   toggleTheaterMode() {
     this.theaterMode = !this.theaterMode;
+    this.componentUpdatesService.toggleVideoTheaterMode(this.theaterMode);
   }
 
   /**
@@ -355,12 +382,6 @@ export class VideoComponent {
         this.paused = false;
         this.video.nativeElement.play();
       }
-      /*else {
-        console.log("video was paused when scrubbing started");
-        this.paused = false;
-        this.video.nativeElement.currentTime = percentage * this.videoDurationMillisec;
-        this.video.nativeElement.play();
-      }*/
     }
   }
 
@@ -372,4 +393,70 @@ export class VideoComponent {
     var button = evt.which || evt.button;
     return button == 1;
   }*/
+
+    //adding background color using video frame maybe make this a directive ?
+  /*getPrimary() {
+    const video1 = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    video1.addEventListener('play', function() {
+      const width = video1.videoWidth;
+      const height = video1.videoHeight;
+      canvas.width = width;
+      canvas.height = height;
+    
+      setInterval(function() {
+        ctx.drawImage(video1, 0, 0, width, height);
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+    
+        let red = 0;
+        let green = 0;
+        let blue = 0;
+    
+        for (let i = 0; i < data.length; i += 4) {
+          red += data[i];
+          green += data[i + 1];
+          blue += data[i + 2];
+        }
+    
+        red /= data.length / 4;
+        green /= data.length / 4;
+        blue /= data.length / 4;
+    
+        console.log(`Primary colors: rgb(${red}, ${green}, ${blue})`);
+      }, 1000 / 3);
+    }
+  }*/ 
+
+  /**
+   * capture primary color of video every 30 frames 
+   * @returns primary vibrant color
+  */
+  async captureColors() {
+
+    // Only capture colors every 30 frames
+    if (this.currentFrame % 30 !== 0) {
+      this.currentFrame++;
+      return;
+    }
+  
+    const video: HTMLVideoElement = this.video.nativeElement;
+    this.canvas.width = video.videoWidth;
+    this.canvas.height = video.videoHeight;
+    this.context.drawImage(video, 0, 0, this.canvas.width, this.canvas.height);
+  
+    const imageSrc = this.canvas.toDataURL(); // convert canvas to base64-encoded data URL
+    const image = new Image();
+    image.src = imageSrc;
+    //wait
+    const vibrant = await Vibrant.from(image).getPalette(); // get the color palette
+  
+    const primaryColor = vibrant.Vibrant!.hex || '#FFFFFF'; // get the hex code of the Vibrant color or fallback to white
+    console.log('primary color: ', primaryColor);
+    console.log('VIBRANT OBJECT : ', vibrant);
+    this.componentUpdatesService.videoPrimaryColorUpdate(primaryColor);
+    this.currentFrame++;
+  }
 }

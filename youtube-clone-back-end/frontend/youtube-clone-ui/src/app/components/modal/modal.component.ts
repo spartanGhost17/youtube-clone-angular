@@ -78,7 +78,6 @@ export class ModalComponent {
   }
 
   closeModal(): void {
-
     this.isShowUpdateEvent.emit(!this.show);
     this.modal.nativeElement.style.display = 'none';
   }

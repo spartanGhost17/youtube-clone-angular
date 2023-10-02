@@ -48,6 +48,9 @@ import { VideoComponent } from './components/video/video.component';
 import { VideoMiniComponent } from './components/video-mini/video-mini.component';
 import { SwitchComponent } from './components/switch/switch.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { VideoDescriptionComponent } from './components/video-description/video-description.component';
+import { WatchComponent } from './components/watch/watch.component';
+import { VideoCardComponent } from './components/video-card/video-card.component';
 
 
 registerLocaleData(uk);
@@ -75,6 +78,9 @@ registerLocaleData(uk);
     VideoMiniComponent,
     SwitchComponent,
     ModalComponent,
+    VideoDescriptionComponent,
+    WatchComponent,
+    VideoCardComponent,
   ],
   imports: [
     BrowserModule,

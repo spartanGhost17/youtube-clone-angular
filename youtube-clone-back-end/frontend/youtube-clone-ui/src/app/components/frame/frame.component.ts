@@ -8,6 +8,7 @@ import { ComponentUpdatesService } from '../../services/app-updates/component-up
 })
 export class FrameComponent {
   sidebarOpen = false;
+  sidebarType: string;
   
   constructor(private componentUpdatesService: ComponentUpdatesService) { 
   }
@@ -16,9 +17,17 @@ export class FrameComponent {
     console.log('SHOULD NGONINIT');
   }
 
+  ngAfterViewInit(): void {
+    this.componentUpdatesService.sideBarType$.subscribe((sidebarType) => {
+      this.sidebarType = sidebarType;
+      console.log(`console log ==========> ${sidebarType}`)
+    });
+    console.log(`logging type here ${this.sidebarType}`);
+  }
+
   toggleSidebar(event: any): void {
     this.sidebarOpen = event;
     console.log("side bar:  ", this.sidebarOpen);
-    //this.componentUpdatesService.sideBarCollapsedEmit(this.sidebarOpen);
+    //this.componentUpdatesService.sideBarCollapsedEmit(this.sidebarOpen); sideBarTypeUpdate
   }
 }

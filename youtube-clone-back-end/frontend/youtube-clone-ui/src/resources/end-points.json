@@ -1,6 +1,11 @@
 {
     "VIDEO_END_POINTS": {
         "UPLOAD_VIDEO": "/api/v1/video/upload",
-        "UPDATE_VIDEO_METADATA": "/api/v1/video/upload/updateMetadata" 
+        "UPDATE_VIDEO_METADATA": "/api/v1/video/upload/updateMetadata"
+    },
+
+    "PLAYLIST_END_POINTS": {
+        "CREATE_PLAYLIST": "/api/v1/playlist/newPlaylist",
+        "GET_PLAYLIST": "/api/v1/playlist/playList"
     }
 }

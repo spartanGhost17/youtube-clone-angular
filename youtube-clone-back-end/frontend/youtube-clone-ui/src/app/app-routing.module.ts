@@ -7,6 +7,7 @@ import { UploadVideoMetadataComponent } from './components/upload-video-view/upl
 import { VideosExplorerComponent } from './components/videos-explorer/videos-explorer.component';
 import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
 import { VideoComponent } from './components/video/video.component';
+import { WatchComponent } from './components/watch/watch.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
@@ -18,11 +19,14 @@ const routes: Routes = [
       },
       {
         path: 'playlist', component: PlaylistViewComponent,
+      },
+      {
+        path: 'dashboard', component: DashboardComponent,
+      },
+      {
+        path: 'watch', component: WatchComponent,
       }
     ]
-  },
-  {
-    path: 'dashboard', component: DashboardComponent,
   },
   {
     path: 'video-player', component: VideoComponent,
