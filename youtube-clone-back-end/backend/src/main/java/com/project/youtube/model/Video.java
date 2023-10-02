@@ -21,6 +21,7 @@ public class Video {
     private String id;
     private String title;
     private String description;
+    //private int duration;
     private Integer likes;
     private Integer dislikes;
     private Set<String> tags;

@@ -43,6 +43,9 @@ public class PlayListServiceImpl implements PlayListService {
         playList.setDescription(playListDto.getDescription());
         playList.setVisibilityStatus(playListDto.getVisibilityStatus());
         var savedPlayList = playListRepository.save(playList);
+
+
+
         LOGGER.info("Leaving createPlaylist");
         return new PlayListDto(savedPlayList.getId(), savedPlayList.getTitle(), new ArrayList<Video>(), savedPlayList.getDescription(), savedPlayList.getVisibilityStatus());
     }

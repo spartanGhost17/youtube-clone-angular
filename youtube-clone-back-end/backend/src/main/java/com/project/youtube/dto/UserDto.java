@@ -1,27 +1,19 @@
-package com.project.youtube.model;
+package com.project.youtube.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 import java.util.Set;
 
-@Document(value = "User") //this is a mongodb document 'equivalent of SQL table'
 @Data
-@EntityScan
-@NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
-    @Id
+@NoArgsConstructor
+public class UserDto {
     private String id;
     private String firstName;
     private String lastName;
-    private String fullName;
     private String userName;
     private String emailAddress;
     private String profilePictureURL;
@@ -30,5 +22,5 @@ public class User {
     private List<String> videoHistory;
     private Set<String> likedVideos;
     private Set<String> dislikedVideos;
-    private List<String> userPlayListsIds;
+    private List<String> PlayListsIds;
 }

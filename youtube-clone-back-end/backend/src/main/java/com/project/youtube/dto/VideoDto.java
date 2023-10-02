@@ -15,6 +15,7 @@ public class VideoDto {
     private String id;
     private String title;
     private String description;
+    //private int duration;
     private Set<String> tags;
     private VisibilityStatus visibilityStatus;
     private VideoCategory videoCategory;
