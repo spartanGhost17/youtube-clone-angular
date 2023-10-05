@@ -55,9 +55,64 @@
     color: var(--yt-spec-text-secondary);
 }
 
+// small mobile devices
+@media (min-width: 320px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+//375px mobile devices, especially for iPhones
+@media (min-width: 375px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+//480px smaller tablets or larger smartphones in landscape mode
+@media (min-width: 480px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+//768px tablets in portrait mode
+@media (min-width: 768px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+//1024px tablets in landscape mode or small desktop screens
+@media (min-width: 1024px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+//1440px larger desktop screens
+@media (min-width: 1440px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+//1920px full HD displays
+@media (min-width: 1920px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+/**  
 //768px
 
-@media (min-width: 1540px) {
+@media (max-width: 1540px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 1440px) {
+    .list-container {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 1340px) {
     .list-container {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
@@ -73,4 +128,4 @@
     .list-container {
         grid-template-columns: 1fr 1fr;
     }
-}
+}*/
