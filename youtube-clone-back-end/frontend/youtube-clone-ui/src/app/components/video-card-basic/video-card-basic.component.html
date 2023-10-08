@@ -1,0 +1,26 @@
+<div class="video-card-basic-container" [ngClass]="{'skeleton': loading}">
+    <div (click)="openVideo()" class="video-container">
+        <app-video-mini *ngIf="!loading" [ThumbnailURL]="video.thumbnailUrl" [videoURL]="video.videoURL"></app-video-mini>
+    </div>
+    <div class="video-info-container">
+        <div class="icon-container">
+            <img (click)="onChannelInfoClicked(video)" *ngIf="!loading" id="avatar" alt="" class="user-icon" [src]="video.iconURL">
+            <div class="user-icon" [ngClass]="{'animate-pulse': loading}"></div>
+        </div>
+        <div id="metadata" class="metadata">
+            <div class="video-title-container" [ngClass]="{'animate-pulse': loading}">
+                <h3 *ngIf="!loading" class="title">{{video.title}}</h3>
+            </div>
+
+            <div class="secondary-text">
+                <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
+                <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
+                <div (click)="onChannelInfoClicked(video)" class="channel-name">
+                    <p *ngIf="!loading">{{video.channelName}}</p>
+                    <span *ngIf="video.verified && !loading" class="material-symbols-outlined">check_circle</span>
+                </div>
+                <p *ngIf="!loading">{{video.likeCount}} Views &bull; {{video.timeStamp}} </p>
+            </div>
+        </div>
+    </div>
+</div>
