@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
 
 @Component({
@@ -11,6 +12,8 @@ export class WatchComponent {
   isSibeBarCollapsed: boolean = false;
   primaryColorVideoFrame: string;
   sideBarType: string = 'hover';
+  channelName: string = 'AlJordan';
+  videos: any[] = []; 
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -18,25 +21,14 @@ export class WatchComponent {
   @ViewChild('interactionContainer') interactionContainer: ElementRef<any>;
   @ViewChild('bgColorBlur') bgColorBlur: ElementRef<any>;
 
-  constructor(private componentUpdatesService : ComponentUpdatesService) {}
+  constructor(private componentUpdatesService : ComponentUpdatesService, private router: Router) {}
   
   ngOnInit() {
     this.componentUpdatesService.sideBarTypeUpdate(this.sideBarType);
+    this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   }
 
   ngAfterViewInit() : void {
-    //this.resizeBlurBg();
-    this.componentUpdatesService.sideBarCollapsed$.subscribe((isSideBarCollapsed) => {
-      console.log('Sidebar Collapsed///////// ', isSideBarCollapsed)
-      this.isSibeBarCollapsed = isSideBarCollapsed;
-      //this.onVideoContainerExpanded();
-      //this.onSideBarCollapsed();
-      this.resizeBlurBg("side bar collapsed", !this.isSibeBarCollapsed);
-      if(this.primaryColorVideoFrame) {
-        this.updateBackgroundGradient(this.primaryColorVideoFrame);
-      }
-
-    });
 
     this.componentUpdatesService.videoTheaterMode$.subscribe((isTheaterMode) => {
       this.isCinemaMode = isTheaterMode;
@@ -59,8 +51,8 @@ export class WatchComponent {
   resizeBlurBg(loc: string, shouldIncrease: boolean) {
     console.log("resizeBlurBg location "+ loc);
     const rect = this.videoContainer.nativeElement.getBoundingClientRect();
-    const widthIncrement = 100;
-    const heightIncrement = 150;
+    const widthIncrement = 150;//100;
+    const heightIncrement = 300;//150;
     let width: number;
     let height: number; 
     if(shouldIncrease) {
@@ -69,7 +61,7 @@ export class WatchComponent {
     }
     else {
       width = rect.width - widthIncrement;
-      height = rect.height - heightIncrement;
+      height = (rect.height - heightIncrement) + 300;
     }
     this.bgColorBlur.nativeElement.style.width = `${width}` + 'px';
     this.bgColorBlur.nativeElement.style.height = `${height}` + 'px';
@@ -116,13 +108,23 @@ export class WatchComponent {
     if(!this.isCinemaMode) {      
       console.log("display default");
       this.recommendationContainer.nativeElement.style.top = '0';
-      this.interactionContainer.nativeElement.style.top = '680px';
+      this.interactionContainer.nativeElement.style.top = '72vh';//'660px';
+      this.videoContainer.nativeElement.style.width = '75%';
     }
     else {
-      this.interactionContainer.nativeElement.style.top = '750px';
-      this.recommendationContainer.nativeElement.style.top = '750px';
+      this.interactionContainer.nativeElement.style.top = '75vh';//'740px';
+      this.recommendationContainer.nativeElement.style.top = '75vh';//'740px';
+      this.videoContainer.nativeElement.style.width = '100%';
     }
   }
 
-
+  /**
+   * on channel icon click navigate to channel view 
+  */
+  onChannelIconClicked(): void {
+    console.log("onChannelIconClicked");
+    this.componentUpdatesService.sideBarTypeUpdate('hover');
+    //this.router.navigate(['channel']);
+    this.router.navigate([`home/@${this.channelName}`]);
+  }
 }
