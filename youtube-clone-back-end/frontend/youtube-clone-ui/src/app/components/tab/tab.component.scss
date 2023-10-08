@@ -1,0 +1,73 @@
+.navigation-container {
+    display: flex;
+    height: 60px;
+    min-width: 260px;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    //background-color: orange;
+    overflow: hidden;
+    scroll-behavior: smooth; /* Add smooth scrolling behavior */
+    transition: scroll-left 0.3s; /* Define the transition properties */
+}
+
+.tab {
+    display: flex;
+    //display: inline-block;
+    width: calc(100% + 40px);
+    min-width: 120px;
+    margin-right: 10px;
+    cursor: pointer;
+    color: var(--yt-spec-text-secondary);
+    user-select: none;
+    //background-color: var(); 
+    //background-color: pink;
+}
+
+.navigation-container .tab:first-child {
+    //padding-left: 0px;
+    align-items: center;
+    justify-content: center;
+    //background-color: pink;
+}
+.navigation-container .tab:not(:first-child) {
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+    //background-color: bisque;
+}
+
+.tab:hover {
+    color: var(--yt-spec-text-primary)
+}
+
+.tab-controler-container {
+    display: flex;
+    //justify-content: space-between;
+    //background-color: pink;
+    overflow: hidden;
+    min-width: 340px;
+}
+
+#next-btn {
+    margin-left: auto;
+}
+
+.next-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    min-height: 60px;
+    min-width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    //background-color: red;
+}
+
+.active-tab {
+    color: var(--yt-spec-text-primary);
+    border-bottom: 4px solid white;
+}

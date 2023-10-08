@@ -1,0 +1,13 @@
+<div class="tab-controler-container">
+    <button *ngIf="shouldHidePrev" (click)="scrollToPrevious()" id="prev-btn" class="next-button">
+        <span class="material-symbols-outlined">navigate_before</span>
+    </button>
+    <div #container class="navigation-container">
+        <div (click)="onTabClicked(tab)" class="tab" *ngFor="let tab of tabs" [ngClass]="{'active-tab': tab.active}">
+            {{tab.title}}
+        </div>
+    </div>
+    <div *ngIf="shouldHidePrev" (click)="scrollToNext()" id="next-btn" class="next-button">
+        <span class="material-symbols-outlined">navigate_next</span>
+    </div>
+</div>
