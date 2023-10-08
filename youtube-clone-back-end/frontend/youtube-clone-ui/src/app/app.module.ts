@@ -51,6 +51,9 @@ import { ModalComponent } from './components/modal/modal.component';
 import { VideoDescriptionComponent } from './components/video-description/video-description.component';
 import { WatchComponent } from './components/watch/watch.component';
 import { VideoCardComponent } from './components/video-card/video-card.component';
+import { ChannelComponent } from './components/channel/channel.component';
+import { TabComponent } from './components/tab/tab.component';
+import { VideoCardBasicComponent } from './components/video-card-basic/video-card-basic.component';
 
 
 registerLocaleData(uk);
@@ -81,6 +84,9 @@ registerLocaleData(uk);
     VideoDescriptionComponent,
     WatchComponent,
     VideoCardComponent,
+    ChannelComponent,
+    TabComponent,
+    VideoCardBasicComponent,
   ],
   imports: [
     BrowserModule,

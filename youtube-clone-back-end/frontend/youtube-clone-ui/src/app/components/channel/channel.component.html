@@ -1,16 +1,66 @@
 <div class="channel">
-    <div class="banner">
-        banner
+    <div class="banner-container">
+        <img class="banner-img" [src]="bannerURL" />
     </div>
     <div class="channel-info">
         <div class="channel-icon">
-            Channel name
+            <img class="banner-img" [src]="'../../../assets/green-lantern.jpg'" />
         </div>
         <div class="channel-meta">
-
-        </div>
-        <div class="buttons">
-            <button>Subscribe</button>
+            <div class="title-interaction-container">
+                <div class="channel-title-container">
+                    <div class="channel-title">
+                        {{channelName}}
+                    </div>
+                    <span *ngIf="isVerified" class="material-symbols-outlined">check_circle</span>
+                </div>
+                <div class="ytcp-button buttons">
+                    <span *ngIf="notifications === 'all'" class="material-symbols-outlined">notifications_active</span>
+                    <span *ngIf="notifications === 'personalized'" class="material-symbols-outlined">notifications</span>
+                    <span *ngIf="notifications === 'none'" class="material-symbols-outlined">notifications_off</span>
+                    <button>
+                        <b>{{subscriptionState}}</b>
+                    </button>
+                    <span class="material-symbols-outlined">expand_more</span>
+                </div>
+            </div>
+            <div class="channel-meta__meta">
+                <div id="id" class="id">
+                    {{userId}}
+                </div>
+                <div class="subscribes-count">
+                    {{subscribeCount}} subscribers
+                </div>
+                <div class="videos-count">
+                    {{videosCount}} videos
+                </div>
+            </div>
         </div>
     </div>
+    <div class="nav-bar-container">
+        <app-tab [tabs]="tabs"></app-tab>
+    </div>
+
+    <div class="channel-videos-container">
+        <div class="video-item" *ngFor="let video of videos">
+            <app-video-card-basic 
+                [video]="video" 
+                [default]="false">
+            </app-video-card-basic>
+            <!--<div id="video" class="video-container">
+                <app-video-mini [ThumbnailURL]="video.thumbnailUrl"></app-video-mini>
+            </div>
+            <div class="metadata">
+                <div class="title">
+                    <span>{{video.title}}</span>
+                </div>
+                <div class="channel-metadata">
+                    <div class="likes">{{video.likeCount}} views</div>
+                    <div class="likes">&bull;</div>
+                    <div class="post-time">{{video.timeStamp}}</div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+
 </div>

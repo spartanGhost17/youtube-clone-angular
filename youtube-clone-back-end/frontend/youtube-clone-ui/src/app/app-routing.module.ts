@@ -8,6 +8,7 @@ import { VideosExplorerComponent } from './components/videos-explorer/videos-exp
 import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
 import { VideoComponent } from './components/video/video.component';
 import { WatchComponent } from './components/watch/watch.component';
+import { ChannelComponent } from './components/channel/channel.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
@@ -15,7 +16,7 @@ const routes: Routes = [
     path: 'home', component: HomeComponent,
     children: [
       {
-        path: 'explore', component: VideosExplorerComponent, 
+        path: 'explore', component: VideosExplorerComponent,
       },
       {
         path: 'playlist', component: PlaylistViewComponent,
@@ -25,7 +26,11 @@ const routes: Routes = [
       },
       {
         path: 'watch', component: WatchComponent,
-      }
+      },
+      {
+        path: ':channelName', component: ChannelComponent,
+      }, 
+
     ]
   },
   {
