@@ -25,6 +25,7 @@ public class User {
     private String userName;
     private String emailAddress;
     private String profilePictureURL;
+    //private Boolean verified;
     private Set<String> subscribedToUsers;
     private Set<String> subscribers;
     private List<String> videoHistory;

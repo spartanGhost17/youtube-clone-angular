@@ -50,6 +50,11 @@ public class PlayListServiceImpl implements PlayListService {
         return new PlayListDto(savedPlayList.getId(), savedPlayList.getTitle(), new ArrayList<Video>(), savedPlayList.getDescription(), savedPlayList.getVisibilityStatus());
     }
 
+    /**
+     * Get PlaylistDto by id
+     * @param playListId
+     * @return PlayListDto
+     */
     @Override
     public PlayListDto getPlayList(String playListId) {
         LOGGER.info("Entering getPlayList for playList id: "+playListId);
@@ -64,7 +69,11 @@ public class PlayListServiceImpl implements PlayListService {
     }
 
 
-
+    /**
+     * Get playlist by Id from database
+     * @param playListId String Id
+     * @return playlist object
+     */
     @Override
     public PlayList getPlayListById(String playListId) {
         LOGGER.info("Getting user playList for playListId: "+playListId);
