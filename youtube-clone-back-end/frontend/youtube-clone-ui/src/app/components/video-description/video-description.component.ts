@@ -17,20 +17,24 @@ export class VideoDescriptionComponent {
 
 
   showMore() {
+    console.log(`show more: ${this.isShowMore}`);
     this.isShowMore = !this.isShowMore;
+    console.log(`show more after: ${this.isShowMore}`);
     if(this.isShowMore) {
       this.content.nativeElement.style.height = this.MAX_CONTENT_HEIGHT;
       this.SHOW_MORE  = 'Show less';
-      this.isShowLess = !this.isShowLess;
+      this.isShowLess = false;//!this.isShowLess;
     }
   }
 
   showLess() {
+    console.log(`show less: ${this.isShowLess}`);
     this.isShowLess = !this.isShowLess;
+    console.log(`show less after: ${this.isShowLess}`);
     if(this.isShowLess) {
       this.content.nativeElement.style.height = this.MIN_CONTENT_HEIGHT;
       this.SHOW_MORE  = 'Show more';
-      this.isShowMore = !this.isShowMore;
+      this.isShowMore = false;//!this.isShowMore;
     }
   }
 }
