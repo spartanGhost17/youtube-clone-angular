@@ -1,20 +1,55 @@
 .video-card-container {
     display: flex;
     width: 100%;
-    height: 10rem;
-    background-color: darkorange;
+    height: 9rem;
+    //background-color: darkorange;
     justify-content: space-between;
-    padding: 4px;
+    padding: 2px;
 }
 
 .thumbnail-mini-player {
-    width: 58%;
+    width: 45%;
     height: 100%;
-    background-color: palegreen;
+    //background-color: palegreen;
 }
 
 .metadata {
-    width: 42%;
+    display: block;
+    width: 55%;
     height: 100%;
-    background-color: darksalmon;
+    padding-left: 10px;
+    //background-color: red
+}
+
+.channel-meta {
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 1.4rem;
+    line-height: 2rem;
+    font-weight: 500;
+    overflow: hidden;
+    display: block;
+    max-height: 4rem;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+    color: var(--yt-spec-text-primary);
+    -webkit-line-clamp: 2;
+    display: box;
+    display: -webkit-box;
+    margin-bottom: 24px;
+    background-color: pink;
+}
+//.title,
+.channel-info, .channel-meta, .channel-name, .likes, .post-time {
+    margin-top: 4px;
+    height: fit-content;
+}
+
+.channel-name, .likes, .post-time {
+    color: var(--yt-spec-text-secondary)
 }

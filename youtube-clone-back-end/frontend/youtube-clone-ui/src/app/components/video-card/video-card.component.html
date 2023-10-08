@@ -1,8 +1,21 @@
 <div class="video-card-container">
     <div class="thumbnail-mini-player">
-        <!--<app-video-mini [ThumbnailURL]="'../../../assets/grand_tourismo.jpg'" [videoURL]="'../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'"></app-video-mini>-->
+        <!--[videoURL]="'../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'"-->
+        <app-video-mini 
+            [ThumbnailURL]="ThumbnailURL">
+        </app-video-mini>
     </div>
     <div class="metadata">
-
+        <div class="title">
+            <span>{{title}}</span>
+        </div>
+        <div class="channel-info">
+            <div class="channel-name">{{channelName}}</div>
+        </div>
+        <div class="channel-meta">
+            <div class="likes">{{likeCount}}</div>
+            <div class="likes">&bull;</div>
+            <div class="post-time">{{postTime}}</div>
+        </div>
     </div>
 </div>
