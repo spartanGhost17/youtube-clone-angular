@@ -8,6 +8,7 @@ import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/cor
 export class VideoMiniComponent {
   @Input() ThumbnailURL: string;
   @Input() videoURL: string;
+  @Input() height: string = '200px';
   @ViewChild('video') video: ElementRef<any>;
   play: boolean = false;
 
