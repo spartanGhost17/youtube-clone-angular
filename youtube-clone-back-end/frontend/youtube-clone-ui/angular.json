@@ -95,7 +95,7 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/youtube.ico",
+              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
