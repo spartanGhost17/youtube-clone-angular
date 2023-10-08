@@ -1,16 +1,23 @@
 .thumbnail-container {
-    height: 180px;
+    height: 200px;
+    //height: 100%;
+    min-height: 100px;
+    max-height: 250px;
     position: relative;
-    margin-bottom: 20px;
+    //min-width: 300px;
+    //margin-bottom: 20px;
+    //background-color: purple;
 }
 
 .thumbnail {
     /* Set the dimensions of the container */
-    height: 180px;
+    max-height: 250px;
+    //min-width: 300px;
     width: 100%;
-    margin-bottom: 14px;
+    //margin-bottom: 14px;
     /* Center the image inside the container */
-    border-radius: 14px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
 .thumbnail-transition {
@@ -28,6 +35,6 @@
     opacity: 1;
 }
 
-video {
+.video {
     
 }
