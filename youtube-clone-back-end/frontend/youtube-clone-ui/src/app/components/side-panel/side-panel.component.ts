@@ -31,37 +31,10 @@ export class SidePanelComponent {
 
 
   sections: any[];
-  section1 = [
-    {'isActive':true, text: 'Home', icon: this.ICON_HOME, navigateTo: 'explore', sidebarType: 'side'},
-    {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Subscriptions', icon: this.ICON_SUBSCRIPTION, navigateTo: 'playlist', sidebarType: 'side'}
-  ];
+  section1: any[];
+  section2: any[];
+  subcribed_channels: any[];
 
-  section2 = [
-    {'isActive':false, text: 'Library', icon: this.ICON_LIBRARY_VIDEO, navigateTo: '', sidebarType: 'side'}, 
-    {'isActive':false, text: 'History', icon: this.ICON_HISTORY, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Your videos', icon: this.ICON_LIBRARY, navigateTo: 'dashboard', sidebarType: 'side'},
-    {'isActive':false, text: 'Watch Later', icon: this.ICON_WATCH_LATER, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Liked Videos', icon: this.ICON_LIKE, navigateTo: '', sidebarType: 'side'},
-  ]
-
-  subcribed_channels = [
-    {'isActive':false, text: 'One Piece', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'DBZ Hollo', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 3', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel4777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 5', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 6', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 7', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 8', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 9', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel 10', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Channel4 about ben solo  777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Cartoon Network kids', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'Double Champ ent.', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    {'isActive':false, text: 'WWE', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-
-  ]
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
     private componentUpdatesService :ComponentUpdatesService) {
   }
@@ -69,6 +42,39 @@ export class SidePanelComponent {
    * Lifecycle hook
    */
   ngOnInit() {
+    console.log("INITIALIZING DRAWER...")
+    this.section1 = [
+      {'isActive':true, text: 'Home', icon: 'home', iconType: 'google', navigateTo: 'explore', sidebarType: 'side'},//this.ICON_HOME
+      {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, iconType: 'default', navigateTo: '', sidebarType: 'side'},//
+      {'isActive':false, text: 'Subscriptions', icon: 'subscriptions', iconType: 'google', navigateTo: 'playlist', sidebarType: 'side'}//this.ICON_SUBSCRIPTION
+    ];
+  
+    this.section2 = [
+      {'isActive':false, text: 'Library', icon: 'video_library', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_LIBRARY_VIDEO
+      {'isActive':false, text: 'History', icon: 'history', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_HISTORY
+      {'isActive':false, text: 'Your videos', icon: 'slideshow', iconType: 'google', navigateTo: 'dashboard', sidebarType: 'side'},//this.ICON_LIBRARY
+      {'isActive':false, text: 'Watch Later', icon: 'schedule', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_WATCH_LATER
+      {'isActive':false, text: 'Liked Videos', icon: 'thumb_up', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_LIKE
+    ];
+  
+    this.subcribed_channels = [
+      {'isActive':false, text: 'One Piece', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'DBZ Hollo', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 3', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel4777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 5', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 6', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 7', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 8', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 9', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel 10', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Channel4 about ben solo  777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Cartoon Network kids', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'Double Champ ent.', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+      {'isActive':false, text: 'WWE', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
+    ];
+  
+
     this.sections = [this.section1, this.section2, this.subcribed_channels];
 
     this.componentUpdatesService.sideBarType$.subscribe((sidebarType) => {
