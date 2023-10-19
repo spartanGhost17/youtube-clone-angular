@@ -1,6 +1,5 @@
 .view-container {
     position: fixed;
-    //width: 100%;//inherit;
     height: calc( 100% - 45px );
     margin: 0;
     margin-top: 20px;
@@ -10,95 +9,17 @@
 }
 
 .left-container {
-    //float: left;
-    //margin-right: 10px;
     width: 26%;
-    //background-color: coral;
 }
 
 .right-container {
-    //float: right;
-    // /width: 
     display: block;
-    //background-color: aqua;
     padding: 0 10px;
+    //padding-top: 10px;
+    //padding-left: 10px; //10px;
+    //padding-right: 0;
     width: 74%;
-}
-
-.video-data-container {
-    display: flex;
-    justify-content: space-between;
-    //justify-items: ;
-    height: 130px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 18px;
-    background-color: inherit;
-    margin-bottom: 12px;
-}
-
-.video-data-container:hover {
-    background-color:  #4d4d4d;//var(--yt-color-innactive-button-hover); 
-}
-
-#start,
-#center,
-#end {
-    display: flex;
-    height: 100%;
-    cursor: pointer;
-    width: 40px;
-}
-
-#start {
-    justify-content: flex-start;
-    align-items: center;
-    //background-color: orange;
-}
-
-#center {
-    //background-color: blueviolet;
-    width: 90%;
-    padding: 8px 12px;
-    //justify-content: ;
-    //align-content: center;
-}
-
-.primary-meta {
-    font-size: 1.2rem;
-    line-height: 2rem;
-    font-weight: 500;
-}
-
-#thumbnail__center,
-#metadata__center  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#thumbnail__center {
-    width: 18%;
-}
-
-#metadata__center {
-    display: inline-block;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.img {
-    /* Set the object-fit property to contain */
-    object-fit: cover;
-    /* Set the max-width and max-height of the image to 100% */
-    max-width: 100%;
-    max-height: 100%;
-    width: 100%;
-    height: 100%;
-    border-radius: 14px;
-}
-
-#end {
-    align-items: center;    
+    height: auto;
+    overflow: scroll;
 }
 

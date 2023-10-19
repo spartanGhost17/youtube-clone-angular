@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
 
 @Component({
@@ -17,7 +17,8 @@ export class PlaylistMetadataComponent {
   //THUMBNAIL: string = '../../../assets/mr_wick.jpeg';
   //THUMBNAIL: string = '../../../assets/goku_god_mode.jpg';
   //THUMBNAIL: string = '../../../assets/batman.jpg';
-  THUMBNAIL: string = '../../../assets/batman2.jpg';
+  //THUMBNAIL: string = '../../../assets/batman2.jpg';
+  @Input() thumbnail: string; //= '../../../assets/superman_jorge_jimenez.jpg';
   //THUMBNAIL: string = '../../../assets/green-lantern.jpg';
   //THUMBNAIL: string = '../../../assets/light-yagami.png';
 
@@ -32,56 +33,13 @@ export class PlaylistMetadataComponent {
   description: string = 'No description';
 
 
-  editTitleText: string = ''; 
-  //editTitleText: string = this.editSection==='title'? this.playlistTitle : this.description;
-  //editDescriptTex: string = this.description;
+  editTitleText: string = '';
+  
+  constructor(private cdr: ChangeDetectorRef) {}
 
-  //@ViewChild('PenIcon', { static: true }) PenIcon: ElementRef;
-  //@ViewChild('title') title!: ElementRef;
-
-  constructor() {}
-
-  /*ngAfterViewInit() {
-    //const parentBgColor = getComputedStyle(this.PenIcon.nativeElement.parentNode).backgroundColor;
-    const parentBgColor = getComputedStyle(this.PenIcon.nativeElement.parentNode).backgroundColor;
-    const lighterColor = this.lightenColor(parentBgColor, 0.2);
-    console.log("lighter color ",lighterColor, " - ", parentBgColor);
-    //this.PenIcon.nativeElement.style.backgroundColor = lighterColor;
-  }*/
-  //PenIcon
-
-  /**
-   * 
-   * @param color color of div background
-   * @param amount alpha value 0 <= x <= 1
-   * @returns 
-   */
-  /*lightenColor(color: string, amount: number): string {
-    let usePound = false;
-
-    if (color[0] === '#') {
-      color = color.slice(1);
-      usePound = true;
-    }
-
-    const num = parseInt(color, 16);
-    let r = (num >> 16) + amount;
-
-    if (r > 255) r = 255;
-    else if (r < 0) r = 0;
-
-    let b = ((num >> 8) & 0x00ff) + amount;
-
-    if (b > 255) b = 255;
-    else if (b < 0) b = 0;
-
-    let g = (num & 0x0000ff) + amount;
-
-    if (g > 255) g = 255;
-    else if (g < 0) g = 0;
-
-    return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16);
-  }*/
+  ngOnInit() {
+    console.log('restart side data!!!! \n new image is ', this.thumbnail);
+  }
 
   onEdit(sectionName: string) {
     this.editSection = sectionName;
@@ -118,4 +76,13 @@ export class PlaylistMetadataComponent {
   checkLength(event: any) {
     console.log("char count ==> ",event);
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.thumbnail) {
+      console.log('Input value has changed:', changes.thumbnail.currentValue);
+      //this.cdr.markForCheck();
+      this.ngOnInit();
+    }
+  }
+
 }
