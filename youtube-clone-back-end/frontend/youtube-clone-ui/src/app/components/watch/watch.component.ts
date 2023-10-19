@@ -13,7 +13,9 @@ export class WatchComponent {
   primaryColorVideoFrame: string;
   sideBarType: string = 'hover';
   channelName: string = 'AlJordan';
-  videos: any[] = []; 
+  SORT_BUTTON_TEXT: string = 'Sort by';
+  videos: any[] = [];
+  sortOptions: any[] = [];
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -25,7 +27,8 @@ export class WatchComponent {
   
   ngOnInit() {
     this.componentUpdatesService.sideBarTypeUpdate(this.sideBarType);
-    this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    this.sortOptions = [{text: 'Top comments'}, {text: 'Newest first'}];
   }
 
   ngAfterViewInit() : void {

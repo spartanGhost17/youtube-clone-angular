@@ -9,22 +9,6 @@
             <div class="recommended-video" *ngFor="let video of videos">
                 <app-video-card></app-video-card>
             </div>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
-            <p>tttttt</p>
         </div>
         <div #interactionContainer class="interactions-container">
             <div class="metadata">
@@ -44,15 +28,52 @@
                     <div class="action-buttons">
                         <div class="ytcp-button subscribe-button">Subscribe</div>
                         <div class="interactive-buttons">
-                            <div class="ytcp-button like">Like</div>
-                            <div class="ytcp-button dislike">Dislike</div>
-                            <div class="ytcp-button share">Share</div>
-                            <div class="ytcp-button save">save</div>
+                            <div class="like">
+                                <div class="ytcp-button like-btn">
+                                    <span class="material-symbols-outlined non-selectable">thumb_up</span>
+                                    <span class="non-selectable">120K</span>
+                                </div>
+                                <div class="ytcp-button dislike-btn">
+                                    <span class="material-symbols-outlined non-selectable">thumb_down</span>
+                                </div>
+                            </div>
+                            <!--<div class="ytcp-button dislike">Dislike</div>-->
+                            <div class="ytcp-button share">
+                                <span class="material-symbols-outlined non-selectable">share</span>
+                                <span>Share</span>
+                            </div>
+                            <div class="ytcp-button save">
+                                <span class="material-symbols-outlined non-selectable">playlist_add</span>
+                                <span>Save</span>
+                            </div>
+                            <div class="ytcp-button download">
+                                <span class="material-symbols-outlined non-selectable">download</span>
+                                <span>Download</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="metadata-container">
                     <app-video-description></app-video-description>
+                </div>
+                <div class="comment-section">
+                    <div class="meta-and-actions">
+                        <div class="comments-count">
+                            <span class="text">2000 comments</span>
+                        </div>
+                        <div class="sort-button">
+                            <app-standard-dropdown 
+                                [items]="sortOptions"
+                                [iconLeft]="'sort'"
+                                [iconRight]="'expand_more'"
+                                [buttonText]="SORT_BUTTON_TEXT"
+                                [minWidth]="'10em'">
+                            </app-standard-dropdown>
+                        </div>
+                    </div>
+                    <div class="comments-container">
+                        <app-comment></app-comment>
+                    </div>
                 </div>
             </div>
         </div>
