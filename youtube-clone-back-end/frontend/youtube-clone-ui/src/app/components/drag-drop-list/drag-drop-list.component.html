@@ -1,0 +1,24 @@
+<div #draggableContainer class="draggables-container">
+    <ul #listContainer class="draggable-list">
+        <li *ngFor="let item of items, let i = index" [attr.data-index]="i"> <!---->
+            <div class="ytcp-button video-data-container"> <!--#draggable draggable="true"-->
+                <div id="start">
+                    <span class="material-symbols-outlined burger-icon">{{leftIcon}}</span>
+                </div>
+                <div id="center" class="thumbnail-container">
+                    <div id="thumbnail__center">
+                        <img draggable="false" class="img" alt="" [src]="item.thumbnailURL">
+                    </div>
+                    <div id="metadata__center">
+                        <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '12px'}">{{item.title}}</h2>
+                        <p class="text-secondary">{{item.channelName}} &bull; {{item.viewCount}} views &bull; {{item.postTime}} ago</p>
+                    </div>
+                </div>
+                <div id="end">
+                    <!--<span class="material-symbols-outlined">{{rightIcon}}</span>-->
+                    <app-standard-dropdown [items]="dropDownItems" [circle]="true"></app-standard-dropdown>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
