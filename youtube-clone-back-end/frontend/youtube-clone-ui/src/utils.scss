@@ -130,8 +130,8 @@ input[type="range"]::-ms-thumb {
     border-radius: 10px;
 }
 
-.material-symbols-outlined {
-    font-size: 24px;  /* Preferred icon size */ //was 29
+/*.material-symbols-outlined {
+    font-size: 24px;  // Preferred icon size //was 29
     display: flex;
     justify-content: center;
     align-items: center;
@@ -140,7 +140,16 @@ input[type="range"]::-ms-thumb {
     'wght' 100,
     'GRAD' 0,
     'opsz' 48
-} 
+}*/
+
+.material-symbols-outlined {
+    font-size: 24px;
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 200,
+    'GRAD' 0,
+    'opsz' 24
+}
 
 .text-primary {
     color: var(--yt-spec-text-primary);
@@ -176,6 +185,10 @@ img {
     border-radius: 0.25rem;
 }
 
+.non-selectable {
+    user-select: none;
+}
+
 /*---------------- Display view port  ----------------- */
 
 /*xs*/
@@ -208,6 +221,7 @@ img {
     }  
 }
 
+/** TODO: fix this make sure it works*/
 /*md*/
 @media (min-width: 768px) {
     :root {
@@ -444,7 +458,7 @@ img {
 
 
 /*2xl*/
-@media (min-width: 1540px) {
+@media (min-width: 1600px) {
     .channel-videos-container {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }

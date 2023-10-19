@@ -54,6 +54,9 @@ import { VideoCardComponent } from './components/video-card/video-card.component
 import { ChannelComponent } from './components/channel/channel.component';
 import { TabComponent } from './components/tab/tab.component';
 import { VideoCardBasicComponent } from './components/video-card-basic/video-card-basic.component';
+import { DragDropListComponent } from './components/drag-drop-list/drag-drop-list.component';
+import { StandardDropdownComponent } from './components/standard-dropdown/standard-dropdown.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 
 registerLocaleData(uk);
@@ -87,6 +90,9 @@ registerLocaleData(uk);
     ChannelComponent,
     TabComponent,
     VideoCardBasicComponent,
+    DragDropListComponent,
+    StandardDropdownComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
