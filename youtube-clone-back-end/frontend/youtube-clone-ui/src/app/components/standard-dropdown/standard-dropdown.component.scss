@@ -1,0 +1,130 @@
+.dropdown {
+    //min-width: 15rem;
+    width: fit-content;
+    position: relative;
+    //margin: 2em;
+    //background-color: orange;
+}
+
+.drop-button {
+    width: fit-content;
+    //position: relative;
+    //position: absolute; 
+}
+
+.select {
+    background: #2a2a2a;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px #2a2f3b solid;
+    border-radius: 0.5em;
+    //padding: 1em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.select-clicked {
+    border: 2px #26489a solid;
+    border-shadow: 0 0 0.8em #26489a;
+}
+
+.select:hover {
+    background: #323741;
+}
+
+.caret-rotate {
+    transform: rotate(180deg);
+}
+
+.menu {
+    //margin-top: 10px;
+    list-style: none;
+    padding: 0.2em 0.5em;
+    background: #2a2a2a;
+    border-radius: 0.5em;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+    position: absolute;
+    //position: relative;
+    //top: 8em;
+    top: 110%;
+    //left: 50%;
+    right: 50%;
+    //transform: translateX(-50%);
+    //transform: translateX(-10%);
+    opacity: 0;
+    display: none;
+    transition: 0.2s;
+    z-index: 4;
+    //min-width: 18em;
+    //box-shadow: 5px 5px 5px 5px #4d4d4d70;//var();
+}
+
+.menu-open {
+    display: block;
+    opacity: 1;
+}
+
+.list-element, 
+.text,
+.right-icon {
+    display: flex;
+    align-items: center;
+}
+
+.right-icon {
+    margin-right: 20px;
+    margin-left: 10px;
+    user-select: none;
+}
+
+.list-element {
+    height: 40px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.list-element:last-child {
+    margin-bottom: 4px;
+    border-radius: 0 0 4px 4px;
+}
+
+.list-element:hover {
+    background-color: #4d4d4d70; //var(--);
+}
+
+.divider {
+    margin-bottom: 2px solid red;
+}
+
+.round-button {
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    user-select: none;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 150px;
+    height: fit-content;
+    min-height: 10px;
+    border-radius: 20px;
+}
+
+.material-symbols-outlined {
+    font-size: 25px;  // Preferred icon size //was 29
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 200,
+    'GRAD' 0,
+    'opsz' 48
+}

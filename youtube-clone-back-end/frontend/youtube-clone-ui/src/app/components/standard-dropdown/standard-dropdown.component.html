@@ -1,0 +1,19 @@
+<div #dropdown class="dropdown">
+    <div *ngIf="!circle" class="ytcp-button buttons" (click)="showDropdown()">
+        <span *ngIf="iconRight" class="material-symbols-outlined non-selectable">{{iconLeft}}</span>
+        <button>
+            <b>{{buttonText}}</b>
+        </button>
+        <span *ngIf="iconRight" class="material-symbols-outlined non-selectable" [ngClass]="{'caret-rotate': toggleDropdown}">{{iconRight}}</span>
+    </div>
+    <div *ngIf="circle" class="round-button" (click)="showDropdown()">
+        <span class="material-symbols-outlined">more_vert</span>
+    </div>
+    <ul class="menu" [ngClass]="{'menu-open': toggleDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
+        <li class="list-element active" *ngFor="let item of items">
+            <div *ngIf="item.icon" class="right-icon"><span class="material-symbols-outlined">{{item.icon}}</span></div>
+            <div class="text">{{item.text}}</div>
+            <div *ngIf="item.divider" class="divider"></div>
+        </li>
+    </ul>
+</div>
