@@ -14,7 +14,16 @@
                     </div>
                     <span *ngIf="isVerified" class="material-symbols-outlined">check_circle</span>
                 </div>
-                <div class="ytcp-button buttons">
+                <div>
+                    <app-switch></app-switch>
+                    <app-standard-dropdown 
+                        [items]="testItems"
+                        [iconLeft]="'notifications_active'"
+                        [iconRight]="'expand_more'"
+                        [buttonText]="subscriptionState">
+                    </app-standard-dropdown>
+                </div>
+                <!--<div class="ytcp-button buttons">
                     <span *ngIf="notifications === 'all'" class="material-symbols-outlined">notifications_active</span>
                     <span *ngIf="notifications === 'personalized'" class="material-symbols-outlined">notifications</span>
                     <span *ngIf="notifications === 'none'" class="material-symbols-outlined">notifications_off</span>
@@ -22,7 +31,7 @@
                         <b>{{subscriptionState}}</b>
                     </button>
                     <span class="material-symbols-outlined">expand_more</span>
-                </div>
+                </div>-->
             </div>
             <div class="channel-meta__meta">
                 <div id="id" class="id">
@@ -39,6 +48,11 @@
     </div>
     <div class="nav-bar-container">
         <app-tab [tabs]="tabs"></app-tab>
+    </div>
+    <div class="sort-buttons">
+        <button (click)="onLatestClicked()" class="ytcp-button rounded-btn" [ngClass]="{'active': latestActive}">Latest</button>
+        <button (click)="onPopularClicked()" class="ytcp-button rounded-btn" [ngClass]="{'active': popularActive}">Popular</button>
+        <button (click)="onOldestClicked()" class="ytcp-button rounded-btn" [ngClass]="{'active': oldestActive}">Oldest</button>
     </div>
 
     <div class="channel-videos-container">

@@ -18,9 +18,30 @@ export class ChannelComponent {
   tabs: any[] = [];
   notifications: string = 'all';//could be personalized or none
 
+  testItems: any[] = [];
+
+  latestActive: boolean = true;
+  popularActive: boolean = false;
+  oldestActive: boolean = false;
+
   constructor(private componentUpdatesService: ComponentUpdatesService) {}
 
   ngOnInit() {
+
+
+    this.testItems =  [
+      {icon: 'playlist_play', text: 'Add to queue', function: ''},
+      {icon: 'schedule', text: 'Save to Watch Later', function: ''},
+      {icon: 'playlist_add', text: 'Save to playlist', function: ''},
+      {icon: 'delete', text: 'Remove from', function: ''},
+      {icon: 'download', text: 'Download', function: ''},
+      {icon: 'share', text: 'Share', function: ''},
+      {divider: true},
+      {icon: 'image', text: 'Set as playlist thumbnail'}
+    ]
+
+
+
     this.componentUpdatesService.sideBarTypeUpdate('hover');
     this.videos = [
       {
@@ -172,6 +193,24 @@ export class ChannelComponent {
       { title: 'CHANNELS', active: false },
       { title: 'ABOUT', active: false },
     ];
+  }
+
+  onLatestClicked(): void {
+    this.latestActive = true;
+    this.popularActive = false;
+    this.oldestActive = false;
+  }
+
+  onPopularClicked(): void {
+    this.latestActive = false;
+    this.popularActive = true;
+    this.oldestActive = false;
+  }
+
+  onOldestClicked(): void {
+    this.latestActive = false;
+    this.popularActive = false;
+    this.oldestActive = true;
   }
 }
 

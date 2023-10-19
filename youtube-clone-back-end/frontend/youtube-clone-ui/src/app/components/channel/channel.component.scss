@@ -17,7 +17,6 @@
     left: 0;
 }
 
-
 .channel-info {
     display: flex;
     height: 200px;
@@ -112,16 +111,18 @@
     height: fit-content;
 }
 
-.nav-bar-container, .channel-videos-container, .channel-info {
-    padding-left:  10%;
-    padding-right: 10%;
+.nav-bar-container, .channel-info, .sort-buttons {
+    padding-left:  6%;
+    padding-right: 15%;
 }
-
+//.channel-videos-container
 .channel-videos-container {
     display: grid;
     //grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 1rem;
     overflow-y: none;
+    padding-left:  6%;
+    padding-right: 20%;
 }
 
 .navigation {
@@ -134,4 +135,25 @@
     height: 40px;
     width: 100%;
     z-index: 1;
+}
+
+.rounded-btn {
+    border-radius: 8px;
+}
+
+.sort-buttons {
+    width: 100%;
+    margin-bottom: 20px;
+    //background-color: pink;
+}
+
+.sort-buttons > * {
+    font-weight: 100;
+    line-height: 1rem;
+    margin-right: 10px;
+}
+
+.active {
+    background-color: var(--yt-color-active-btn-dark);
+    color: black;
 }
