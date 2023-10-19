@@ -191,9 +191,9 @@ h4 {
     width: auto;
     overflow-x: scroll;
     white-space: nowrap;
-    scrollbar-width: none; /* hide scrollbar on Firefox */
+    //scrollbar-width: none; /* hide scrollbar on Firefox */
     //-ms-overflow-style: none; /* hide scrollbar on Edge */
-    overflow: -moz-scrollbars-none; /* hide scrollbar on old versions of Firefox */
+    //overflow: -moz-scrollbars-none; /* hide scrollbar on old versions of Firefox */
 }
 
 .thumbnail-grid-container::-webkit-scrollbar {

@@ -66,6 +66,8 @@ export class UploadVideoMetadataComponent {
   ];
   playlists: any[];
 
+  categories: any[];
+
   visibility: any[];
 
   constructor(){}
@@ -102,6 +104,26 @@ export class UploadVideoMetadataComponent {
       {playlist: {id: '', title: 'Breaking Bad'},checked: false,  matchSearch: true},
   
     ];//will come from service provider later
+
+    this.categories = [
+      {playlist: {id: '', title: '#C courses'}, checked: false, matchSearch: true},
+      {playlist: {id: '', title: 'Beats kanye'},checked: false,  matchSearch: false},
+      {playlist: {id: '', title: 'Adventyre time'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'DBZ Starter pack'},checked: false,  matchSearch: false},
+      {playlist: {id: '', title: 'black airforce energy'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Trap'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Tom & Jerry'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'AMV'},checked: false, matchSearch: true},
+      {playlist: {id: '', title: 'Anime essay'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'funny videos'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Rap'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Samurai origin'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Pranks'},checked: false, matchSearch: true},
+      {playlist: {id: '', title: 'Meek Mill'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Teletubies'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Batman'},checked: false,  matchSearch: true},
+      {playlist: {id: '', title: 'Breaking Bad'},checked: false,  matchSearch: true},
+    ];
 
     this.visibility = [
       {playlist: {id: '', title: 'PUBLIC'},checked: false, matchSearch: true},
