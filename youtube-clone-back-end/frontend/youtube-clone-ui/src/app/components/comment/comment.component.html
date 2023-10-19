@@ -1,0 +1,62 @@
+<div class="comment-container">
+    <div class="user-icon-container">
+        <img [src]="imageURL" alt="batman and superman standing next to each other">
+    </div>
+    <div class="user-info">
+        <div class="user-id">
+            <span>@{{username}}</span>&nbsp;
+            <span class="postStamp">{{postTime}} ago</span>
+        </div>
+        <div class="comment-text">
+            <span>{{commentText}}</span>
+        </div>
+        <div class="interactions">
+            <button class="ytcp-button like" (click)="onLikeClicked()">
+                <span class="material-symbols-outlined" [style.font-variation-settings]="like? FILL_ICON: EMPTY_FILL_ICON">thumb_up</span>
+            </button>
+            <span>{{likeCount}}</span>
+            <button class="ytcp-button dislike" (click)="onDislikeClicked()">
+                <span class="material-symbols-outlined" [style.font-variation-settings]="dislike? FILL_ICON: EMPTY_FILL_ICON">thumb_down</span>
+            </button>
+            <button class="ytcp-button reply-btn" (click)="onShowClicked()">
+                <span class="reply">Reply</span>
+            </button>
+        </div>
+        <div *ngIf="showReply">
+            <div class="reply-input-section">
+                <div class="reply-input-section__icon-container">
+                    <img [src]="imageURL" alt="batman and superman standing next to each other">
+                </div>
+                <div class="text-area-container">
+                    <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>
+                </div>
+            </div>
+            <div class="comments-buttons">
+                <button class="ytcp-button" (click)="onCancelReply()">Cancel</button>
+                <button class="ytcp-button" (click)="onReply()">Reply</button>
+            </div>
+        </div>
+        <div class="ytcp-button reply-button-container" (click)="onShowReplyClicked()">
+            <span class="material-symbols-outlined reply-button-container__icon non-selectable" [ngClass]="{'rotate-icon': showReplies}">arrow_drop_down</span>
+            <span class="reply-button-container__reply-count non-selectable">{{replyCount}} replies</span>
+        </div>
+        <div *ngIf="showReplies" class="reply-comments">
+            <div class="sub-comment-container" *ngFor="let comment of comments">
+                <div class="reply-comments__icon">
+                    <img [src]="comment.icon" alt="">
+                </div>
+                <div class="reply-comments__subcomments">
+                    <div class="user-id">
+                        <span>@{{comment.userId}}</span>&nbsp;
+                        <span class="postStamp">{{comment.postTime}} ago</span>
+                    </div>
+                    <div class="comment-text">
+                        <span class="reply-to-username" *ngIf="comment.to">@{{comment.to}}</span>&nbsp;
+                        <span>{{comment.text}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
