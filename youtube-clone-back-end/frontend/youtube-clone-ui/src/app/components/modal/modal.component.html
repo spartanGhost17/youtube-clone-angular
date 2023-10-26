@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <ng-container id="start__modal_header" [ngTemplateOutlet]="headerTemplate"></ng-container>
-        <span (click)="closeModal()" id="end__modal_header" class="close">&times;</span>
+        <span (click)="closeModal()" id="end__modal_header" class="material-symbols-outlined close">close</span>
       </div>
       <div class="modal-body">
         <ng-container [ngTemplateOutlet]="bodyTemplate"></ng-container>
