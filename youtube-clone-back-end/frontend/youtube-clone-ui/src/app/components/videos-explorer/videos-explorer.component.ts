@@ -108,7 +108,8 @@ export class VideosExplorerComponent {
         timeStamp: '4 hours ago',
         thumbnailUrl: '../../../assets/Killowog.jpg',
         iconURL: '../../../assets/goku_god_mode.jpg',
-        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'
+        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4',
+        verified: true
       },
       {
         title: 'Tal Sinestro and The Yellow Lantern Corp',
@@ -171,7 +172,8 @@ export class VideosExplorerComponent {
         timeStamp: '4 hours ago',
         thumbnailUrl: '../../../assets/batman_and_superman_detective_comics.jpg',
         iconURL: '../../../assets/goku_god_mode.jpg',
-        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'
+        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4',
+        verified: true
       },
       //-------------------------------------------------------
       {
@@ -181,7 +183,8 @@ export class VideosExplorerComponent {
         timeStamp: '4 hours ago',
         thumbnailUrl: '../../../assets/superman_sits_on_clouds.jpg',
         iconURL: '../../../assets/goku_god_mode.jpg',
-        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'
+        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4',
+        verified: true
       },
       {
         title: 'Superman number #1',
@@ -190,7 +193,8 @@ export class VideosExplorerComponent {
         timeStamp: '4 hours ago',
         thumbnailUrl: '../../../assets/superman_number_1.jpg',
         iconURL: '../../../assets/goku_god_mode.jpg',
-        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'
+        videoURL: '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4',
+        verified: true
       },
     ];
   }

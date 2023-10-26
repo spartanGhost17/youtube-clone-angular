@@ -1,7 +1,9 @@
 <div class="list-row-wrapper" [ngStyle]="{'margin-left': sibarWidth==='72px'? '72px' : '0'}">
     <div class="video-list-container">
         <div class="video-list" *ngFor="let video of videos">
-            <app-video-card-basic [video]="video"></app-video-card-basic>
+            <app-video-card-basic 
+                [video]="video">
+            </app-video-card-basic>
         </div>
     </div>
 </div>
