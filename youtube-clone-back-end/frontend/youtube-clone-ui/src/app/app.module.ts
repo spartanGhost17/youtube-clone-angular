@@ -57,6 +57,7 @@ import { VideoCardBasicComponent } from './components/video-card-basic/video-car
 import { DragDropListComponent } from './components/drag-drop-list/drag-drop-list.component';
 import { StandardDropdownComponent } from './components/standard-dropdown/standard-dropdown.component';
 import { CommentComponent } from './components/comment/comment.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 registerLocaleData(uk);
@@ -118,7 +119,9 @@ registerLocaleData(uk);
     NzImageModule,
     NzDropDownModule,
     NzCheckboxModule,
-    NzPopoverModule
+    NzPopoverModule,
+    //this is angular material drag drop (segreate this into module export later as well)
+    DragDropModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }
