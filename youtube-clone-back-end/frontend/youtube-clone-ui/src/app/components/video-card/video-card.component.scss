@@ -1,55 +1,97 @@
 .video-card-container {
     display: flex;
-    width: 100%;
-    height: 9rem;
-    //background-color: darkorange;
-    justify-content: space-between;
+    width: fit-content;
+    height: fit-content;//6.5rem;
     padding: 2px;
 }
 
 .thumbnail-mini-player {
-    width: 45%;
+    min-width: 168px;
+    min-height: 94px;
     height: 100%;
-    //background-color: palegreen;
 }
 
 .metadata {
     display: block;
-    width: 55%;
+    width: 40%;//78%;
     height: 100%;
     padding-left: 10px;
-    //background-color: red
 }
 
 .channel-meta {
     display: flex;
-    width: 70%;
-    justify-content: space-between;
+    max-width: 150px;
+}
+
+.channel-meta > * {
+    margin-right: 5px;
 }
 
 .title {
-    font-size: 1.4rem;
-    line-height: 2rem;
+    margin: 0 0 4px 0;
+    font-family: "Roboto","Arial",sans-serif;
+    font-size: 1.2rem;
+    line-height: 1rem;
     font-weight: 500;
     overflow: hidden;
     display: block;
     max-height: 4rem;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     white-space: normal;
-    color: var(--yt-spec-text-primary);
-    -webkit-line-clamp: 2;
-    display: box;
-    display: -webkit-box;
-    margin-bottom: 24px;
-    background-color: pink;
 }
-//.title,
-.channel-info, .channel-meta, .channel-name, .likes, .post-time {
-    margin-top: 4px;
+
+.channel-info {
+    display: flex;
+}
+
+.channel-info, .channel-meta, .channel-name, .likes, .post-time, .description {
     height: fit-content;
 }
 
-.channel-name, .likes, .post-time {
-    color: var(--yt-spec-text-secondary)
+.channel-name, .likes, .post-time, .description {
+    color: var(--yt-spec-text-secondary);
+}
+
+.channel-name:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.description {
+    overflow: hidden;
+    display: block;
+    max-height: 4rem;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.round-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.metadata__top-container {
+    display: flex;
+    height: fit-content;
+    //background-color: red;
+}
+
+.metadata:hover .metadata__top-container .actions {
+    display: flex;
+}
+
+.actions {
+    display: none;
+    justify-content: space-between;
+    //background-color: orange;
 }
