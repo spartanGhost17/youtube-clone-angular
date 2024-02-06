@@ -3,10 +3,12 @@
 }
 
 .banner-container {
-    background-color: coral;
     height: 400px;
     min-height: 100px;
-    max-height: 400px;
+    max-height: 300px;
+    margin-top: 6px;
+    padding-left:  6%;
+    padding-right: 3.5%;
 }
 
 .banner-container .banner-img {
@@ -15,6 +17,7 @@
     object-fit: cover; /* Maintain aspect ratio and cover the entire div */
     top: 0;
     left: 0;
+    border-radius: 14px;
 }
 
 .channel-info {
@@ -103,6 +106,10 @@
     height: fit-content;
     min-height: 10px;
     border-radius: 20px;
+    padding-left:  6%;
+    padding-right: 3.5%;
+    //padding-right: 15%;
+    margin-left: 100px;
 }
 
 .nav-bar-container {
@@ -113,7 +120,8 @@
 
 .nav-bar-container, .channel-info, .sort-buttons {
     padding-left:  6%;
-    padding-right: 15%;
+    padding-right: 3.5%
+    //padding-right: 15%;
 }
 //.channel-videos-container
 .channel-videos-container {
@@ -131,7 +139,6 @@
     align-items: center;
     overflow-x: hidden;
     margin-bottom: 20px;
-    background-color: orange;
     height: 40px;
     width: 100%;
     z-index: 1;
@@ -156,4 +163,8 @@
 .active {
     background-color: var(--yt-color-active-btn-dark);
     color: black;
+}
+
+.channel-info {
+    height: fit-content;
 }

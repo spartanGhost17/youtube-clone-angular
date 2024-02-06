@@ -30,14 +30,14 @@ export class ChannelComponent {
 
 
     this.testItems =  [
-      {icon: 'playlist_play', text: 'Add to queue', function: ''},
-      {icon: 'schedule', text: 'Save to Watch Later', function: ''},
-      {icon: 'playlist_add', text: 'Save to playlist', function: ''},
-      {icon: 'delete', text: 'Remove from', function: ''},
-      {icon: 'download', text: 'Download', function: ''},
-      {icon: 'share', text: 'Share', function: ''},
+      {icon: 'playlist_play', text: 'Add to queue', action: () => {}},
+      {icon: 'schedule', text: 'Save to Watch Later', action: () => {}},
+      {icon: 'playlist_add', text: 'Save to playlist', action: () => {}},
+      {icon: 'delete', text: 'Remove from', action: () => {}},
+      {icon: 'download', text: 'Download', action: () => {}},
+      {icon: 'share', text: 'Share', action: () => {}},
       {divider: true},
-      {icon: 'image', text: 'Set as playlist thumbnail'}
+      {icon: 'image', text: 'Set as playlist thumbnail', action: () => {}}
     ]
 
 
