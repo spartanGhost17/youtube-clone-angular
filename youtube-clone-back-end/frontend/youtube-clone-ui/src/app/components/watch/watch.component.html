@@ -5,12 +5,16 @@
         <div #videoContainer class="video-container" [ngClass]="{'expanded': isCinemaMode}">
             <app-video></app-video>
         </div>
+        
         <div #recommendationContainer class="recommendations-container">
             <div class="recommended-video" *ngFor="let video of videos">
-                <app-video-card></app-video-card>
+                <app-video-card
+                    [showActions]="true"
+                    [size]="videoCardSize">
+                </app-video-card>
             </div>
         </div>
-        <div #interactionContainer class="interactions-container">
+        <div #interactionContainer class="interactions-container" [ngStyle]="{'width': videoContainerWidth}">
             <div class="metadata">
                 <div id="title" class="title">
                     <h1 class="text-primary">Grand Tourismo 5 : opening intro</h1>
@@ -29,20 +33,20 @@
                         <div class="ytcp-button subscribe-button">Subscribe</div>
                         <div class="interactive-buttons">
                             <div class="like">
-                                <div class="ytcp-button like-btn">
+                                <div class="ytcp-button like-btn" [appTooltip]="'Like'">
                                     <span class="material-symbols-outlined non-selectable">thumb_up</span>
                                     <span class="non-selectable">120K</span>
                                 </div>
-                                <div class="ytcp-button dislike-btn">
+                                <div class="ytcp-button dislike-btn" [appTooltip]="'Dislike'">
                                     <span class="material-symbols-outlined non-selectable">thumb_down</span>
                                 </div>
                             </div>
                             <!--<div class="ytcp-button dislike">Dislike</div>-->
-                            <div class="ytcp-button share">
+                            <div class="ytcp-button share" [appTooltip]="'Share'">
                                 <span class="material-symbols-outlined non-selectable">share</span>
                                 <span>Share</span>
                             </div>
-                            <div class="ytcp-button save">
+                            <div class="ytcp-button save" [appTooltip]="'Save'">
                                 <span class="material-symbols-outlined non-selectable">playlist_add</span>
                                 <span>Save</span>
                             </div>
@@ -72,7 +76,10 @@
                         </div>
                     </div>
                     <div class="comments-container">
-                        <app-comment></app-comment>
+                        <app-comments-holder 
+                            [comments]="comments"
+                        >    
+                        </app-comments-holder>
                     </div>
                 </div>
             </div>
