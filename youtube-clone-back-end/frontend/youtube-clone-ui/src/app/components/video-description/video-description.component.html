@@ -1,8 +1,12 @@
 <div class="description-container">
     <div (click)="showMore()" #content class="content">
         <p>166 views 26 jan 2022</p>
-        <p>video-description works!</p>
-        <a target="_blank" href="https://google.com">Go to google</a>
+        <p [innerHTML]="text | linkify | newlineToBr"></p>
     </div>
     <div (click)="showLess()" class="extra-info">{{SHOW_MORE}}</div>
 </div>
+
+
+<!--<p>166 views 26 jan 2022</p>
+<p>video-description works!</p>
+<a target="_blank" href="https://google.com">Go to google</a>-->
