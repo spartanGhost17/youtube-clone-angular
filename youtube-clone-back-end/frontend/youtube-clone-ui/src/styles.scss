@@ -70,7 +70,8 @@ html {
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    //font-family: 'Roboto', sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     background-color: var(--yt-color-theme-dark);
     color: var(--yt-spec-text-primary);
     height: 100%;
@@ -117,3 +118,5 @@ a {
     text-decoration: none;
     color: var(--yt-color-blue);
 }
+html, body { height: 100%; }
+//body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

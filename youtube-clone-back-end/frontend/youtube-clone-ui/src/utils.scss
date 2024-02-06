@@ -78,6 +78,8 @@ input[type="range"]::-ms-thumb {
     --frame-body-grow-width: 90px;
     --video-list-container-padding-left: 0px;
     --video-list-container-padding-right: 0px;
+
+    //--interactions-container-width: 71%;
 }
 
 .ytcp-button {
@@ -203,7 +205,7 @@ img {
 
     .frame-body {
         max-width: calc(457px - 247px);
-    }  
+    }
 }
 
 /*sm*/
@@ -218,7 +220,7 @@ img {
 
     .frame-body {
         max-width: calc(640px - 247px);
-    }  
+    }
 }
 
 /** TODO: fix this make sure it works*/
@@ -261,28 +263,28 @@ img {
 }
 
 /*xl*/
-@media (min-width: 1280px) {
+@media (min-width: 1270px) {
     //:root {
     //    --frame-body-default-width: 356px;
     //    --frame-body-grow-width: 192px;
     //}
     :root {
-        --view-port: 1280px;
+        --view-port: 1270px;
     }
 
     .container {
-        max-width: 1280px;
+        max-width: 1270px;
     }
 
     .frame-body {
-        max-width: calc(1280px - 247px);
+        max-width: calc(1270px - 247px);
     }
 
     .channel-videos-container {
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
- 
+
 /*2xl*/
 @media (min-width: 1540px) {
     :root {
@@ -311,7 +313,7 @@ img {
 
     .frame-body {
         max-width: calc(1645px - 247px);
-    }    
+    }
 }
 
 /* mozilla 4xl*/
@@ -327,7 +329,11 @@ img {
 
     .frame-body {
         max-width: calc(1700px - 247px);
-    }    
+    }
+    
+    //.interactions-container {
+    //    --interactions-container-width: 63.5%;
+    //}
 }
 
 @media (min-width: 1829px) {
@@ -359,6 +365,22 @@ img {
         max-width: calc(1920px - 247px);
     }    
 }
+
+@media (min-width: 2500px) {
+    :root {
+        --view-port: 2500px;
+        --video-interaction-top: 1050px;
+    }
+
+    .container {
+        max-width: 2500px;
+    }
+
+    .frame-body {
+        max-width: calc(2500px - 247px);
+    }    
+}
+
 
 @media (min-width: 2560px) {
     :root {
@@ -468,8 +490,8 @@ img {
 //1920px full HD displays
 @media (min-width: 1920px) {
     :root {
-        --video-list-container-padding-left: 250px;
-        --video-list-container-padding-right: 250px;
+        --video-list-container-padding-left: 340px;
+        --video-list-container-padding-right: 340px;
     }
 
     .video-list-container {
