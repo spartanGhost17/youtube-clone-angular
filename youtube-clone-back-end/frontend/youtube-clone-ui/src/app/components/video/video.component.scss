@@ -14,6 +14,7 @@
     background-color: black;//change this color later
     display: flex;
     justify-content: center;
+    border-radius: 10px;
     //margin-inline: auto;
 }
 
@@ -24,8 +25,8 @@
 }
 
 .video-container.theater {
-    max-height: 70vh;
-    //max-height: 95vh;
+    //max-height: 70vh;
+    max-height: 85vh;
 }
 
 .video-container.full-screen {
@@ -53,6 +54,7 @@ video {
     position: absolute;
     bottom: 0;
     background: linear-gradient(to top, rgba(0, 0, .75), transparent);
+    border-radius: 10px;
     width: 100%;
     aspect-ratio: 6 / 1;
     z-index: -1;//show behind everything

@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
 
@@ -28,6 +28,7 @@ export class VideoComponent {
   theaterMode: boolean = false;
   captions: boolean = false;
   isScrubbing: boolean = false;
+  isLooping: boolean = true;
   currentVolume: number = 1;
   videoDuration: string = '00:00';
   videoCurrentTime: string = '00:00';
@@ -40,7 +41,9 @@ export class VideoComponent {
 
   playbackRate: any;
   frameCaptureInterval: number = 1000 / 30;
-  
+  //
+  dropDownSettingsItems: any[] = [];
+
   //imports
   icons: Icons = new Icons();
   subtitles: string = this.icons.iconsPaths['subtitles'];
@@ -52,11 +55,19 @@ export class VideoComponent {
   @ViewChild('thumbnailImg') thumbnailIm: ElementRef<any>;
   @ViewChild('timelineContainer') timelineContainer: ElementRef<any>;
 
+  @Input() videoURL: string = '../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4';//'../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki.mp4';
+
   constructor(private componentUpdatesService: ComponentUpdatesService) {}
   
   ngOnInit() {
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d')!;
+
+    this.dropDownSettingsItems =  [
+      {icon: 'subtitles', text: 'Subtitles/CC', action: () => {}},
+      {icon: 'slow_motion_video', text: 'Playback speed', action: () => {}},
+      {icon: 'tune', text: 'Quality', action: () => {}},
+    ];
   }
 
   /**
@@ -93,7 +104,7 @@ export class VideoComponent {
   /**
    * keyboard events for keyboard shortcuts bindings
    */
-  @HostListener('document:keydown', ['$event'])
+  //@HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     const tagName = document.activeElement?.tagName.toLocaleLowerCase();
     if (tagName === 'input') return;//not want to trigger these on an input field
@@ -111,6 +122,7 @@ export class VideoComponent {
       //case 'escape':
       //  console.log('escape ')
       //  break;
+      
       case 't':
         this.toggleTheaterMode();
         break;
@@ -356,6 +368,20 @@ export class VideoComponent {
     const isHiden = this.captionText === 'hidden';
     this.captionText = isHiden ? 'showing' : 'hidden';
   }
+
+
+  restartVideo() {
+    //const video: HTMLVideoElement = this.video.nativeElement;
+    //this.video.nativeElement.currentTime = 0;
+    //this.togglePlay();
+  }
+
+  onVideoEnded() {
+    //this.video.nativeElement.pause()
+    // Video ended, you can handle looping logic here
+    //this.restartVideo();
+  }
+
 
   /**
    * seek to specific point on timeline if scrubbing
