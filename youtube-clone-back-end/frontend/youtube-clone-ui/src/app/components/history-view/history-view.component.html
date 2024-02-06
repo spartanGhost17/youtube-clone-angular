@@ -1,0 +1,17 @@
+<div class="history-container">
+    <div class="watched-content">
+        <div class="page-title">
+            <p>Watch history</p>
+        </div>
+        <div class="subtitle-day">
+            <p>Yesterday</p>
+        </div>
+        <div class="videos-container">
+            <div class="watched-video" *ngFor="let video of watchedVideos">
+                <app-video-card
+                    [id]="video">
+                </app-video-card>
+            </div>
+        </div> 
+    </div>
+</div>
