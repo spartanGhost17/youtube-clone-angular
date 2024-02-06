@@ -21,6 +21,7 @@ export class VideoCardComponent {
   @Input() size: string = 'large';//small or large
   dropDownItems: any[];
   tooltipContent: string = 'Remove from watch history';
+  description = "lfejefjejfjejfelfjelfjveljrlejrflkerfkelrkfelrkf dsjdsldlskdslkdskksdlk  lskdkslkdlsdklskdlsdklskdlksdlksdkds skdlskdlksd klsdkslkdsdlksdksdlkds kksld ksldkdlksdlklsdkldsksdlk";
   //recommendationCardHeight: string = '140px';
 
   constructor(private componentUpdatesService : ComponentUpdatesService, private router: Router) {}
