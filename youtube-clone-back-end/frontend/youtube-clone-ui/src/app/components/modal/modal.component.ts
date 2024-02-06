@@ -13,12 +13,12 @@ export class ModalComponent {
   @Input() bodyTemplate!: TemplateRef<any>;
   @Input() footerTemplate: TemplateRef<any>;
   @Input() show: boolean;
-  @Input() modalWidth: string = '85%';
+  @Input() modalWidth: string = '100%';//'85%';
   @Input() modalHeight: string = '100%';
-  @Input() color: string = 'transparent';
+  @Input() color: string = 'rgba(18, 18, 18, .8)';//'transparent';
   @Input() zIndex: string = '1';
   @Input() top: string = '0';
-  @Input() left: string = '200px';
+  @Input() left: string = '0px';//'200px';
 
   @Output() isShowUpdateEvent: EventEmitter<boolean> = new EventEmitter();
 
