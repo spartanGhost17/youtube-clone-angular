@@ -13,13 +13,16 @@ export class StandardDropdownComponent {
   @Input() iconRight: string;
   @Input() iconLeft: string;
   @Input() minWidth: string;
+  @Input() parentId: string;
+  @Input() childId: string;
+  @Input() icon: string = 'more_vert'; 
 
   toggleDropdown: boolean = false;
 
   @ViewChild('dropdown') dropdown: ElementRef<any>;
 
 
-      // HostListener to detect clicks anywhere in the document
+  // HostListener to detect clicks anywhere in the document
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const clickedInside = this.dropdown.nativeElement.contains(event.target);
