@@ -45,8 +45,8 @@
                     <ul>
                         <li *ngFor="let result of searchResults" (click)="search(result.text, 'results')">
                             <div class="result">
-                                <span class="material-symbols-outlined result__icon">search</span>
-                                <span class="result-text">{{result.text}}</span>
+                                <span class="material-symbols-outlined non-selectable">search</span>
+                                <span class="result-text non-selectable">{{result.text}}</span>
                             </div>
                         </li>
                     </ul>
