@@ -32,15 +32,25 @@
             </div>
         </div>
         <div id="center">
-            <div class="center-container" *ngIf="showSearchBar">
-                <form class="search-form" action="/search-results">
-                    <input [(ngModel)]="searchString" type="text"
-                        placeholder="Search"
-                        name="search">
-                    <button (keyup.enter)="search()" (click)="search()" class="ytcp-button search-button">
-                        <img [src]='ICON_SEARCH_LIGHT' alt="" [ngStyle]="{'height': '28px'}"/>
-                    </button>
-                </form>
+            <div class="search-container">
+                <div class="search-item-container">
+                    <div class="center-container search-box" *ngIf="showSearchBar">
+                        <div class="row">
+                            <input class="search-input" [innerText]="searchString" (ngModelChange)="onSearchStringUpdate($event)" [(ngModel)]="searchString"  type="text" id="input-box" placeholder="Search" autocomplete="off">
+                        </div>
+                    </div>
+                    <button (click)="search(searchString, 'button')"><span class="material-symbols-outlined ytcp-button search-button">search</span></button>
+                </div>
+                <div class="result-box" [ngStyle]="{'display': resultBoxDisplay}">
+                    <ul>
+                        <li *ngFor="let result of searchResults" (click)="search(result.text, 'results')">
+                            <div class="result">
+                                <span class="material-symbols-outlined result__icon">search</span>
+                                <span class="result-text">{{result.text}}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div id="end">

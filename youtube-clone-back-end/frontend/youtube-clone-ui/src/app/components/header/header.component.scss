@@ -3,10 +3,6 @@
     height: 50px;
 }
 
-/*.header-left-buttons {
-    border-radius: 100%;
-}*/
-
 nz-header {
     position: fixed;
     width: 100%;
@@ -16,7 +12,7 @@ nz-header {
 .header-container {
     position: fixed;
     width: 100%;
-    height: 80px; 
+    height: 80px;
 }
 
 .header-left-buttons-container {
@@ -51,17 +47,15 @@ nz-input-group{
 ///new css
 .header {
     height: 56px;
-    //width: 96.8%;    //padding: 0;
     max-width: calc(var(--view-port) - 12px);
     position: fixed; /* Stay in place */
-    //padding: 0 16px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    //background-color: aquamarine;
+    z-index: 1;
 }
 
 #start {
@@ -76,7 +70,6 @@ nz-input-group{
     border: 1px solid red;
     display: flex;
     align-items: center;
-    //border-radius: 30px;
     flex: 0 1 728px;
     
 }
@@ -96,30 +89,15 @@ nz-input-group{
     justify-content: space-evenly;
 }
 
-input[type='text'] {
-    width: 100%;
-}
-
-input[type='text']:focus {
-    outline: none;
-    border: none;
-    border-color: none;
-}
-
 .center-container {
     display: flex;
     width: 100%;
     border-radius: 20px;
     border: 1px solid var(--yt-color-scroll-bar-dark);
     height: 80%;
-    padding-top: 6px;
-    padding-bottom: 6px;
     align-items: center;
+    background-color: gray;
     
-}
-
-.search-button {
-    border-radius: 0 20px 20px 0;
 }
 
 .search-form {
@@ -164,6 +142,103 @@ input[type='text']:focus {
 .yt-logo {
     width: 120px;
 }
+
+//new code
+.row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    width: 100%;
+    height: 40px;
+}
+
+.search-box {
+    width: 95%;
+    margin: auto;
+    padding: 0px 0px 0px 10px;
+    border-radius: 40px 0 0 40px;
+    border: 2px solid rgba(34, 34, 34, 1);
+    background-color: transparent;
+}
+
+.search-item-container {
+    display: flex;
+    height: fit-content;
+    width: 100%;
+    padding: 0px 10px;
+    margin-bottom: 4px;
+}
+
+.search-input {
+    flex: 1;
+    width: 100%;
+    font-size: 15px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border: none;
+    border-color: none;
+}
+
+.search-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 45px;
+    border-end-end-radius: 45px;
+    width: 70px;
+    height: 44px;
+}
+
+.search-container {
+    flex: 1;
+    padding-top: 5px;
+}
+
+.result-box {
+    height: fit-content;
+    max-height: 400px;
+    padding: 0px 0px 10px 0px;
+}
+
+.result-box ul {
+    width: 100%;
+    list-style-type: none;
+    border-top: 1px;
+    background-color: var(--yt-color-innactive-btn-dark);
+    margin: 0px 10px 0px 10px;
+    padding: 14px 0px;
+    border-radius: 10px;
+}
+
+.result-box ul li {
+    
+    //background-color: var(--yt-color-innactive-btn-dark);
+    //background-color: var(--yt-color-innactive-button-hover);
+    //padding: 10px 0px;
+}
+
+.result {
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0px 10px;
+}
+
+.result > * {
+    cursor: default;
+}
+
+.result:hover {
+    background-color: var(--yt-color-innactive-button-hover);
+}
+
+.result-text {
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
 //add media queries for other view ports
 
 /*xs*/

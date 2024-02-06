@@ -11,6 +11,8 @@ export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
   collapseSideBar: boolean = false;
   searchString: string = '';
+  searchResults: any[] = [];
+  resultBoxDisplay: string = 'none';
   @Input() showSearchBar: boolean = true;
   @Input() openModal: () => void;
   @Output() uploadVideoButtonClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -26,6 +28,21 @@ export class HeaderComponent {
   
   constructor(private componentUpdatesService :ComponentUpdatesService) {}
 
+  ngOnInit() : void {
+    this.searchResults = [
+      { text: 'some text 1'},
+      { text: 'some text 2'},
+      { text: 'some text 3'},
+      { text: 'some text 4'},
+      { text: 'some text 5'},
+      { text: 'some text 6'},
+      { text: 'some text 7'},
+      { text: 'some text 8'},
+      { text: 'some text 9'},
+      { text: 'some text 10'},
+    ]
+  }
+
   ngAfterViewInit() {
     console.log("in frame construct afterViewInit =====> ", this.collapseSideBar);
     this.componentUpdatesService.sideBarCollapsedEmit(this.collapseSideBar);
@@ -37,9 +54,32 @@ export class HeaderComponent {
     this.componentUpdatesService.headerAddVideoEmit(true);
   }
 
-  search() {
-    console.log("search string ", this.searchString);
+  /**
+   * initiate search
+   * @param searchString 
+   * @param origin 
+  */
+  search(searchString: string, origin: string) {
+    console.log("search string ", searchString);
+    if(origin === 'results') {
+      this.searchString = searchString;
+    }
+    this.resultBoxDisplay = 'none';
     this.searchTriggered.emit(this.searchString);
+  }
+
+  /**
+   * Hide or show result box
+   * @param event search string
+  */
+  onSearchStringUpdate(event: any) {
+    if(event.length >= 1) {
+      this.resultBoxDisplay = 'flex';
+    }
+    else {
+      this.resultBoxDisplay = 'none';
+    }
+    console.log("onSearchStringUpdate ", event, " length ");
   }
 
   /**
