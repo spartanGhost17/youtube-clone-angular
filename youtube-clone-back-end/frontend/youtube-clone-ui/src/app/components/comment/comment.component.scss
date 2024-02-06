@@ -1,11 +1,12 @@
 .comment-container {
+    width: 100%;
     display: flex;
     padding: 20px;
 }
 
 .user-icon-container {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     margin-right: 20px;
 }
 
@@ -14,6 +15,10 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
+}
+
+.user-info {
+    width: 88%;
 }
 
 .interactions {
@@ -56,7 +61,6 @@
 
 .reply-input-section {
     display: flex;
-    //background-color: bisque;
 }
 
 .reply-input-section__icon-container {
@@ -74,10 +78,27 @@
 
 .text-area-container {
     width: 100%;
-    //background-color: red;
     height: auto;
     border-bottom: 1px solid grey;
 }
+
+.actions, .reply-comments__actions {
+    background-color: red;
+    display: none;
+}
+
+.comment-container:hover > .actions {
+    display: block;
+}
+
+//.comment-container .user-info .reply-comments:hover + .actions {
+//    display: none;
+//}
+
+.sub-comment-container:hover > .reply-comments__actions {
+    display: block;
+}
+
 
 /*.custom-textarea {
     width: 100%;
@@ -152,14 +173,18 @@ textarea {
 
 .sub-comment-container {
     display: flex;
+    width: 100%;
     margin-bottom: 10px;
+}
+
+.reply-comments__subcomments {
+    width: 88%;
 }
 
 .reply-comments__icon {
     width: 30px;
     height: 30px;
     margin-right: 20px;
-    //background-color: pink;
 }
 
 .reply-comments__icon img {
@@ -179,8 +204,13 @@ textarea {
 
 .comment-text {
     display: flex;
+    width: 100%;
 }
 
 .reply-to-username {
     color: var(--yt-color-blue);
+}
+
+.reply-container {
+    width: 100%;
 }

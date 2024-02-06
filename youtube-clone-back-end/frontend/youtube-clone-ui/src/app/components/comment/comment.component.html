@@ -1,62 +1,109 @@
-<div class="comment-container">
+<div class="comment-container" *ngIf="comment">
     <div class="user-icon-container">
-        <img [src]="imageURL" alt="batman and superman standing next to each other">
+        <img [src]="comment.imageURL" alt="batman and superman standing next to each other">
     </div>
     <div class="user-info">
         <div class="user-id">
-            <span>@{{username}}</span>&nbsp;
-            <span class="postStamp">{{postTime}} ago</span>
+            <span>@{{comment.userId}}</span>&nbsp;
+            <span class="postStamp">{{comment.postTime}} ago</span>
         </div>
         <div class="comment-text">
-            <span>{{commentText}}</span>
+            <span>{{comment.commentText}}</span>
         </div>
         <div class="interactions">
-            <button class="ytcp-button like" (click)="onLikeClicked()">
-                <span class="material-symbols-outlined" [style.font-variation-settings]="like? FILL_ICON: EMPTY_FILL_ICON">thumb_up</span>
+            <button class="ytcp-button like" (click)="onLikeClicked(comment)" [appTooltip]="'Like'">
+                <span class="material-symbols-outlined" [style.font-variation-settings]="comment.like? FILL_ICON: EMPTY_FILL_ICON">thumb_up</span>
             </button>
-            <span>{{likeCount}}</span>
-            <button class="ytcp-button dislike" (click)="onDislikeClicked()">
-                <span class="material-symbols-outlined" [style.font-variation-settings]="dislike? FILL_ICON: EMPTY_FILL_ICON">thumb_down</span>
+            <span>{{comment.likeCount}}</span>
+            <button class="ytcp-button dislike" (click)="onDislikeClicked(comment)" [appTooltip]="'Dislike'">
+                <span class="material-symbols-outlined" [style.font-variation-settings]="comment.dislike? FILL_ICON: EMPTY_FILL_ICON">thumb_down</span>
             </button>
-            <button class="ytcp-button reply-btn" (click)="onShowClicked()">
+            <button class="ytcp-button reply-btn" (click)="onShowClicked(comment)">
                 <span class="reply">Reply</span>
             </button>
         </div>
-        <div *ngIf="showReply">
+        <div class="reply-container" *ngIf="comment.showReply">
             <div class="reply-input-section">
                 <div class="reply-input-section__icon-container">
-                    <img [src]="imageURL" alt="batman and superman standing next to each other">
+                    <img [src]="user.iconURL" alt="batman and superman standing next to each other">
                 </div>
                 <div class="text-area-container">
                     <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>
                 </div>
             </div>
             <div class="comments-buttons">
-                <button class="ytcp-button" (click)="onCancelReply()">Cancel</button>
-                <button class="ytcp-button" (click)="onReply()">Reply</button>
+                <button class="ytcp-button" (click)="onCancelReply(comment)">Cancel</button>
+                <button class="ytcp-button" (click)="onReply('comment', comment)">Reply</button>
             </div>
         </div>
-        <div class="ytcp-button reply-button-container" (click)="onShowReplyClicked()">
+        <div *ngIf="comment.subComments!.length>0" class="ytcp-button reply-button-container" (click)="onShowReplyClicked()">
             <span class="material-symbols-outlined reply-button-container__icon non-selectable" [ngClass]="{'rotate-icon': showReplies}">arrow_drop_down</span>
-            <span class="reply-button-container__reply-count non-selectable">{{replyCount}} replies</span>
+            <span class="reply-button-container__reply-count non-selectable">{{comment.subComments?.length}} replies</span>
         </div>
+
         <div *ngIf="showReplies" class="reply-comments">
-            <div class="sub-comment-container" *ngFor="let comment of comments">
+            <div class="sub-comment-container" *ngFor="let subComment of comment.subComments">
                 <div class="reply-comments__icon">
-                    <img [src]="comment.icon" alt="">
+                    <img [src]="subComment.iconURL" alt="">
                 </div>
                 <div class="reply-comments__subcomments">
                     <div class="user-id">
-                        <span>@{{comment.userId}}</span>&nbsp;
-                        <span class="postStamp">{{comment.postTime}} ago</span>
+                        <span>@{{subComment.userId}}</span>&nbsp;
+                        <span class="postStamp">{{subComment.postTime}} ago</span>
                     </div>
                     <div class="comment-text">
-                        <span class="reply-to-username" *ngIf="comment.to">@{{comment.to}}</span>&nbsp;
-                        <span>{{comment.text}}</span>
+                        <p>
+                            <span class="reply-to-username" *ngIf="subComment.to">@{{subComment.to}}{{' '}}</span>{{subComment.text}}
+                        </p>
                     </div>
+                    <!-- subcomment interractions -->
+                    <div class="interactions">
+                        <button class="ytcp-button like" (click)="onLikeClicked(subComment)" [appTooltip]="'Like'">
+                            <span class="material-symbols-outlined" [style.font-variation-settings]="subComment.like? FILL_ICON: EMPTY_FILL_ICON">thumb_up</span>
+                        </button>
+                        <span>{{subComment.likeCount}}</span>
+                        <button class="ytcp-button dislike" (click)="onDislikeClicked(subComment)" [appTooltip]="'Dislike'">
+                            <span class="material-symbols-outlined" [style.font-variation-settings]="subComment.dislike? FILL_ICON: EMPTY_FILL_ICON">thumb_down</span>
+                        </button>
+                        <button class="ytcp-button reply-btn" (click)="onShowClicked(subComment)">
+                            <span class="reply">Reply</span>
+                        </button>
+                    </div>
+                    <!-- sub comment reply -->
+                    <div *ngIf="subComment.showReply">
+                        <div class="reply-input-section">
+                            <div class="reply-input-section__icon-container">
+                                <img [src]="user.iconURL" alt="batman and superman standing next to each other">
+                            </div>
+                            <div class="text-area-container">
+                                <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>
+                            </div>
+                        </div>
+                        <div class="comments-buttons">
+                            <button class="ytcp-button" (click)="onCancelReply(subComment)">Cancel</button>
+                            <button class="ytcp-button" (click)="onReply('subComment', subComment)">Reply</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="reply-comments__actions">
+                    <app-standard-dropdown
+                        [parentId]="comment.id!"
+                        [childId]="subComment.id!" 
+                        [items]="dropDownItems" 
+                        [circle]="true">
+                    </app-standard-dropdown>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Actions button on main comment (top level) -->
+    <div class="actions">
+        <app-standard-dropdown 
+            [parentId]="comment.id!"
+            [items]="dropDownItems" 
+            [circle]="true">
+        </app-standard-dropdown>
     </div>
 
 </div>
