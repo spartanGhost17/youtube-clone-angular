@@ -1,21 +1,39 @@
 <div *ngIf="!hoverPanel"  class="container panel" [ngStyle]="{'width': collapse? MIN_WIDTH: MAX_WIDTH, 'padding': collapse? '0px':'4px', 'overflow-y': collapse? 'hidden': 'visible'}">
+    <div class="icon-section" *ngIf="user">
+        <div class="icon-container">
+            <img [src]="user.iconURL" alt=""/>
+        </div>
+        <div class="icon-text" *ngIf="!collapse">
+            <span>Your channel</span>
+        </div>
+        <div class="icon-text text-secondary" *ngIf="!collapse">
+            <p>{{user.userId}}</p>
+        </div>
+    </div>
     <div class="panel-section">
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners" [ngClass]="{'strecth' : !collapse, 'collapse': collapse, 'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[0]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
-                <img *ngIf="buttonOpt.iconType !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
-                <span *ngIf="buttonOpt.iconType === 'google'" class="material-symbols-outlined">{{buttonOpt.icon}}</span>
+                <img *ngIf="buttonOpt.provider !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
+                <span *ngIf="buttonOpt.provider === 'google'" class="material-symbols-outlined" 
+                    [style.font-variation-settings]="buttonOpt.type==='outlined'? EMPTY_FILL_ICON : FILL_ICON"
+                    [style.color]="buttonOpt.color">{{buttonOpt.icon}}</span>
             </div>
-            <div class="desc-text non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start'}">
+            <div class="desc-text non-selectable" 
+                [ngStyle]="{'justify-content': collapse? 'center': 'flex-start'}">
                 <p [ngClass]="{'shrink-desc-text': collapse}">{{buttonOpt.text}}</p>
             </div>
         </div>
     </div>
 
-    <div class="panel-section" *ngIf="!collapse">
+    <div class="panel-section" *ngIf="!collapse && sections.length>=2">
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners strecth" [ngClass]="{'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[1]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
-                <img *ngIf="buttonOpt.iconType !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
-                <span *ngIf="buttonOpt.iconType === 'google'" class="material-symbols-outlined">{{buttonOpt.icon}}</span>
+                <img *ngIf="buttonOpt.provider !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
+                <span *ngIf="buttonOpt.provider === 'google'" class="material-symbols-outlined" 
+                    [style.font-variation-settings]="buttonOpt.type==='outlined'? EMPTY_FILL_ICON : FILL_ICON"
+                    [style.color]="buttonOpt.color">
+                    {{buttonOpt.icon}}
+                </span>
             </div>
             <div class="desc-text non-selectable" [ngStyle]="{'justify-content': collapse? 'end': 'flex-start'}">
                 <p>{{buttonOpt.text}}</p>
@@ -23,7 +41,7 @@
         </div>
     </div>
 
-    <div class="panel-section" *ngIf="!collapse">
+    <div class="panel-section" *ngIf="!collapse && sections.length>=3">
         <h3>Subscriptions</h3>
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners strecth" [ngStyle]="{'height':'50px', 'padding': '10px'}" [ngClass]="{'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[2]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
@@ -44,8 +62,12 @@
     <div class="panel-section">
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners" [ngClass]="{'strecth' : !collapse, 'collapse': collapse, 'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[0]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
-                <img *ngIf="buttonOpt.iconType !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
-                <span *ngIf="buttonOpt.iconType === 'google'" class="material-symbols-outlined">{{buttonOpt.icon}}</span>
+                <img *ngIf="buttonOpt.provider !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
+                <span *ngIf="buttonOpt.provider === 'google'" class="material-symbols-outlined" 
+                    [style.font-variation-settings]="buttonOpt.type==='outlined'? EMPTY_FILL_ICON : FILL_ICON"
+                    [style.color]="buttonOpt.color">
+                    {{buttonOpt.icon}}
+                </span>
             </div>
             <div class="desc-text non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start'}">
                 <p [ngClass]="{'shrink-desc-text': collapse}">{{buttonOpt.text}}</p>
@@ -53,11 +75,15 @@
         </div>
     </div>
 
-    <div class="panel-section" *ngIf="!collapse">
+    <div class="panel-section" *ngIf="!collapse && sections.length>=2">
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners strecth" [ngClass]="{'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[1]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
-                <img *ngIf="buttonOpt.iconType !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
-                <span *ngIf="buttonOpt.iconType === 'google'" class="material-symbols-outlined">{{buttonOpt.icon}}</span>
+                <img *ngIf="buttonOpt.provider !== 'google'" [src]="buttonOpt.icon" [alt]="buttonOpt.text"/>
+                <span *ngIf="buttonOpt.provider === 'google'" class="material-symbols-outlined" 
+                    [style.font-variation-settings]="buttonOpt.type==='outlined'? EMPTY_FILL_ICON : FILL_ICON"
+                    [style.color]="buttonOpt.color">
+                    {{buttonOpt.icon}}
+                </span>
             </div>
             <div class="desc-text non-selectable" [ngStyle]="{'justify-content': collapse? 'end': 'flex-start'}">
                 <p>{{buttonOpt.text}}</p>
@@ -65,7 +91,7 @@
         </div>
     </div>
 
-    <div class="panel-section" *ngIf="!collapse">
+    <div class="panel-section" *ngIf="!collapse && sections.length>=3">
         <h3>Subscriptions</h3>
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners strecth" [ngStyle]="{'height':'50px', 'padding': '10px'}" [ngClass]="{'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[2]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">

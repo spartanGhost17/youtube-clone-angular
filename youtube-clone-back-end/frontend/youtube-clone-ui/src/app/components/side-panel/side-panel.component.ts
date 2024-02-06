@@ -14,8 +14,11 @@ export class SidePanelComponent {
 
   MIN_WIDTH: string = '72px';
   MAX_WIDTH: string = '240px';
+  @Input() sections: any[];
+  @Input() user: any;
 
-  icons: Icons = new Icons();
+  //@Input() userIconURL:string = '../../../assets/justice_league.jpg'
+  /*icons: Icons = new Icons();
 
   ICON_HOME: string = '../'+this.icons.iconsPaths['home-light'];
   ICON_HISTORY: string = '../'+this.icons.iconsPaths['history-light']
@@ -29,11 +32,13 @@ export class SidePanelComponent {
 
   ICON_USER: string = '../../../assets/goku.jpg';
 
-
-  sections: any[];
+  @Input() sections: any[];
   section1: any[];
   section2: any[];
-  subcribed_channels: any[];
+  subcribed_channels: any[];*/
+
+  FILL_ICON: string = `'FILL' 1, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
+  EMPTY_FILL_ICON: string = `'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
     private componentUpdatesService :ComponentUpdatesService) {
@@ -43,39 +48,6 @@ export class SidePanelComponent {
    */
   ngOnInit() {
     console.log("INITIALIZING DRAWER...")
-    this.section1 = [
-      {'isActive':true, text: 'Home', icon: 'home', iconType: 'google', navigateTo: 'explore', sidebarType: 'side'},//this.ICON_HOME
-      {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, iconType: 'default', navigateTo: '', sidebarType: 'side'},//
-      {'isActive':false, text: 'Subscriptions', icon: 'subscriptions', iconType: 'google', navigateTo: 'playlist', sidebarType: 'side'}//this.ICON_SUBSCRIPTION
-    ];
-  
-    this.section2 = [
-      {'isActive':false, text: 'Library', icon: 'video_library', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_LIBRARY_VIDEO
-      {'isActive':false, text: 'History', icon: 'history', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_HISTORY
-      {'isActive':false, text: 'Your videos', icon: 'slideshow', iconType: 'google', navigateTo: 'dashboard', sidebarType: 'side'},//this.ICON_LIBRARY
-      {'isActive':false, text: 'Watch Later', icon: 'schedule', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_WATCH_LATER
-      {'isActive':false, text: 'Liked Videos', icon: 'thumb_up', iconType: 'google', navigateTo: '', sidebarType: 'side'},//this.ICON_LIKE
-    ];
-  
-    this.subcribed_channels = [
-      {'isActive':false, text: 'One Piece', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'DBZ Hollo', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 3', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel4777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 5', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 6', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 7', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 8', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 9', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel 10', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Channel4 about ben solo  777777777777777777777777 7777777777777777777777777777777', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Cartoon Network kids', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'Double Champ ent.', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-      {'isActive':false, text: 'WWE', channel_user_icon: this.ICON_USER, icon_right: this.ICON_RADIO_SIGNAL, navigateTo: '', sidebarType: 'side'},
-    ];
-  
-
-    this.sections = [this.section1, this.section2, this.subcribed_channels];
 
     this.componentUpdatesService.sideBarType$.subscribe((sidebarType) => {
       if (sidebarType === 'side') {
@@ -112,7 +84,7 @@ export class SidePanelComponent {
    * @param button 
    */
   makeButtonActive(button: any) {
-    console.log(this.section1.indexOf(button));
+    //console.log(this.section1.indexOf(button));
     for(const section of this.sections) {
       this.activeButtonHelper(button, section);
     }
@@ -128,18 +100,60 @@ export class SidePanelComponent {
       if(section.includes(button)) {
         if(i === section.indexOf(button)){
           section[i].isActive = true;
+          section[i].type = 'fill';
+
+          console.log("Active button \n\n\n");
+          console.log(section[i]);
+          
+
           console.log("navigate to upload-video");
           this.componentUpdatesService.sideBarTypeUpdate(section[i].sidebarType);
-          //const queryParams = { id: '123' };
-          //this.router.navigate([relativePath], { relativeTo: this.route, queryParams }); -> can add query params
-          this.router.navigate([section[i].navigateTo],{relativeTo:this.activatedRoute});
+          
+          let params = {};
+          //add params
+          if(section[i].playlistName) {
+            params = {
+              relativeTo:this.activatedRoute,
+              queryParams: { list: section[i].playlistName }, // Replace 'yourListValueHere' with the actual value
+              queryParamsHandling: 'merge' // This ensures that existing query parameters are preserved
+            }
+          }
+          else {
+            params = {
+              relativeTo:this.activatedRoute
+            }
+          }
+          
+          if(!section[i].newTab) {
+            if(section[i].isChannel) {
+              this.router.navigate([`${section[i].navigateTo}${section[i].text}`]);
+            }
+            else {
+              console.log("navigate to ", section[i].navigateTo)
+              if(Object.keys(params).length > 0) {
+                this.router.navigate([section[i].navigateTo], params);
+              }
+              else {
+                this.router.navigate([section[i].navigateTo]);
+              }
+              
+            }
+          }
+          else {
+            //this.router.navigate([section[i].navigateTo]);
+            //this.router.navigateByUrl(section[i].navigateTo);
+            // Open the link in a new tab
+            window.open(`${section[i].navigateTo}`, '_blank');
+          }
         }
         else {
           section[i].isActive = false;
+          section[i].type = 'outlined';
         }
       }
       else {
         section[i].isActive = false;
+        section[i].type = 'outlined';
       }
     }
   }
