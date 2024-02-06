@@ -1,0 +1,26 @@
+<div class="comments-holder">
+    <div class="input-container">
+        <div class="icon-text-container">
+            <div class="user-icon-container">
+                <img [src]="user.iconURL" alt="batman and superman standing next to each other">
+            </div>
+            <div class="text-area-container">
+                <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>
+            </div>
+        </div>
+        <div class="comments-buttons">
+            <button class="ytcp-button" (click)="onCancelReply()">Cancel</button>
+            <button class="ytcp-button" (click)="onReply()">Reply</button>
+        </div>
+    </div>
+    <div class="comment-item" *ngFor="let comment of comments">
+        <app-comment
+            [comment]="comment"
+            [commentList]="comments"
+            [user]="user"
+            (commentUpdate)="onCommentUpdate($event, comment)"
+            [ngStyle]="{'width': '100%'}"
+        >
+        </app-comment>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+.comments-holder {
+    display: block;
+    height: fit-content;
+    padding-top: 10px;
+    background-color: var(--yt-color-theme-dark);
+}
+
+.comment-item {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-container {
+    padding-left: 18px;
+    padding-top: 0;
+}
+
+.icon-text-container {
+    display: flex;
+    width: 100%;
+}
+
+.user-icon-container {
+    width: 50px;
+    height: 50px;
+}
+
+.user-icon-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+textarea {
+    width: 100%;
+    background-color: transparent;
+    font-size: 0.85rem;
+    line-height: 14px;
+    margin-bottom: 12px;
+    padding: 10px;
+    resize: none;
+    outline: none;
+    border: none;
+    border-color: none;
+}
+
+.text-area-container {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid grey;
+    padding-top: 10px;
+
+}
+
+.comments-buttons {
+    display: flex;
+    margin-top: 10px;
+    justify-content: flex-end;
+}
+
+.comments-buttons > * {
+    border-radius: 20px;
+}
+
+.comments-buttons button:last-child {
+    margin-left: 10px;
+}
