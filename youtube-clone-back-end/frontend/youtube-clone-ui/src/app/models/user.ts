@@ -1,8 +1,9 @@
 export interface User {
     id: string;
-    firstName: string;
-    lastName: string;
-    emailAddress: string;
+    imageURL?: string;
+    firstName?: string;
+    lastName?: string;
+    emailAddress?: string;
     profilePictureURL?: string;
     subscribedToUsers?: string[];//ids of user being subscribed to
     subscribers?: string[];//ids of user currently subscribed
