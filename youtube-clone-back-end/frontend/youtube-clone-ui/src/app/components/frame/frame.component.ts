@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
 
 @Component({
@@ -9,6 +9,8 @@ import { ComponentUpdatesService } from '../../services/app-updates/component-up
 export class FrameComponent {
   sidebarOpen = false;
   sidebarType: string;
+  @Input() sideMenuOptions: any[] = [];
+  @Input() user: any;
   
   constructor(private componentUpdatesService: ComponentUpdatesService) { 
   }
