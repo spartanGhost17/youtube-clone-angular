@@ -38,7 +38,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ChipsComponent } from './components/chips/chips.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
-import { ContainerBgGradiantDirective } from './directives/container-bg-gradiant.directive';
+import { ContainerBgGradiantDirective } from './directives/background-gradiant/container-bg-gradiant.directive';
 import { PlaylistMetadataComponent } from './components/playlist-metadata/playlist-metadata.component';
 import { SidePanelComponent } from './components/side-panel/side-panel.component';
 import { FrameComponent } from './components/frame/frame.component';
@@ -58,6 +58,16 @@ import { DragDropListComponent } from './components/drag-drop-list/drag-drop-lis
 import { StandardDropdownComponent } from './components/standard-dropdown/standard-dropdown.component';
 import { CommentComponent } from './components/comment/comment.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CommentsHolderComponent } from './components/comments-holder/comments-holder.component';
+import { HistoryViewComponent } from './components/history-view/history-view.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TooltipDirective } from './directives/tooltip/tooltip.directive';
+import { LinkifyPipe } from './pipes/linkify/linkify.pipe';
+import { NewlineToBrPipe } from './pipes/newline-to-br/newline-to-br.pipe';
+import { NewlineToSpacePipe } from './pipes/newline-to-space/newline-to-space.pipe';
+import { SubscriptionsViewComponent } from './components/subscriptions-view/subscriptions-view.component';
+import { HomeExplorerViewComponent } from './components/home-explorer-view/home-explorer-view.component';
+import { DashboardViewComponent } from './pages/dashboard-view/dashboard-view.component';
 
 
 registerLocaleData(uk);
@@ -94,6 +104,15 @@ registerLocaleData(uk);
     DragDropListComponent,
     StandardDropdownComponent,
     CommentComponent,
+    CommentsHolderComponent,
+    HistoryViewComponent,
+    TooltipDirective,
+    LinkifyPipe,
+    NewlineToBrPipe,
+    NewlineToSpacePipe,
+    SubscriptionsViewComponent,
+    HomeExplorerViewComponent,
+    DashboardViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,6 +141,7 @@ registerLocaleData(uk);
     NzPopoverModule,
     //this is angular material drag drop (segreate this into module export later as well)
     DragDropModule,
+    MatTooltipModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }
