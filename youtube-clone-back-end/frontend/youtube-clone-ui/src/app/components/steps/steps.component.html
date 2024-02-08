@@ -1,0 +1,26 @@
+<div class="steps-container" [ngStyle]="{'height': templates? '100%' : 'fit-content'}">
+    <div class="progress-container">
+        <div #progress class="progress" id="progress" [ngStyle]="{'width': progressBarLength}"></div>
+        <div class="circle" (click)="onStepClicked(i)" *ngFor="let s of steps; index as i">
+            <div #step class="meta-container">
+                <div class="description-container">
+                    <span class="description" [ngClass]="{'active-text': currentActive === i}">{{s.text}}</span>
+                </div>
+                <div class="icon">
+                    <span class="material-symbols-outlined non-selectable" *ngIf="(s.icon && currentActive <= i)">{{s.icon}}</span>
+                    <span class="material-symbols-outlined" *ngIf="((s.icon || !s.icon) && currentActive > i)">check_circle</span>
+
+                    <div class="circle-non-icon" *ngIf="(!s.icon && currentActive < i)"></div>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="!s.icon && currentActive === i">radio_button_checked</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="steps-content-container" !==>
+        <div class="steps-content-container__content" *ngFor="let stepTemplate of templates; index as tpIdx">
+            <ng-container *ngIf="currentActive === tpIdx" [ngTemplateOutlet]="stepTemplate"></ng-container>
+        </div>
+    </div>-->
+    <!--<button #prev class="ytcp-button btn" id="prev" (click)="onPrev()">prev</button>
+    <button #next class="ytcp-button btn" (click)="onNext()" id="next">next</button>-->
+</div>

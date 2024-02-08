@@ -68,6 +68,8 @@ import { NewlineToSpacePipe } from './pipes/newline-to-space/newline-to-space.pi
 import { SubscriptionsViewComponent } from './components/subscriptions-view/subscriptions-view.component';
 import { HomeExplorerViewComponent } from './components/home-explorer-view/home-explorer-view.component';
 import { DashboardViewComponent } from './pages/dashboard-view/dashboard-view.component';
+import { StepsComponent } from './components/steps/steps.component';
+import { VideoChecksComponent } from './components/upload-video-view/video-checks/video-checks.component';
 
 
 registerLocaleData(uk);
@@ -113,6 +115,8 @@ registerLocaleData(uk);
     SubscriptionsViewComponent,
     HomeExplorerViewComponent,
     DashboardViewComponent,
+    StepsComponent,
+    VideoChecksComponent,
   ],
   imports: [
     BrowserModule,
