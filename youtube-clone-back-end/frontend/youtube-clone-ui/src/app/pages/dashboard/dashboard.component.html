@@ -29,9 +29,12 @@
   </div>
 </div>
 
+<!---->
+
 <!--upload video modal-->
 <app-modal *ngIf="isShowModal"
   [show]="isShowModal"
+  [modalWidth]="'960px'"
   [headerTemplate]="header"
   [bodyTemplate]="body"
   [footerTemplate]="footer"
@@ -39,11 +42,38 @@
 </app-modal>
 
 <ng-template #header>
-    <h2 class="text-primary">Video Title</h2>
+  <h2 class="text-primary" *ngIf="video.title.length<=0">Video Title</h2>
+  <h2 class="text-primary" *ngIf="video.title.length>0">{{video.title}}</h2>
 </ng-template>
 
 <ng-template #body>
-  <div class="steps">
+  <div class="modal-content-container">
+    <div class="steps_">
+      <app-steps 
+        (activeSection)="onModalActiveSessionChange($event)"
+        [currentActive]="current">
+      </app-steps>
+    </div>
+    <div class="modal-content">
+      <app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
+      <app-upload-video-metadata *ngIf="showVideoDetailSteps && current === 0" 
+        (videoTitleChanged)="videoTitleChanged($event)"
+        [videoFileName]="staticTitle"
+        [videoURL]="videoId"
+        [video]="video"
+        [playlists]="playlistSelection"
+        [categories]="categorySelection"
+        (playlistUpdated)="onPlaylistUpdated($event)"
+        (categoriesUpdated)="onCategoriesUpdated($event)">
+      </app-upload-video-metadata>
+      <app-video-elements *ngIf="showVideoDetailSteps && current===1"></app-video-elements>
+      <app-video-checks *ngIf="showVideoDetailSteps && current === 2"></app-video-checks>
+      <app-video-visibility *ngIf="showVideoDetailSteps && current === 3"
+        (selected)="onVisibilitySelected($event)">
+      </app-video-visibility>
+    </div>
+  </div>
+  <!--<div class="steps">
     <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
       <nz-step nzTitle="Details"></nz-step>
       <nz-step nzTitle="Video Elements"></nz-step>
@@ -52,19 +82,45 @@
     </nz-steps>
   </div>
   <div class="data-views">
-    <!--<app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>-->
-    <app-upload-video (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
+    <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>
+  </div>-->
+      <!--<app-upload-video (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>-->
     <!--<app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
     <app-upload-video-metadata *ngIf="showVideoDetailSteps && current===0" (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>
     <app-video-elements *ngIf="showVideoDetailSteps && current===1"></app-video-elements>-->
     <!--<p>Some text in the Modal Body</p>
     <p>Some other text...</p>-->
-  </div>
 
 </ng-template>
+<!--Template footer -->
 <ng-template #footer>
-  <p class="text-secondary">Modal Footer</p>
+  <div class="modal-footer">
+    <div class="modal-footer-icons-right">
+      <span class="material-symbols-outlined non-selectable">upload</span>
+      <span class="material-symbols-outlined non-selectable">sd</span>
+      <span class="material-symbols-outlined non-selectable">check_circle</span>
+    </div>
+    <div class="modal-footer-text-container">
+      <span class="text-secondary modal-footer-text">Checks complete. No issues found.</span>
+    </div>
+    <div class="modal-footer-buttons">
+      <button class="ytcp-button text-secondary footer-back-button" (click)="onPreClicked()">BACK</button>
+      <button class="ytcp-button footer-publish-button" (click)="onNextClicked()">{{nextBtnText}}</button>
+    </div>
+  </div>
 </ng-template>
+
+<!-- steps templates   <p class="text-secondary">Modal Footer</p>-->
+<!--<ng-template #stepTemplate>
+  <app-upload-video (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
+</ng-template>
+<ng-template #stepTemplate>
+  <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>
+</ng-template>
+<ng-template #stepTemplate>
+  <app-video-elements></app-video-elements>
+</ng-template>-->
+
 <!--<app-header [showSearchBar]="false" (uploadVideoButtonClicked)="showModal($event)"></app-header>
 <nz-layout>
   <nz-sider class="drawer" nzCollapsible nzWidth="200px">
