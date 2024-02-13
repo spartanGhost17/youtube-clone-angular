@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Tag } from '../../models/tag';
 
 @Component({
   selector: 'app-chips',
@@ -7,19 +8,20 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class ChipsComponent {
   newChipLabel: string;
-  chips: any[] = [];
-  @Output() chipsUpdated: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Input() chips: Tag[] = [];
+  @Output() chipsUpdated: EventEmitter<any[]> = new EventEmitter<any[]>(); 
+
 
   addChip() {
-    if(this.newChipLabel && this.newChipLabel.trim() !== '' && !this.chips.some(chip => chip.label.toLocaleLowerCase() === this.newChipLabel.toLocaleLowerCase())){
-      this.chips = [...this.chips, { label: this.newChipLabel}];
+    if(this.newChipLabel && this.newChipLabel.trim() !== '' && !this.chips.some(chip => chip.tagName!.toLocaleLowerCase() === this.newChipLabel.toLocaleLowerCase())){
+      this.chips = [...this.chips, { tagName: this.newChipLabel}];
       this.chipsUpdated.emit(this.chips);
     }
     this.newChipLabel = "";
   }
 
-  removeChip(chip: {label: string}) {
-    console.log("chip name ", chip.label);
+  removeChip(chip: Tag) {
+    console.log("chip name ", chip.tagName!);
     this.chips.splice(this.chips.indexOf(chip), 1);
     this.chipsUpdated.emit(this.chips);
   }

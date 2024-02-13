@@ -5,8 +5,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UploadVideoComponent } from './components/upload-video-view/upload-video/upload-video.component';
 import { UploadVideoMetadataComponent } from './components/upload-video-view/upload-video-metadata/upload-video-metadata.component';
 import { VideosExplorerComponent } from './components/videos-explorer/videos-explorer.component';
-import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
-import { VideoComponent } from './components/video/video.component';
+import { PlaylistViewComponent } from './components/playlist/playlist-view/playlist-view.component';
+import { VideoComponent } from './components/video-displays/video/video.component';
 import { WatchComponent } from './components/watch/watch.component';
 import { ChannelComponent } from './components/channel/channel.component';
 import { DragDropListComponent } from './components/drag-drop-list/drag-drop-list.component';
@@ -14,9 +14,14 @@ import { HistoryViewComponent } from './components/history-view/history-view.com
 import { SubscriptionsViewComponent } from './components/subscriptions-view/subscriptions-view.component';
 import { HomeExplorerViewComponent } from './components/home-explorer-view/home-explorer-view.component';
 import { DashboardViewComponent } from './pages/dashboard-view/dashboard-view.component';
+import { StepsComponent } from './components/steps/steps.component';
+import { ContentComponent } from './components/content/content.component';
+import { PlaylistDashboardComponent } from './components/playlist/playlist-dashboard/playlist-dashboard.component';
+import { PlaylistMiniComponent } from './components/playlist/playlist-mini/playlist-mini.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
+  //{ path: 'login', component: PlaylistMiniComponent },
+  //{ path: '', pathMatch: 'full', redirectTo: '/home/explore' },
   {
     path: 'home', component: HomeComponent,
     children: [
@@ -31,21 +36,22 @@ const routes: Routes = [
           },
           {
             path: 'subscription', component: SubscriptionsViewComponent,
+          },
+          {
+            path: 'library', component: PlaylistDashboardComponent,
           }
         ]
       },
       {
         path: 'playlist', component: PlaylistViewComponent,
       },
-      //{
-      //  path: 'dashboard', component: DashboardComponent,
-      //},
       {
         path: 'watch', component: WatchComponent,
       },
       {
         path: ':channelName', component: ChannelComponent,
       },
+
       //{ path: '**', redirectTo: '/home/explore'}
     ]
   },
@@ -56,12 +62,12 @@ const routes: Routes = [
         path: 'dashboard', component: DashboardComponent,
       },
       {
-        path: 'test', component: PlaylistViewComponent,
+        path: 'content', component: ContentComponent,
       },
       { path: '**', redirectTo: '/studio/dashboard'}
     ]
   },
-  { path: '**', redirectTo: '/home/explore'}
+  //{ path: '**', redirectTo: '/home/explore'}
   //user dashboard
 
 

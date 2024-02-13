@@ -1,4 +1,4 @@
 <div class="chip-input-container">
-    <span class="chip" *ngFor="let chip of chips">{{ chip.label }}<span (click)="removeChip(chip)" style="margin-left: 4px;" nz-icon nzType="close-circle" nzTheme="outline"></span></span>
+    <span class="chip" *ngFor="let chip of chips">{{ chip.tagName }}<span (click)="removeChip(chip)" style="margin-left: 4px;" nz-icon nzType="close-circle" nzTheme="outline"></span></span>
     <input type="text" placeholder="Add a tag" (keyup.enter)="addChip()" [(ngModel)]="newChipLabel">
 </div>

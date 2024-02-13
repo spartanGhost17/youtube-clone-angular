@@ -37,28 +37,28 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { ChipsComponent } from './components/chips/chips.component';
-import { DropDownComponent } from './components/drop-down/drop-down.component';
+import { DropDownComponent } from './components/dropdown/drop-down/drop-down.component';
 import { ContainerBgGradiantDirective } from './directives/background-gradiant/container-bg-gradiant.directive';
-import { PlaylistMetadataComponent } from './components/playlist-metadata/playlist-metadata.component';
+import { PlaylistMetadataComponent } from './components/playlist/playlist-metadata/playlist-metadata.component';
 import { SidePanelComponent } from './components/side-panel/side-panel.component';
 import { FrameComponent } from './components/frame/frame.component';
 import { VideosExplorerComponent } from './components/videos-explorer/videos-explorer.component';
-import { PlaylistViewComponent } from './components/playlist-view/playlist-view.component';
-import { VideoComponent } from './components/video/video.component';
-import { VideoMiniComponent } from './components/video-mini/video-mini.component';
+import { PlaylistViewComponent } from './components/playlist/playlist-view/playlist-view.component';
+import { VideoComponent } from './components/video-displays/video/video.component';
+import { VideoMiniComponent } from './components/video-displays/video-mini/video-mini.component';
 import { SwitchComponent } from './components/switch/switch.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { VideoDescriptionComponent } from './components/video-description/video-description.component';
 import { WatchComponent } from './components/watch/watch.component';
-import { VideoCardComponent } from './components/video-card/video-card.component';
+import { VideoCardComponent } from './components/video-displays/video-card/video-card.component';
 import { ChannelComponent } from './components/channel/channel.component';
 import { TabComponent } from './components/tab/tab.component';
-import { VideoCardBasicComponent } from './components/video-card-basic/video-card-basic.component';
+import { VideoCardBasicComponent } from './components/video-displays/video-card-basic/video-card-basic.component';
 import { DragDropListComponent } from './components/drag-drop-list/drag-drop-list.component';
-import { StandardDropdownComponent } from './components/standard-dropdown/standard-dropdown.component';
-import { CommentComponent } from './components/comment/comment.component';
+import { StandardDropdownComponent } from './components/dropdown/standard-dropdown/standard-dropdown.component';
+import { CommentComponent } from './components/comments/comment/comment.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { CommentsHolderComponent } from './components/comments-holder/comments-holder.component';
+import { CommentsHolderComponent } from './components/comments/comments-holder/comments-holder.component';
 import { HistoryViewComponent } from './components/history-view/history-view.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TooltipDirective } from './directives/tooltip/tooltip.directive';
@@ -70,6 +70,11 @@ import { HomeExplorerViewComponent } from './components/home-explorer-view/home-
 import { DashboardViewComponent } from './pages/dashboard-view/dashboard-view.component';
 import { StepsComponent } from './components/steps/steps.component';
 import { VideoChecksComponent } from './components/upload-video-view/video-checks/video-checks.component';
+import { VideoVisibilityComponent } from './components/upload-video-view/video-visibility/video-visibility.component';
+import { PlaylistMiniComponent } from './components/playlist/playlist-mini/playlist-mini.component';
+import { PlaylistDashboardComponent } from './components/playlist/playlist-dashboard/playlist-dashboard.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { SigninComponent } from './components/auth/signin/signin.component';
 
 
 registerLocaleData(uk);
@@ -117,6 +122,11 @@ registerLocaleData(uk);
     DashboardViewComponent,
     StepsComponent,
     VideoChecksComponent,
+    VideoVisibilityComponent,
+    PlaylistMiniComponent,
+    PlaylistDashboardComponent,
+    LoginComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
