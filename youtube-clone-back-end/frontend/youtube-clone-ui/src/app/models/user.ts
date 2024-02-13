@@ -1,10 +1,13 @@
 export interface User {
     id: string;
-    imageURL?: string;
+    username: string;
+    channelName: string;
+    iconURL?: string;
     firstName?: string;
     lastName?: string;
     emailAddress?: string;
     profilePictureURL?: string;
+    verified?: boolean; 
     subscribedToUsers?: string[];//ids of user being subscribed to
     subscribers?: string[];//ids of user currently subscribed
     videoHistory?: string[];//ids of video watched

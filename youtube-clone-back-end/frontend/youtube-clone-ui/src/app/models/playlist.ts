@@ -4,5 +4,5 @@ export interface Playlist {
     title: string;
     videos?: Video[];
     description?: string;
-    VisibilityStatus: string;
+    visibilityStatus: string;
 }
