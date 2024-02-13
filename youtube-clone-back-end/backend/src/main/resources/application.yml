@@ -35,7 +35,8 @@ spring:
         format_sql: true
   sql:
     init:
-      mode: never
+      mode: always #never
+      continue-on-error: false
 
 ###### Amazon credentials #####
 cloud:
