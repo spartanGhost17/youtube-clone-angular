@@ -1,0 +1,146 @@
+.playlist-dashboard-container {
+    height: 100%;
+    padding-left: 20%;//14%;//40px;
+    padding-right: 20%;//14%;//40px;
+    padding-top: 10px;
+}
+
+.user-info {
+    display: flex;
+    max-height: 180px;
+    min-height: 72px;
+    height: fit-content;
+}
+
+.user-icon {
+    height: 140px;
+    width: 140px;
+    padding: 10px;
+}
+
+.user-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.metadata {
+
+}
+
+.user-name {
+
+}
+
+.action {
+    display: flex;
+    cursor: pointer;
+}
+
+.action > * {
+    margin-right: 5px;
+}
+
+.text-small {
+    font-size: .8rem;
+}
+
+.display-name {
+    font-size: 2.4rem;
+}
+
+.playlist-row {
+    height: fit-content;
+    margin-bottom: 20px;
+    //width: 95%;
+    //background-color: antiquewhite;
+}
+
+.playlist-row:not(:last-child) {
+    border-bottom: 1px solid grey;// red;
+}
+
+//.default-playlist {
+    //max-height: 260px; 240px;
+    //background-color: brown;
+//}
+
+.header {
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+
+}
+
+.header > * {
+    margin-right: 10px;
+}
+
+.default-header {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.see-all-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 24px;
+    width: 80px;
+    height: 40px;//fit-content;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.see-all-btn:hover {
+    background-color: rgba(62, 166, 255, 0.4);
+}
+
+.see-all-btn-text {
+    font-size: 1rem;
+    width: fit-content;
+    height: fit-content;
+    color: var(--yt-color-blue);
+}
+
+.section-title-container {
+    display: flex;
+    justify-content: end;
+    align-self: end;
+    width: fit-content;
+    height: 100%;
+}
+
+.section-icon {
+    margin-right: 10px;
+    font-size: 1.8rem;
+}
+
+.section-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem;
+}
+
+.section-content-container {
+    display: flex;
+    flex-wrap: wrap;//wrap to next line when overflow
+    width: fit-content;
+    height: fit-content;
+    //overflow-y: scroll;//hidden;//scroll;
+    max-height: 440px;
+    //min-width: 200px;
+    padding-top: 10px;
+    padding-right: 0;
+    //scrollbar-width: 0;
+    //background-color: pink;
+}
+
+.playlist-mini {
+    width: fit-content;
+    height: fit-content;
+    margin-right: 6px;
+}

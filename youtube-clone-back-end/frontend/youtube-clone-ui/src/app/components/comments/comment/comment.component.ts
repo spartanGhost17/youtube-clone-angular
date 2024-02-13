@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SubComment } from '../../models/subComment';
-import { Comment } from '../../models/comment'
+import { SubComment } from '../../../models/subComment';
+import { Comment } from '../../../models/comment'
 
 @Component({
   selector: 'app-comment',
@@ -49,7 +49,7 @@ export class CommentComponent implements OnInit {
    * else load only report action. 
   */
   loadActions(): void {
-    if(this.user.userId === this.comment.userId) {
+    if(this.user.userId === this.comment.userId) { //if user is comment owner
       this.dropDownItems =  [
         {icon: 'edit', text: 'Edit', action: (id: any, childId: any) => this.edit(id, childId)},
         {icon: 'delete', text: 'Delete', action: (id: any, childId: any) => this.delete(id, childId)},

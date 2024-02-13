@@ -55,7 +55,7 @@ export class VideoComponent {
   @ViewChild('thumbnailImg') thumbnailIm: ElementRef<any>;
   @ViewChild('timelineContainer') timelineContainer: ElementRef<any>;
 
-  @Input() videoURL: string = '../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4';//'../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki.mp4';
+  @Input() videoURL: string = '../../../../assets/test-videos/My_Hero_Academia_Opening_2.mp4';//'../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4';//'../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki.mp4';
 
   constructor(private componentUpdatesService: ComponentUpdatesService) {}
   
@@ -65,8 +65,22 @@ export class VideoComponent {
 
     this.dropDownSettingsItems =  [
       {icon: 'subtitles', text: 'Subtitles/CC', action: () => {}},
-      {icon: 'slow_motion_video', text: 'Playback speed', action: () => {}},
-      {icon: 'tune', text: 'Quality', action: () => {}},
+      {icon: 'slow_motion_video', text: 'Playback speed', subMenu: [
+        {text: '0.25', value: 0.25, isSelected: false,},
+        {text: '0.5', value: 0.5, isSelected: false},
+        {text: '0.75', value: 0.75, isSelected: false},
+        {text: 'Normal', value: 1, isSelected: true},
+        {text: '1.25', value: 1.25, isSelected: false},
+        {text: '1.5', value: 1.5, isSelected: false},
+        {text: '1.75', value: 1.75, isSelected: false},
+        {text: '2', value: 2, isSelected: false},
+      ], action: () => {}},
+      {icon: 'tune', text: 'Quality', subMenu: [
+        {text: '720p', value: '720p', isSelected: false},
+        {text: '360p', value: '360p', isSelected: false},
+        {text: '144p', value: '144p', isSelected: false},
+        {text: 'Auto', value: 'Auto', isSelected: true},
+      ], action: () => {}},
     ];
   }
 
@@ -204,14 +218,28 @@ export class VideoComponent {
     this.videoDuration = this.formatDuration(this.video.nativeElement.duration);
   }
 
+  /**
+   * Triggered when playback speed is changed
+   * @param listItem 
+  */
+  onSettingsSubMenuUpdated(listItem: any) {
+    if(listItem.text === 'Playback speed') {
+      listItem.subMenu.forEach((subMenuItem: any, idx: any) => {
+        if(subMenuItem.isSelected) {
+          this.changePlaybackSpeed(subMenuItem.value);    
+        }
+      });
+    }
+  }
+
   //this will come from the modal pop up in the future
   /**
    * update playback speed in .25 increments 
   */
-  changePlaybackSpeed() {
-    this.playbackRate = this.video.nativeElement.playbackRate + 0.25;
-    if(this.playbackRate > 2) this.playbackRate = 0.25;
-    this.video.nativeElement.playbackRate = this.playbackRate;
+  changePlaybackSpeed(playbackSpeed: any) {
+    ///this.playbackRate = this.video.nativeElement.playbackRate + 0.25;
+    //if(this.playbackRate > 2) this.playbackRate = 0.25;
+    this.video.nativeElement.playbackRate = playbackSpeed;//this.playbackRate;
   }
 
   /**

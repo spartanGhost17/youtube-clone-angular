@@ -1,5 +1,5 @@
 import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild, EventEmitter, Output, HostListener, QueryList, ViewChildren } from '@angular/core';
-import { Playlist } from '../../models/playlist';
+import { Playlist } from '../../../models/playlist';
 
 @Directive({
   selector: '[header]'
@@ -42,7 +42,9 @@ export class DropDownComponent implements OnInit {
   @ViewChild('dropdown') dropdown: ElementRef<any>;
   @ViewChildren('input') input: QueryList<ElementRef>;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadSelectedTitle();
+  }
 
   constructor() {}
 
@@ -60,6 +62,22 @@ export class DropDownComponent implements OnInit {
   }
 
   /**
+   * load title of playlist if any of them were selected prior 
+  */
+  loadSelectedTitle() {
+    if(this.multiSelect) {
+      this.selectedPlaylists = this.tallySelectedPlaylist(this.playlists);
+    }
+    else {
+      for(let element of this.playlists) {
+        if(element.checked) {
+          this.selectedTitle = element.playlist.title;
+        }
+      }
+    } 
+  }
+
+  /**
    * clear search string & reset matchSearch field of playlist 
   */
   clearSearch() {
@@ -72,10 +90,14 @@ export class DropDownComponent implements OnInit {
    */
   toggleBody() {
     this.isShowBody = !this.isShowBody;
+    console.log('toggle body ', this.isShowBody);
     if(this.isShowBody) {
+      console.log("should display block \n\n")
       this.dropdownBody.nativeElement.style.display = 'block';
     }
     else {
+      console.log("should display none \n\n")
+      //this.savedPlaylists();
       this.dropdownBody.nativeElement.style.display = 'none';
     }
   }
@@ -146,11 +168,10 @@ export class DropDownComponent implements OnInit {
   */
   savedPlaylists(): void {
     const selectedPlaylist = this.playlists.filter(playlist => playlist.checked);
-    console.log("Saved Play ",selectedPlaylist);
-
     if(selectedPlaylist.length > 0){
-      this.selectedPlaylistEmit.emit(selectedPlaylist);
-      this.toggleBody();  
+      this.selectedPlaylistEmit.emit(this.playlists);
+      //this.toggleBody();
+      this.dropdownBody.nativeElement.style.display = 'none';  
     } 
   }
 

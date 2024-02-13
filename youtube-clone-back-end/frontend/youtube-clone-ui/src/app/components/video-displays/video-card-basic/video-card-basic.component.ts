@@ -11,6 +11,8 @@ export class VideoCardBasicComponent {
   @Input() video: any;
   @Input() loading: boolean = false;
   @Input() default: boolean = true;
+  @Input() size: string = 'default';//either xtra-small, small or default
+  @Input() showIcon: boolean = true; 
   
   constructor(private componentUpdatesService: ComponentUpdatesService, private router: Router) {}
 

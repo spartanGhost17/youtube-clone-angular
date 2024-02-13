@@ -1,0 +1,119 @@
+.visibilty-container {
+    padding: 10px 40px;
+}
+
+.header-container {
+    margin-bottom: 10px;
+}
+
+.title {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.visibility-selection-container {
+    width: 535px;
+    height: 284px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid white;
+}
+
+.sub-header-container {
+    height: fit-content;
+    margin-bottom: 10px;
+}
+
+.sub-header {
+    font-size: 1.2rem;
+}
+
+.subtitle {
+    font-size: .8rem;
+}
+
+.options {
+    padding: 0px 20px;
+}
+
+//input[type="radio"] {
+//    width: 20px;
+//    height: 20px;
+//}
+
+.radio__radio {
+    height: fit-content;
+}
+
+.radio {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.radio__input {
+    display: none;
+}
+
+.radio__radio-halo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;//2.5em;
+    height: 40px;//2.5em;
+    //border: 2px solid rgba(18, 18, 18, .6);//rgba(255, 255, 255, 1);
+    background-color: transparent;//rgba(255, 0, 0, 0.3);
+    border-radius: 50%;
+    margin-right: 10px;
+    // /padding: 2px;
+    transition: .2s ease;  
+}
+
+.label-text-container {
+}
+
+.radio__radio {
+    width: 20px;//1.35em;//1.25em;
+    height: 20px;//1.35em;//1.25em;
+    border: 2px solid #d8e4e2;//rgba(255, 255, 255, 1);
+    border-radius: 50%;
+    //margin-right: 10px;
+    padding: 2px;
+}
+
+.radio__radio::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 50%;
+    background-color: #d8e4e2;//var(--yt-color-blue);
+    transform: scale(0);
+    transition: transform .15s ease;
+}
+
+//.radio__input:checked + .radio__radio::after {
+//    transform: scale(1);
+//}
+
+.radio__input:checked + .radio__radio-halo .radio__radio::after {
+    transform: scale(1);
+}
+
+.clicked-radio-halo {
+    background-color: rgba(18, 18, 18, .6);
+}
+
+.radio__radio-halo:hover {
+    background-color: rgba(18, 18, 18, .6);
+}
+
+.radio__radio:focus {
+    //background-color: red;
+}
+
+.radio_header {
+    font-size: 1rem;
+}

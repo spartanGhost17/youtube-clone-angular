@@ -1,0 +1,42 @@
+
+<div #container class="mini-playlist-container">
+    <div class="thumbnail-container">
+        <div #thumbnailContainer class="thumbnail">
+            <img class="" [src]="playlist.videos![0].thumbnailURL" alt="">
+        </div>
+        <div #hoverContainer class="thumbnail-hover-container">
+            <span class="material-symbols-outlined big-icon non-selectable">play_arrow</span>
+            <span class="non-selectable">PLAY ALL</span>
+        </div>
+        <div #videoCountContainer class="video-count-container" >
+            <span class="material-symbols-outlined small-icon non-selectable">playlist_play</span>
+            <div class="video-count">
+                {{videoCount}}  videos
+            </div>
+        </div>
+    </div>
+    <div class="metadata-container">
+        <div class="playlist-title-container">
+            <div class="playlist-title non-selectable">
+                <span class="text-primary">{{playlist.title}}</span>
+            </div>
+            <div class="drop-down-container">
+                <app-standard-dropdown
+                    [parentId]="'te'"
+                    [items]="dropDownSettingsItems" 
+                    [circle]="true"
+                    [icon]="'drag_indicator'"
+                    [fillIcon]="true">
+                </app-standard-dropdown>
+            </div>
+        </div>
+        <div class="visisibility non-selectable">
+            <span class="text-secondary lower-case capitalize">Private</span>
+            <span class="text-secondary">&bull;</span>
+            <span class="text-secondary">Playlist</span>
+        </div>
+        <div class="action" (click)="onOpenPlaylist()">
+            <span class="text-secondary">View full playlist</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div #dropdown class="dropdown">
+    <div *ngIf="!circle" class="ytcp-button buttons" (click)="showDropdown()">
+        <span *ngIf="iconRight" class="material-symbols-outlined non-selectable" [style.font-variation-settings]="fillIcon? FILL_ICON: EMPTY_FILL_ICON">{{iconLeft}}</span>
+        <button>
+            <b>{{buttonText}}</b>
+        </button>
+        <span *ngIf="iconRight" class="material-symbols-outlined non-selectable" 
+            [ngClass]="{'caret-rotate': toggleDropdown}"
+            [style.font-variation-settings]="fillIcon? FILL_ICON: EMPTY_FILL_ICON">{{iconRight}}
+        </span>
+    </div>
+    <div *ngIf="circle" class="round-button" (click)="showDropdown()">
+        <span class="material-symbols-outlined" [style.font-variation-settings]="fillIcon? FILL_ICON: EMPTY_FILL_ICON">{{icon}}</span>
+    </div>
+    <!-- Base menu -->
+    <ul class="menu" *ngIf="!showSubMenu" [ngClass]="{'menu-open': toggleDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
+        <li class="list-element active" (click)="item.action(parentId, childId); onShowSubMenu(item)" *ngFor="let item of items">
+            <div class="left-item">
+                <div *ngIf="item.icon" class="right-icon"><span class="material-symbols-outlined">{{item.icon}}</span></div>
+                <div class="text text-small">{{item.text}}</div>
+            </div>
+            <div class="text" *ngIf="item.subMenu">
+                <ng-container *ngFor="let subItem of item.subMenu">
+                    <ng-container *ngIf="subItem.isSelected">
+                        <span class="text-small"> ({{subItem.text}})</span>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div *ngIf="item.divider" class="divider"></div>
+        </li>
+    </ul>
+    <!-- sub menu -->
+    <ul class="sub-menu" *ngIf="showSubMenu" [ngClass]="{'menu-open': toggleSubMenuDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
+        <li class="list-element">
+            <div class="divider submenu-title" (click)="onCloseSubMenu()">
+                <span class="material-symbols-outlined">chevron_left</span>
+                <span>{{currentMenu.text}}</span>
+            </div>
+        </li>
+        <li class="list-element active" (click)="onChangeSubMenuSelection(submenuItem)" *ngFor="let submenuItem of currentMenu.subMenu">
+            <div class="left-item">
+                <div *ngIf="!submenuItem.isSelected" class="right-icon"></div>
+                <div *ngIf="submenuItem.isSelected" class="right-icon"><span class="material-symbols-outlined">done</span></div>
+                <div class="text text-small">{{submenuItem.text}}</div>
+            </div>
+        </li>
+    </ul>
+</div>

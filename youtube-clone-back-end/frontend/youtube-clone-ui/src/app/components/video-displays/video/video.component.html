@@ -49,14 +49,15 @@
                     </svg>-->
                 </button>
             </div>
-            <app-standard-dropdown [appTooltip]="'Settings'"
-                [items]="dropDownSettingsItems" 
-                [circle]="true"
-                [icon]="'Settings'">
-            </app-standard-dropdown>
-            <!--<button (click)="changePlaybackSpeed()" class="speed-button wide" [appTooltip]="'Settings'">
-                <span class="material-symbols-outlined">Settings</span>
-            </button>-->
+            <div class="setting-dropdown">
+                <app-standard-dropdown
+                    [items]="dropDownSettingsItems" 
+                    [circle]="true"
+                    [icon]="'Settings'"
+                    [fillIcon]="true"
+                    (subMenuUpdated)="onSettingsSubMenuUpdated($event)">
+                </app-standard-dropdown>
+            </div>
             <button (click)="toggleMiniMode()" class="mini-player-button" [appTooltip]="'Miniplayer (i)'">
                 <svg viewBox="0 0 24 24">
                     <path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7h9v6h-9z"/>

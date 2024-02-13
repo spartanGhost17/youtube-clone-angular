@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-video-mini',

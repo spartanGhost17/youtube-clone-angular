@@ -1,15 +1,57 @@
 .video-card-basic-container{
-    width: 350px;
-    height: fit-content;
-
+    width: 260px;//350px;
+    height: 150px;//fit-content;
+    //padding-bottom: 0px;
     //max-height: 200px;
     //min-width: 240px;
     //max-width: 400px;
+    //background-color: pink;
     
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+//extra-small settings
+.xtra-small {
+    width: 210px;
+    height: 215px;
+}
+
+.xtra-small .video-container {
+    height: 118px;
+}
+
+.xtra-small .video-info-container .metadata .video-title-container .text-primary {
+    font-size: 1rem;
+    line-height: .8rem;
+}
+
+.xtra-small .video-info-container .metadata .video-title-container {
+    margin-top: 5px;
+}
+
+.xtra-small .video-info-container .metadata .secondary-text .channel-name {
+    margin-top: 10px;
+}
+
+.xtra-small .video-info-container .metadata .secondary-text .channel-name p,
+.xtra-small .video-info-container .metadata .secondary-text .views {
+    font-size: .75rem;
+}
+
+//small settings
+.small {
+    width: 260px;
+    height: 150px;
+}
+
+//default settings
+.default {
+    width: 350px;
+    height: fit-content;
+}
+
 
 .icon-container {
     margin-right: 6px;
@@ -48,6 +90,7 @@
 
 .metadata {
     width: 90%;
+    //background-color: red;
 }
 
 .video-title-container {
@@ -61,7 +104,7 @@
 
 .video-container {
     height: 12.5rem;
-    border-radius: 10px;
+    border-radius: 4px;
 }
 
 // google material
