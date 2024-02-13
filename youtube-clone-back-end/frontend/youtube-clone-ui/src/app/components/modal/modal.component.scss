@@ -1,30 +1,33 @@
 /* The Modal (background) */
 .modal {
-    // /display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     display: block;
-    //z-index: 1; /* Sit on top */
     padding-top: 40px; /* Location of the box */
-    right: 0;
+    padding-bottom: 40px;
+    top: 0;
+    left: 0;
     color: white;
-    width: 85%; /* Full width */
-    height: fit-content; /* Full height */
+    width: 100%;
+    height: 100%;
     min-height: 200px;
+    min-width: 960px;
     max-height: 100%;
     overflow: hidden;
-    background-color: orange;
+    background-color: rgba(18, 18, 18, .8);
+    z-index: 1;
 }
   
 /* Modal Content */
 .modal-content {
     position: relative;
-    background-color: rgba(40, 40, 40 , 1);//edited color opacity
+    background-color: rgba(43, 43, 43 , 1);//edited color opacity
     color: white;
     margin: auto;
     padding: 0;
     border-radius: 8px;
-    width: 80%;
-    height: fit-content;
+    //max-height: 1095px;
+    width: 67%;
+    height: 100%;
     overflow-y: scroll;
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -66,22 +69,12 @@
     border-bottom: 1px solid grey;
     height: 80px;
 }
-
-/*.modal-header #start__modal_header {
-    align-items: flex-start;
-}
-
-.modal-header #end__modal_header {
-    align-items: flex-end;
-}*/
   
 .modal-body {
     padding: 20px 16px;
     padding-top: 0;
-    //display: block;
     color: white;
-    height: fit-content;
-    max-height: 700px;
+    height: 80%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -91,6 +84,7 @@
     padding: 2px 16px;
     color: white;
     align-items: center;
-    height: 80px;
+    height: fit-content;//40px;
     border-top: 1px solid grey;
+    //background-color: cyan;
 }

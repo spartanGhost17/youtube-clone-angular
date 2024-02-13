@@ -1,12 +1,13 @@
-<div #modal id="myModal" class="modal" [ngStyle]="{'width': modalWidth, 'height': modalHeight, 
-  'background-color': color, 'z-index': zIndex, 'top': top, 'left': left}">
-    <!-- Modal content [ngStyle]="{'width':'60%'}"-->
-    <div class="modal-content">
+<div #modal id="myModal" class="modal" [ngStyle]="{'z-index': zIndex}">
+    <!-- Modal content [ngStyle]="{'width': modalWidth, 'height': modalHeight, 
+  'background-color': color, 'z-index': zIndex, 'top': top, 'left': left}"-->
+    <!--[ngStyle]="{'width': modalWidth, 'height': modalHeight}"-->
+    <div class="modal-content" [ngStyle]="{'width': modalWidth, 'height': modalHeight, 'background-color': color, 'top': top, 'left': left}">
       <div class="modal-header">
         <ng-container id="start__modal_header" [ngTemplateOutlet]="headerTemplate"></ng-container>
         <span (click)="closeModal()" id="end__modal_header" class="material-symbols-outlined close">close</span>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" [ngStyle]="{'height': bodyHeight}">
         <ng-container [ngTemplateOutlet]="bodyTemplate"></ng-container>
       </div>
       <div class="modal-footer">

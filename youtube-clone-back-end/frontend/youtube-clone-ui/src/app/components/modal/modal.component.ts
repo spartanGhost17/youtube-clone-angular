@@ -13,12 +13,13 @@ export class ModalComponent {
   @Input() bodyTemplate!: TemplateRef<any>;
   @Input() footerTemplate: TemplateRef<any>;
   @Input() show: boolean;
-  @Input() modalWidth: string = '100%';//'85%';
+  @Input() modalWidth: string = '60%';//'85%';
   @Input() modalHeight: string = '100%';
-  @Input() color: string = 'rgba(18, 18, 18, .8)';//'transparent';
-  @Input() zIndex: string = '1';
+  @Input() color: string = 'rgba(40, 40, 40, 1)';//'transparent';
+  @Input() zIndex: string = '4';
   @Input() top: string = '0';
   @Input() left: string = '0px';//'200px';
+  @Input() bodyHeight: string = '80%';
 
   @Output() isShowUpdateEvent: EventEmitter<boolean> = new EventEmitter();
 
@@ -52,10 +53,10 @@ export class ModalComponent {
         this.modal.nativeElement.style.display = 'block';
       }
     }
-    else {
-      console.log('inside ngOnChanges modal [FALSE] ',changes.show.currentValue);
-      this.modal.nativeElement.style.display = 'none';
-    }
+    //else {
+    //  console.log('inside ngOnChanges modal [FALSE] ',changes.show.currentValue);
+    //  this.modal.nativeElement.style.display = 'none';
+    //}
   }
 
   ngAfterViewInit() {
