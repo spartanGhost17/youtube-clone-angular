@@ -7,21 +7,29 @@
         <div class="input-container__title_container">
           <div class="header-text-container">
             <h4 class="header-text-title">Title (required) </h4>
-            <h4 class="in-circle">?</h4>
+            <span class="material-symbols-outlined in-circle">help</span>
           </div>
-          <textarea [(ngModel)]="titleText" name="text" wrap="soft" maxlength="100" required placeholder="Add a title that describes your video (type @ to mention a channel)"></textarea>
+          <textarea (ngModelChange)="onMetadataUpdated(); onVideoTitleChanged()" [(ngModel)]="video.title" name="text" wrap="soft" 
+            maxlength="100" required placeholder="Add a title that describes your video (type @ to mention a channel)">
+          </textarea>
         </div>
-        <div class="char-count-title">{{titleText.length}}/{{MAX_TITLE_COUNT}}</div>
+        <div class="char-count-title">{{video.title.length}}/{{MAX_TITLE_COUNT}}</div>
       </div>
       <div class="description-container">
         <div class="input-container__description_container">
           <div class="header-text-container">
             <h4 class="header-text-desc">Description</h4>
-            <h4 class="in-circle">?</h4>
+            <span class="material-symbols-outlined in-circle">help</span>
           </div>
-          <textarea [(ngModel)]="descriptionText" (keyup)="handleKeyUpDescription($event)" #descriptionTextArea name="description" placeholder="Tell Viewers about your video (type @ to mention a channel)" wrap="soft" maxlength="5000"></textarea>
+          <textarea #descriptionTextArea [innerHTML]="video.description" 
+                    [(ngModel)]="video.description"
+                    (ngModelChange)="onMetadataUpdated()" 
+                    (keyup)="handleKeyUpDescription($event)" 
+                    name="description" placeholder="Tell Viewers about your video (type @ to mention a channel)" 
+                    wrap="soft" maxlength="5000"
+                    (keydown.enter)="onEnterKeyPressedDescrpt($event); onMetadataUpdated()"></textarea>
         </div>
-        <div class="char-count-desc">{{descriptionText.length}}/{{MAX_DESCRIPTION_COUNT}}</div>
+        <div class="char-count-desc">{{video.description?.length}}/{{MAX_DESCRIPTION_COUNT}}</div>
       </div>
     </div>
     <!--thumbnail-->
@@ -62,11 +70,13 @@
         <a target="_blank" href="https://support.google.com/youtube/answer/57792">Learn more</a>
       </p>
       <div class="tags-item-container">
-        <app-chips (chipsUpdated)="chipsUpdated($event)"></app-chips>
+        <app-chips
+          [chips]="video.tags!"
+          (chipsUpdated)="chipsUpdated($event)"></app-chips>
       </div>
     </div>
 
-    <!-- Category -->
+    <!-- Category "selectedPlaylists($event)"-->
     <div class="categories-container">
       <h4 class="margin-bottom-header">Categories</h4>
       <p class="text-secondary small-text">
@@ -79,7 +89,7 @@
           [hasFooter]="false"
           [multiSelect]="false"
           [playlists]="categories" 
-          (selectedPlaylistEmit)="selectedPlaylists($event)"
+          (selectedPlaylistEmit)="selectedCategories($event)"
           (createPlaylistEvent)="showCreatePlaylistModal($event)">
         </app-drop-down>      
       </div>
@@ -88,23 +98,45 @@
   </div>
   <div class="right-video-detail-container">
     <div class="image-container">
-      <img class="large-thumbnail" [src]="largeThumbnailURL">
+      <app-video-card-basic 
+        [video]="video"
+        [size]="'small'">
+      </app-video-card-basic>
+      <!--<img class="large-thumbnail" [src]="largeThumbnailURL">-->
     </div>
     <div class="metadata-container">
-      
+      <div class="metadata-container__link-container">
+        <div class="miniplayer-video-url-container">
+          <p class="text-secondary right-image-text">Video link</p>
+          <p class="video-url">{{videoURL}}</p>
+        </div>
+        <div class="clipboard-icon">
+          <span class="material-symbols-outlined non-selectable" (click)="onCopyToClipboard()">content_copy</span>
+        </div>
+      </div>
+      <div class="metadata-container__filename-container">
+        <p class="text-secondary right-image-text">Filename</p>
+        <p class="text-primary video-file-name">{{videoFileName}}</p>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- new playlist modal -->
-<app-modal
-  [show]="isNewPlaylist"
+<!-- new playlist modal 
   [modalWidth]="'50%'"
   [modalHeight]="'80%'"
   [color]="'rgba(64, 64, 64, 0.4)'"
-  [zIndex]="'2'"
   [top]="'250px'"
-  [left]="'550px'"
+  [left]="'550px'"-->
+<app-modal
+  [show]="isNewPlaylist"
+  [color]="'rgba(40, 40, 40, 1)'"
+  [top]="'0'"
+  [left]="'0'"
+  [modalWidth]="'490px'"
+  [modalHeight]="'600px'"
+  [bodyHeight]="'fit-content'"
+  [zIndex]="'4'"
   [headerTemplate]="header"
   [bodyTemplate]="body"
   [footerTemplate]="footer"
