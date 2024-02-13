@@ -1,0 +1,51 @@
+.video-elements-container {
+    padding: 10px 40px;
+}
+
+.header-container {
+    margin-bottom: 10px;
+}
+
+.title {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.cards {
+    height: 100%;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    background-color: rgba(31, 31, 31, 1);
+}
+
+.card-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+}
+
+.card-text {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.text-primary {
+    font-size: 1rem;
+}
+
+.action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+}
+
+.action__text {
+    font-size: 1rem;
+    color: var(--yt-color-blue);
+}
