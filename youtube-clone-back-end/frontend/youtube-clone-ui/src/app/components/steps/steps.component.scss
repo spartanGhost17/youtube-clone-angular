@@ -1,9 +1,6 @@
 .steps-container {
     width: 100%;
     height: 100%;
-    //background-color: pink;
-    // /background-color: rgba(39, 39, 39, 1);//rgba(150,140, .2);
-    //background-color: chocolate;
     text-align: center;
 }
 
@@ -51,11 +48,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px;//50%;
-    height: 60px;//50px;
+    border-radius: 6px;
+    height: 60px;
     width: 120px;
     z-index: 2;
-    //border: 2px solid rgba(96, 96, 96, 1);//var(--yt-color-blue);
     background-color: rgba(40, 40, 40, 1);
     cursor: pointer;
     transition: .4s ease;
@@ -124,7 +120,6 @@
 .steps-content-container {
     width: 100%;
     height: 100%;
-    //background-color: yellowgreen;
 }
  
 .steps-content-container__content {

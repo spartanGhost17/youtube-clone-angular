@@ -7,11 +7,11 @@
                     <span class="description" [ngClass]="{'active-text': currentActive === i}">{{s.text}}</span>
                 </div>
                 <div class="icon">
-                    <span class="material-symbols-outlined non-selectable" *ngIf="(s.icon && currentActive <= i)">{{s.icon}}</span>
-                    <span class="material-symbols-outlined" *ngIf="((s.icon || !s.icon) && currentActive > i)">check_circle</span>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="(s.icon && currentActive <= i) && !completed">{{s.icon}}</span>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="((s.icon || !s.icon) && currentActive > i) || (completed)">check_circle</span>
 
-                    <div class="circle-non-icon" *ngIf="(!s.icon && currentActive < i)"></div>
-                    <span class="material-symbols-outlined non-selectable" *ngIf="!s.icon && currentActive === i">radio_button_checked</span>
+                    <div class="circle-non-icon non-selectable" *ngIf="(!s.icon && currentActive < i) && !completed"></div>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="(!s.icon && currentActive === i) && !completed">radio_button_checked</span>
                 </div>
             </div>
         </div>

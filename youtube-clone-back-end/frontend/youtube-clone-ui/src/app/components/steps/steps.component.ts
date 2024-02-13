@@ -14,6 +14,7 @@ export class StepsComponent {
   @Input() steps: any[] = [];
   @Input() currentActive: number = 0;
   @Input() templates: QueryList<TemplateRef<any>>;//any[];
+  @Input() completed: boolean = false;
   @Output() activeSection: EventEmitter<number> = new EventEmitter();
   
   firstStep: any;
