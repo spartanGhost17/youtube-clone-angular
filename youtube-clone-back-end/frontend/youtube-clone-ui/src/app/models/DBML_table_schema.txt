@@ -69,14 +69,14 @@ Table "Videos" {
   "user_id" bigint [ref: > Users.user_id]
   "title" VARCHAR(255) [not null]
   "description" VARCHAR(5000) [default: null]
-  "create_date" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "created_at" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   "duration" TIME [not null, note: 'video length']
   "stop_at" TIME [default: 0, note: ""]
-  "stop_at_bite" bigint [default: 0]
-  "total_bites" bigint
+  "stop_at_byte" bigint [default: 0]
+  "total_bytes" bigint
   "views" integer [default: 0]
-  "thumbnailURL" VARCHAR(255) [not null]
-  "videoURL" VARCHAR(255) [not null]
+  "thumbnailURL" VARCHAR(255) [not null, unique]
+  "videoURL" VARCHAR(255) [not null, unique]
   "location" VARCHAR(255) [default: null]
   //"status" VARCHAR(255) [default: "DRAFT"]//PUBLISHED OR DRAFT
   "reported" bool [default: false, note: "should be from report class"]
@@ -85,7 +85,7 @@ Table "Videos" {
 Table "VideoStatus" {
   "video_status_id" bigint [pk, increment]
   "video_id" bigint [not null, unique, ref: - Videos.video_id]
-  "status_id" bigint [not null, ref: > Status.status_id] 
+  "status_id" integer [not null, ref: > Status.status_id] 
   //"video_id" bigint [not null, unique, ref: - Videos.video_id]
 }
 
@@ -94,17 +94,21 @@ Table "Status" {
   "status_text" VARCHAR(100) [not null, unique, note: "(PUBLIC, PRIVATE, UNLISTED, DRAFT)"]
 }
 
-Table "PlaylistStatus" {
-  "playlist_status_id" integer [pk, increment]
-  "playlist_id" bigint [ref: - Playlists.playlist_id]
-  "status" integer [not null, ref: > Status.status_id]
-  //"status_text" VARCHAR(100) [not null, unique, note: "(PUBLIC, PRIVATE, UNLISTED, DRAFT)"]
+Table "Categories" {
+  "category_id" integer [pk, increment]
+  "category_name" VARCHAR(100) [not null, note: "CHECK(category_name in ('CARS_AND_VEHICLES', 'COMEDY', 'EDUCATION', 'ENTERTAINMENT', 'FILM_AND_ANIMATION', 'GAMING', 'HOW_TO_AND_STYLE', 'MUSIC', 'NEWS_AND_POLITICS', 'NON_PROFITS_AND_ACTIVISM', 'PEOPLE_AND_BLOGS', 'PETS_AND_ANIMALS', 'SCIENCE_AND_TECHNOLOGY', 'SPORT', 'TRAVEL_AND_EVENTS'))"]
 }
 
 Table "VideoCategories" {
-  "category_id" integer [pk, increment]
-  "category_text" VARCHAR(255) [not null, unique, note: "CHECK(type IN (''))"]
-  "video_id" bigint [not null, unique, ref: > Videos.video_id]
+  "video_category_id" bigint [pk, increment]
+  "video_id" bigint [not null, unique, ref: - Videos.video_id]
+  "category_id" integer [not null, ref: > Categories.category_id]
+}
+
+Table "PlaylistStatus" {
+  "playlist_status_id" bigint [pk, increment]
+  "playlist_id" bigint [ref: - Playlists.playlist_id]
+  "status_id" integer [not null, unique, ref: > Status.status_id]
 }
 
 //> many-to-one
@@ -113,7 +117,7 @@ Table "Comments" {
   "user_id" bigint [not null, ref: > Users.user_id]
   "video_id" bigint [not null, ref: > Videos.video_id]
   "comment_text" VARCHAR(4000) [not null]
-  "comment_date" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "created_at" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
   "parent_comment_id" bigint [default: null, ref: > Comments.comment_id]
   "reported" bool [default: false, note: "should be from report class"]
 }
@@ -128,7 +132,7 @@ Table "Likes" {
 Table "Subscriptions" {
   "subscription_id" integer [pk, increment]
   "subscriber_id" bigint [ref: > Users.user_id, note: "same as user_id"]
-  "channel_id" bigint [ref: > Users.user_id, note: "same as user_id"]
+  //"channel_id" bigint [ref: > Users.user_id, note: "same as user_id"]
   "subscription_date" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
 }
 
