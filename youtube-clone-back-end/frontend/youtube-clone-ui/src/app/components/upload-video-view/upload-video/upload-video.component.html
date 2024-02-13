@@ -1,7 +1,13 @@
 <div class="upload-content-container">
     <div class="upload-area">        
-        <ngx-file-drop [showBrowseBtn]="true" dropZoneClassName="file-drop-zone" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
-        (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+        <ngx-file-drop 
+            [showBrowseBtn]="true" 
+            dropZoneClassName="file-drop-zone" 
+            dropZoneLabel="Drop files here" 
+            (onFileDrop)="dropped($event)" 
+            (onFileOver)="fileOver($event)" 
+            (onFileLeave)="fileLeave($event)">
+            
             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
                 <p class="upload-text">Drag and drop video files to upload</p>
                 <!--Optional custom content that replaces the the entire default content.-->
@@ -9,6 +15,7 @@
                     <span class="material-symbols-outlined">upload_2</span>
                 </button>
             </ng-template>
+        
         </ngx-file-drop>
     </div>
     <div class="table-container">
@@ -26,7 +33,15 @@
         </table>
     </div>
     <div class="button-container">
-        <button (click)="uploadVideo()" nz-button [disabled]="fileUploaded? false : true" [nzLoading]="isLoading" [nzSize]="uploadBtnSize" nzShape="round" nzType="primary"><span nz-icon nzType="upload"></span>Upload Video</button>
+        <div class="button-inner-container">
+            <button (click)="uploadVideo()" nz-button 
+                [disabled]="fileUploaded? false : true" 
+                [nzLoading]="isLoading" 
+                [nzSize]="uploadBtnSize" nzShape="round" nzType="primary">
+                <span nz-icon nzType="upload"></span>
+                Upload Video
+            </button>
+        </div>
     </div>
 </div>
 
