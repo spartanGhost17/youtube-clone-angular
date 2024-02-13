@@ -1,0 +1,163 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table "Roles" {
+  "role_id" bigint [pk, increment]
+  "name" VARCHAR(50) [unique, not null]
+  "permissions" VARCHAR(255) [not null]
+}
+
+Table "UserRoles" {
+  "user_role_id" bigint [pk, increment]
+  "user_id" VARCHAR(50) [not null, unique, ref: - Users.user_id]
+  "role_id" VARCHAR(255) [not null, ref: > Roles.role_id]
+}
+
+Table "Events" {
+  "event_id" bigint [pk, increment]
+  "type" VARCHAR(255) [not null, unique, note: "CHECK(type IN ('LOGIN_ATTEMPT', 'LOGIN_ATTEMPT_FAILURE', 'LOGIN_ATTEMPT_SUCCESS', 'PROFILE_UPDATE', 'PROFILE_PICTURE_UPDATE', 'ROLE_UPDATE', 'ACCOUNT_SETTINGS_UPDATE', 'PASSWORD_UPDATE', 'MFA_UPDATE'))"]
+  "description" VARCHAR(255) [not null]
+}
+
+Table "UserEvents" {
+  "user_event_id" bigint [pk, increment]
+  "event_id" bigint [not null, ref: > Events.event_id]
+  "user_id" bigint [not null, ref: > Users.user_id]
+  "device"  VARCHAR(100) [default: null]
+  "ip_address" VARCHAR(100) [default: null]
+  "created_at" timestamp [default: "CURRENT_TIMESTAMP"]
+}
+
+Table "AccountVerifications" {
+  "account_verification_id" bigint [pk, increment]
+  "url" VARCHAR(255) [not null, unique]
+  "user_id" bigint [not null, unique, ref: - Users.user_id]
+}
+
+Table "ResetPasswordVerifications" {
+  "reset_pwd_verification_id" bigint [pk, increment]
+  "user_id" bigint [not null, unique, ref: - Users.user_id]
+  "url" VARCHAR(255) [not null, unique]
+  "expiration_date" datetime [not null]
+}
+
+Table "TwoFactorVerifications" {
+  "verification_id" bigint [pk, increment]
+  "user_id" bigint [not null, unique, ref: - Users.user_id]
+  "code" VARCHAR(10) [not null, unique]
+  "expiration_date" datetime [not null]
+}
+
+Table "Users" {
+  "user_id" bigint [pk, increment]
+  "username" VARCHAR(255) [not null, unique]
+  "channelName" VARCHAR(255) [not null, unique]
+  "email" VARCHAR(255) [not null]
+  "password" VARCHAR(255) [default: null]
+  "created_at" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "verified" bool [default: FALSE]
+  "description" VARCHAR(255) [default: null]
+  "enabled" BOOL [default: false]
+  "non_locked"  BOOL [default: true]
+  "using_mfa" BOOL [default: false]
+  "profile_picture" VARCHAR(255) [default: "your_iconurl"]
+  //"other_profile_info" TEXT
+}
+
+Table "Videos" {
+  "video_id" bigint [pk, increment]
+  "user_id" bigint [ref: > Users.user_id]
+  "title" VARCHAR(255) [not null]
+  "description" VARCHAR(5000) [default: null]
+  "create_date" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "duration" TIME [not null, note: 'video length']
+  "stop_at" TIME [default: 0, note: ""]
+  "stop_at_bite" bigint [default: 0]
+  "total_bites" bigint
+  "views" integer [default: 0]
+  "thumbnailURL" VARCHAR(255) [not null]
+  "videoURL" VARCHAR(255) [not null]
+  "location" VARCHAR(255) [default: null]
+  //"status" VARCHAR(255) [default: "DRAFT"]//PUBLISHED OR DRAFT
+  "reported" bool [default: false, note: "should be from report class"]
+}
+
+Table "VideoStatus" {
+  "video_status_id" bigint [pk, increment]
+  "video_id" bigint [not null, unique, ref: - Videos.video_id]
+  "status_id" bigint [not null, ref: > Status.status_id] 
+  //"video_id" bigint [not null, unique, ref: - Videos.video_id]
+}
+
+Table "Status" {
+  "status_id" integer [pk, increment]
+  "status_text" VARCHAR(100) [not null, unique, note: "(PUBLIC, PRIVATE, UNLISTED, DRAFT)"]
+}
+
+Table "PlaylistStatus" {
+  "playlist_status_id" integer [pk, increment]
+  "playlist_id" bigint [ref: - Playlists.playlist_id]
+  "status" integer [not null, ref: > Status.status_id]
+  //"status_text" VARCHAR(100) [not null, unique, note: "(PUBLIC, PRIVATE, UNLISTED, DRAFT)"]
+}
+
+Table "VideoCategories" {
+  "category_id" integer [pk, increment]
+  "category_text" VARCHAR(255) [not null, unique, note: "CHECK(type IN (''))"]
+  "video_id" bigint [not null, unique, ref: > Videos.video_id]
+}
+
+//> many-to-one
+Table "Comments" {
+  "comment_id" bigint [pk, increment]
+  "user_id" bigint [not null, ref: > Users.user_id]
+  "video_id" bigint [not null, ref: > Videos.video_id]
+  "comment_text" VARCHAR(4000) [not null]
+  "comment_date" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "parent_comment_id" bigint [default: null, ref: > Comments.comment_id]
+  "reported" bool [default: false, note: "should be from report class"]
+}
+
+Table "Likes" {
+  "like_id" bigint [pk, increment]
+  "user_id" bigint [not null, ref: > Users.user_id]
+  "video_id" bigint [not null, ref: > Videos.video_id]
+  "comment_id" bigint [default: null, ref: > Comments.comment_id]
+}
+
+Table "Subscriptions" {
+  "subscription_id" integer [pk, increment]
+  "subscriber_id" bigint [ref: > Users.user_id, note: "same as user_id"]
+  "channel_id" bigint [ref: > Users.user_id, note: "same as user_id"]
+  "subscription_date" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+}
+
+//only if tag ready made?
+Table "Tags" {
+  "tag_id" bigint [pk, increment]
+  "tag_name" VARCHAR(255) [not null]
+}
+
+Table "VideoTags" {
+  "videoTag_id" bigint [pk, increment]
+  "video_id" bigint [not null, ref: > Videos.video_id]
+  "tag_id" bigint [not null, ref: > Tags.tag_id]
+}
+
+Table "Playlists" {
+  "playlist_id" bigint [pk, increment]
+  "user_id" bigint [not null, ref: > Users.user_id]
+  //"visibility" VARCHAR(50) [not null, note: 'PUBLIC, PRIVATE']
+  //"playlist_status_id" integer [not null, ref: >]
+  "created_at" TIMESTAMP [default: `CURRENT_TIMESTAMP`]
+  "last_updated" TIMESTAMP [default: null]
+}
+
+Table "PlaylistVideos" {
+  "position" integer [not null, default: 0]
+  "playlist_id" bigint [not null, ref: > Playlists.playlist_id]
+  "video_id" bigint [not null, ref: > Videos.video_id]
+  indexes {
+    (playlist_id, video_id) [PK, name: "PK_Playlist_Videos"]
+  }
+}
