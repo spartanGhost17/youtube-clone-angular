@@ -1,1 +1,25 @@
-<p>video-checks works!</p>
+<div class="checks-container">
+    <div class="header-container">
+        <h1 class="title">Checks</h1>
+        <p class="subtitle">We'll check your video for issues that may restrict its visibility and then you will have the opportunity to fix issues before publishing your video.</p>
+    </div>
+    <div class="checks-issues-container">
+        <div class="copyright-container">
+            <h3 class="text-primary header-title">Copyright</h3>
+            <div class="subtext">
+                <p class="subtitle">No issues found</p>
+                <span class="material-symbols-outlined non-selectable" [ngStyle]="{'color': 'green'}">done</span>
+            </div>
+        </div>
+        <div class="forbidden-material-container">
+            <h3 class="text-primary header-title">Forbidden material</h3>
+            <div class="subtext">
+                <p class="subtitle">No issues found</p>
+                <span class="material-symbols-outlined non-selectable" [ngStyle]="{'color': 'red'}">close</span>
+            </div>
+        </div>
+        <div class="bottom-disclaimer-container">
+            <p class="subtitle text-secondary">Remember: These check results aren't final. Issues may come up in the future that impact your video.</p>
+        </div>
+    </div>
+</div>
