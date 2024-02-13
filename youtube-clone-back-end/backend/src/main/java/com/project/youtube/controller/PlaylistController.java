@@ -1,7 +1,6 @@
 package com.project.youtube.controller;
 
 import com.project.youtube.dto.PlayListDto;
-import com.project.youtube.model.VisibilityStatus;
 import com.project.youtube.service.impl.PlayListServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

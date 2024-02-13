@@ -22,8 +22,8 @@ public class VideoServiceImpl implements VideoService {
     //auto-wire
     @Autowired
     private final S3Service s3Service;
-    @Autowired
-    private final VideoRepository videoRepository;
+    //@Autowired
+    //private final VideoRepository videoRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoServiceImpl.class);
     public VideoDto uploadVideo(MultipartFile multipartFile){
@@ -34,7 +34,8 @@ public class VideoServiceImpl implements VideoService {
         Video video = new Video();
         video.setVideoUrl(videoURL);
         LOGGER.info("Save video Url to mongoDB");
-        var savedVideo = videoRepository.save(video);//save to mongoDB
+        //var savedVideo = videoRepository.save(video);//save to mongoDB
+        var savedVideo = new Video();
         LOGGER.info("Leaving uploadVideo in com.project.youtube.service.impl.S3Service");
         return new VideoDto(savedVideo.getId(), null, null, null, null, null, null,null, savedVideo.getVideoUrl());
     }
@@ -56,11 +57,11 @@ public class VideoServiceImpl implements VideoService {
         videoToSave.setTitle(videoDto.getTitle());
         videoToSave.setDescription(videoDto.getDescription());
         videoToSave.setThumbnailURL(videoDto.getThumbnailURL());
-        videoToSave.setTags(videoDto.getTags());
+        //videoToSave.setTags(videoDto.getTags());
         videoToSave.setVisibilityStatus(videoDto.getVisibilityStatus());
 
         // save video to database
-        videoRepository.save(videoToSave);
+        //videoRepository.save(videoToSave);
         LOGGER.info("Leaving updateVideoMetadata");
         return videoDto;
     }
@@ -71,7 +72,7 @@ public class VideoServiceImpl implements VideoService {
         Video videoToSave = getVideoById(videoId);
         String thumbnailUrl = s3Service.uploadFile(multipartFile);
         videoToSave.setThumbnailURL(thumbnailUrl);
-        videoRepository.save(videoToSave);
+        //videoRepository.save(videoToSave);
         LOGGER.info("Leaving uploadVideoThumbnail");
         return thumbnailUrl;
     }
@@ -80,10 +81,10 @@ public class VideoServiceImpl implements VideoService {
     public Video getVideoById(String videoId) {
         LOGGER.info("Entering getVideoById");
         LOGGER.info("Getting video for video id : "+videoId);
-        return videoRepository.findById(videoId)
+        return null;/*videoRepository.findById(videoId)
                 .orElseThrow(() -> {
                     LOGGER.error("Cannot retreive video by id:" + videoId);
                     return new NoSuchElementException("Cannot retreive video by id: " + videoId);
-                });
+                });*/
     }
 }

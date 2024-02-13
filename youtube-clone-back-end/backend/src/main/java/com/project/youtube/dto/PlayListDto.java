@@ -1,7 +1,7 @@
 package com.project.youtube.dto;
 
 import com.project.youtube.model.Video;
-import com.project.youtube.model.VisibilityStatus;
+import com.project.youtube.enumaration.VisibilityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

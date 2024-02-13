@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+//import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(value = "Comment") //this is a mongodb document 'equivalent of SQL table'
+//@Document(value = "Comment") //this is a mongodb document 'equivalent of SQL table'
 @EntityScan
 @Data
 @NoArgsConstructor

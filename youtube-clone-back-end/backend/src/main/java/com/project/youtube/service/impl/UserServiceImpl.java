@@ -22,8 +22,8 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    @Autowired
-    private UserRepository userRepository;
+    //@Autowired
+    //private UserRepository userRepository;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
         user.setUserName(userDto.getUserName());
         user.setEmailAddress(userDto.getEmailAddress());
 
-        var savedUser = userRepository.save(user);
-
+        //var savedUser = userRepository.save(user);
+        var savedUser = new User();
         return new UserDto(savedUser.getId(), user.getFirstName(), user.getLastName(), user.getUserName(),null, null, null, null, null, null, null, null);
     }
 
@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
     public User getUserById(String UserId) {
         LOGGER.info("Entering getVideoById");
         LOGGER.info("Getting video for video id : "+UserId);
-        return userRepository.findById(UserId)
+        return null;/*userRepository.findById(UserId)
                 .orElseThrow(() -> {
                     LOGGER.error("Cannot retreive video by id:" + UserId);
                     return new NoSuchElementException("Cannot retreive video by id: " + UserId);
-                });
+                });*/
     }
 
 }

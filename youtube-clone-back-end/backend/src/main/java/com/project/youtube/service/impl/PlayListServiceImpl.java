@@ -4,7 +4,6 @@ import com.project.youtube.constants.ApplicationConstants;
 import com.project.youtube.dto.PlayListDto;
 import com.project.youtube.model.PlayList;
 import com.project.youtube.model.Video;
-import com.project.youtube.model.VisibilityStatus;
 import com.project.youtube.repository.PlayListRepository;
 import com.project.youtube.service.PlayListService;
 import com.project.youtube.service.VideoService;
@@ -23,8 +22,8 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @Component
 public class PlayListServiceImpl implements PlayListService {
-    @Autowired
-    private PlayListRepository playListRepository;
+    //@Autowired
+    //private PlayListRepository playListRepository;
     @Autowired
     private VideoService videoService;
     @Autowired
@@ -42,8 +41,8 @@ public class PlayListServiceImpl implements PlayListService {
         playList.setTitle(playListDto.getTitle());
         playList.setDescription(playListDto.getDescription());
         playList.setVisibilityStatus(playListDto.getVisibilityStatus());
-        var savedPlayList = playListRepository.save(playList);
-
+        //var savedPlayList = playListRepository.save(playList);
+        var savedPlayList = new PlayList();
 
 
         LOGGER.info("Leaving createPlaylist");
@@ -77,11 +76,11 @@ public class PlayListServiceImpl implements PlayListService {
     @Override
     public PlayList getPlayListById(String playListId) {
         LOGGER.info("Getting user playList for playListId: "+playListId);
-        return this.playListRepository.findById(playListId).orElseThrow(()-> {
+        return null;/*this.playListRepository.findById(playListId).orElseThrow(()-> {
                 LOGGER.error("Could not find playList for playListId: "+playListId);
                 return new NoSuchElementException("Could not find playList for for Id "+playListId);
             }
-        );
+        );*/
     }
 
     /**
@@ -96,7 +95,7 @@ public class PlayListServiceImpl implements PlayListService {
         boolean canAddvideo = true;
         if(playList.getVideoIds().size() < this.constants.getPLAYLIST_MAXSIZE()) {
             playList.getVideoIds().add(videoId);
-            this.playListRepository.save(playList);
+            //this.playListRepository.save(playList);
         }
         else{
             canAddvideo = false;
