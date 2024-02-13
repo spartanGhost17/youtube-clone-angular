@@ -1,4 +1,4 @@
-package com.project.youtube.model;
+package com.project.youtube.enumaration;
 
 public enum VideoCategory {
     CARS_AND_VEHICLES,
