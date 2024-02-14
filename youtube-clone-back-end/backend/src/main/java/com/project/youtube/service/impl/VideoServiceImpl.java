@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-@Component
+//@Component
 public class VideoServiceImpl implements VideoService {
 
     //auto-wire

@@ -4,7 +4,6 @@ import com.project.youtube.constants.ApplicationConstants;
 import com.project.youtube.dto.PlayListDto;
 import com.project.youtube.model.PlayList;
 import com.project.youtube.model.Video;
-import com.project.youtube.repository.PlayListRepository;
 import com.project.youtube.service.PlayListService;
 import com.project.youtube.service.VideoService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-@Component
+//@Component
 public class PlayListServiceImpl implements PlayListService {
     //@Autowired
     //private PlayListRepository playListRepository;
