@@ -20,8 +20,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDaoImpl userDaoImpl;
-    //@Autowired
-    //private UserRepository userRepository;
 
     @Override
     public UserDTO createUser(User user) {
