@@ -14,37 +14,11 @@
 #      port: 27017
 #      database: youtube
 spring:
-  servlet:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/youtube
-    password: password
-    username: root
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
-    generate-ddl: true
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        globally_quoted_identifiers: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-  sql:
-    init:
-      mode: always #never
-      continue-on-error: false
+  profiles:
+    active: @spring.profiles.active@ #global property <spring.profiles.active>
 
-###### Amazon credentials #####
-cloud:
-  aws:
-    credentials:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
-    region:
-      static: eu-west-2
-    stack:
-      auto: false
+application:
+  ##@project.parent.artifactId@
+  title: YoutubeClone
+  #@project.parent.version@
+  version: 1.0.0
