@@ -1,44 +1,48 @@
 package com.project.youtube.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
-//import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
-import java.util.List;
-import java.util.Set;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 
 //@Document(value = "User") //this is a mongodb document 'equivalent of SQL table'
 @Data
 @EntityScan
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(NON_NULL)
 public class User {
-
-    @Id
-    private String id;
-    private String firstName;
-    private String lastName;
-    private String fullName;
-    private String userName;
-    private String emailAddress;
-    //private String profilePictureURL;
-    //private Boolean verified;
-    //private Set<String> subscribedToUsers;
-    //private Set<String> subscribers;
-    //private List<String> videoHistory;
-    //private Set<String> likedVideos;
-    //private Set<String> dislikedVideos;
-    //private List<String> userPlayListsIds;
-    private Long userid;
+    private Long id;
+    @NotEmpty(message = "username cannot be empty")
     private String username;
+    @NotEmpty(message = "channel name cannot be empty")
+    @Column(name = "channel_name")
+    private String channelName;
+    @NotEmpty(message = "email cannot be empty")
+    @Email(message = "Invalid email, please enter a validation email address")
     private String email;
+    @NotEmpty(message = "password cannot be empty")
     private String password;
-    private Date date_registered;
-    private String profilePictureURL;
-    private Set<Authority> authorities;
-
+    @Column(name = "created_at")
+    private Date createdAt;
+    private Boolean verified;
+    private String description;
+    private Boolean enabled;
+    private Boolean banned;
+    @Column(name = "non_locked")
+    private Boolean isNotLocked;
+    @Column(name = "using_mfa")
+    private Boolean isUsingMFA;
+    @Column(name = "profile_picture")
+    private String profilePicture;
 }
