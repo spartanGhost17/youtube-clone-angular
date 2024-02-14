@@ -13,8 +13,6 @@ import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-
-//@Document(value = "User") //this is a mongodb document 'equivalent of SQL table'
 @Data
 @EntityScan
 @SuperBuilder
