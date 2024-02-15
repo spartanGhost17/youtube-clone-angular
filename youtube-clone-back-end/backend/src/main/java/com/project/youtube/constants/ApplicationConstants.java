@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationConstants {
     private int PLAYLIST_MAXSIZE = 400;
+    private String API_VERSION = "/api/v1/";
 }
