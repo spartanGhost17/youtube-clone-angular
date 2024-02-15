@@ -17,6 +17,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -69,12 +75,18 @@ public class SecurityConfig {
      */
     @Bean(value = "defaultSecurityFilterChain")
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
-
+        
         log.info("Inside defaultSecurityFilterChain");
-        http.csrf().disable().cors().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests((request) -> {
-            request
+        http.csrf().disable()
+            .cors((configure) -> configure.configurationSource(corsConfigurationSource()))//pass corsConfigurationSource @Bean
+            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling((exceptionConfig) -> {
+                exceptionConfig
+                    .accessDeniedHandler(customAccessDeniedHandler)
+                    .authenticationEntryPoint(customAuthenticationEntryPoint);
+            })
+            .authorizeHttpRequests((request) -> {
+                request
                     .antMatchers(PUBLIC_URLS).permitAll()
                     .antMatchers(HttpMethod.DELETE, API_VERSION+"user/delete/**").hasAnyAuthority("DELETE:USER")
                     .antMatchers(HttpMethod.DELETE, API_VERSION+"video/delete/**").hasAnyAuthority("DELETE:VIDEO")
@@ -82,11 +94,22 @@ public class SecurityConfig {
                     .anyRequest().authenticated();
         }).authenticationManager(authenticationManager);//specifies authenticationManager @Bean instance should be used during authentication
 
-        http.exceptionHandling((exceptionConfig) -> {
-            exceptionConfig
-                    .accessDeniedHandler(customAccessDeniedHandler)
-                    .authenticationEntryPoint(customAuthenticationEntryPoint);
-        });
         return (SecurityFilterChain) http.build();
+    }
+
+    @Bean("corsConfigurationSource")
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:3000", "http://youtubeClone.org", "http://127.0.0.1:3306", "http://192.168.1.164", "http://192.168.1.216", "http://100.14.212.97:5000"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
+                "Accept", "Jwt-Token", "Authorization", "Origin", "Accept", "X-Requested-With",
+                "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+        configuration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization",
+                "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "File-Name"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
