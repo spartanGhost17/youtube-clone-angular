@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -25,5 +27,15 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(User user) {
         User createdUser = userDaoImpl.create(user);
         return UserDTOMapper.toUserDTO(createdUser);
+    }
+
+    @Override
+    public List<User> getByUsername(String username) {
+        return userDaoImpl.getByUsername(username);
+    }
+
+    @Override
+    public List<User> getByEmail(String email) {
+        return userDaoImpl.getByEmail(email);
     }
 }
