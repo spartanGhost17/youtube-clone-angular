@@ -1,7 +1,5 @@
 package com.project.youtube.config;
 
-import com.project.youtube.dao.impl.UserDaoImpl;
-import com.project.youtube.model.Authority;
 import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.RoleServiceImpl;
@@ -18,7 +16,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;

@@ -23,7 +23,7 @@ public class User {
     private Long id;
     @NotEmpty(message = "username cannot be empty")
     private String username;
-    @NotEmpty(message = "channel name cannot be empty")
+    //@NotEmpty(message = "channel name cannot be empty")
     @Column(name = "channel_name")
     private String channelName;
     @NotEmpty(message = "email cannot be empty")
