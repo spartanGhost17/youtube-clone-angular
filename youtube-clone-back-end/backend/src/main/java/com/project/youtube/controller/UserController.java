@@ -1,6 +1,8 @@
 package com.project.youtube.controller;
 
 import com.project.youtube.dto.UserDTO;
+import com.project.youtube.dtomapper.UserDTOMapper;
+import com.project.youtube.form.LoginForm;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.UserServiceImpl;
@@ -8,10 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private final UserServiceImpl userServiceImpl;
 
     @PostMapping(value="register")
     public ResponseEntity<HttpResponse> createNewUser(@RequestBody @Valid User user) {
@@ -37,21 +38,28 @@ public class UserController {
                         .message("user created")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
-                        .build()
-        );
+                        .build());
     }
 
     private URI getUri() {
         return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());
     }
-    /*public UserDTO createNewUser(@RequestBody UserDTO userDTO) {
-        return userServiceImpl.createUser(UserDTOMapper.toUser(userDTO));
-    }*/
 
-    //@GetMapping(value="login")
-    /*@PutMapping(value="playlist")
-    public UserDTO updatePlaylist() {
-        return null;
-    }*/
+    @PostMapping(value="login")
+    public ResponseEntity<HttpResponse> login(@RequestBody @Valid LoginForm loginForm) {
+        UserDTO userDTO = userServiceImpl.getUser(loginForm.getUsername());
+        return ResponseEntity.created(getUri()).body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", userDTO))
+                        .message("Login success")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
 
+    @DeleteMapping(value = "/delete")
+    public String deleteTest(@RequestParam String value) {
+        return "TEST TO DELETE";
+    }
 }
