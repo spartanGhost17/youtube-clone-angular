@@ -1,6 +1,8 @@
 package com.project.youtube.service;
 
 import com.project.youtube.model.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 import java.util.Set;
@@ -13,4 +15,5 @@ public interface RoleService {
 
     Set<Role> getRoleByUserEmail(String email);
     void updateUserRole(Long userId, String roleName);
+    List<GrantedAuthority> roleToGrantedAuthority(Set<Role> roles);
 }

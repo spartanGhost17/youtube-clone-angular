@@ -50,7 +50,12 @@ public class RoleDaoImpl implements RoleDao<Role> {
     }
     @Override
     public Set<Role> getRoleByUserId(Long userId) {
-        return null;
+        try {
+            return jdbcTemplate.query(SELECT_ROLE_BY_USER_ID_QUERY, Map.of("userId", userId), BeanPropertyRowMapper.newInstance(Role.class)).stream().collect(Collectors.toSet());
+        } catch(Exception exception) {
+            log.error("Could not find role by Id: {}", userId);
+            throw new APIException("An error occurred. Please try again.");
+        }
     }
     @Override
     public void addRoleToUser(Long userId, String roleName) {
