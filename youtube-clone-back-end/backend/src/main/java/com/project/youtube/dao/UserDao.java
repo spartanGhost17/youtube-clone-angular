@@ -16,7 +16,7 @@ public interface UserDao<T extends User> {
     Boolean delete(Long id);
 
     /*extra ops*/
-
+    User getUser(String username);
     List<User> getByUsername(String username);
     List<User> getByEmail(String email);
 }

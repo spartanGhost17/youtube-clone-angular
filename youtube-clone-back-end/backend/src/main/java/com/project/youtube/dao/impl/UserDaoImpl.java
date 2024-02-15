@@ -43,6 +43,11 @@ public class UserDaoImpl implements UserDao<User> {
     //@Autowired
     //private EmailService emailService;
 
+    /**
+     * Create user in database and send verification email
+     * @param user
+     * @return
+     */
     @Override
     public User create(User user) { //consider putting all this logic outside this function
         log.info("Creating user: {}", user.getUsername());
@@ -96,12 +101,46 @@ public class UserDaoImpl implements UserDao<User> {
         return null;
     }
 
+    /**
+     * get user by either email or username
+     * @param username
+     * @return
+     */
+    @Override
+    public User getUser(String username) {
+        try {
+            List<User> userByUsername = getByUsername(username);
+            List<User> userByEmail = getByEmail(username);
+            if(!userByUsername.isEmpty()) {
+                return userByUsername.get(0);
+            }
+            else if (!userByEmail.isEmpty()) {
+                log.info("Could not find user by username. Checking by email: {}", username);
+                return userByEmail.get(0);
+            }
+        } catch (Exception e) {
+            log.error("Could not find user info for user: {}", username);
+            throw new APIException("No user could be found for: "+username);
+        }
+        return null;
+    }
+
+    /**
+     * get user by username
+     * @param username String
+     * @return List of users
+     */
     @Override
     public List<User> getByUsername(String username) {
         log.info("Getting user for username: {}", username);
         return jdbcTemplate.query(SELECT_USER_BY_USERNAME_QUERY, Map.of("username", username), new BeanPropertyRowMapper<>(User.class));
     }
 
+    /**
+     * get user by email
+     * @param email
+     * @return
+     */
     @Override
     public List<User> getByEmail(String email) {
         log.info("Getting user for email: {}", email);
