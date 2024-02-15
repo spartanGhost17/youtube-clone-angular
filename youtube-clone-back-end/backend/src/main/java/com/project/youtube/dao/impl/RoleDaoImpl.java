@@ -11,9 +11,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.project.youtube.enumaration.RoleType.ROLE_USER;
 import static com.project.youtube.query.RoleQuery.*;
@@ -49,7 +48,10 @@ public class RoleDaoImpl implements RoleDao<Role> {
     public Boolean delete(Long id) {
         return null;
     }
-
+    @Override
+    public Set<Role> getRoleByUserId(Long userId) {
+        return null;
+    }
     @Override
     public void addRoleToUser(Long userId, String roleName) {
         log.info("Adding role: {} to user id: {}", roleName, userId);
@@ -67,13 +69,23 @@ public class RoleDaoImpl implements RoleDao<Role> {
     }
 
     @Override
-    public Role getRoleByUserId(Long userId) {
-        return null;
+    public Set<Role> getRoleByUsername(String username) {
+        try {
+            return jdbcTemplate.query(SELECT_ROLE_BY_USERNAME_QUERY, Map.of("username", username), BeanPropertyRowMapper.newInstance(Role.class)).stream().collect(Collectors.toSet());
+        } catch(Exception exception) {
+            log.error("Could not find role by username: {}", username);
+            throw new APIException("An error occurred. Please try again.");
+        }
     }
 
     @Override
-    public Role getRoleByUserEmail(String email) {
-        return null;
+    public Set<Role> getRoleByUserEmail(String email) {
+        try {
+            return jdbcTemplate.query(SELECT_ROLE_BY_EMAIL_QUERY, Map.of("email", email), BeanPropertyRowMapper.newInstance(Role.class)).stream().collect(Collectors.toSet());
+        } catch(Exception exception) {
+            log.error("Could not find role by email: {}", email);
+            throw new APIException("An error occurred. Please try again.");
+        }
     }
 
     @Override
