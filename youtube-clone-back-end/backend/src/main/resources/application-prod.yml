@@ -22,7 +22,7 @@ spring:
         format_sql: true
   sql:
     init:
-      mode: always #never
+      mode: never #always
       continue-on-error: false
 
 ###### Amazon credentials #####
