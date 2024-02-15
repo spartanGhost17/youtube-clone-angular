@@ -4,6 +4,7 @@ import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import com.project.youtube.service.impl.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -22,15 +24,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-
     @Autowired
-    private static UserServiceImpl userService;
+    private final RoleServiceImpl roleServiceImpl;
     @Autowired
-    private static RoleServiceImpl roleServiceImpl;
+    private final UserServiceImpl userService;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -45,6 +47,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 Set<Role> role = roleServiceImpl.getRoleByUsername(username);
                 return getAuthenticationToken(username, password, userByUsername.get(0), role);
             } else {
+                log.error("The password entered is invalid");
                 throw new BadCredentialsException("please enter valid password");
             }
         } else if (!userByEmail.isEmpty()) {
@@ -52,10 +55,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 Set<Role> role = roleServiceImpl.getRoleByUserEmail(username);
                 return getAuthenticationToken(username, password, userByEmail.get(0), role);
             } else {
+                log.error("The password entered is invalid");
                 throw new BadCredentialsException("please enter valid password");
             }
         } else {
-            throw new BadCredentialsException("please enter valid user");
+            log.error("User {} not found in database", username);
+            throw new UsernameNotFoundException("please enter valid user");
         }
     }
 
