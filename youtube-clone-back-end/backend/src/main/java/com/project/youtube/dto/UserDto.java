@@ -1,10 +1,12 @@
 package com.project.youtube.dto;
 
+import com.project.youtube.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,9 +20,10 @@ public class UserDTO {
     private Boolean verified;
     private String description;
     private Boolean enabled;
-    private Boolean isNotLocked;
-    private Boolean isUsingMFA;
+    private Boolean nonLocked;
+    private Boolean usingMfa;
     private String profilePicture;
+    private List<Role> authorities;
     /*private String id;
     private String firstName;
     private String lastName;

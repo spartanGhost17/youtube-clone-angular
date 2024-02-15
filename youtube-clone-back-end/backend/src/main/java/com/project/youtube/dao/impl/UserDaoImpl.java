@@ -60,7 +60,6 @@ public class UserDaoImpl implements UserDao<User> {
             jdbcTemplate.update(INSERT_USER_QUERY, parameters, keyHolder);
             user.setId(requireNonNull(keyHolder.getKey().longValue()));
             //add role to user
-                //roleDao.addRoleToUser(user.getId(), ROLE_USER.name());
             roleService.adduserToRole(user.getId(), ROLE_USER.name());
             //send verification url
             String verificationUrl = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
@@ -69,8 +68,7 @@ public class UserDaoImpl implements UserDao<User> {
             //send email to user with verification url
             //emailService.sendEmail(user.getUsername(), user.getEmail(), verificationUrl, ACCOUNT.getType());
             user.setEnabled(false);
-            user.setIsNotLocked(true);
-            //log.info("leaving user");
+            user.setNonLocked(true);
 
             //return the newly created user
             return user;

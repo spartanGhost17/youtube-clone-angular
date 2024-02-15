@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Data
@@ -23,7 +25,6 @@ public class User {
     private Long id;
     @NotEmpty(message = "username cannot be empty")
     private String username;
-    //@NotEmpty(message = "channel name cannot be empty")
     @Column(name = "channel_name")
     private String channelName;
     @NotEmpty(message = "email cannot be empty")
@@ -38,9 +39,10 @@ public class User {
     private Boolean enabled;
     private Boolean banned;
     @Column(name = "non_locked")
-    private Boolean isNotLocked;
+    private Boolean nonLocked;
     @Column(name = "using_mfa")
-    private Boolean isUsingMFA;
+    private Boolean usingMfa;
     @Column(name = "profile_picture")
     private String profilePicture;
+    private List<Role> grantedAuthorities;
 }
