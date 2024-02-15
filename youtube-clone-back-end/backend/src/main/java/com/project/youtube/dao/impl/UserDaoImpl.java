@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -42,7 +44,7 @@ public class UserDaoImpl implements UserDao<User> {
     //private EmailService emailService;
 
     @Override
-    public User create(User user) {
+    public User create(User user) { //consider putting all this logic outside this function
         log.info("Creating user: {}", user.getUsername());
         //check email is unique
         if(getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new APIException("This email already exists. Please use a different email");
@@ -92,6 +94,18 @@ public class UserDaoImpl implements UserDao<User> {
     @Override
     public Boolean delete(Long id) {
         return null;
+    }
+
+    @Override
+    public List<User> getByUsername(String username) {
+        log.info("Getting user for username: {}", username);
+        return jdbcTemplate.query(SELECT_USER_BY_USERNAME_QUERY, Map.of("username", username), new BeanPropertyRowMapper<>(User.class));
+    }
+
+    @Override
+    public List<User> getByEmail(String email) {
+        log.info("Getting user for email: {}", email);
+        return jdbcTemplate.query(SELECT_USER_BY_EMAIL_QUERY, Map.of("email", email), new BeanPropertyRowMapper(User.class));
     }
 
     /**
