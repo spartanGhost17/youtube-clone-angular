@@ -22,7 +22,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         HttpResponse httpResponse = HttpResponse.builder()
                 .timeStamp(Instant.now().toString())
-                .reason("You don't have enough permission to access this resource")
+                .reason("You need to log in to access this resource")
                 .status(HttpStatus.FORBIDDEN)
                 .statusCode(HttpStatus.FORBIDDEN.value())
                 .build();
