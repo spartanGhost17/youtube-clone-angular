@@ -95,6 +95,7 @@ create TABLE Users
     channel_name    VARCHAR(255) NOT NULL,
     email           VARCHAR(255) NOT NULL,
     password        VARCHAR(255) DEFAULT NULL,
+    phone           VARCHAR(30) DEFAULT NULL,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     verified        BOOLEAN DEFAULT FALSE,
     description     VARCHAR(255) DEFAULT NULL,
