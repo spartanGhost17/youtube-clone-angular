@@ -151,11 +151,12 @@ public class UserDaoImpl implements UserDao<User> {
     @Override
     public void sendVerificationCode(UserDTO userDTO) {
         String expirationDate = DateFormatUtils.format(addDays(new Date(), 1), DATE_FORMAT);
-        String verificationCode = RandomStringUtils.randomAlphanumeric(8).toUpperCase();
+        String verificationCode = RandomStringUtils.randomNumeric(8).toUpperCase();
 
         deleteVerificationCode(userDTO);
         createVerificationCode(userDTO, verificationCode, expirationDate);
-        sendSms(userDTO.getPhone(), "From: YoutubeClone from Adam!! :) \nVerification code\n"+verificationCode);
+        log.info("generated user code verification code {}", verificationCode);
+        //sendSms(userDTO.getPhone(), "From: YoutubeClone from Adam!! :) \nVerification code\n"+verificationCode); //uncomment to send through Twilio
 
     }
 
