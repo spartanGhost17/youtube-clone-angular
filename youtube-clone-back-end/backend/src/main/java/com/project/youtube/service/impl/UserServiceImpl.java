@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getByEmail(String email) {
         return userDaoImpl.getByEmail(email);
     }
+
+    @Override
+    public void sendVerificationCode(UserDTO userDTO) {
+        userDaoImpl.sendVerificationCode(userDTO);
+    }
 }
