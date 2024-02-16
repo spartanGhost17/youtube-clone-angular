@@ -32,6 +32,7 @@ public class User {
     private String email;
     @NotEmpty(message = "password cannot be empty")
     private String password;
+    private String phone;
     @Column(name = "created_at")
     private Date createdAt;
     private Boolean verified;

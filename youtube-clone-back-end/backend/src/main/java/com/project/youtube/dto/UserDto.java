@@ -17,6 +17,7 @@ public class UserDTO {
     private String channelName;
     private Date createdAt;
     private String email;
+    private String phone;
     private Boolean verified;
     private String description;
     private Boolean enabled;
