@@ -1,6 +1,5 @@
 package com.project.youtube.service.impl;
 
-import com.project.youtube.constants.ApplicationConstants;
 import com.project.youtube.dto.PlayListDto;
 import com.project.youtube.model.PlayList;
 import com.project.youtube.model.Video;
@@ -10,22 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.project.youtube.constants.ApplicationConstants.*;
+
 @Service
 @RequiredArgsConstructor
 //@Component
 public class PlayListServiceImpl implements PlayListService {
-    //@Autowired
-    //private PlayListRepository playListRepository;
     @Autowired
     private VideoService videoService;
-    @Autowired
-    private ApplicationConstants constants;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayListServiceImpl.class);
 
@@ -91,7 +87,7 @@ public class PlayListServiceImpl implements PlayListService {
     public boolean addVideo(String videoId, String playLiatId) {
         PlayList playList = getPlayListById(playLiatId);
         boolean canAddvideo = true;
-        if(playList.getVideoIds().size() < this.constants.getPLAYLIST_MAXSIZE()) {
+        if(playList.getVideoIds().size() < PLAYLIST_MAXSIZE) {
             playList.getVideoIds().add(videoId);
             //this.playListRepository.save(playList);
         }

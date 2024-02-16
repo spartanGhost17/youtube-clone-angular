@@ -1,6 +1,5 @@
 package com.project.youtube.config;
 
-import com.project.youtube.constants.ApplicationConstants;
 import com.project.youtube.handler.CustomAccessDeniedHandler;
 import com.project.youtube.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.Collections;
+
+import static com.project.youtube.constants.ApplicationConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -36,9 +36,7 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Autowired
     private final CustomAuthenticationProvider customAuthenticationProvider;
-    //@Autowired
-    private static final ApplicationConstants applicationConstants = new ApplicationConstants();
-    private static final String API_VERSION = applicationConstants.getAPI_VERSION();
+
     private static final String[] PUBLIC_URLS = {API_VERSION+"user/login", API_VERSION+"user/register"};
 
     /**
