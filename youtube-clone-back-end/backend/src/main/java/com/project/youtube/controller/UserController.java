@@ -4,7 +4,11 @@ import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.form.LoginForm;
 import com.project.youtube.model.HttpResponse;
+import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
+import com.project.youtube.model.UserPrincipal;
+import com.project.youtube.provider.TokenProvider;
+import com.project.youtube.service.impl.RoleServiceImpl;
 import com.project.youtube.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +24,17 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
-@RequestMapping(value="/api/v1/user/")
+@RequestMapping(value = "/api/v1/user/")
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
     private final UserServiceImpl userServiceImpl;
+    private final TokenProvider tokenProvider;
 
-    @PostMapping(value="register")
+    @PostMapping(value = "register")
     public ResponseEntity<HttpResponse> createNewUser(@RequestBody @Valid User user) {
         UserDTO userDTO = userServiceImpl.createUser(user);
         return ResponseEntity.created(getUri()).body(
@@ -45,7 +51,7 @@ public class UserController {
         return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());
     }
 
-    @PostMapping(value="login")
+    @PostMapping(value = "login")
     public ResponseEntity<HttpResponse> login(@RequestBody @Valid LoginForm loginForm) {
         UserDTO userDTO = userServiceImpl.getUser(loginForm.getUsername());
         return userDTO.getUsingMfa() ? sendVerificationCode(userDTO) : sendResponse(userDTO);
@@ -61,7 +67,10 @@ public class UserController {
         return ResponseEntity.created(getUri()).body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .data(Map.of("user", userDTO))
+                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "user", userDTO
+                        ))
                         .message("Login success")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
