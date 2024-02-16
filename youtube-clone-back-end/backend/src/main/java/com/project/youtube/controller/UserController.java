@@ -48,6 +48,16 @@ public class UserController {
     @PostMapping(value="login")
     public ResponseEntity<HttpResponse> login(@RequestBody @Valid LoginForm loginForm) {
         UserDTO userDTO = userServiceImpl.getUser(loginForm.getUsername());
+        return userDTO.getUsingMfa() ? sendVerificationCode(userDTO) : sendResponse(userDTO);
+    }
+
+    @DeleteMapping(value = "/delete")
+    public String deleteTest(@RequestParam String value) {
+        return "TEST TO DELETE";
+    }
+
+    private ResponseEntity<HttpResponse> sendResponse(UserDTO userDTO) {
+        //give user accessToken & refreshToken
         return ResponseEntity.created(getUri()).body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
@@ -58,8 +68,15 @@ public class UserController {
                         .build());
     }
 
-    @DeleteMapping(value = "/delete")
-    public String deleteTest(@RequestParam String value) {
-        return "TEST TO DELETE";
+    private ResponseEntity<HttpResponse> sendVerificationCode(UserDTO userDTO) {
+        userServiceImpl.sendVerificationCode(userDTO);
+        return ResponseEntity.created(getUri()).body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", userDTO))
+                        .message("Verification code sent")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
     }
 }
