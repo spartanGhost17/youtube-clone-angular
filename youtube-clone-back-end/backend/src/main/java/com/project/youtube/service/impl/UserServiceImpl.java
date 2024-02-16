@@ -1,26 +1,21 @@
 package com.project.youtube.service.impl;
 
-import com.project.youtube.dao.UserDao;
 import com.project.youtube.dao.impl.UserDaoImpl;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
+import com.project.youtube.model.UserPrincipal;
 import com.project.youtube.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,5 +84,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void sendVerificationCode(UserDTO userDTO) {
         userDaoImpl.sendVerificationCode(userDTO);
+    }
+
+    /**
+     * get a user principal from dto
+     *
+     * @param userDTO userDto
+     * @return
+     */
+    @Override
+    public UserPrincipal getUserPrincipal(UserDTO userDTO) {
+        User user = UserDTOMapper.toUser(getUser(userDTO.getUsername()));//is it necessary to call DB again for getUser? userDTO already has all necessary objects
+        Set<Role> roles = roleService.getRoleByUserId(userDTO.getId());
+        return new UserPrincipal(user, roles);
     }
 }
