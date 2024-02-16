@@ -2,6 +2,7 @@ package com.project.youtube.config;
 
 import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
+import com.project.youtube.model.UserPrincipal;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import com.project.youtube.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -12,16 +13,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -45,7 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!userByUsername.isEmpty()) {
             if (passwordEncoder.matches(password, userByUsername.get(0).getPassword())) {
                 Set<Role> role = roleServiceImpl.getRoleByUsername(username);
-                return getAuthenticationToken(username, password, userByUsername.get(0), role);
+                return getAuthenticationToken(new UserPrincipal(userByUsername.get(0), role), password);
             } else {
                 log.error("The password entered is invalid");
                 throw new BadCredentialsException("please enter valid password");
@@ -53,7 +50,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         } else if (!userByEmail.isEmpty()) {
             if (passwordEncoder.matches(password, userByEmail.get(0).getPassword())) {
                 Set<Role> role = roleServiceImpl.getRoleByUserEmail(username);
-                return getAuthenticationToken(username, password, userByEmail.get(0), role);
+                return getAuthenticationToken(new UserPrincipal(userByUsername.get(0), role), password);
             } else {
                 log.error("The password entered is invalid");
                 throw new BadCredentialsException("please enter valid password");
@@ -66,38 +63,19 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     /**
      * Create UsernamePasswordAuthenticationToken with permissions
-     *
-     * @param username String
+     * @param userPrincipal String
      * @param password
-     * @param user
-     * @param role
      * @return
      */
-    public UsernamePasswordAuthenticationToken getAuthenticationToken(String username, String password, User user, Set<Role> role) {
-        log.info("Getting Authentication Token for user {}: ", username);
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password, getGrantedAuthorities(role));//make sure to add authorities list
+    public UsernamePasswordAuthenticationToken getAuthenticationToken(UserPrincipal userPrincipal, String password) {
+        log.info("Getting Authentication Token for user {}: ", userPrincipal.getUsername());
+        if (passwordEncoder.matches(password, userPrincipal.getPassword())) {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal.getUsername(), password, userPrincipal.getAuthorities());//make sure to add authorities list
             authenticationToken.eraseCredentials();
             return authenticationToken;
         } else {
             throw new BadCredentialsException("please enter valid password");
         }
-    }
-
-    /**
-     * get a list of GrantedAuthority (permission) for Authentication object
-     *
-     * @param roles Set
-     * @return list of GrantedAuthority
-     */
-    private List<GrantedAuthority> getGrantedAuthorities(Set<Role> roles) {
-        log.info("Adding permissions set to user");
-        List<GrantedAuthority> grantedAuthorities = roles.stream()
-                        .flatMap((role) -> Arrays.stream(role.getPermissions().split(","))
-                        .map(permission -> new SimpleGrantedAuthority(permission.trim())))
-                        .collect(Collectors.toList());
-
-        return grantedAuthorities;
     }
 
     /**
