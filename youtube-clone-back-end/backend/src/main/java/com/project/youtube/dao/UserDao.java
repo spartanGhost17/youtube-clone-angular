@@ -1,5 +1,6 @@
 package com.project.youtube.dao;
 
+import com.project.youtube.dto.UserDTO;
 import com.project.youtube.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,8 @@ public interface UserDao<T extends User> {
     User getUser(String username);
     List<User> getByUsername(String username);
     List<User> getByEmail(String email);
+    void sendVerificationCode(UserDTO userDTO);
+    void deleteVerificationCode(UserDTO userDTO);
+    void createVerificationCode(UserDTO userDTO, String verificationCode, String expirationDate);
+    //void sendSMS(String phone, String s);
 }

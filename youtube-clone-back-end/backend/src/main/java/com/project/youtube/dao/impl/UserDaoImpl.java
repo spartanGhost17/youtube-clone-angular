@@ -1,16 +1,15 @@
 package com.project.youtube.dao.impl;
 
 import com.project.youtube.Exception.APIException;
-import com.project.youtube.dao.RoleDao;
 import com.project.youtube.dao.UserDao;
-import com.project.youtube.model.Role;
+import com.project.youtube.dto.UserDTO;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,20 +20,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static com.project.youtube.enumaration.RoleType.ROLE_USER;
 import static com.project.youtube.enumaration.VerificationType.ACCOUNT;
 import static com.project.youtube.query.UserQuery.*;
+import static com.project.youtube.utils.SmsUtils.sendSms;
 import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.time.DateUtils.addDays;
 
 @Repository
 @RequiredArgsConstructor
 @Slf4j
 public class UserDaoImpl implements UserDao<User> {
+    private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";//sql date format
     private final NamedParameterJdbcTemplate jdbcTemplate;
     @Autowired
     private final PasswordEncoder passwordEncoder;
@@ -144,6 +143,51 @@ public class UserDaoImpl implements UserDao<User> {
         log.info("Getting user for email: {}", email);
         return jdbcTemplate.query(SELECT_USER_BY_EMAIL_QUERY, Map.of("email", email), new BeanPropertyRowMapper(User.class));
     }
+
+    /**
+     * save new verification code
+     * @param userDTO
+     */
+    @Override
+    public void sendVerificationCode(UserDTO userDTO) {
+        String expirationDate = DateFormatUtils.format(addDays(new Date(), 1), DATE_FORMAT);
+        String verificationCode = RandomStringUtils.randomAlphanumeric(8).toUpperCase();
+
+        deleteVerificationCode(userDTO);
+        createVerificationCode(userDTO, verificationCode, expirationDate);
+        sendSms(userDTO.getPhone(), "From: YoutubeClone from Adam!! :) \nVerification code\n"+verificationCode);
+
+    }
+
+    @Override
+    public void deleteVerificationCode(UserDTO userDTO) {
+        try {
+            jdbcTemplate.update(DELETE_VERIFICATION_CODE_BY_USER_ID_QUERY, Map.of("userId", userDTO.getId()));
+        } catch (Exception e) {
+            log.error("Could not delete verification Code for user: {}", userDTO.getUsername());
+            throw new APIException("Could not delete verification verification code");
+        }
+    }
+
+    /**
+     * Creates a new verification code for user
+     * @param userDTO userDTO object
+     * @param verificationCode String randomAlphanumeric
+     * @param expirationDate String expirationDate
+     */
+    @Override
+    public void createVerificationCode(UserDTO userDTO, String verificationCode, String expirationDate) {
+        try {
+            jdbcTemplate.update(INSERT_VERIFICATION_CODE_QUERY, Map.of("userId", userDTO.getId(), "code", verificationCode, "expirationDate", expirationDate));
+        } catch (Exception e) {
+            log.error("Could not delete verification Code for user: {}", userDTO.getUsername());
+            throw new APIException("Could not update verification Code for user");
+        }
+    }
+
+    //@Override
+    //public void sendSMS(String phone, String s) {
+    //}
 
     /**
      * Check email is user
