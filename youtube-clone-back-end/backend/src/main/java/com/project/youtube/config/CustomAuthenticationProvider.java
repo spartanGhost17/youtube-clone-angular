@@ -50,7 +50,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         } else if (!userByEmail.isEmpty()) {
             if (passwordEncoder.matches(password, userByEmail.get(0).getPassword())) {
                 Set<Role> role = roleServiceImpl.getRoleByUserEmail(username);
-                return getAuthenticationToken(new UserPrincipal(userByUsername.get(0), role), password);
+                return getAuthenticationToken(new UserPrincipal(userByEmail.get(0), role), password);
             } else {
                 log.error("The password entered is invalid");
                 throw new BadCredentialsException("please enter valid password");
@@ -68,14 +68,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
      * @return
      */
     public UsernamePasswordAuthenticationToken getAuthenticationToken(UserPrincipal userPrincipal, String password) {
-        log.info("Getting Authentication Token for user {}: ", userPrincipal.getUsername());
-        if (passwordEncoder.matches(password, userPrincipal.getPassword())) {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal.getUsername(), password, userPrincipal.getAuthorities());//make sure to add authorities list
-            authenticationToken.eraseCredentials();
-            return authenticationToken;
-        } else {
-            throw new BadCredentialsException("please enter valid password");
-        }
+        log.info("Getting Authentication Token for user : {}", userPrincipal.getUsername());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal.getUsername(), password, userPrincipal.getAuthorities());//make sure to add authorities list
+        authenticationToken.eraseCredentials();
+        return authenticationToken;
     }
 
     /**
