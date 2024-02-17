@@ -29,6 +29,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
+/.src/app/models/draft_backend_permissions.txt
 /.angular/cache
 .sass-cache/
 /connect.lock
