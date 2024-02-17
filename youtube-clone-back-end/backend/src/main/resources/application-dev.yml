@@ -24,7 +24,13 @@ spring:
     init:
       mode: never #always
       continue-on-error: false
-
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web:
+            filterChainProxy: DEBUG
 ###### Amazon credentials #####
 cloud:
   aws:
