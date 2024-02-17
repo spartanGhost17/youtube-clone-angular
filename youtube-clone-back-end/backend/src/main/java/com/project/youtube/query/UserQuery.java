@@ -11,4 +11,5 @@ public class UserQuery {
     public static final String DELETE_VERIFICATION_CODE_BY_CODE_QUERY = "DELETE FROM TwoFactorVerifications WHERE code = :code";
     public static final String SELECT_USER_BY_USER_CODE_QUERY = "SELECT * FROM Users WHERE id = (SELECT user_id FROM TwoFactorVerifications WHERE code = :code AND user_id = :userId)";
     //public static final String SELECT_USER_BY_USER_CODE_QUERY  = "SELECT u.* FROM Users u INNER JOIN TwoFactorVerifications tfa ON u.id = tfa.user_id WHERE tfa.code = :code AND tfa.user_id = :userId";
+    public static final String SELECT_EXPIRED_CODE_QUERY = "SELECT expiration_date < NOW() AS is_expired FROM TwoFactorVerifications WHERE code = :code AND user_id = :userId";
 }

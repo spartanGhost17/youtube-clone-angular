@@ -1,5 +1,6 @@
 package com.project.youtube.service.impl;
 
+import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.impl.UserDaoImpl;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(User user) {
         User createdUser = userDaoImpl.create(user);
-        return UserDTOMapper.toUserDTO(createdUser);
+        return mapToUserDTO(createdUser);
     }
 
     /**
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User user = userDaoImpl.getUser(username);
         UserDTO userDTO = null;
         if (user != null) {
-            userDTO = UserDTOMapper.toUserDTO(user);
+            userDTO = mapToUserDTO(user);
         }
         return userDTO;
     }
@@ -88,7 +90,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserPrincipal getUserPrincipal(UserDTO userDTO) {
-        User user = UserDTOMapper.toUser(getUser(userDTO.getUsername()));//is it necessary to call DB again for getUser? userDTO already has all necessary objects
+        User user = mapToUser(getUser(userDTO.getUsername()));//is it necessary to call DB again for getUser? userDTO already has all necessary objects
         Set<Role> roles = roleService.getRoleByUserId(userDTO.getId());
         return new UserPrincipal(user, roles);
     }
@@ -101,6 +103,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDTO verifyCode(String username, String code) {
-        return UserDTOMapper.toUserDTO(userDaoImpl.verifyCode(username, code));
+        return mapToUserDTO(userDaoImpl.verifyCode(username, code));
+    }
+    private UserDTO mapToUserDTO(User user) {
+        List<Role> roleList = new ArrayList<>(roleService.getRoleByUserId(user.getId()));
+        Role role = !roleList.isEmpty() ? roleList.get(0) : null;
+        return UserDTOMapper.toUserDTO(user, role);
+    }
+
+    private User mapToUser(UserDTO userDTO) {
+        return UserDTOMapper.toUser(userDTO);
     }
 }

@@ -211,20 +211,39 @@ public class UserDaoImpl implements UserDao<User> {
      */
     @Override
     public User verifyCode(String username, String code) {
+        User userByUsername = getUser(username);
+        Long userId = userByUsername.getId();
+        if(isVerificationCodeExpired(code, userId)) {
+            throw new APIException("This code has expired. Please login again.");
+        }
         try {
-            User userByUsername = getUser(username);
-            Long id = userByUsername.getId();
-            User userByCode = jdbcTemplate.queryForObject(SELECT_USER_BY_USER_CODE_QUERY, Map.of("userId", id, "code", code), new BeanPropertyRowMapper<>(User.class));
+            User userByCode = jdbcTemplate.queryForObject(SELECT_USER_BY_USER_CODE_QUERY, Map.of("userId", userId, "code", code), new BeanPropertyRowMapper<>(User.class));
             if(userByUsername.getUsername().trim().equalsIgnoreCase(userByCode.getUsername().trim())) {
                 deleteVerificationCode(UserDTOMapper.toUserDTO(userByCode));
                 return userByCode;
             } else {
-                throw new APIException("The provided code is invalid, please try again");
+                throw new APIException("The provided code is invalid, please try again.");
             }
         } catch (EmptyResultDataAccessException exception) {
-            throw new APIException("No user can be found");
+            throw new APIException("No user can be found.");
         } catch (Exception exception) {
-            throw new APIException("An error occurred. Please try again");
+            throw new APIException("An error occurred. Please try again.");
+        }
+    }
+
+    /**
+     * returns true if user verification code has not expired
+     * @param code provided code
+     * @param userId user id
+     * @return true if code expired
+     */
+    public Boolean isVerificationCodeExpired(String code, Long userId) {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_EXPIRED_CODE_QUERY, Map.of("code", code, "userId", userId), Boolean.class);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("could not find verification code record.");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred with the provide code. Please try again.");
         }
     }
 
