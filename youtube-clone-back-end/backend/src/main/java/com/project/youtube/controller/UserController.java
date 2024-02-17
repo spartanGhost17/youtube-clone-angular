@@ -68,7 +68,7 @@ public class UserController {
                                 "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
                                 "user", userDTO
                         ))
-                        .message("Verification code sent")
+                        .message("Code was verified")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build());
