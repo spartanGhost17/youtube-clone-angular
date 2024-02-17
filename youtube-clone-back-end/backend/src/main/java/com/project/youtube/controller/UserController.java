@@ -2,6 +2,7 @@ package com.project.youtube.controller;
 
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
+import com.project.youtube.form.CreateUserForm;
 import com.project.youtube.form.LoginForm;
 import com.project.youtube.form.VerificationCodeForm;
 import com.project.youtube.model.HttpResponse;
@@ -39,7 +40,12 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping(value = "register")
-    public ResponseEntity<HttpResponse> createUser(@RequestBody @Valid User user) {
+    public ResponseEntity<HttpResponse> createUser(@RequestBody @Valid CreateUserForm createUserForm) {
+        User user = User.builder()
+                .username(createUserForm.getUsername())
+                .email(createUserForm.getEmail())
+                .password(createUserForm.getPassword())
+                .build();
         UserDTO userDTO = userServiceImpl.createUser(user);
         return ResponseEntity.created(getUri()).body(
                 HttpResponse.builder()
