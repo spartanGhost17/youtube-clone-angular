@@ -23,14 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonInclude(NON_NULL)
 public class User {
     private Long id;
-    @NotEmpty(message = "username cannot be empty")
     private String username;
     @Column(name = "channel_name")
     private String channelName;
-    @NotEmpty(message = "email cannot be empty")
-    @Email(message = "Invalid email, please enter a validation email address")
     private String email;
-    @NotEmpty(message = "password cannot be empty")
     private String password;
     private String phone;
     @Column(name = "created_at")
