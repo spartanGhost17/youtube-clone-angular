@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static com.project.youtube.constants.ApplicationConstants.*;
+import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 
 @Configuration
 @EnableWebSecurity
@@ -37,7 +37,7 @@ public class SecurityConfig {
     @Autowired
     private final CustomAuthenticationProvider customAuthenticationProvider;
 
-    private static final String[] PUBLIC_URLS = {API_VERSION+"user/login", API_VERSION+"user/register"};
+    private static final String[] PUBLIC_URLS = {API_VERSION+"user/login", API_VERSION+"user/register", API_VERSION+"user/verify/code"};
 
     /**
      * registers authentication providers with the authentication manager
@@ -47,7 +47,7 @@ public class SecurityConfig {
      * @throws Exception
      */
     @Bean(value = "authenticationManager")
-    protected AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         log.info("setting up authenticationManager Bean");
         //Shared objects are reusable components that can be accessed across different parts of your security configuration.
         //These objects are typically configured once and then shared across various parts of your security setup.
@@ -78,6 +78,7 @@ public class SecurityConfig {
         http.csrf().disable()
             .cors((configure) -> configure.configurationSource(corsConfigurationSource()))//pass corsConfigurationSource @Bean
             .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            //.addFilterBefore(new LoginAuthFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling((exceptionConfig) -> {
                 exceptionConfig
                     .accessDeniedHandler(customAccessDeniedHandler)
