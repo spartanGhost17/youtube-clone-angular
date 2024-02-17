@@ -22,7 +22,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         HttpResponse httpResponse = HttpResponse.builder()
                 .timeStamp(Instant.now().toString())
-                .reason("You don't have enough permission to access this resource")
+                .reason("You need to log in to access this resource")
                 .status(HttpStatus.UNAUTHORIZED)
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .build();
