@@ -50,12 +50,6 @@ public class UserServiceImpl implements UserService {
         User user = userDaoImpl.getUser(username);
         UserDTO userDTO = null;
         if (user != null) {
-            //Set<Role> roles = roleService.getRoleByUserId(user.getId());
-            /**List<Role> Authorities = roles.stream().flatMap((role) -> Arrays.stream(role.getPermissions().split(","))
-                            .map(permission -> new Role()))
-                    .collect(Collectors.toList());
-            //List<Role> grantedAuthorities = roleService.roleToGrantedAuthority(roles).stream().map((role) -> new Role).collect(Collectors.toList());
-            user.setGrantedAuthorities(grantedAuthorities);*/
             userDTO = UserDTOMapper.toUserDTO(user);
         }
         return userDTO;
