@@ -3,6 +3,7 @@ package com.project.youtube.dao.impl;
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.UserDao;
 import com.project.youtube.dto.UserDTO;
+import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -171,6 +174,20 @@ public class UserDaoImpl implements UserDao<User> {
     }
 
     /**
+     * delete code by code
+     * @param code
+     */
+    @Override
+    public void deleteVerificationCodeByCode(String code) {
+        try {
+            jdbcTemplate.update(DELETE_VERIFICATION_CODE_BY_USER_ID_QUERY, Map.of("code", code));
+        } catch (Exception e) {
+            log.error("Could not delete verification Code for user: {}", code);
+            throw new APIException("Could not delete verification verification code");
+        }
+    }
+
+    /**
      * Creates a new verification code for user
      * @param userDTO userDTO object
      * @param verificationCode String randomAlphanumeric
@@ -186,9 +203,30 @@ public class UserDaoImpl implements UserDao<User> {
         }
     }
 
-    //@Override
-    //public void sendSMS(String phone, String s) {
-    //}
+    /**
+     * Verify code provided for MFA
+     * @param username
+     * @param code
+     * @return User
+     */
+    @Override
+    public User verifyCode(String username, String code) {
+        try {
+            User userByUsername = getUser(username);
+            Long id = userByUsername.getId();
+            User userByCode = jdbcTemplate.queryForObject(SELECT_USER_BY_USER_CODE_QUERY, Map.of("userId", id, "code", code), new BeanPropertyRowMapper<>(User.class));
+            if(userByUsername.getUsername().trim().equalsIgnoreCase(userByCode.getUsername().trim())) {
+                deleteVerificationCode(UserDTOMapper.toUserDTO(userByCode));
+                return userByCode;
+            } else {
+                throw new APIException("The provided code is invalid, please try again");
+            }
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("No user can be found");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred. Please try again");
+        }
+    }
 
     /**
      * Check email is user

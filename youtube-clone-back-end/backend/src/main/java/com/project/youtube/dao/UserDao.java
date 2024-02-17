@@ -22,6 +22,8 @@ public interface UserDao<T extends User> {
     List<User> getByEmail(String email);
     void sendVerificationCode(UserDTO userDTO);
     void deleteVerificationCode(UserDTO userDTO);
+    void deleteVerificationCodeByCode(String code);
     void createVerificationCode(UserDTO userDTO, String verificationCode, String expirationDate);
     //void sendSMS(String phone, String s);
+    User verifyCode(String username, String code);
 }
