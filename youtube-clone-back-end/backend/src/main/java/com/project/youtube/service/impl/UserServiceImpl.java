@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         User user = userDaoImpl.getUser(username);
         UserDTO userDTO = null;
         if (user != null) {
-            Set<Role> roles = roleService.getRoleByUserId(user.getId());
+            //Set<Role> roles = roleService.getRoleByUserId(user.getId());
             /**List<Role> Authorities = roles.stream().flatMap((role) -> Arrays.stream(role.getPermissions().split(","))
                             .map(permission -> new Role()))
                     .collect(Collectors.toList());
@@ -97,5 +97,16 @@ public class UserServiceImpl implements UserService {
         User user = UserDTOMapper.toUser(getUser(userDTO.getUsername()));//is it necessary to call DB again for getUser? userDTO already has all necessary objects
         Set<Role> roles = roleService.getRoleByUserId(userDTO.getId());
         return new UserPrincipal(user, roles);
+    }
+
+    /**
+     * Verify user code by username
+     * @param username
+     * @param code
+     * @return UserDTO
+     */
+    @Override
+    public UserDTO verifyCode(String username, String code) {
+        return UserDTOMapper.toUserDTO(userDaoImpl.verifyCode(username, code));
     }
 }
