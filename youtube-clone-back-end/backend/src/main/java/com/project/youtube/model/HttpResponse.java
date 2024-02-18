@@ -14,6 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
 @JsonInclude(NON_DEFAULT)
 public class HttpResponse {
     protected String timeStamp;
+    protected String path;
     protected int statusCode;
     protected HttpStatus status;
     protected String reason;
