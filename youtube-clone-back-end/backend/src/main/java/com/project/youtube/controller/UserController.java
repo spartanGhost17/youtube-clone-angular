@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -59,7 +60,7 @@ public class UserController {
     @PostMapping(value = "login")
     public ResponseEntity<HttpResponse> login(@RequestBody @Valid LoginForm loginForm) {
         //String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword(), null));
+        authenticationManager.authenticate(UsernamePasswordAuthenticationToken.unauthenticated(loginForm.getUsername(), loginForm.getPassword()));
         UserDTO userDTO = userServiceImpl.getUser(loginForm.getUsername());
         return userDTO.getUsingMfa() ? sendVerificationCode(userDTO) : sendResponse(userDTO);
     }
@@ -81,9 +82,21 @@ public class UserController {
     }
 
 
-    @DeleteMapping(value = "/delete")
-    public String deleteTest(@RequestParam String value) {
-        return "TEST TO DELETE";
+    @GetMapping(value = "profile")
+    public ResponseEntity<HttpResponse> getProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO userDTO = userServiceImpl.getUser(authentication.getName());
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "user", userDTO
+                        ))
+                        .message("Profile retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
     }
 
     private ResponseEntity<HttpResponse> sendResponse(UserDTO userDTO) {
