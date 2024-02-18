@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -55,6 +56,7 @@ public class UserDaoImpl implements UserDao<User> {
         log.info("Creating user: {}", user.getUsername());
         //check email is unique
         if(getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new APIException("This email already exists. Please use a different email");
+        //TODO: can add check for username here
         //save new user
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();//get id of object that was saved in db
@@ -75,6 +77,9 @@ public class UserDaoImpl implements UserDao<User> {
             //return the newly created user
             return user;
             //if error throw exception with appropriate message
+        }
+        catch (DataAccessException exception) {
+            throw new APIException("This username already exists.");
         }
         catch(Exception exception) {
             throw new APIException("An error occurred. Please try again.");
