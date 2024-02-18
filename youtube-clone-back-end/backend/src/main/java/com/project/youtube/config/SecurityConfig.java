@@ -1,5 +1,6 @@
 package com.project.youtube.config;
 
+import com.project.youtube.filter.AuthorizationFilter;
 import com.project.youtube.handler.CustomAccessDeniedHandler;
 import com.project.youtube.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -36,8 +38,8 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Autowired
     private final CustomAuthenticationProvider customAuthenticationProvider;
-
-    private static final String[] PUBLIC_URLS = {API_VERSION+"user/login", API_VERSION+"user/register", API_VERSION+"user/verify/code"};
+    private final AuthorizationFilter authorizationFilter;
+    private static final String[] PUBLIC_URLS = {API_VERSION + "user/login", API_VERSION + "user/register", API_VERSION + "user/verify/code"};
 
     /**
      * registers authentication providers with the authentication manager
@@ -73,25 +75,26 @@ public class SecurityConfig {
      */
     @Bean(value = "defaultSecurityFilterChain")
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
-        
+
         log.info("Inside defaultSecurityFilterChain");
         http.csrf().disable()
-            .cors((configure) -> configure.configurationSource(corsConfigurationSource()))//pass corsConfigurationSource @Bean
-            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            //.addFilterBefore(new LoginAuthFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling((exceptionConfig) -> {
-                exceptionConfig
-                    .accessDeniedHandler(customAccessDeniedHandler)
-                    .authenticationEntryPoint(customAuthenticationEntryPoint);
-            })
-            .authorizeHttpRequests((request) -> {
-                request
-                    .antMatchers(PUBLIC_URLS).permitAll()
-                    .antMatchers(HttpMethod.DELETE, API_VERSION+"user/delete/**").hasAnyAuthority("DELETE:USER")
-                    .antMatchers(HttpMethod.DELETE, API_VERSION+"video/delete/**").hasAnyAuthority("DELETE:VIDEO")
-                    .antMatchers(HttpMethod.DELETE, API_VERSION+"report/delete/**").hasAnyAuthority("DELETE:VIDEO", "DELETE:REPORT")
-                    .anyRequest().authenticated();
-        }).authenticationManager(authenticationManager);//specifies authenticationManager @Bean instance should be used during authentication
+                .cors((configure) -> configure.configurationSource(corsConfigurationSource()))//pass corsConfigurationSource @Bean
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(new LoginAuthFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling((exceptionConfig) -> {
+                    exceptionConfig
+                            .accessDeniedHandler(customAccessDeniedHandler)
+                            .authenticationEntryPoint(customAuthenticationEntryPoint);
+                })
+                .authorizeHttpRequests((request) -> {
+                    request
+                            .antMatchers(PUBLIC_URLS).permitAll()
+                            .antMatchers(HttpMethod.DELETE, API_VERSION + "user/delete/**").hasAnyAuthority("DELETE:USER")
+                            .antMatchers(HttpMethod.DELETE, API_VERSION + "video/delete/**").hasAnyAuthority("DELETE:VIDEO")
+                            .antMatchers(HttpMethod.DELETE, API_VERSION + "report/delete/**").hasAnyAuthority("DELETE:VIDEO", "DELETE:REPORT")
+                            .anyRequest().authenticated();
+                }).authenticationManager(authenticationManager);//specifies authenticationManager @Bean instance should be used during authentication
 
         return (SecurityFilterChain) http.build();
     }
