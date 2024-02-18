@@ -3,7 +3,6 @@ package com.project.youtube.handler;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.model.HttpResponse;
-import com.twilio.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.dao.DataAccessException;
@@ -32,7 +31,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 @Slf4j
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler implements ErrorController {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler implements ErrorController {
     //ErrorController will help handle white label error 404
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception exception, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -151,7 +150,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(Exception.class)
     public ResponseEntity<HttpResponse> exception(Exception exception) {
         log.error(exception.getMessage());
-        System.out.println(exception);
+        System.out.println(" ttttttttttttttttttttttttttttttthhhhhhhhhhhhhhhhhhhhhhhrrrrrrrrrrrrrrrrrrrrrrrooooooooooooooooooooowwwwwwwwwwwwwwwwwwwwwwwwnnnnnnnnnnnnnnnnnnnnn ");
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())

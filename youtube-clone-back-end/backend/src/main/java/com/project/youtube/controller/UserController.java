@@ -8,7 +8,6 @@ import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.User;
 import com.project.youtube.provider.TokenProvider;
 import com.project.youtube.service.impl.UserServiceImpl;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
