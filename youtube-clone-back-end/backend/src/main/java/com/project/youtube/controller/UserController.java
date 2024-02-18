@@ -1,17 +1,14 @@
 package com.project.youtube.controller;
 
 import com.project.youtube.dto.UserDTO;
-import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.form.CreateUserForm;
 import com.project.youtube.form.LoginForm;
 import com.project.youtube.form.VerificationCodeForm;
 import com.project.youtube.model.HttpResponse;
-import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
-import com.project.youtube.model.UserPrincipal;
 import com.project.youtube.provider.TokenProvider;
-import com.project.youtube.service.impl.RoleServiceImpl;
 import com.project.youtube.service.impl.UserServiceImpl;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
-import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/api/v1/user/")
