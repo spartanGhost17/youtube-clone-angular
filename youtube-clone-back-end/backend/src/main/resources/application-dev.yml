@@ -1,6 +1,16 @@
+server:
+  error:
+    #include-message: always
+    #include-stacktrace: never
+    path: /error #/api/v1/user/error
+    # Whether to enable the default error page displayed in browsers in case of a server error.
+    whitelabel:
+      enabled: false
 spring:
   #autoconfigure:
   #  exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  #autoconfigure:
+  #  exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   servlet:
     multipart:
       max-file-size: 100MB
