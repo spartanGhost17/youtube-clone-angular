@@ -2,6 +2,7 @@ package com.project.youtube.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.youtube.model.HttpResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -17,6 +18,7 @@ import java.time.Instant;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
+@Slf4j
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {

@@ -1,14 +1,17 @@
 package com.project.youtube.controller;
 
+import com.project.youtube.Exception.APIException;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.form.CreateUserForm;
 import com.project.youtube.form.LoginForm;
 import com.project.youtube.form.VerificationCodeForm;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.User;
+import com.project.youtube.model.UserPrincipal;
 import com.project.youtube.provider.TokenProvider;
 import com.project.youtube.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +22,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
 
+import static com.project.youtube.utils.ExceptionUtils.processError;
+
 @RestController
 @RequestMapping(value = "/api/v1/user/")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
     @Autowired
     private final UserServiceImpl userServiceImpl;
     private final TokenProvider tokenProvider;
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final HttpServletRequest request;
+    private final HttpServletResponse response;
 
     @PostMapping(value = "register")
     public ResponseEntity<HttpResponse> createUser(@RequestBody @Valid CreateUserForm createUserForm) {
@@ -53,10 +63,36 @@ public class UserController {
     }
     @PostMapping(value = "login")
     public ResponseEntity<HttpResponse> login(@RequestBody @Valid LoginForm loginForm) {
-        //String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        authenticationManager.authenticate(UsernamePasswordAuthenticationToken.unauthenticated(loginForm.getUsername(), loginForm.getPassword()));
-        UserDTO userDTO = userServiceImpl.getUser(loginForm.getUsername());
+        Authentication authentication = authenticate(loginForm.getUsername(), loginForm.getPassword());
+        UserDTO userDTO = getAuthenticatedUser(authentication);
         return userDTO.getUsingMfa() ? sendVerificationCode(userDTO) : sendResponse(userDTO);
+    }
+
+    /**
+     * get user DTO from context user principal
+     * @param authentication authentication
+     * @return the UserDTO
+     */
+    private UserDTO getAuthenticatedUser(Authentication authentication) {
+        //((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserDTO(); //can just come from securityContext
+        return ((UserPrincipal) authentication.getPrincipal()).getUserDTO();
+    }
+
+    /**
+     * authenticates the credentials
+     * @param username the username to authenticate
+     * @param password the password
+     * @return the authentication
+     */
+    private Authentication authenticate(String username, String password) {
+        Authentication authentication = null;
+        try {
+            authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken.unauthenticated(username, password));
+            return authentication;
+        } catch (Exception exception) {
+            processError(request, response, exception);
+            throw new APIException(exception.getMessage());
+        }
     }
 
     @GetMapping("verify/code")
@@ -93,6 +129,11 @@ public class UserController {
                         .build());
     }
 
+    /**
+     * send access and refresh token to user without credentials
+     * @param userDTO the authenticated user
+     * @return the response
+     */
     private ResponseEntity<HttpResponse> sendResponse(UserDTO userDTO) {
         //give user accessToken & refreshToken
         return ResponseEntity.created(getUri()).body(
@@ -108,6 +149,11 @@ public class UserController {
                         .build());
     }
 
+    /**
+     * Send a verification code to the user with MFA enable
+     * @param userDTO the authenticated user
+     * @return the response
+     */
     private ResponseEntity<HttpResponse> sendVerificationCode(UserDTO userDTO) {
         userServiceImpl.sendVerificationCode(userDTO);
         return ResponseEntity.created(getUri()).body(
@@ -120,6 +166,10 @@ public class UserController {
                         .build());
     }
 
+    /**
+     * get URI of context
+     * @return the URI
+     */
     private URI getUri() {
         return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());
     }

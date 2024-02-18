@@ -33,7 +33,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected static final String TOKEN_KEY = "token";
     protected static final String USERNAME_KEY = "username";
     private static final String TOKEN_PREFIX = "Bearer ";
-    private static final String[] PUBLIC_ROUTES = { API_VERSION+"/user/login", API_VERSION+"user/register", API_VERSION+"/user/verify/code" };
+    private static final String[] PUBLIC_ROUTES = { API_VERSION+"/user/login", API_VERSION+"user/register", API_VERSION+"/user/verify/code", "/error" };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

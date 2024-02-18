@@ -1,15 +1,14 @@
 package com.project.youtube.model;
 
+import com.project.youtube.dto.UserDTO;
+import com.project.youtube.dtomapper.UserDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -61,5 +60,10 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.user.getEnabled();
+    }
+
+    public UserDTO getUserDTO() {
+        Role role = !this.roles.isEmpty() ? new ArrayList<>(this.roles).get(0) : null;
+        return UserDTOMapper.toUserDTO(this.user, role);
     }
 }

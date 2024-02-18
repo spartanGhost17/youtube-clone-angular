@@ -33,6 +33,7 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler implements ErrorController {
     //ErrorController will help handle white label error 404
+    //TODO: resolve the following exception HttpMessageNotReadableException
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception exception, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return new ResponseEntity<>(

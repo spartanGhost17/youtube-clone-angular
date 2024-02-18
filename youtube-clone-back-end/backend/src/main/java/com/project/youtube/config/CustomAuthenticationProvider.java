@@ -69,7 +69,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
      */
     public UsernamePasswordAuthenticationToken getAuthenticationToken(UserPrincipal userPrincipal, String password) {
         log.info("Getting Authentication Token for user : {}", userPrincipal.getUsername());
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal.getUsername(), password, userPrincipal.getAuthorities());//make sure to add authorities list
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, password, userPrincipal.getAuthorities());//make sure to add authorities list
         authenticationToken.eraseCredentials();
         return authenticationToken;
     }
