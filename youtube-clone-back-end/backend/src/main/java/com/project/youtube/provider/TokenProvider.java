@@ -17,14 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
@@ -76,7 +72,7 @@ public class TokenProvider {
      * @return String JWT access token
      */
     public String createAccessToken(UserPrincipal userPrincipal) {
-        generateRSAKeys();
+        //generateRSAKeys();
         Algorithm algorithm = getAlgorithm();
         try {
             return JWT.create().withIssuer(TOKEN_ISSUER)
@@ -99,7 +95,7 @@ public class TokenProvider {
      * @return String JWT refresh token
      */
     public String createRefreshToken(UserPrincipal userPrincipal) {
-        generateRSAKeys();
+        //generateRSAKeys();
         Algorithm algorithm = getAlgorithm();
         try {
             return JWT.create().withIssuer(TOKEN_ISSUER)
@@ -170,13 +166,15 @@ public class TokenProvider {
         } catch (TokenExpiredException exception) {
             request.setAttribute("expiredMessage", exception.getMessage());
             //throw new TokenExpiredException("", expiredAt);
+            throw new APIException(" wrong with the token");
         } catch (InvalidClaimException exception) {
             request.setAttribute("invalidClaims", exception.getMessage());
             //throw new InvalidClaimException("Provided claims are not valid");
+            throw new APIException("Invalid claims provided for the token");
         } catch (Exception exception) {
-            throw exception;
+            throw new APIException("something went wrong with the token");
         }
-        return token;
+        //return token;
     }
 
     /**
@@ -207,6 +205,7 @@ public class TokenProvider {
      * @return the algorithm
      */
     private Algorithm getAlgorithm() {
+        generateRSAKeys();
         Algorithm algorithm = Algorithm.RSA256(RSA_PUBLIC_KEY, RSA_PRIVATE_KEY);
         return algorithm;
     }
