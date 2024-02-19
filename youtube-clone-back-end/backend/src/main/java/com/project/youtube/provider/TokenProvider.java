@@ -9,8 +9,12 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.project.youtube.Exception.APIException;
+import com.project.youtube.dtomapper.UserDTOMapper;
+import com.project.youtube.model.Role;
 import com.project.youtube.model.UserPrincipal;
+import com.project.youtube.service.UserService;
 import com.project.youtube.utils.RSAKeyConverter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,15 +27,14 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.*;
 
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class TokenProvider {
 
@@ -144,7 +147,9 @@ public class TokenProvider {
         //    List<GrantedAuthority> grantedAuthorities = (List<GrantedAuthority>) authenticationToken.getAuthorities();
             // You can also retrieve the authorities, details, etc. if needed
         //}
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+        Set<Role> roles = getRolesFromAuthorities(authorities); //TODO: figure out a way to pass role Set
+        UserPrincipal userPrincipal = new UserPrincipal(UserDTOMapper.toUser(userServiceImpl.getUser(username)), roles);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities);
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authenticationToken;
     }
@@ -240,6 +245,15 @@ public class TokenProvider {
      */
     private String[] getClaimsFromUser(UserPrincipal userPrincipal) {
         return userPrincipal.getAuthorities().stream().map((authority) -> authority.getAuthority()).toArray(String[]::new);
+    }
+
+    private Set<Role> getRolesFromAuthorities(List<GrantedAuthority> authorities) {
+        return authorities.stream()
+                .limit(authorities.size() -1)
+                .map(GrantedAuthority::getAuthority)
+                .map(authority -> authority.concat(","))
+                .map((authoritiesString) -> new Role(null, null, authoritiesString))
+                .collect(Collectors.toSet());
     }
 
 
