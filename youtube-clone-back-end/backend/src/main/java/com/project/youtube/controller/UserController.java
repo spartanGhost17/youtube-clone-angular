@@ -68,6 +68,53 @@ public class UserController {
         return userDTO.getUsingMfa() ? sendVerificationCode(userDTO) : sendResponse(userDTO);
     }
 
+    @GetMapping("verify/code")
+    public ResponseEntity<HttpResponse> verifyCode(@RequestBody @Valid VerificationCodeForm codeForm) {
+        UserDTO userDTO = userServiceImpl.verifyCode(codeForm.getUsername(), codeForm.getCode());
+        return ResponseEntity.created(getUri()).body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "user", userDTO
+                        ))
+                        .message("Code was verified")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+
+    @GetMapping(value = "profile")
+    public ResponseEntity<HttpResponse> getProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO userDTO = getAuthenticatedUser(authentication);//userServiceImpl.getUser(authentication.getName());
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "user", userDTO
+                        ))
+                        .message("Profile retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    @GetMapping(value = "resetpassword/{email}")
+    public ResponseEntity<HttpResponse> resetPassword(@PathVariable String email) {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userServiceImpl.resetPassword(email);//getAuthenticatedUser(authentication);// userServiceImpl.getUser(authentication.getName());
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Email sent. Please check your email to reset your password")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
     /**
      * get user DTO from context user principal
      * @param authentication authentication
@@ -93,40 +140,6 @@ public class UserController {
             processError(request, response, exception);
             throw new APIException(exception.getMessage());
         }
-    }
-
-    @GetMapping("verify/code")
-    public ResponseEntity<HttpResponse> verifyCode(@RequestBody @Valid VerificationCodeForm codeForm) {
-        UserDTO userDTO = userServiceImpl.verifyCode(codeForm.getUsername(), codeForm.getCode());
-        return ResponseEntity.created(getUri()).body(
-                HttpResponse.builder()
-                        .timeStamp(Instant.now().toString())
-                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "user", userDTO
-                        ))
-                        .message("Code was verified")
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .build());
-    }
-
-
-    @GetMapping(value = "profile")
-    public ResponseEntity<HttpResponse> getProfile() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDTO userDTO = userServiceImpl.getUser(authentication.getName());
-        return ResponseEntity.ok().body(
-                HttpResponse.builder()
-                        .timeStamp(Instant.now().toString())
-                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "user", userDTO
-                        ))
-                        .message("Profile retrieved")
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .build());
     }
 
     /**
