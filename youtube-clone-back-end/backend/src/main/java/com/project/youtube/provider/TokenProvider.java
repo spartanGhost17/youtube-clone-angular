@@ -50,7 +50,7 @@ public class TokenProvider {
     private RSAPublicKey RSA_PUBLIC_KEY;
     private RSAPrivateKey RSA_PRIVATE_KEY;
     private final String ALGORITHM_TYPE = "RSA";
-
+    private final UserService userServiceImpl;
     /**
      * assign public and private keys
      */
