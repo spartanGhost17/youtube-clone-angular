@@ -183,7 +183,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     }
 
     /**
-     * thrown when an empty result set
+     * thrown when an empty result set thrown when QueryForObject returns nothing
      * @param exception exception
      * @return the response
      */
