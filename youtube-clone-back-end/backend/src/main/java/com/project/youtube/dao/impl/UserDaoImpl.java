@@ -9,6 +9,7 @@ import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.*;
 
 import static com.project.youtube.enumaration.RoleType.ROLE_USER;
 import static com.project.youtube.enumaration.VerificationType.ACCOUNT;
+import static com.project.youtube.enumaration.VerificationType.PASSWORD;
 import static com.project.youtube.query.UserQuery.*;
 import static com.project.youtube.utils.SmsUtils.sendSms;
 import static java.util.Objects.requireNonNull;
@@ -67,9 +69,9 @@ public class UserDaoImpl implements UserDao<User> {
             roleService.adduserToRole(user.getId(), ROLE_USER.name());
             //send verification url
             String verificationUrl = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
-            //save url in verification table
+            //TODO:// save url in verification table
             jdbcTemplate.update(INSERT_ACCOUNT_VERIFICATION_URL_QUERY, Map.of("userId", user.getId(), "url", verificationUrl));//should be in a service layer
-            //send email to user with verification url
+            //TODO: send email to user with verification url
             //emailService.sendEmail(user.getUsername(), user.getEmail(), verificationUrl, ACCOUNT.getType());
             user.setEnabled(false);
             user.setNonLocked(true);
@@ -149,7 +151,11 @@ public class UserDaoImpl implements UserDao<User> {
     @Override
     public List<User> getByEmail(String email) {
         log.info("Getting user for email: {}", email);
-        return jdbcTemplate.query(SELECT_USER_BY_EMAIL_QUERY, Map.of("email", email), new BeanPropertyRowMapper(User.class));
+        try {
+            return jdbcTemplate.query(SELECT_USER_BY_EMAIL_QUERY, Map.of("email", email), new BeanPropertyRowMapper(User.class));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while retrieving your profile, please try again.");
+        }
     }
 
     /**
@@ -164,7 +170,7 @@ public class UserDaoImpl implements UserDao<User> {
         deleteVerificationCode(userDTO);
         createVerificationCode(userDTO, verificationCode, expirationDate);
         log.info("generated user code verification code {}", verificationCode);
-        //sendSms(userDTO.getPhone(), "From: YoutubeClone from Adam!! :) \nVerification code\n"+verificationCode); //uncomment to send through Twilio
+        //sendSms(userDTO.getPhone(), "From: YoutubeClone from Adam!! :) \nVerification code\n"+verificationCode); //TODO: uncomment to send through Twilio
 
     }
 
@@ -252,6 +258,34 @@ public class UserDaoImpl implements UserDao<User> {
         }
     }
 
+    @Override
+    public void resetPassword(String email) {
+        List<User> user = getByEmail(email.trim().toLowerCase());
+        if(user.isEmpty()) { throw new APIException("This email does not exist"); }
+        try {
+
+            String expirationDate = DateFormatUtils.format(addDays(new Date(), 1), DATE_FORMAT);
+            String verificationUrl = getVerificationUrl(UUID.randomUUID().toString(), PASSWORD.getType());
+            deleteUserVerification(user.get(0));
+            jdbcTemplate.update(INSERT_PASSWORD_VERIFICATION_BY_USER_ID_QUERY, Map.of("userId", user.get(0).getId(), "url", verificationUrl, "expirationDate", expirationDate));
+            //TODO: send email to user
+            log.info("Verification URL: {} ", verificationUrl);
+
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("An error occurred, please try again.");
+        }
+    }
+
+    private void deleteUserVerification(User user) {
+        try {
+            jdbcTemplate.update(DELETE_PASSWORD_VERIFICATION_BY_USER_ID_QUERY, Map.of("userId", user.getId()));
+        } catch (DataAccessException exception) {
+            throw new APIException("Could not delete user verification.");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try again.");
+        }
+    }
+
     /**
      * Check email is user
      * @param email String email
@@ -270,7 +304,7 @@ public class UserDaoImpl implements UserDao<User> {
         return new MapSqlParameterSource()
                 .addValue("username", user.getUsername())
                 .addValue("channelName", user.getUsername())
-                .addValue("email", user.getEmail())
+                .addValue("email", user.getEmail().trim().toLowerCase())
                 .addValue("password", passwordEncoder.encode(user.getPassword()));
     }
 

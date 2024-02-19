@@ -27,4 +27,5 @@ public interface UserDao<T extends User> {
     //void sendSMS(String phone, String s);
     User verifyCode(String username, String code);
     Boolean isVerificationCodeExpired(String code, Long userId);
+    void resetPassword(String email);
 }

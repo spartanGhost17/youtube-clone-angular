@@ -13,7 +13,7 @@ public interface UserService {
     List<User> getByUsername(String username);
     List<User> getByEmail(String email);
     void sendVerificationCode(UserDTO userDTO);
-
     UserPrincipal getUserPrincipal(UserDTO userDTO);
     UserDTO verifyCode(String username, String code);
+    void resetPassword(String email);
 }
