@@ -2,6 +2,7 @@ package com.project.youtube.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.youtube.model.HttpResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -22,9 +23,11 @@ import java.time.Instant;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component
+@Slf4j
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        log.error(accessDeniedException.getMessage());
         HttpResponse httpResponse = HttpResponse.builder()
                 .timeStamp(Instant.now().toString())
                 .reason("You don't have enough permission")

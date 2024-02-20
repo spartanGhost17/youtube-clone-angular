@@ -36,6 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     //TODO: resolve the following exception HttpMessageNotReadableException
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception exception, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error(exception.getMessage());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .path(request.getContextPath())
@@ -58,6 +59,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error(exception.getMessage());
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         String fieldErrorMessage = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
         return new ResponseEntity<>(
@@ -151,7 +153,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(Exception.class)
     public ResponseEntity<HttpResponse> exception(Exception exception) {
         log.error(exception.getMessage());
-        System.out.println(" ttttttttttttttttttttttttttttttthhhhhhhhhhhhhhhhhhhhhhhrrrrrrrrrrrrrrrrrrrrrrrooooooooooooooooooooowwwwwwwwwwwwwwwwwwwwwwwwnnnnnnnnnnnnnnnnnnnnn ");
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())

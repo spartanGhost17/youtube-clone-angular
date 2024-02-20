@@ -22,6 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        log.error(authException.getMessage());
         HttpResponse httpResponse = HttpResponse.builder()
                 .timeStamp(Instant.now().toString())
                 .reason("You need to log in to access this resource")
