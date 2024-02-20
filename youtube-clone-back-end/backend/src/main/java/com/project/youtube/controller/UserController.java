@@ -103,13 +103,30 @@ public class UserController {
     }
 
     @GetMapping(value = "resetpassword/{email}")
-    public ResponseEntity<HttpResponse> resetPassword(@PathVariable String email) {
+    public ResponseEntity<HttpResponse> resetPassword(@PathVariable("email") String email) {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userServiceImpl.resetPassword(email);//getAuthenticatedUser(authentication);// userServiceImpl.getUser(authentication.getName());
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .message("Email sent. Please check your email to reset your password")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    /**
+     * verifies the password key for resetting principal's password
+     * @param key the key UUID of password
+     * @return the response
+     */
+    @GetMapping(value = "verify/password/{key}")
+    public ResponseEntity<HttpResponse> verifyPasswordKey(@PathVariable("key") String key) {
+        userServiceImpl.verifyPasswordKey(key);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Please enter a new password.")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build());
