@@ -264,7 +264,7 @@ public class UserDaoImpl implements UserDao<User> {
         try {
 
             String expirationDate = DateFormatUtils.format(addDays(new Date(), 1), DATE_FORMAT);
-            String verificationUrl = getVerificationUrl(UUID.randomUUID().toString(), PASSWORD.getType());
+            String verificationUrl = getVerificationUrl(UUID.randomUUID().toString(), PASSWORD.getType());//collision risk 1 in 2.7 quintillion
             deleteUserVerification(user.get(0));
             jdbcTemplate.update(INSERT_PASSWORD_VERIFICATION_BY_USER_ID_QUERY, Map.of("userId", user.get(0).getId(), "url", verificationUrl, "expirationDate", expirationDate));
             //TODO: send email to user
@@ -291,6 +291,36 @@ public class UserDaoImpl implements UserDao<User> {
             throw new APIException("This link is not valid. Please try resetting your password again");
         } catch (Exception exception) {
             throw new APIException("An error occurred, please try reset again.");
+        }
+    }
+
+    /**
+     * update user password and delete password reset link
+     * @param key random uuid
+     * @param password the password
+     * @param confirmedPassword and the password confirmation
+     */
+    @Override
+    public void updatePassword(String key, String password, String confirmedPassword) {
+        if(!password.equals(confirmedPassword)) { throw new APIException("The passwords do not match. Please make sure the passwords are the same"); }
+        try {
+            String url = getVerificationUrl(key, PASSWORD.getType());
+            jdbcTemplate.update(UPDATE_USER_PASSWORD_BY_URL_QUERY, Map.of("password", passwordEncoder.encode(password), "url", url));
+            deleteUserVerificationByUrl(url);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try reset again.");
+        }
+    }
+
+    /**
+     * Delete the password reset link
+     * @param url reset password url
+     */
+    private void deleteUserVerificationByUrl(String url) {
+        try {
+            jdbcTemplate.update(DELETE_PASSWORD_VERIFICATION_BY_URL_QUERY, Map.of("url", url));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try again.");
         }
     }
 

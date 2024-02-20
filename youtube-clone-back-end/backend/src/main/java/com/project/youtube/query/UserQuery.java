@@ -16,4 +16,6 @@ public class UserQuery {
     public static final String INSERT_PASSWORD_VERIFICATION_BY_USER_ID_QUERY = "INSERT INTO ResetPasswordVerifications (user_id, url, expiration_date) VALUES (:userId, :url, :expirationDate)";
     public static final String SELECT_EXPIRED_PASSWORD_VERIFICATION_URL_QUERY = "SELECT expiration_date < NOW() AS is_expired FROM ResetPasswordVerifications WHERE url = :url";
     public static final String SELECT_USER_BY_VERIFICATION_URL = "SELECT u.* FROM Users AS u INNER JOIN ResetPasswordVerifications AS rpv ON u.id = rpv.user_id WHERE rpv.url = :url";
+    public static final String UPDATE_USER_PASSWORD_BY_URL_QUERY = "UPDATE Users SET password = :password WHERE id IN (SELECT user_id FROM ResetPasswordVerifications WHERE url = :url)";//mysql does not support join on update
+    public static final String DELETE_PASSWORD_VERIFICATION_BY_URL_QUERY = "DELETE FROM ResetPasswordVerifications WHERE url = :url";
 }

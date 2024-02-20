@@ -116,6 +116,11 @@ public class UserServiceImpl implements UserService {
         return mapToUserDTO(userDaoImpl.verifyPasswordKey(key));
     }
 
+    @Override
+    public void updatePassword(String key, String password, String confirmedPassword) {
+        userDaoImpl.updatePassword(key, password, confirmedPassword);
+    }
+
     private UserDTO mapToUserDTO(User user) {
         List<Role> roleList = new ArrayList<>(roleService.getRoleByUserId(user.getId()));
         Role role = !roleList.isEmpty() ? roleList.get(0) : null;

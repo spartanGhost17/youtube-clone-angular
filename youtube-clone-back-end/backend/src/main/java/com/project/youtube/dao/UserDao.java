@@ -29,4 +29,5 @@ public interface UserDao<T extends User> {
     Boolean isVerificationCodeExpired(String code, Long userId);
     void resetPassword(String email);
     User verifyPasswordKey(String key);
+    void updatePassword(String key, String password, String confirmedPassword);
 }

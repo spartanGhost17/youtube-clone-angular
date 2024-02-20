@@ -102,10 +102,15 @@ public class UserController {
                         .build());
     }
 
-    @GetMapping(value = "resetpassword")
+    // START RESET PASSWORD FLOW
+    /**
+     * Request password reset for email
+     * @param email the email
+     * @return the response
+     */
+    @GetMapping(value = "reset/password")
     public ResponseEntity<HttpResponse> resetPassword(@RequestParam("email") String email) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        userServiceImpl.resetPassword(email);//getAuthenticatedUser(authentication);// userServiceImpl.getUser(authentication.getName());
+        userServiceImpl.resetPassword(email);
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
@@ -131,6 +136,27 @@ public class UserController {
                         .statusCode(HttpStatus.OK.value())
                         .build());
     }
+
+    /**
+     * end of reset password update flow. Updates the user password
+     * @param key the key
+     * @param password the new password
+     * @param confirmedPassword the new confirmed password
+     * @return the response
+     */
+    @PostMapping(value = "reset/password")
+    public ResponseEntity<HttpResponse> resetPassword(@RequestParam("key") String key, @RequestParam("password") String password, @RequestParam("confirmedPassword") String confirmedPassword) {
+        userServiceImpl.updatePassword(key, password, confirmedPassword);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Password reset successfully.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    // END OF RESET PASSWORD FLOW
 
     /**
      * get user DTO from context user principal
