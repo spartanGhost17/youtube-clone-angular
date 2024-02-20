@@ -30,7 +30,9 @@ import java.time.Instant;
 import java.util.Map;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
+import static com.project.youtube.constants.ApplicationConstants.AUTH_TOKEN_PREFIX;
 import static com.project.youtube.utils.ExceptionUtils.processError;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequestMapping(value = API_VERSION+"user/")
@@ -130,10 +132,7 @@ public class UserController {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "user", userDTO
-                        ))
+                        .data(Map.of("user", userDTO))
                         .message("Profile retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -196,6 +195,39 @@ public class UserController {
 
     // END OF RESET PASSWORD FLOW
 
+
+    @GetMapping(value = "refresh/token")
+    public ResponseEntity<HttpResponse> getRefreshToken(HttpServletRequest request) {
+        if(isHeaderTokenValid(request)) {
+            String token = request.getHeader(AUTHORIZATION).substring(AUTH_TOKEN_PREFIX.length());
+            UserDTO userDTO = userServiceImpl.getUser(tokenProvider.getSubject(token, request));
+            return new ResponseEntity(
+                    HttpResponse.builder()
+                            .timeStamp(Instant.now().toString())
+                            .message("Token refreshed successfully.")
+                            .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                    "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO))
+                            ))
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
+                            .build(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(
+                    HttpResponse.builder()
+                            .timeStamp(Instant.now().toString())
+                            .reason("The refresh token is invalid.")
+                            .message("Something went wrong, Please login again.")
+                            .status(HttpStatus.BAD_REQUEST)
+                            .statusCode(HttpStatus.BAD_REQUEST.value())
+                            .build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private boolean isHeaderTokenValid(HttpServletRequest request) { //TODO: consider making the refresh token part of the authorization filter
+        String token = request.getHeader(AUTHORIZATION).substring(AUTH_TOKEN_PREFIX.length());
+        return request.getHeader(AUTHORIZATION) != null && request.getHeader(AUTHORIZATION).startsWith(AUTH_TOKEN_PREFIX)
+                && tokenProvider.isTokenValid(String.valueOf(tokenProvider.getSubject(token, request)), token);
+    }
 
     /**
      * get user DTO from context user principal

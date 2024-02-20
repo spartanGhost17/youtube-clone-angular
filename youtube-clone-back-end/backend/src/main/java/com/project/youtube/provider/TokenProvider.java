@@ -157,10 +157,10 @@ public class TokenProvider {
     }
 
     /**
-     * get subject from token (username or email)
+     * get subject from token userId
      * @param token JWT token
      * @param request servlet request
-     * @return principal username
+     * @return User Id
      */
     public Long getSubject(String token, HttpServletRequest request) {
         Algorithm algorithm = getAlgorithm();
@@ -173,7 +173,7 @@ public class TokenProvider {
         } catch (TokenExpiredException exception) {
             request.setAttribute("expiredMessage", exception.getMessage());
             //throw new TokenExpiredException("", expiredAt);
-            throw new APIException("Something wrong with the token");
+            throw new APIException("Something went wrong, This token has expired");
         } catch (InvalidClaimException exception) {
             request.setAttribute("invalidClaims", exception.getMessage());
             //throw new InvalidClaimException("Provided claims are not valid");
@@ -203,14 +203,14 @@ public class TokenProvider {
 
     /**
      * Check if token is valid
-     * @param username username
+     * @param userId the user id
      * @param token the JWT Token
      * @return true token is valid
      */
-    public boolean isTokenValid(String username, String token) {
+    public boolean isTokenValid(String userId, String token) {
         Algorithm algorithm = getAlgorithm();
         JWTVerifier verifier = getVerifier(algorithm);
-        return StringUtils.isNotEmpty(username) && !isTokenExpired(verifier, token);
+        return StringUtils.isNotEmpty(userId) && !isTokenExpired(verifier, token);
     }
 
     /**

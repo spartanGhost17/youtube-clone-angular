@@ -16,4 +16,5 @@ public class ApplicationConstants {
     public static final long REFRESH_TOKEN_EXPIRATION_TIME = 30L * 60 * 1000;//30 minutes
     public static final String PUBLIC_KEY_PATH = "src/main/resources/rsa/rsa.public";
     public static final String PRIVATE_KEY_PATH = "src/main/resources/rsa/rsa.private";
+    public static final String AUTH_TOKEN_PREFIX = "Bearer ";
 }

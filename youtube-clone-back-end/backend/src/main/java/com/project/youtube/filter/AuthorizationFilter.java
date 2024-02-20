@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.project.youtube.constants.ApplicationConstants.AUTH_TOKEN_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 import static com.project.youtube.utils.ExceptionUtils.processError;
@@ -32,8 +33,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
     protected static final String TOKEN_KEY = "token";
     protected static final String USER_ID_KEY = "username";
-    private static final String TOKEN_PREFIX = "Bearer ";
-    private static final String[] PUBLIC_ROUTES = {API_VERSION + "/user/login", API_VERSION + "user/register", API_VERSION + "/user/verify/code", "/error", API_VERSION + "user/resetpassword/**", API_VERSION + "user/verify/password"};
+    //TODO: when refactoring user/refresh/token, remove it from white list
+    private static final String[] PUBLIC_ROUTES = {API_VERSION + "/user/login", API_VERSION + "user/register", API_VERSION + "/user/verify/code", "/error", API_VERSION + "user/resetpassword/**",
+            API_VERSION + "user/verify/password", API_VERSION + "user/refresh/token"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -76,8 +78,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
      */
     private String getRequestToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(AUTHORIZATION))
-                .filter((header) -> header.startsWith(TOKEN_PREFIX))
-                .map((token) -> token.replace(TOKEN_PREFIX, StringUtils.EMPTY))
+                .filter((header) -> header.startsWith(AUTH_TOKEN_PREFIX))
+                .map((token) -> token.replace(AUTH_TOKEN_PREFIX, StringUtils.EMPTY))
                 .get();
     }
 
@@ -90,7 +92,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getHeader(AUTHORIZATION) == null || !request.getHeader(AUTHORIZATION).startsWith(TOKEN_PREFIX) ||
+        return request.getHeader(AUTHORIZATION) == null || !request.getHeader(AUTHORIZATION).startsWith(AUTH_TOKEN_PREFIX) ||
                 request.getMethod().equalsIgnoreCase(HTTP_OPTIONS_METHOD) || Arrays.asList(PUBLIC_ROUTES).contains(request.getRequestURI());
 
     }
