@@ -37,8 +37,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDTO createUser(User user) {
+        log.info("Creating user {} ", user.getUsername());
         User createdUser = userDaoImpl.create(user);
         return mapToUserDTO(createdUser);
+    }
+
+    @Override
+    public UserDTO getUser(Long id) {
+        return mapToUserDTO(userDaoImpl.get(id));
     }
 
     /**

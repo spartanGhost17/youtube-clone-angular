@@ -81,7 +81,7 @@ public class TokenProvider {
             return JWT.create().withIssuer(TOKEN_ISSUER)
                     .withAudience(USER_VIDEO_MANAGEMENT_SERVICE)
                     .withIssuedAt(new Date())
-                    .withSubject(userPrincipal.getUsername())
+                    .withSubject(String.valueOf(userPrincipal.getUserDTO().getId()))
                     .withArrayClaim(JWT_AUTHORITIES_KEY, getClaimsFromUser(userPrincipal))
                     .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
                     .sign(algorithm);
@@ -104,7 +104,8 @@ public class TokenProvider {
             return JWT.create().withIssuer(TOKEN_ISSUER)
                     .withAudience(USER_VIDEO_MANAGEMENT_SERVICE)
                     .withIssuedAt(new Date())
-                    .withSubject(userPrincipal.getUsername())
+                    .withSubject(String.valueOf(userPrincipal.getUserDTO().getId()))
+                    //.withSubject(userPrincipal.getUsername())
                     .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME))
                     .sign(algorithm);
 
@@ -126,12 +127,12 @@ public class TokenProvider {
 
     /**
      * create Authentication object
-     * @param username
-     * @param authorities
-     * @param request
-     * @return
+     * @param userId the user id
+     * @param authorities the authorities
+     * @param request the request
+     * @return an authentication object
      */
-    public Authentication getAuthentication(String username, List<GrantedAuthority> authorities, HttpServletRequest request) {
+    public Authentication getAuthentication(Long userId, List<GrantedAuthority> authorities, HttpServletRequest request) {
         // Retrieve the Authentication object from SecurityContextHolder
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(null, null, null);
@@ -148,7 +149,7 @@ public class TokenProvider {
             // You can also retrieve the authorities, details, etc. if needed
         //}
         Set<Role> roles = getRolesFromAuthorities(authorities); //TODO: figure out a way to pass role Set
-        UserPrincipal userPrincipal = new UserPrincipal(UserDTOMapper.toUser(userServiceImpl.getUser(username)), roles);
+        UserPrincipal userPrincipal = new UserPrincipal(UserDTOMapper.toUser(userServiceImpl.getUser(userId)), roles);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities);
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authenticationToken;
@@ -160,14 +161,14 @@ public class TokenProvider {
      * @param request servlet request
      * @return principal username
      */
-    public String getSubject(String token, HttpServletRequest request) {
+    public Long getSubject(String token, HttpServletRequest request) {
         Algorithm algorithm = getAlgorithm();
         JWTVerifier verifier = getVerifier(algorithm);
         Date expiredAt;
         try {
             DecodedJWT decodedJWT = verifier.verify(token);
             expiredAt = decodedJWT.getExpiresAt();
-            return decodedJWT.getSubject();
+            return Long.parseLong(decodedJWT.getSubject());
         } catch (TokenExpiredException exception) {
             request.setAttribute("expiredMessage", exception.getMessage());
             //throw new TokenExpiredException("", expiredAt);

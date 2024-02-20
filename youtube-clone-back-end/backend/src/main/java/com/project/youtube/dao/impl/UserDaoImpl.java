@@ -94,7 +94,13 @@ public class UserDaoImpl implements UserDao<User> {
 
     @Override
     public User get(Long id) {
-        return null;
+        try {
+            return jdbcTemplate.queryForObject(SELECT_USER_BY_ID, Map.of("id", id), new BeanPropertyRowMapper<>(User.class));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("Could not find user");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred");
+        }
     }
 
     @Override

@@ -33,17 +33,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected static final String TOKEN_KEY = "token";
     protected static final String USERNAME_KEY = "username";
     private static final String TOKEN_PREFIX = "Bearer ";
-    private static final String[] PUBLIC_ROUTES = { API_VERSION+"/user/login", API_VERSION+"user/register", API_VERSION+"/user/verify/code", "/error" };
+    private static final String[] PUBLIC_ROUTES = {API_VERSION + "/user/login", API_VERSION + "user/register", API_VERSION + "/user/verify/code", "/error", API_VERSION + "user/resetpassword/**", API_VERSION + "user/verify/password"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             Map<String, String> values = getRequestValues(request);
             String token = getRequestToken(request);
-            if(tokenProvider.isTokenValid(values.get(USERNAME_KEY), token)) {
+            if (tokenProvider.isTokenValid(values.get(USERNAME_KEY), token)) {
                 List<GrantedAuthority> authorities = tokenProvider.getAuthorities(values.get(TOKEN_KEY));//token);
                 //String username = tokenProvider.getSubject(token, request);
-                Authentication authentication = tokenProvider.getAuthentication(values.get(USERNAME_KEY), authorities, request);
+                Authentication authentication = tokenProvider.getAuthentication(Long.parseLong(values.get(USERNAME_KEY)), authorities, request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else { //if token is not valid, clear context
                 SecurityContextHolder.clearContext();
@@ -57,16 +57,18 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     /**
      * get username and token values from request
+     *
      * @param request servlet request
      * @return Map of username and token, key value pairs
      */
     private Map<String, String> getRequestValues(HttpServletRequest request) {
-        return Map.of(USERNAME_KEY, tokenProvider.getSubject(getRequestToken(request), request),
-                      TOKEN_KEY, getRequestToken(request));
+        return Map.of(USERNAME_KEY, String.valueOf(tokenProvider.getSubject(getRequestToken(request), request)),
+                TOKEN_KEY, getRequestToken(request));
     }
 
     /**
      * get JWT token from request Authorization header without Bearer prefix
+     *
      * @param request servlet request
      * @return string JWT token
      */
@@ -79,6 +81,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     /**
      * should not filter if header does not contain Authorization with Bearer prefix or preflight request OPTIONS or Path is public URI
+     *
      * @param request current HTTP request
      * @return
      * @throws ServletException
