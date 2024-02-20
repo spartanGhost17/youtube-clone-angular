@@ -102,8 +102,8 @@ public class UserController {
                         .build());
     }
 
-    @GetMapping(value = "resetpassword/{email}")
-    public ResponseEntity<HttpResponse> resetPassword(@PathVariable("email") String email) {
+    @GetMapping(value = "resetpassword")
+    public ResponseEntity<HttpResponse> resetPassword(@RequestParam("email") String email) {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userServiceImpl.resetPassword(email);//getAuthenticatedUser(authentication);// userServiceImpl.getUser(authentication.getName());
         return ResponseEntity.ok().body(
@@ -120,8 +120,8 @@ public class UserController {
      * @param key the key UUID of password
      * @return the response
      */
-    @GetMapping(value = "verify/password/{key}")
-    public ResponseEntity<HttpResponse> verifyPasswordKey(@PathVariable("key") String key) {
+    @GetMapping(value = "verify/password")
+    public ResponseEntity<HttpResponse> verifyPasswordKey(@RequestParam("type") String type, @RequestParam("key") String key) {
         userServiceImpl.verifyPasswordKey(key);
         return ResponseEntity.ok().body(
                 HttpResponse.builder()

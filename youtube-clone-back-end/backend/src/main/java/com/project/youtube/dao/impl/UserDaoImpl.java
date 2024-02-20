@@ -351,7 +351,10 @@ public class UserDaoImpl implements UserDao<User> {
      * @return String Uri
      */
     private String getVerificationUrl(String key, String type) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "user/verify/"+ type +"/"+ key).toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "user/verify/"+type)
+                .queryParam("type", type)
+                .queryParam("key", key)
+                .toUriString();
     }
 
 }
