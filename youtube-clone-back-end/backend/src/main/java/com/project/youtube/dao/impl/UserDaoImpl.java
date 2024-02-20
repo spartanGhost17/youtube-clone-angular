@@ -4,14 +4,13 @@ import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.UserDao;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
+import com.project.youtube.enumaration.VerificationType;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,11 +26,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.*;
 
+import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 import static com.project.youtube.enumaration.RoleType.ROLE_USER;
 import static com.project.youtube.enumaration.VerificationType.ACCOUNT;
 import static com.project.youtube.enumaration.VerificationType.PASSWORD;
 import static com.project.youtube.query.UserQuery.*;
-import static com.project.youtube.utils.SmsUtils.sendSms;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
@@ -276,6 +275,43 @@ public class UserDaoImpl implements UserDao<User> {
         }
     }
 
+    /**
+     * Verify password key part of password reset provided by user
+     * @param key password key
+     * @return user
+     */
+    @Override
+    public User verifyPasswordKey(String key) {
+        if(isVerificationLinkExpired(key, PASSWORD)) { throw new APIException("This link has expired. Please try resetting your password again."); }
+        try {
+            User user = jdbcTemplate.queryForObject(SELECT_USER_BY_VERIFICATION_URL, Map.of("url", getVerificationUrl(key, PASSWORD.getType())), new BeanPropertyRowMapper<>(User.class));
+            //deleteUserVerification(user);//depends
+            return user;
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("This link is not valid. Please try resetting your password again");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try reset again.");
+        }
+    }
+
+    /**
+     * check if verification link expired
+     * @param key the UUID random key
+     * @param type the verification type
+     * @return true if reset password link has expired
+     */
+    private Boolean isVerificationLinkExpired(String key, VerificationType type) {
+        try {
+            String url = getVerificationUrl(key, type.getType());
+            log.info("Verification URL: {} [after]",url);
+            return jdbcTemplate.queryForObject(SELECT_EXPIRED_PASSWORD_VERIFICATION_URL_QUERY, Map.of("url", url), Boolean.class);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("This url is not valid. Please reset your password again.");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try again.");
+        }
+    }
+
     private void deleteUserVerification(User user) {
         try {
             jdbcTemplate.update(DELETE_PASSWORD_VERIFICATION_BY_USER_ID_QUERY, Map.of("userId", user.getId()));
@@ -315,7 +351,7 @@ public class UserDaoImpl implements UserDao<User> {
      * @return String Uri
      */
     private String getVerificationUrl(String key, String type) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verifiy/"+ type +"/"+ key).toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "user/verify/"+ type +"/"+ key).toUriString();
     }
 
 }

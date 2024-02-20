@@ -16,4 +16,5 @@ public interface UserService {
     UserPrincipal getUserPrincipal(UserDTO userDTO);
     UserDTO verifyCode(String username, String code);
     void resetPassword(String email);
+    UserDTO verifyPasswordKey(String key);
 }

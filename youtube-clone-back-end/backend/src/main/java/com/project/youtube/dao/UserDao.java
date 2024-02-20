@@ -25,7 +25,8 @@ public interface UserDao<T extends User> {
     void deleteVerificationCodeByCode(String code);
     void createVerificationCode(UserDTO userDTO, String verificationCode, String expirationDate);
     //void sendSMS(String phone, String s);
-    User verifyCode(String username, String code);
+    User verifyCode(String username, String code); //TODO: Make return user DTO Instead of user
     Boolean isVerificationCodeExpired(String code, Long userId);
     void resetPassword(String email);
+    User verifyPasswordKey(String key);
 }
