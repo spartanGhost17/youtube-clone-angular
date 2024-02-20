@@ -82,6 +82,7 @@ public class TokenProvider {
                     .withAudience(USER_VIDEO_MANAGEMENT_SERVICE)
                     .withIssuedAt(new Date())
                     .withSubject(String.valueOf(userPrincipal.getUserDTO().getId()))
+                    .withClaim(JWT_ROLE_KEY, userPrincipal.getUserDTO().getAuthorities().get(0).getName())
                     .withArrayClaim(JWT_AUTHORITIES_KEY, getClaimsFromUser(userPrincipal))
                     .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
                     .sign(algorithm);
@@ -132,7 +133,7 @@ public class TokenProvider {
      * @param request the request
      * @return an authentication object
      */
-    public Authentication getAuthentication(Long userId, List<GrantedAuthority> authorities, HttpServletRequest request) {
+    public Authentication getAuthentication(Long userId, List<GrantedAuthority> authorities, String role, HttpServletRequest request) {
         // Retrieve the Authentication object from SecurityContextHolder
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(null, null, null);
@@ -148,7 +149,7 @@ public class TokenProvider {
         //    List<GrantedAuthority> grantedAuthorities = (List<GrantedAuthority>) authenticationToken.getAuthorities();
             // You can also retrieve the authorities, details, etc. if needed
         //}
-        Set<Role> roles = getRolesFromAuthorities(authorities); //TODO: figure out a way to pass role Set
+        Set<Role> roles = getRolesFromAuthorities(authorities, role); //TODO: figure out a way to pass role Set
         UserPrincipal userPrincipal = new UserPrincipal(UserDTOMapper.toUser(userServiceImpl.getUser(userId)), roles);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities);
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -172,7 +173,7 @@ public class TokenProvider {
         } catch (TokenExpiredException exception) {
             request.setAttribute("expiredMessage", exception.getMessage());
             //throw new TokenExpiredException("", expiredAt);
-            throw new APIException(" wrong with the token");
+            throw new APIException("Something wrong with the token");
         } catch (InvalidClaimException exception) {
             request.setAttribute("invalidClaims", exception.getMessage());
             //throw new InvalidClaimException("Provided claims are not valid");
@@ -181,6 +182,23 @@ public class TokenProvider {
             throw new APIException("something went wrong with the token");
         }
         //return token;
+    }
+
+    /**
+     * Get role name from token
+     * @param token the token
+     * @return the role name
+     */
+    public String getRoleName(String token) {
+        Algorithm algorithm = getAlgorithm();
+        JWTVerifier verifier = getVerifier(algorithm);
+        try {
+            return verifier.verify(token).getClaim(JWT_ROLE_KEY).asString();
+        } catch (TokenExpiredException exception) {
+            throw new APIException("something went wrong with the token");
+        } catch (Exception exception) {
+            throw new APIException("something went wrong with the token");
+        }
     }
 
     /**
@@ -248,13 +266,11 @@ public class TokenProvider {
         return userPrincipal.getAuthorities().stream().map((authority) -> authority.getAuthority()).toArray(String[]::new);
     }
 
-    private Set<Role> getRolesFromAuthorities(List<GrantedAuthority> authorities) {
-        return authorities.stream()
-                .limit(authorities.size() -1)
+    private Set<Role> getRolesFromAuthorities(List<GrantedAuthority> authorities, String roleName) {
+        String permissions = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
-                .map(authority -> authority.concat(","))
-                .map((authoritiesString) -> new Role(null, null, authoritiesString))
-                .collect(Collectors.toSet());
+                        .collect(Collectors.joining(","));
+        return new HashSet<>(Arrays.asList(new Role(null, roleName, permissions)));
     }
 
 

@@ -31,19 +31,21 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     public static final String HTTP_OPTIONS_METHOD = "OPTIONS";
     private final TokenProvider tokenProvider;
     protected static final String TOKEN_KEY = "token";
-    protected static final String USERNAME_KEY = "username";
+    protected static final String USER_ID_KEY = "username";
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String[] PUBLIC_ROUTES = {API_VERSION + "/user/login", API_VERSION + "user/register", API_VERSION + "/user/verify/code", "/error", API_VERSION + "user/resetpassword/**", API_VERSION + "user/verify/password"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("filtering endpoint... ");
         try {
             Map<String, String> values = getRequestValues(request);
             String token = getRequestToken(request);
-            if (tokenProvider.isTokenValid(values.get(USERNAME_KEY), token)) {
+            if (tokenProvider.isTokenValid(values.get(USER_ID_KEY), token)) {
                 List<GrantedAuthority> authorities = tokenProvider.getAuthorities(values.get(TOKEN_KEY));//token);
                 //String username = tokenProvider.getSubject(token, request);
-                Authentication authentication = tokenProvider.getAuthentication(Long.parseLong(values.get(USERNAME_KEY)), authorities, request);
+                String roleName = tokenProvider.getRoleName(token);
+                Authentication authentication = tokenProvider.getAuthentication(Long.parseLong(values.get(USER_ID_KEY)), authorities, roleName, request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else { //if token is not valid, clear context
                 SecurityContextHolder.clearContext();
@@ -62,7 +64,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
      * @return Map of username and token, key value pairs
      */
     private Map<String, String> getRequestValues(HttpServletRequest request) {
-        return Map.of(USERNAME_KEY, String.valueOf(tokenProvider.getSubject(getRequestToken(request), request)),
+        return Map.of(USER_ID_KEY, String.valueOf(tokenProvider.getSubject(getRequestToken(request), request)),
                 TOKEN_KEY, getRequestToken(request));
     }
 
