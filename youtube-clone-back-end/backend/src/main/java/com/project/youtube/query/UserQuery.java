@@ -18,4 +18,6 @@ public class UserQuery {
     public static final String SELECT_USER_BY_VERIFICATION_URL = "SELECT u.* FROM Users AS u INNER JOIN ResetPasswordVerifications AS rpv ON u.id = rpv.user_id WHERE rpv.url = :url";
     public static final String UPDATE_USER_PASSWORD_BY_URL_QUERY = "UPDATE Users SET password = :password WHERE id IN (SELECT user_id FROM ResetPasswordVerifications WHERE url = :url)";//mysql does not support join on update
     public static final String DELETE_PASSWORD_VERIFICATION_BY_URL_QUERY = "DELETE FROM ResetPasswordVerifications WHERE url = :url";
+    public static final String SELECT_USER_BY_ACCOUNT_VERIFICATION_URL_QUERY = "SELECT u.* FROM Users AS u INNER JOIN AccountVerifications AS av ON av.user_id = u.id WHERE av.url = :url";
+    public static final String UPDATE_USER_ENABLED_BY_ID_QUERY = "UPDATE Users SET enabled = :enabled WHERE id = :userId";
 }

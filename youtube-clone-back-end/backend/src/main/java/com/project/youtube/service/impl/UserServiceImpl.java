@@ -77,6 +77,10 @@ public class UserServiceImpl implements UserService {
         return userDaoImpl.getByEmail(email);
     }
 
+    /**
+     * Send verification code to user for MFA
+     * @param userDTO
+     */
     @Override
     public void sendVerificationCode(UserDTO userDTO) {
         userDaoImpl.sendVerificationCode(userDTO);
@@ -106,6 +110,7 @@ public class UserServiceImpl implements UserService {
         return mapToUserDTO(userDaoImpl.verifyCode(username, code));
     }
 
+
     @Override
     public void resetPassword(String email) {
         userDaoImpl.resetPassword(email);
@@ -119,6 +124,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(String key, String password, String confirmedPassword) {
         userDaoImpl.updatePassword(key, password, confirmedPassword);
+    }
+
+    @Override
+    public UserDTO verifyAccountKey(String key) {
+        return mapToUserDTO(userDaoImpl.verifyAccountKey(key));
     }
 
     private UserDTO mapToUserDTO(User user) {

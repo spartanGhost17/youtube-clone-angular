@@ -313,6 +313,38 @@ public class UserDaoImpl implements UserDao<User> {
     }
 
     /**
+     * Update account enabled status
+     * @param key the UUID key
+     * @return tne userDTO
+     */
+    @Override
+    public User verifyAccountKey(String key) {
+        try {
+            User user = getUserByAccountVerificationUrl(key);
+            jdbcTemplate.update(UPDATE_USER_ENABLED_BY_ID_QUERY, Map.of("enabled", true,"userId", user.getId()));
+            return user;
+        } catch (Exception exception) {
+            throw new APIException("An Error occurred, please try again.");
+        }
+    }
+
+    /**
+     * Get user by its account verification url
+     * @param key the random UUID string
+     * @return the user
+     */
+    private User getUserByAccountVerificationUrl(String key) {
+        String url = getVerificationUrl(key, ACCOUNT.getType());
+        try {
+            return jdbcTemplate.queryForObject(SELECT_USER_BY_ACCOUNT_VERIFICATION_URL_QUERY, Map.of("url", url), new BeanPropertyRowMapper<>(User.class));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("This account verification url is invalid.");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try again.");
+        }
+    }
+
+    /**
      * Delete the password reset link
      * @param url reset password url
      */

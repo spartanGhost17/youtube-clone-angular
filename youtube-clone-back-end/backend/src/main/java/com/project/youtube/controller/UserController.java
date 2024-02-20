@@ -29,10 +29,11 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
 
+import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 import static com.project.youtube.utils.ExceptionUtils.processError;
 
 @RestController
-@RequestMapping(value = "/api/v1/user/")
+@RequestMapping(value = API_VERSION+"user/")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -44,6 +45,11 @@ public class UserController {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
 
+    /**
+     * register a new user
+     * @param createUserForm the create user form
+     * @return the response
+     */
     @PostMapping(value = "register")
     public ResponseEntity<HttpResponse> createUser(@RequestBody @Valid CreateUserForm createUserForm) {
         User user = User.builder()
@@ -61,6 +67,30 @@ public class UserController {
                         .statusCode(HttpStatus.CREATED.value())
                         .build());
     }
+
+    /**
+     * Enabled the user account after creation
+     * @param type the type (account or password)
+     * @param key the UUID random key
+     * @return the response
+     */
+    @PostMapping(value = "verify/account")
+    public ResponseEntity<HttpResponse> verifyAccount(@RequestParam("type") String type, @RequestParam("key") String key) {
+        UserDTO userDTO = userServiceImpl.verifyAccountKey(key);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message(userDTO.getEnabled()? "This account is already verified." : "Account has been verified.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    /**
+     * login a user
+     * @param loginForm the login form
+     * @return the response
+     */
     @PostMapping(value = "login")
     public ResponseEntity<HttpResponse> login(@RequestBody @Valid LoginForm loginForm) {
         Authentication authentication = authenticate(loginForm.getUsername(), loginForm.getPassword());
@@ -68,6 +98,11 @@ public class UserController {
         return userDTO.getUsingMfa() ? sendVerificationCode(userDTO) : sendResponse(userDTO);
     }
 
+    /**
+     * Verify 2-factor authentication code
+     * @param codeForm the code
+     * @return the response
+     */
     @GetMapping("verify/code")
     public ResponseEntity<HttpResponse> verifyCode(@RequestBody @Valid VerificationCodeForm codeForm) {
         UserDTO userDTO = userServiceImpl.verifyCode(codeForm.getUsername(), codeForm.getCode());
@@ -84,7 +119,10 @@ public class UserController {
                         .build());
     }
 
-
+    /**
+     * Get a user's profile
+     * @return the response
+     */
     @GetMapping(value = "profile")
     public ResponseEntity<HttpResponse> getProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -157,6 +195,7 @@ public class UserController {
     }
 
     // END OF RESET PASSWORD FLOW
+
 
     /**
      * get user DTO from context user principal

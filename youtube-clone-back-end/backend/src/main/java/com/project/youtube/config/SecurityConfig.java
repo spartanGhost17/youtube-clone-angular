@@ -43,7 +43,8 @@ public class SecurityConfig {
     private final CustomAuthenticationProvider customAuthenticationProvider;
     private final AuthorizationFilter authorizationFilter;
     private final NotFoundResourceController notFoundResourceController;
-    private static final String[] PUBLIC_URLS = { API_VERSION + "user/login/**", API_VERSION + "user/register/**", API_VERSION + "user/verify/code/**", "/error", API_VERSION+"user/reset/password/**", API_VERSION+"user/verify/password" };
+    private static final String[] PUBLIC_URLS = { API_VERSION + "user/login/**", API_VERSION + "user/register/**", API_VERSION + "user/verify/code/**", "/error", API_VERSION+"user/reset/password/**",
+            API_VERSION+"user/verify/password", API_VERSION+"user/verify/account" };
 
     /**
      * registers authentication providers with the authentication manager
