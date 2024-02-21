@@ -1,5 +1,5 @@
 <div *ngIf="!hoverPanel"  class="container panel" [ngStyle]="{'width': collapse? MIN_WIDTH: MAX_WIDTH, 'padding': collapse? '0px':'4px', 'overflow-y': collapse? 'hidden': 'visible'}">
-    <div class="icon-section" *ngIf="user">
+    <div class="icon-section" *ngIf="user && !collapse">
         <div class="icon-container">
             <img [src]="user.iconURL" alt=""/>
         </div>

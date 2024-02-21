@@ -18,10 +18,11 @@ import { StepsComponent } from './components/steps/steps.component';
 import { ContentComponent } from './components/content/content.component';
 import { PlaylistDashboardComponent } from './components/playlist/playlist-dashboard/playlist-dashboard.component';
 import { PlaylistMiniComponent } from './components/playlist/playlist-mini/playlist-mini.component';
+import { CustomizationComponent } from './components/user-dashboard/customization/customization.component';
 
 const routes: Routes = [
   //{ path: 'login', component: PlaylistMiniComponent },
-  //{ path: '', pathMatch: 'full', redirectTo: '/home/explore' },
+  { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
   {
     path: 'home', component: HomeComponent,
     children: [
@@ -58,14 +59,19 @@ const routes: Routes = [
   {
     path: 'studio', component: DashboardViewComponent,
     children: [
+      { path: '', pathMatch: 'full', redirectTo: '/studio/dashboard' },
       {
         path: 'dashboard', component: DashboardComponent,
       },
       {
         path: 'content', component: ContentComponent,
       },
+      {
+        path: 'edit', component: CustomizationComponent,
+      },
       { path: '**', redirectTo: '/studio/dashboard'}
     ]
+    
   },
   //{ path: '**', redirectTo: '/home/explore'}
   //user dashboard

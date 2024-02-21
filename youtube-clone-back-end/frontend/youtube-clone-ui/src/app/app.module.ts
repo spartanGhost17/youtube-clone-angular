@@ -14,6 +14,12 @@ import uk from '@angular/common/locales/uk';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
+//material design
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatRippleModule} from '@angular/material/core';
+//
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -57,10 +63,8 @@ import { VideoCardBasicComponent } from './components/video-displays/video-card-
 import { DragDropListComponent } from './components/drag-drop-list/drag-drop-list.component';
 import { StandardDropdownComponent } from './components/dropdown/standard-dropdown/standard-dropdown.component';
 import { CommentComponent } from './components/comments/comment/comment.component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CommentsHolderComponent } from './components/comments/comments-holder/comments-holder.component';
 import { HistoryViewComponent } from './components/history-view/history-view.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { TooltipDirective } from './directives/tooltip/tooltip.directive';
 import { LinkifyPipe } from './pipes/linkify/linkify.pipe';
 import { NewlineToBrPipe } from './pipes/newline-to-br/newline-to-br.pipe';
@@ -75,6 +79,8 @@ import { PlaylistMiniComponent } from './components/playlist/playlist-mini/playl
 import { PlaylistDashboardComponent } from './components/playlist/playlist-dashboard/playlist-dashboard.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SigninComponent } from './components/auth/signin/signin.component';
+import { CustomizationComponent } from './components/user-dashboard/customization/customization.component';
+import { SnackBarDirective } from './directives/snack-bar/snack-bar.directive';
 
 
 registerLocaleData(uk);
@@ -127,6 +133,8 @@ registerLocaleData(uk);
     PlaylistDashboardComponent,
     LoginComponent,
     SigninComponent,
+    CustomizationComponent,
+    SnackBarDirective,
   ],
   imports: [
     BrowserModule,
@@ -156,6 +164,8 @@ registerLocaleData(uk);
     //this is angular material drag drop (segreate this into module export later as well)
     DragDropModule,
     MatTooltipModule,
+    MatSnackBarModule,
+    MatRippleModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }
