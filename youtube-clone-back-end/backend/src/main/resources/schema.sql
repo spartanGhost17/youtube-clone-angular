@@ -91,8 +91,8 @@ DROP TABLE IF EXISTS Users;
 create TABLE Users
 (
     id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    username        VARCHAR(255) NOT NULL,
-    channel_name    VARCHAR(255) NOT NULL,
+    username        VARCHAR(25) NOT NULL,
+    channel_name    VARCHAR(100) NOT NULL,
     email           VARCHAR(255) NOT NULL,
     password        VARCHAR(255) DEFAULT NULL,
     phone           VARCHAR(30) DEFAULT NULL,
@@ -104,6 +104,7 @@ create TABLE Users
     non_locked      BOOLEAN DEFAULT TRUE,
     using_mfa       BOOLEAN DEFAULT FALSE,
     profile_picture VARCHAR(255) DEFAULT 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+    banner_picture  VARCHAR(255) DEFAULT 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
     CONSTRAINT UQ_Users_Username UNIQUE (username),
     CONSTRAINT UQ_Users_Channel_Name UNIQUE (channel_name),
     CONSTRAINT UQ_Users_Email UNIQUE (email)
