@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
 import { Video } from '../../../models/video';
 import { Playlist } from '../../../models/playlist';
+import { SnackbarService } from '../../../services/snack-bar-messages/snackbar.service';
 
 @Component({
   selector: 'app-upload-video-metadata',
@@ -80,7 +81,7 @@ export class UploadVideoMetadataComponent {
   visibility: any[];
 
 
-  constructor(){}
+  constructor(private messageService: SnackbarService){}
 
   ngOnInit(): void {
     this.thumbnails = [
@@ -274,7 +275,6 @@ export class UploadVideoMetadataComponent {
   */
   onCopyToClipboard() {
     navigator.clipboard.writeText(this.videoURL);
-    // Alert the copied text
-    //alert("Copied the text: " + this.videoURL);
+    this.messageService.openSnackBar("Link copied to clipboard");
   }
 }
