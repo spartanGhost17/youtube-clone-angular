@@ -1,0 +1,12 @@
+youtube-clone-back-end/frontend/youtube-clone-ui/src/assets/test-videos/Ultra Instinct ｜ Dragon Ball Super.mp4
+youtube-clone-back-end/frontend/youtube-clone-ui/src/assets/test-videos/𝗘𝘃𝗼𝗹𝘂𝘁𝗶𝗼𝗻 𝗼𝗳 𝗚𝗼𝗸𝘂 (𝗦𝘂𝗽𝗲𝗿 𝗦𝗮𝗶𝘆𝗮𝗻 𝟭 𝘁𝗼 𝗦𝘂𝗽𝗲𝗿 𝗦𝗮𝗶𝘆𝗮𝗻 𝟭𝟬𝟬).mp4
+*.jpeg
+*.mp4
+*.jpg
+*.png
+youtube-clone-back-end/frontend/youtube-clone-ui/src/app/models/draft_backend_permissions.txt
+youtube-clone-back-end/frontend/youtube-clone-ui/src/app/models/schema_capita.txt
+youtube-clone-back-end/backend/src/main/resources/rsa/rsa.private
+youtube-clone-back-end/backend/src/main/resources/rsa/rsa.public
+youtube-clone-back-end/frontend/youtube-clone-ui/src/assets/no_content_illustration_v3_darkmode.svg
+youtube-clone-back-end/frontend/youtube-clone-ui/src/assets/computer.svg
