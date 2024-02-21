@@ -4,6 +4,7 @@ import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.impl.UserDaoImpl;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
+import com.project.youtube.form.UpdateUserForm;
 import com.project.youtube.model.Role;
 import com.project.youtube.model.User;
 import com.project.youtube.model.UserPrincipal;
@@ -135,6 +136,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO verifyAccountKey(String key) {
         return mapToUserDTO(userDaoImpl.verifyAccountKey(key));
+    }
+
+    /**
+     * Update the user profile
+     * @param updateUserForm the user profile form for update
+     */
+    @Override
+    public void updateProfile(UpdateUserForm updateUserForm, Long userId) {
+        userDaoImpl.updateProfile(updateUserForm, userId);
     }
 
     private UserDTO mapToUserDTO(User user) {

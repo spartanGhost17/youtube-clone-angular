@@ -1,6 +1,7 @@
 package com.project.youtube.service;
 
 import com.project.youtube.dto.UserDTO;
+import com.project.youtube.form.UpdateUserForm;
 import com.project.youtube.model.User;
 import com.project.youtube.model.UserPrincipal;
 
@@ -20,4 +21,5 @@ public interface UserService {
     UserDTO verifyPasswordKey(String key);
     void updatePassword(String key, String password, String confirmedPassword);
     UserDTO verifyAccountKey(String key);
+    void updateProfile(UpdateUserForm updateUserForm, Long userId);
 }

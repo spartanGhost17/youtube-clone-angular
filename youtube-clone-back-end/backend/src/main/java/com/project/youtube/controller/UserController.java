@@ -4,6 +4,7 @@ import com.project.youtube.Exception.APIException;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.form.CreateUserForm;
 import com.project.youtube.form.LoginForm;
+import com.project.youtube.form.UpdateUserForm;
 import com.project.youtube.form.VerificationCodeForm;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.User;
@@ -127,13 +128,29 @@ public class UserController {
      */
     @GetMapping(value = "profile")
     public ResponseEntity<HttpResponse> getProfile() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = getAuthenticationFromContext();//SecurityContextHolder.getContext().getAuthentication();
         UserDTO userDTO = getAuthenticatedUser(authentication);//userServiceImpl.getUser(authentication.getName());
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .data(Map.of("user", userDTO))
                         .message("Profile retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
+
+    @PatchMapping(value = "profile")
+    public ResponseEntity<HttpResponse> updateProfile(@RequestBody @Valid UpdateUserForm updateUserForm) {
+        Authentication authentication = getAuthenticationFromContext();
+        UserDTO userDTO = getAuthenticatedUser(authentication);
+        //UserDTO userDTO = getAuthenticatedUser(authentication);//userServiceImpl.getUser(authentication.getName());
+        userServiceImpl.updateProfile(updateUserForm, userDTO.getId());
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+        //                .data(Map.of("user", userDTO))
+                        .message("Profile updated")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build());
@@ -227,6 +244,10 @@ public class UserController {
         String token = request.getHeader(AUTHORIZATION).substring(AUTH_TOKEN_PREFIX.length());
         return request.getHeader(AUTHORIZATION) != null && request.getHeader(AUTHORIZATION).startsWith(AUTH_TOKEN_PREFIX)
                 && tokenProvider.isTokenValid(String.valueOf(tokenProvider.getSubject(token, request)), token);
+    }
+
+    private Authentication getAuthenticationFromContext() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 
     /**

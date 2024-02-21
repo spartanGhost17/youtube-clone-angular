@@ -5,12 +5,14 @@ import com.project.youtube.dao.UserDao;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.enumaration.VerificationType;
+import com.project.youtube.form.UpdateUserForm;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -331,6 +333,23 @@ public class UserDaoImpl implements UserDao<User> {
             return user;
         } catch (Exception exception) {
             throw new APIException("An Error occurred, please try again.");
+        }
+    }
+
+    /**
+     * Update the user profile
+     * @param updateUserForm the user profile form for update
+     */
+    @Override
+    public void updateProfile(UpdateUserForm updateUserForm, Long userId) {
+        try {
+            Map<String, ?> map = Map.of("username", updateUserForm.getUsername(), "channelName", updateUserForm.getChannelName(), "phone", updateUserForm.getPhone(), "description", updateUserForm.getDescription(), "usingMfa", updateUserForm.getUsingMfa(), "profilePicture", updateUserForm.getProfilePicture(), "userId", userId);
+            User user = get(userId);//TODO: Can return this
+            jdbcTemplate.update(UPDATE_USER_METADATA_QUERY, map);
+        } catch (ConstraintViolationException exception) {
+            throw new APIException("The username, channel name must be unique");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, please try again.");
         }
     }
 
