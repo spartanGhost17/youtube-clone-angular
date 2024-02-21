@@ -1,0 +1,89 @@
+<div class="customization-container">
+    <h1 class="text-primary title">Channel customisation</h1>
+    <div class="nav-buttons">
+        <ul>
+            <div class="nav-items">
+                <li #tab class="non-selectable tab" *ngFor="let tab of tabs, index as i" (click)="selectTab(i)" [class.active]="selectedTab === i">{{tab}}</li>
+            </div>
+            <div class="nav-actions">
+                <button class="view-channel-btn" (click)="onViewChannel()">VIEW CHANNEL</button>
+                <button class="cancel-btn" (click)="onCancel()">CANCEL</button>
+                <button class="publish-btn" (click)="onPublish()">PUBLISH</button>
+            </div>
+        </ul>
+        <div #indicator class="indicator"></div>
+    </div>
+    <div class="customisation-content">
+        <ng-container *ngIf="selectedTab === 0" [ngTemplateOutlet]="layoutTemplate"></ng-container>
+        <ng-container *ngIf="selectedTab === 1" [ngTemplateOutlet]="brandingTemplate"></ng-container>
+        <ng-container *ngIf="selectedTab === 2" [ngTemplateOutlet]="basicInfoTemplate"></ng-container>
+    </div>
+      
+</div>
+
+<ng-template #layoutTemplate>
+    layout text here
+</ng-template>
+<!-- branding template -->
+<ng-template #brandingTemplate>
+    <div class="branding-item-container" *ngFor="let item of brandingItems">
+        <h4 class="text-primary">{{item.title}}</h4>
+        <p class="text-secondary">{{item.titleDescription}}</p>
+        <div class="image-description-container">
+            <div *ngIf="item.isUserIcon" class="image-container user__icon">
+                <img [src]="item.imageUrl" alt="">
+            </div>
+            <div *ngIf="!item.isUserIcon" class="image-container normal-icon">
+                <img [src]="item.imageUrl" alt="">
+            </div>
+            <div class="description-container">
+                <div class="description-text">
+                    <span class="text-secondary">{{item.imageDescription}}</span>
+                </div>
+                <div *ngIf="item.isUserIcon" class="actions">
+                    <button (click)="onChangeUserIcon()">CHANGE</button>
+                    <button (click)="onRemoveUserIcon()">REMOVE</button>
+                </div>
+                <div *ngIf="!item.isUserIcon" class="actions">
+                    <button (click)="onUploadUserIcon()">UPLOAD</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- basic info template -->
+<ng-template #basicInfoTemplate>
+    <div class="basic-info-container">
+        <div class="basic-info__name-container">
+            <h4 class="text-primary">Name</h4>
+            <p class="text-secondary title-description">Choose a channel name that represents you and your content. Changes made to your name and picture are only visible on YouTube and not on other Google services. You can change your name twice in 14 days. </p>
+            <div class="text-input-container single-line">
+                <textarea [innerHTML]="'TintinDumbo'" placeholder="username" name="username_text" id="" cols="30" rows="10"></textarea>
+            </div>
+        </div>
+        <div class="basic-info__handle-container">
+            <h4 class="text-primary">Handle</h4>
+            <p class="text-secondary title-description">Choose your unique handle by adding letters and numbers. You can change your handle back within 14 days. Handles can be changed twice every 14 days.</p>
+            <div class="text-input-container single-line inner-icon">
+                <textarea [innerHTML]="'@TintinDumbo'" placeholder="username" name="username_text" id="" cols="30" rows="10"></textarea>
+                <span class="material-symbols-outlined non-selectable action" *ngIf="isUsernameUnique" [style.font-variation-settings]="FILL_ICON" [ngStyle]="{'color': 'green'}"> check_circle</span>
+                <span class="material-symbols-outlined non-selectable action" *ngIf="!isUsernameUnique" [style.font-variation-settings]="FILL_ICON" [ngStyle]="{'color': 'red'}">cancel</span>
+            </div>
+            <p class="text-secondary">https://www.youtube.com/@TinTin_Dumbo_17</p>
+        </div>
+        <div class="basic-info__description-container">
+            <h4 class="text-primary title-description">Description</h4>
+            <div class="multi-line-input-container">
+                <textarea placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places." name="username_text" id="" cols="30" rows="10"></textarea>
+            </div>
+        </div>
+        <div class="basic-info__channel-url-container">
+            <h4 class="text-primary">Channel URL</h4>
+            <p class="text-secondary title-description">This is the standard web address for your channel. It includes your unique channel ID, which is the numbers and letters at the end of the URL</p>
+            <div class="text-input-container link-container">
+                <p>{{channelUrl}}</p>
+                <span class="material-symbols-outlined non-selectable action" (click)="onCopyToClipboard()">content_copy</span>
+            </div>
+        </div>
+    </div>
+</ng-template>
