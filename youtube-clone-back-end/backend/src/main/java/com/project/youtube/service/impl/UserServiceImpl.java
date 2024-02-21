@@ -143,8 +143,8 @@ public class UserServiceImpl implements UserService {
      * @param updateUserForm the user profile form for update
      */
     @Override
-    public void updateProfile(UpdateUserForm updateUserForm, Long userId) {
-        userDaoImpl.updateProfile(updateUserForm, userId);
+    public UserDTO updateProfile(UpdateUserForm updateUserForm, Long userId) {
+        return mapToUserDTO(userDaoImpl.updateProfile(updateUserForm, userId));
     }
 
     private UserDTO mapToUserDTO(User user) {

@@ -32,5 +32,5 @@ public interface UserDao<T extends User> {
     User verifyPasswordKey(String key);
     void updatePassword(String key, String password, String confirmedPassword);
     User verifyAccountKey(String key);
-    void updateProfile(UpdateUserForm updateUserForm, Long userId);
+    User updateProfile(UpdateUserForm updateUserForm, Long userId);
 }

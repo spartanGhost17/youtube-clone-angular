@@ -341,11 +341,11 @@ public class UserDaoImpl implements UserDao<User> {
      * @param updateUserForm the user profile form for update
      */
     @Override
-    public void updateProfile(UpdateUserForm updateUserForm, Long userId) {
+    public User updateProfile(UpdateUserForm updateUserForm, Long userId) {
         try {
             Map<String, ?> map = Map.of("username", updateUserForm.getUsername(), "channelName", updateUserForm.getChannelName(), "phone", updateUserForm.getPhone(), "description", updateUserForm.getDescription(), "usingMfa", updateUserForm.getUsingMfa(), "profilePicture", updateUserForm.getProfilePicture(), "userId", userId);
-            User user = get(userId);//TODO: Can return this
             jdbcTemplate.update(UPDATE_USER_METADATA_QUERY, map);
+            return get(userId);
         } catch (ConstraintViolationException exception) {
             throw new APIException("The username, channel name must be unique");
         } catch (Exception exception) {

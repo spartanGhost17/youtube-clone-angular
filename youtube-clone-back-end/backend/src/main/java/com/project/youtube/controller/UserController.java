@@ -140,16 +140,20 @@ public class UserController {
                         .build());
     }
 
+    /**
+     * Update user metadata like, username, description etc.
+     * @param updateUserForm the user update form
+     * @return the response
+     */
     @PatchMapping(value = "profile")
     public ResponseEntity<HttpResponse> updateProfile(@RequestBody @Valid UpdateUserForm updateUserForm) {
         Authentication authentication = getAuthenticationFromContext();
-        UserDTO userDTO = getAuthenticatedUser(authentication);
-        //UserDTO userDTO = getAuthenticatedUser(authentication);//userServiceImpl.getUser(authentication.getName());
-        userServiceImpl.updateProfile(updateUserForm, userDTO.getId());
+        UserDTO contextUserDTO = getAuthenticatedUser(authentication);
+        UserDTO userDTO = userServiceImpl.updateProfile(updateUserForm, contextUserDTO.getId());
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-        //                .data(Map.of("user", userDTO))
+                        .data(Map.of("user", userDTO))
                         .message("Profile updated")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
