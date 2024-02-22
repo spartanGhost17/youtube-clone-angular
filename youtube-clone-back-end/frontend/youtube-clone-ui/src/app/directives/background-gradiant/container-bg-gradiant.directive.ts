@@ -1,12 +1,11 @@
 import { AfterViewInit, Directive, ElementRef, Input, SimpleChanges } from '@angular/core';
 //import ColorThief from 'colorthief';
-import Vibrant from 'node-vibrant';// stable version node-vibrant@3.1.6
+import Vibrant from 'node-vibrant';
 @Directive({
   selector: '[appContainerBgGradiant]'
 })
 export class ContainerBgGradiantDirective implements AfterViewInit {
   @Input() thumbnailURL: string;
-
   constructor(private el: ElementRef) {}
 
   ngAfterViewInit() {
@@ -15,7 +14,7 @@ export class ContainerBgGradiantDirective implements AfterViewInit {
 
   applyGradiant() {
     let src = this.thumbnailURL;
-    Vibrant.from(src).getPalette((err, palette) => {
+    Vibrant.from(src).getPalette((_err: any, palette: any) => {
       if(palette) {
         console.log("palette ", palette);
         const primaryColor = palette.Vibrant!.hex;
