@@ -1,3 +1,29 @@
 <div class="login-container">
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div class="auth-form-container">
+            <h1 class="title">Login</h1>
+            <div class="username-container">
+                <div class="title-container">
+                    <p>Email or Username</p>
+                </div>
+                <div class="username-text-container">
+                    <input type="text" placeholder="username or email" id="username" name="username" [(ngModel)]="username" autocomplete="off" required/>
+                </div>
+            </div>
+            <div class="password-container">
+                <div class="title-container">
+                    <p>Password</p>
+                </div>
+                <div class="password-text-container inner-icon">
+                    <input class="password-input" #passwordInput placeholder="password" type="password" id="password" name="password" [(ngModel)]="password" required/>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="!showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility_off</span>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility</span>
+                </div>
+            </div>
+            <div class="submit-btn-container">
+                <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">Login</button>
+            </div>
+        </div>
+    </form>
     
 </div>
