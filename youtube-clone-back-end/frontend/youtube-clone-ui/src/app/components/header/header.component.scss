@@ -58,11 +58,20 @@ nz-input-group{
     z-index: 2;
 }
 
+.production-name {
+    font-size: large;
+    font-weight: 400;
+    width: fit-content;
+    height: fit-content;
+    color: green;
+}
+
 #start {
     border: 1px solid red;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     width: 300px;
 }
 
@@ -115,7 +124,7 @@ nz-input-group{
 
 .burger {
     display: flex;
-    width: 50%;
+    //width: 50%;
     align-items: center;
 }
 
@@ -130,7 +139,7 @@ nz-input-group{
 }
 
 .yt-icon-container {
-    width: 100%;
+    width: 60%;
     height: 100%;
 }
 

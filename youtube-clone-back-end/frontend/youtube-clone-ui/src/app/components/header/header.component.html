@@ -1,24 +1,3 @@
-<!---<nz-header></nz-header>-->
-<!--<div class="header-container">
-    <div class="header-right-buttons-container">
-        <button class="header-right-buttons" nz-button nzShape="circle" NzButtonSize="140">
-            <span nz-icon nzType="youtube" nzTheme="outline"></span>
-        </button>&nbsp;
-    </div>    
-    <div class="search-bar">
-        <nz-input-group *ngIf="showSearchBar" [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input placeholder="Search" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-            <span nz-icon nzType="search"></span>
-        </ng-template>
-    </div>
-    <div class="header-left-buttons-container">
-        <button (click)="addVideoButtonClicked()" class="header-left-buttons" nz-button nzShape="circle" nzSize="large" nzType="primary"><span nz-icon nzType="video-camera-add" nzTheme="outline"></span></button>&nbsp;
-        <button class="header-left-buttons" nz-button nzShape="circle" nzSize="large" nzType="primary"><span nz-icon nzType="bell" nzTheme="outline"></span></button>&nbsp;
-        <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="avatarImage"></nz-avatar>&nbsp;
-    </div>
-</div>-->
 <header>
     <nav class="header container">
         <div id="start">
@@ -26,6 +5,9 @@
                 <button (click)="toggleSideBar()" class="ytcp-button round-button">
                     <img class="burger-img" alt="" [src]="ICON_BURGER"/>
                 </button>
+            </div>
+            <div class="production-name">
+                {{environemntName}}
             </div>
             <div class="yt-icon-container">
                 <img class="yt-icon burger-img yt-logo" alt="" [src]="ICON_YOUTUBE"/>

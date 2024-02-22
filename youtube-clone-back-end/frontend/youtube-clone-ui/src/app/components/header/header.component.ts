@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Icons } from '../../models/icons';
 import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,7 @@ export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
   collapseSideBar: boolean = false;
   searchString: string = '';
+  environemntName: string = '';
   searchResults: any[] = [];
   resultBoxDisplay: string = 'none';
   @Input() showSearchBar: boolean = true;
@@ -41,6 +43,7 @@ export class HeaderComponent {
       { text: 'some text 9'},
       { text: 'some text 10'},
     ]
+    this.environemntName = environment.name;
   }
 
   ngAfterViewInit() {

@@ -80,7 +80,8 @@ import { PlaylistDashboardComponent } from './components/playlist/playlist-dashb
 import { LoginComponent } from './components/auth/login/login.component';
 import { SigninComponent } from './components/auth/signin/signin.component';
 import { CustomizationComponent } from './components/user-dashboard/customization/customization.component';
-import { SnackBarDirective } from './directives/snack-bar/snack-bar.directive';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 registerLocaleData(uk);
@@ -134,7 +135,6 @@ registerLocaleData(uk);
     LoginComponent,
     SigninComponent,
     CustomizationComponent,
-    SnackBarDirective,
   ],
   imports: [
     BrowserModule,
@@ -166,6 +166,9 @@ registerLocaleData(uk);
     MatTooltipModule,
     MatSnackBarModule,
     MatRippleModule,
+    //ngrx
+    StoreModule.forRoot({}),
+    //StoreDevtoolsModule.instrument({maxAge: 25, logOnly: }),
   ],
   providers: [
     { provide: NZ_I18N, useValue: uk_UA }
