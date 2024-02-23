@@ -1,6 +1,6 @@
 import { Component, enableProdMode } from '@angular/core';
-import { ComponentUpdatesService } from './services/app-updates/component-updates.service';
 import { environment } from '../environments/environment';
+import { ComponentUpdatesService } from './services/app-updates/component-updates.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
     if (environment.production) {
       enableProdMode();
     }
-    console.log(environment.apiUrl)
+    console.log(`CURRENT API URL: ${environment.apiUrl}`)
   }
 
   //ngOninit() {
