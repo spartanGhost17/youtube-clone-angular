@@ -1,8 +1,5 @@
-import { Component, ElementRef, HostListener, Input, Output, QueryList, Renderer2, ViewChild, ViewChildren, EventEmitter, ViewEncapsulation } from '@angular/core';
-
-import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/drag-drop';
-import {NgFor} from '@angular/common';
-
+import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Icons } from '../../models/icons';
 
 @Component({
@@ -16,7 +13,7 @@ export class DragDropListComponent {
   ICON_BURGER: string = this.icons.iconsPaths['burger-light'];
   currentPos: any;
   dropPos: any;
-  leftIcon: string = 'menu'
+  leftIcon: string = 'menu';
   rightIcon: string = 'more_vert';
 
   @Input() items: any[] = [];
@@ -27,8 +24,6 @@ export class DragDropListComponent {
   @ViewChild('listContainer') listContainer: ElementRef<any>;
   @Output() onListUpdate: EventEmitter<any[]> = new EventEmitter();
 
-  
-
   currentDraggable: any;
 
   isDragging = false;
@@ -37,27 +32,27 @@ export class DragDropListComponent {
   dropDownItems: any[];
 
   constructor() {
-    this.dropDownItems =  [
-      {icon: 'playlist_play', text: 'Add to queue', action: () => {}},
-      {icon: 'schedule', text: 'Save to Watch Later', action: () => {}},
-      {icon: 'playlist_add', text: 'Save to playlist', action: () => {}},
-      {icon: 'delete', text: 'Remove from', action: () => {}},
-      {icon: 'download', text: 'Download', action: () => {}},
-      {icon: 'share', text: 'Share', action: () => {}},
-      {seperator: true},
-      {icon: 'image', text: 'Set as playlist thumbnail', action: () => {}},
-    ]
+    this.dropDownItems = [
+      { icon: 'playlist_play', text: 'Add to queue', action: () => {} },
+      { icon: 'schedule', text: 'Save to Watch Later', action: () => {} },
+      { icon: 'playlist_add', text: 'Save to playlist', action: () => {} },
+      { icon: 'delete', text: 'Remove from', action: () => {} },
+      { icon: 'download', text: 'Download', action: () => {} },
+      { icon: 'share', text: 'Share', action: () => {} },
+      { seperator: true },
+      { icon: 'image', text: 'Set as playlist thumbnail', action: () => {} },
+    ];
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit on parent!!!! ', this.dropDownItems)
+    console.log('ngOnInit on parent!!!! ', this.dropDownItems);
   }
 
   ngAfterViewInit(): void {}
 
   /**
    * Sort items and emit new list
-   * @param event 
+   * @param event
    */
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
