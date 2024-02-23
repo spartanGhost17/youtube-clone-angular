@@ -21,7 +21,7 @@
     margin-top: 20px;
     height: 100px;
     width: 100%;
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid rgba(13, 79, 156, .4);//grey;
 } 
 
 
@@ -30,7 +30,6 @@
 }
 
 .password-container {
-    //background-color: burlywood;
     margin-top: 20px;
     height: 100px;
     width: 100%;
@@ -46,7 +45,7 @@
 
 .password-text-container {
     height: fit-content;
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid rgba(13, 79, 156, .4);
 }
 
 .password-text-container.inner-icon {
@@ -77,7 +76,6 @@ input[type='password'] {
 .username-text-container input[type='text'] {
     width: 90%;
     outline: none;
-    //background-color: cyan;
 }
 
 .submit-btn-container {
