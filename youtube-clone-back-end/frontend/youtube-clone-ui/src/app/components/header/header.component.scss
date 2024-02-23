@@ -248,6 +248,99 @@ input[type="text"]:focus {
     margin-left: 10px;
 }
 
+
+/**
+    user drop down header template 
+    
+**/
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.icon-container {
+    display: flex;
+    width: 30%;
+    padding: 6px;
+}
+
+.icon-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--yt-color-blue);
+    object-fit: cover;
+}
+
+.username-container {
+    padding-top: 10px;
+    height: 100%;
+    width: 68%;
+}
+
+.username, .channelName {
+    font-size: .8rem;
+    color: rgba(236, 236, 236, 1);
+}
+
+/**
+    submenu template channel info
+**/
+.submenu-template-container  {
+    padding: 10px;
+    width: 100%;
+    height: fit-content;
+}
+
+.submenu__user-info-container {
+    padding-left: 10px;
+    height: 45px;
+    border-bottom: 1px solid grey;
+}
+
+.submenu__user-info-container .text-primary,
+.submenu__user-info-container .text-secondary {
+    font-size: .7rem;
+    font-weight: 400;
+}
+
+.submenu__channel-info {
+    display: flex;
+    height: 60px;
+    margin-top: 4px;
+}
+//apply to all children except last child
+.submenu__channel-info > *:not(:last-child) {
+    margin-right: 10px;
+}
+
+.submenu__channel-info .icon-container {
+    width: 60px;
+}
+.submenu__channel-info .submenu-channel-info-container {
+    width: fit-content;
+}
+
+.submenu-channelName {
+    font-size: .8rem;
+    line-height: 1rem;
+    width: fit-content;
+}
+
+.submenu-username,
+.sub-count {
+    font-size: .7rem;
+    line-height: 1rem;
+}
+
+.submenu__channel-info .check {
+    display: flex;
+    height: 100%;
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+}
 //add media queries for other view ports
 
 /*xs*/

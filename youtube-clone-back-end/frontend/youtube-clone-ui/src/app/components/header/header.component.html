@@ -45,10 +45,55 @@
                     <!--<img [src]="ICON_CAMERA" alt=""/>-->
                     <span class="material-symbols-outlined">video_call</span>
                 </button>
-                <button class="ytcp-button user-icon-container">
+                <app-standard-dropdown
+                    [circle]="true"
+                    [imageSrc]="ICON_USER"
+                    [isHeader]="true"
+                    [headerTemplate]="dropdownHeaderTemplate"
+                    [items]="iconDropdown">
+                </app-standard-dropdown>
+                <!--<button class="ytcp-button user-icon-container">
+                    [fillIcon]="true"
                     <img class="user-icon" [src]="ICON_USER" alt=""/>
-                </button>
+                </button>-->
             </div>
         </div>
     </nav>
 </header>
+
+
+<!-- user icon dropdow title template -->
+<ng-template #dropdownHeaderTemplate>
+    <div class="header__container">
+        <div class="icon-container">
+            <img [src]="'../../../../assets/courage.png'" alt=""/>
+        </div>
+        <div class="username-container">
+            <p class="text-primary username">Tintin_Dumbo17</p>
+            <p class="text-primary channelName">@Tintin_Dumbo17</p>
+        </div>
+    </div>
+</ng-template>
+
+<!--user icon dropdown submenu template-->
+<ng-template #submenuTemplate>
+    <div class="submenu-template-container">
+        <div class="submenu__user-info-container">
+            <p class="text-primary">Mimi</p>
+            <p class="text-secondary">timbo@gmail.com</p>
+        </div>
+        <div class="submenu__channel-info">
+            <div class="icon-container">
+                <img [src]="'../../../../assets/courage.png'" alt=""/>
+            </div>
+            <div class="submenu-channel-info-container">
+                <h4 class="text-primary submenu-channelName">@Tintin_Dumbo17</h4>
+                <p class="text-secondary submenu-username">Tintin_Dumbo17</p>
+                <p class="text-secondary sub-count">10K</p>
+            </div>
+            <div class="check">
+                <span class="material-symbols-outlined">done</span>
+            </div>
+        </div>
+    </div>
+</ng-template>
