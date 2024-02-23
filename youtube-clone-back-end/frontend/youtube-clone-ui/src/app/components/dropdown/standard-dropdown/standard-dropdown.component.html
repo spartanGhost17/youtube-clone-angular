@@ -16,9 +16,9 @@
         </div>
     </div>
     <div class="dropdown-content">
-        <div class="base-menu-container" *ngIf="!showSubMenu">
+        <div class="base-menu-container menu" *ngIf="!showSubMenu" [ngClass]="{'menu-open': toggleDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
             <!-- Base menu -->
-            <ul class="menu" [ngClass]="{'menu-open': toggleDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
+            <ul >
                 <!--header-->
                 <li class="header" *ngIf="isHeader && headerTemplate">
                     <ng-container [ngTemplateOutlet]="headerTemplate"></ng-container>
@@ -44,9 +44,9 @@
                 </li>
             </ul>
         </div>
-        <div class="sub-menu-container" *ngIf="showSubMenu">
+        <div class="sub-menu-container sub-menu" *ngIf="showSubMenu" [ngClass]="{'menu-open': toggleSubMenuDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
             <!-- sub menu -->
-            <ul class="sub-menu" [ngClass]="{'menu-open': toggleSubMenuDropdown}" [ngStyle]="{'min-width': minWidth? minWidth: '18em'}">
+            <ul >
                 <li class="list-element submenu-title-container">
                     <div class="divider submenu-title" (click)="onCloseSubMenu()">
                         <button class="submenu-title-return-btn">
