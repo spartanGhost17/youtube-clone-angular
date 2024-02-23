@@ -1,14 +1,38 @@
 .dropdown {
-    //min-width: 15rem;
+    display: flex;
+    width: fit-content;
+    height: auto;
+    position: relative;
+}
+
+.dropdown-content {
+    width: fit-content;
+    height: auto;
+    position: relative;
+    //transform: scaleY(0);
+    //transition: transform .2s ease-in;
+    //transition: width height 1.4s ease;
+}
+
+.base-menu-container, .sub-menu-container {
     width: fit-content;
     position: relative;
-    transition: width height 1.4s ease;
-    //margin: 2em;
-    //background-color: orange;
+    //transform: scaleY(0);
+    //transition: transform 0.2s ease;
 }
 
 .drop-button {
     width: fit-content;
+}
+
+.submenu-title-return-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.submenu-title-return-btn:hover {
+    background-color: rgba(20, 20, 20, .6);
 }
 
 .submenu-title {
@@ -30,7 +54,6 @@
     border: 2px #2a2f3b solid;
     border-radius: 0.5em;
     cursor: pointer;
-    //transition: background 0.3s;
 }
 
 .select-clicked {
@@ -83,8 +106,13 @@
     align-items: center;
 }
 
-.list-element {
-    justify-content: space-between;
+.left-item {
+    height: 40px;
+}
+
+.sub-item-template {
+    height: fit-content;
+    width: inherit;
 }
 
 .text-small {
@@ -98,9 +126,12 @@
 }
 
 .list-element {
-    height: 40px;
+    width: 100%;
+    max-height: 120px;
     cursor: pointer;
     user-select: none;
+    height: fit-content;
+    justify-content: space-between;
 }
 
 .list-element:last-child {
@@ -108,14 +139,13 @@
     border-radius: 0 0 4px 4px;
 }
 
-.list-element:hover {
+.selectable:hover {
     background-color: #4d4d4d70; //var(--);
 }
 
 .divider {
     display: flex;
     align-items: center;
-    //justify-content: space-between;
     margin-bottom: 2px solid red;
 }
 
@@ -123,7 +153,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -139,6 +168,22 @@
     height: fit-content;
     min-height: 10px;
     border-radius: 20px;
+}
+
+.header {
+    width: 100%;
+    height: fit-content;
+    border-bottom: 1px solid grey;
+}
+
+.img-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.img-icon img {
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .material-symbols-outlined {

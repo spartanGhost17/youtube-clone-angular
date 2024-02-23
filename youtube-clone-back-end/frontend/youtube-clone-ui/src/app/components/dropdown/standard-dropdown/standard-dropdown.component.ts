@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-standard-dropdown',
@@ -15,8 +15,12 @@ export class StandardDropdownComponent {
   @Input() minWidth: string;
   @Input() parentId: string;
   @Input() childId: string;
-  @Input() icon: string = 'more_vert';
+  @Input() imageSrc: string;
+  @Input() icon: string;
   @Input() fillIcon: boolean;
+  //if header is present
+  @Input() isHeader: boolean = false; 
+  @Input() headerTemplate: TemplateRef<any>;
   @Output() menuUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() subMenuUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -36,8 +40,9 @@ export class StandardDropdownComponent {
   onDocumentClick(event: Event): void {
     const clickedInside = this.dropdown.nativeElement.contains(event.target);
     if (!clickedInside) {
-      console.log("clicked not inside");
+      
       this.toggleDropdown = false;
+      console.log("clicked not inside TOGGLE ", this.toggleDropdown);
       //this.toggleSubMenuDropdown = false;
     }
   }
@@ -107,6 +112,7 @@ export class StandardDropdownComponent {
   onCloseSubMenu(): void {
     this.showSubMenu = false;
     //this.toggleDropdown = true;
+    console.log("clicked not inside TOGGLE ", this.toggleDropdown);
     this.subMenuUpdated.emit(this.currentMenu);
   }
 }
