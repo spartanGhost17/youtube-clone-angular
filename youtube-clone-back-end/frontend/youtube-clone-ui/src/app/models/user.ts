@@ -1,13 +1,24 @@
+import { Role } from "./interface/Role";
+
 export interface User {
     id: string;
     username: string;
     channelName: string;
-    iconURL?: string;
-    firstName?: string;
-    lastName?: string;
-    emailAddress?: string;
+    createdAt?: Date;
+    email?: string;
+    phone?: string;
+    verified?: boolean;
+    description?: string;
+    enabled?: boolean;
+    nonLocked?: boolean;
+    usingMfa?: boolean;
     profilePictureURL?: string;
-    verified?: boolean; 
+    authorities?: Role[]; 
+    iconURL?: string;
+
+    
+    
+     
     subscribedToUsers?: string[];//ids of user being subscribed to
     subscribers?: string[];//ids of user currently subscribed
     videoHistory?: string[];//ids of video watched
