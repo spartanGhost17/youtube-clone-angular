@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'newlineToSpace'
+    name: 'newlineToSpace',
+    standalone: true
 })
 export class NewlineToSpacePipe implements PipeTransform {
 

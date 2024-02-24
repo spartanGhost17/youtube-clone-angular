@@ -1,10 +1,25 @@
 import { Component } from '@angular/core';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { VideoCardBasicComponent } from '../video-displays/video-card-basic/video-card-basic.component';
+import { TabComponent } from '../tab/tab.component';
+import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { SwitchComponent } from '../switch/switch.component';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-channel',
-  templateUrl: './channel.component.html',
-  styleUrls: ['./channel.component.scss'],
+    selector: 'app-channel',
+    templateUrl: './channel.component.html',
+    styleUrls: ['./channel.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        SwitchComponent,
+        StandardDropdownComponent,
+        TabComponent,
+        NgClass,
+        NgFor,
+        VideoCardBasicComponent,
+    ],
 })
 export class ChannelComponent {
   isVerified: boolean = true;

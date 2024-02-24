@@ -8,8 +8,8 @@ describe('VideosExplorerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VideosExplorerComponent ]
-    })
+    imports: [VideosExplorerComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(VideosExplorerComponent);

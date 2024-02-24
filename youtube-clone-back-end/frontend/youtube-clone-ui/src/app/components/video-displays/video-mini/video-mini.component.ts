@@ -1,9 +1,10 @@
 import { Component, ElementRef, Input, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-video-mini',
-  templateUrl: './video-mini.component.html',
-  styleUrls: ['./video-mini.component.scss']
+    selector: 'app-video-mini',
+    templateUrl: './video-mini.component.html',
+    styleUrls: ['./video-mini.component.scss'],
+    standalone: true
 })
 export class VideoMiniComponent {
   @Input() ThumbnailURL: string;

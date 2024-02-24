@@ -1,9 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { NewlineToBrPipe } from '../../pipes/newline-to-br/newline-to-br.pipe';
+import { LinkifyPipe } from '../../pipes/linkify/linkify.pipe';
 
 @Component({
-  selector: 'app-video-description',
-  templateUrl: './video-description.component.html',
-  styleUrls: ['./video-description.component.scss']
+    selector: 'app-video-description',
+    templateUrl: './video-description.component.html',
+    styleUrls: ['./video-description.component.scss'],
+    standalone: true,
+    imports: [LinkifyPipe, NewlineToBrPipe]
 })
 export class VideoDescriptionComponent {
   @ViewChild('content') content : ElementRef<any>;

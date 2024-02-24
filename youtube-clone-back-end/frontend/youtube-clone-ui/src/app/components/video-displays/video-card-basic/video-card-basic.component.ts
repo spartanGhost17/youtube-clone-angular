@@ -1,11 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { VideoMiniComponent } from '../video-mini/video-mini.component';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-video-card-basic',
-  templateUrl: './video-card-basic.component.html',
-  styleUrls: ['./video-card-basic.component.scss']
+    selector: 'app-video-card-basic',
+    templateUrl: './video-card-basic.component.html',
+    styleUrls: ['./video-card-basic.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf, VideoMiniComponent]
 })
 export class VideoCardBasicComponent {
   @Input() video: any;

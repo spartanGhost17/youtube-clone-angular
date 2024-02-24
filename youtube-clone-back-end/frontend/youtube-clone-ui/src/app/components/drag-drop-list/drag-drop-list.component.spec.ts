@@ -8,8 +8,8 @@ describe('DragDropListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DragDropListComponent ]
-    })
+    imports: [DragDropListComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(DragDropListComponent);

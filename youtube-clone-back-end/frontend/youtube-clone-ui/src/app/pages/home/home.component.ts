@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Icons } from '../../models/icons';
+import { FrameComponent } from '../../components/frame/frame.component';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
+    imports: [FrameComponent]
 })
 export class HomeComponent {
   sideMenuOptions: any[] = [];

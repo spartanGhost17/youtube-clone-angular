@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { FrameComponent } from '../../components/frame/frame.component';
 
 @Component({
-  selector: 'app-dashboard-view',
-  templateUrl: './dashboard-view.component.html',
-  styleUrls: ['./dashboard-view.component.scss']
+    selector: 'app-dashboard-view',
+    templateUrl: './dashboard-view.component.html',
+    styleUrls: ['./dashboard-view.component.scss'],
+    standalone: true,
+    imports: [FrameComponent]
 })
 export class DashboardViewComponent {
   sideMenuOptions: any[] = [];

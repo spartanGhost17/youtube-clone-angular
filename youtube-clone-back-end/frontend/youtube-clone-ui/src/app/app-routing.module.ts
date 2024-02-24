@@ -1,23 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/auth/login/login.component';
-import { ChannelComponent } from './components/channel/channel.component';
-import { ContentComponent } from './components/content/content.component';
-import { HistoryViewComponent } from './components/history-view/history-view.component';
+import { Routes } from '@angular/router';
 import { HomeExplorerViewComponent } from './components/home-explorer-view/home-explorer-view.component';
-import { PlaylistDashboardComponent } from './components/playlist/playlist-dashboard/playlist-dashboard.component';
-import { PlaylistViewComponent } from './components/playlist/playlist-view/playlist-view.component';
-import { SubscriptionsViewComponent } from './components/subscriptions-view/subscriptions-view.component';
-import { CustomizationComponent } from './components/user-dashboard/customization/customization.component';
-import { WatchComponent } from './components/watch/watch.component';
-import { DashboardViewComponent } from './pages/dashboard-view/dashboard-view.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HomeComponent } from './pages/home/home.component';
 
-const routes: Routes = [
-  //{ path: 'login', component: PlaylistMiniComponent },
+export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', loadChildren: () => import('./components/auth/routes/login.routes').then((m) => m.authRoutes) },
   {
     path: 'home',
     component: HomeComponent,
@@ -28,91 +15,29 @@ const routes: Routes = [
       },
       {
         path: 'feed',
-        children: [
-          {
-            path: 'history',
-            component: HistoryViewComponent,
-          },
-          {
-            path: 'subscription',
-            component: SubscriptionsViewComponent,
-          },
-          {
-            path: 'library',
-            component: PlaylistDashboardComponent,
-          },
-        ],
+        loadChildren: () => import('./components/feed/routes/feed-routing.module').then((m) => m.feedRoutes)
       },
       {
         path: 'playlist',
-        component: PlaylistViewComponent,
+        loadChildren: () => import('./components/feed/playlist/routes/playlist-routing.module').then((m) => m.playlistRoutes),
       },
       {
         path: 'watch',
-        component: WatchComponent,
+        loadChildren: () => import('./components/watch/routes/watch-routing.module').then((m) => m.watchRoutes)
       },
       {
         path: ':channelName',
-        component: ChannelComponent,
-      },
-
-      //{ path: '**', redirectTo: '/home/explore'}
+        loadChildren: () => import('./components/channel/routes/channel-routing.module').then((m) => m.channelRoutes),
+      }
     ],
   },
   {
-    path: 'studio',
-    component: DashboardViewComponent,
-    children: [
-      { path: '', pathMatch: 'full', redirectTo: '/studio/dashboard' },
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
-      {
-        path: 'content',
-        component: ContentComponent,
-      },
-      {
-        path: 'edit',
-        component: CustomizationComponent,
-      },
-      { path: '**', redirectTo: '/studio/dashboard' },
-    ],
-  },
-  //{ path: '**', redirectTo: '/home/explore'}
-  //user dashboard
-
-  //{
-  //  path: 'studio/dashboard', component: DashboardViewComponent,
-  //children: [
-  //  {
-  //    path: 'dashboard', component: DashboardComponent,
-  //  }
-  //]
-  //},
-
-  //{
-  //  path: 'drag', component: DragDropListComponent,
-  //},
-  /*{
-    path: 'video-player', component: VideoComponent,
-  },
-  {
-    path: 'upload-video', component: UploadVideoComponent,
-  },
-  {
-    path: 'upload-video-details', component: UploadVideoMetadataComponent,
-  },*/
-  //{ path: '**', redirectTo: '/home/explore'}
-
-  //{
-  //  path: 'upload-video-details', component: UploadVideoMetadataComponent,
-  //}
-  //home(frame-body:upload-video)http://localhost:4200/home/(frame-body:upload-video)
+    path: 'studio', loadChildren: () => import('./pages/dashboard-view/routes/studio-routing.module').then((module) => module.studioRoutes)
+  }
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
+//@NgModule({
+//  imports: [RouterModule.forRoot(routes)],
+//  exports: [RouterModule],
+//})
+//export class AppRoutingModule {}

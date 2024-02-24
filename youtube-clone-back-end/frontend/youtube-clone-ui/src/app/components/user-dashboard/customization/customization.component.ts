@@ -1,10 +1,13 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { SnackbarService } from '../../../services/snack-bar-messages/snackbar.service';
+import { NgFor, NgIf, NgTemplateOutlet, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-customization',
-  templateUrl: './customization.component.html',
-  styleUrls: ['./customization.component.scss']
+    selector: 'app-customization',
+    templateUrl: './customization.component.html',
+    styleUrls: ['./customization.component.scss'],
+    standalone: true,
+    imports: [NgFor, NgIf, NgTemplateOutlet, NgStyle]
 })
 export class CustomizationComponent { //TODO: add material ripple effect
   tabs: string[] = [];

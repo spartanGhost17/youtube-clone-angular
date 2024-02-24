@@ -2,17 +2,22 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzButtonSize } from 'ng-zorro-antd/button';
+import { NzButtonSize, NzButtonModule } from 'ng-zorro-antd/button';
 import { VideoService } from '../../../services/video/video.service';
 import { Observable } from 'rxjs';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { Video } from '../../../models/video'
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NgFor } from '@angular/common';
 
 
 @Component({
-  selector: 'app-upload-video',
-  templateUrl: './upload-video.component.html',
-  styleUrls: ['./upload-video.component.scss']
+    selector: 'app-upload-video',
+    templateUrl: './upload-video.component.html',
+    styleUrls: ['./upload-video.component.scss'],
+    standalone: true,
+    imports: [NgxFileDropModule, NgFor, NzButtonModule, NzWaveModule, NzIconModule]
 })
 export class UploadVideoComponent implements OnInit {
   //msg: NzMessageService = new NzMessageService();

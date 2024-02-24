@@ -2,11 +2,20 @@ import { Component, ElementRef, OnInit, ViewChild, Renderer2 } from '@angular/co
 import { Router } from '@angular/router';
 import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
 import { Comment } from '../../models/comment';
+import { CommentsHolderComponent } from '../comments/comments-holder/comments-holder.component';
+import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { VideoDescriptionComponent } from '../video-description/video-description.component';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
+import { VideoComponent } from '../video-displays/video/video.component';
+import { NgClass, NgFor, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-watch',
-  templateUrl: './watch.component.html',
-  styleUrls: ['./watch.component.scss']
+    selector: 'app-watch',
+    templateUrl: './watch.component.html',
+    styleUrls: ['./watch.component.scss'],
+    standalone: true,
+    imports: [NgClass, VideoComponent, NgFor, VideoCardComponent, NgStyle, TooltipDirective, VideoDescriptionComponent, StandardDropdownComponent, CommentsHolderComponent]
 })
 export class WatchComponent implements OnInit {
   private resizeListener: () => void;

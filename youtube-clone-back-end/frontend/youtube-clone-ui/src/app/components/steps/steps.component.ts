@@ -1,9 +1,12 @@
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { NgStyle, NgFor, NgClass, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-steps',
-  templateUrl: './steps.component.html',
-  styleUrls: ['./steps.component.scss']
+    selector: 'app-steps',
+    templateUrl: './steps.component.html',
+    styleUrls: ['./steps.component.scss'],
+    standalone: true,
+    imports: [NgStyle, NgFor, NgClass, NgIf]
 })
 export class StepsComponent {
 

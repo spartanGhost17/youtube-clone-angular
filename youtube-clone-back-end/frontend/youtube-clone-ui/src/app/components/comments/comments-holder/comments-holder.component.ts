@@ -1,9 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Comment } from '../../../models/comment';
+import { CommentComponent } from '../comment/comment.component';
+import { NgFor, NgStyle } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @Component({
-  selector: 'app-comments-holder',
-  templateUrl: './comments-holder.component.html',
-  styleUrls: ['./comments-holder.component.scss']
+    selector: 'app-comments-holder',
+    templateUrl: './comments-holder.component.html',
+    styleUrls: ['./comments-holder.component.scss'],
+    standalone: true,
+    imports: [FormsModule, NgFor, CommentComponent, NgStyle]
 })
 export class CommentsHolderComponent implements OnInit {
   @Input() comments: Comment[];

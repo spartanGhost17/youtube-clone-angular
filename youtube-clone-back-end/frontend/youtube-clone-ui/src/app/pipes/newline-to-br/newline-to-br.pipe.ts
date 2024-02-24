@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'newlineToBr'
+    name: 'newlineToBr',
+    standalone: true
 })
 export class NewlineToBrPipe implements PipeTransform {
 

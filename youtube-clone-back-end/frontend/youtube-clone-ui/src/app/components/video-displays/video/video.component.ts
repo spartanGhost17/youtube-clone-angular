@@ -4,11 +4,17 @@ import { ComponentUpdatesService } from 'src/app/services/app-updates/component-
 
 import Vibrant from 'node-vibrant';// stable version node-vibrant@3.1.6
 import { Observable, of } from 'rxjs';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { SwitchComponent } from '../../switch/switch.component';
+import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
+import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-video',
-  templateUrl: './video.component.html',
-  styleUrls: ['./video.component.scss']
+    selector: 'app-video',
+    templateUrl: './video.component.html',
+    styleUrls: ['./video.component.scss'],
+    standalone: true,
+    imports: [NgClass, TooltipDirective, SwitchComponent, StandardDropdownComponent, NgStyle]
 })
 export class VideoComponent {
 

@@ -2,12 +2,22 @@ import { Component, Output, EventEmitter, ViewChild, ElementRef, Input } from '@
 import { Video } from '../../../models/video';
 import { Playlist } from '../../../models/playlist';
 import { SnackbarService } from '../../../services/snack-bar-messages/snackbar.service';
+import { ModalComponent } from '../../modal/modal.component';
+import { VideoCardBasicComponent } from '../../video-displays/video-card-basic/video-card-basic.component';
+import { ChipsComponent } from '../../chips/chips.component';
+import { DropDownComponent } from '../../dropdown/drop-down/drop-down.component';
+import { NgFor, NgClass, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MaterialModule } from 'src/app/module/material/material.module';
 
 @Component({
-  selector: 'app-upload-video-metadata',
-  templateUrl: './upload-video-metadata.component.html',
-  styleUrls: ['./upload-video-metadata.component.scss']
-})
+    selector: 'app-upload-video-metadata',
+    templateUrl: './upload-video-metadata.component.html',
+    styleUrls: ['./upload-video-metadata.component.scss'],
+    standalone: true,
+    imports: [ NgFor, NgClass, CommonModule, FormsModule, DropDownComponent, ChipsComponent, VideoCardBasicComponent, ModalComponent],
+  })
 export class UploadVideoMetadataComponent {
   
   largeThumbnailURL: string = '';
@@ -81,7 +91,7 @@ export class UploadVideoMetadataComponent {
   visibility: any[];
 
 
-  constructor(private messageService: SnackbarService){}
+  constructor(private messageService: SnackbarService, private snackBar: MatSnackBar){}
 
   ngOnInit(): void {
     this.thumbnails = [
@@ -102,7 +112,7 @@ export class UploadVideoMetadataComponent {
     ]
 
     this.largeThumbnailURL = this.thumbnails[0].url;
-
+    console.log("this UPLOAD VIDEO COMPONENT IS LOADED");
     //this.video = {
     //  thumbnailUrl: this.largeThumbnailURL,
     //  videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4'

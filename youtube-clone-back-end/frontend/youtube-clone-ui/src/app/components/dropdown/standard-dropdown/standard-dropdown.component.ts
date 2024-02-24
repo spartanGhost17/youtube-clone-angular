@@ -1,9 +1,12 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, TemplateRef } from '@angular/core';
+import { NgIf, NgClass, NgStyle, NgTemplateOutlet, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-standard-dropdown',
-  templateUrl: './standard-dropdown.component.html',
-  styleUrls: ['./standard-dropdown.component.scss']
+    selector: 'app-standard-dropdown',
+    templateUrl: './standard-dropdown.component.html',
+    styleUrls: ['./standard-dropdown.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgClass, NgStyle, NgTemplateOutlet, NgFor]
 })
 export class StandardDropdownComponent {
   @Input() items: any[] = [];

@@ -8,8 +8,8 @@ describe('VideoCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VideoCardComponent ]
-    })
+    imports: [VideoCardComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(VideoCardComponent);

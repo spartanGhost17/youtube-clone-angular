@@ -2,11 +2,14 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { Icons } from '../../models/icons';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { NgIf, NgStyle, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-side-panel',
-  templateUrl: './side-panel.component.html',
-  styleUrls: ['./side-panel.component.scss']
+    selector: 'app-side-panel',
+    templateUrl: './side-panel.component.html',
+    styleUrls: ['./side-panel.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgStyle, NgFor, NgClass]
 })
 export class SidePanelComponent {
   @Input() collapse : boolean = false;
