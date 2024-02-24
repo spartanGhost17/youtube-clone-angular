@@ -7,20 +7,20 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreDevtoolsModule, provideStoreDevtools } from '@ngrx/store-devtools';
 import { NZ_I18N, uk_UA } from 'ng-zorro-antd/i18n';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { environment } from 'src/environments/environment';
-import { AppRoutingModule } from './app/app-routing.module';
+import { appRoutes } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { IconsProviderModule } from './app/icons-provider.module';
 import { MaterialModule } from './app/module/material/material.module';
+import { provideRouter } from '@angular/router';
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
       BrowserModule,
-      AppRoutingModule,
       FormsModule,
       NgxFileDropModule,
       MaterialModule,
@@ -36,6 +36,7 @@ bootstrapApplication(AppComponent, {
         //traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       })
     ),
+    provideRouter(appRoutes),
     { provide: NZ_I18N, useValue: uk_UA },
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
