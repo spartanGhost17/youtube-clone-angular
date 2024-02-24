@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, Input, SimpleChanges, ViewChi
 import { Icons } from 'src/app/models/icons';
 import { FormsModule } from '@angular/forms';
 import { NgStyle, NgIf, NgTemplateOutlet } from '@angular/common';
-import { ContainerBgGradiantDirective } from '../../../directives/background-gradiant/container-bg-gradiant.directive';
+import { ContainerBgGradiantDirective } from '../../../../directives/background-gradiant/container-bg-gradiant.directive';
 
 @Component({
     selector: 'app-playlist-metadata',

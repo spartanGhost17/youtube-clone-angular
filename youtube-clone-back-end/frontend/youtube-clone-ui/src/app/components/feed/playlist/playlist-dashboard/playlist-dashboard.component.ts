@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Playlist } from '../../../models/playlist';
+import { Playlist } from '../../../../models/playlist';
 import { PlaylistMiniComponent } from '../playlist-mini/playlist-mini.component';
-import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
-import { VideoCardBasicComponent } from '../../video-displays/video-card-basic/video-card-basic.component';
+import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
+import { VideoCardBasicComponent } from '../../../video-displays/video-card-basic/video-card-basic.component';
 import { NgFor } from '@angular/common';
 
 @Component({

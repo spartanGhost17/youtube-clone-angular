@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { VideosExplorerComponent } from '../videos-explorer/videos-explorer.component';
+import { VideosExplorerComponent } from '../../videos-explorer/videos-explorer.component';
 
 @Component({
     selector: 'app-subscriptions-view',

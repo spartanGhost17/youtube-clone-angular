@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
+import { VideoCardComponent } from '../../video-displays/video-card/video-card.component';
 import { NgFor } from '@angular/common';
 
 @Component({

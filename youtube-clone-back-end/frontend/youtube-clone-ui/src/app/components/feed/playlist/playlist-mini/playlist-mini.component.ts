@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Playlist } from '../../../models/playlist';
-import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { Playlist } from '../../../../models/playlist';
+import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
 
 @Component({
     selector: 'app-playlist-mini',

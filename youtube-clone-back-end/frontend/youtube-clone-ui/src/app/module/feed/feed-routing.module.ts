@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { HistoryViewComponent } from 'src/app/components/history-view/history-view.component';
-import { PlaylistDashboardComponent } from '../../components/playlist/playlist-dashboard/playlist-dashboard.component';
-import { SubscriptionsViewComponent } from '../../components/subscriptions-view/subscriptions-view.component';
+import { HistoryViewComponent } from 'src/app/components/feed/history-view/history-view.component';
+import { PlaylistDashboardComponent } from '../../components/feed/playlist/playlist-dashboard/playlist-dashboard.component';
+import { SubscriptionsViewComponent } from '../../components/feed/subscriptions-view/subscriptions-view.component';
 console.warn('FEED MODE HAS BEEN LOADED');
 
 export const feedRoutes: Routes = [
