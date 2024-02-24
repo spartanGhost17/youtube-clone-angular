@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { ContentComponent } from "../../../components/content/content.component";
+import { ContentComponent } from "../../../content/content.component";
 
 export const contentRoutes: Routes = [
     {

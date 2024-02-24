@@ -13,7 +13,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { environment } from 'src/environments/environment';
 import { appRoutes } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
-import { IconsProviderModule } from './app/icons-provider.module';
+import { IconsProviderModule } from './app/module/icons-provider.module';
 import { MaterialModule } from './app/module/material/material.module';
 import { provideRouter } from '@angular/router';
 

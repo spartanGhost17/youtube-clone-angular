@@ -15,24 +15,24 @@ export const appRoutes: Routes = [
       },
       {
         path: 'feed',
-        loadChildren: () => import('./module/feed/feed-routing.module').then((m) => m.feedRoutes)
+        loadChildren: () => import('./components/feed/routes/feed-routing.module').then((m) => m.feedRoutes)
       },
       {
         path: 'playlist',
-        loadChildren: () => import('./module/playlist/playlist-routing.module').then((m) => m.playlistRoutes),
+        loadChildren: () => import('./components/feed/playlist/routes/playlist-routing.module').then((m) => m.playlistRoutes),
       },
       {
         path: 'watch',
-        loadChildren: () => import('./module/watch/watch-routing.module').then((m) => m.watchRoutes)
+        loadChildren: () => import('./components/watch/routes/watch-routing.module').then((m) => m.watchRoutes)
       },
       {
         path: ':channelName',
-        loadChildren: () => import('./module/channel/channel-routing.module').then((m) => m.channelRoutes),
+        loadChildren: () => import('./components/channel/routes/channel-routing.module').then((m) => m.channelRoutes),
       }
     ],
   },
   {
-    path: 'studio', loadChildren: () => import('./module/studio/studio-routing.module').then((module) => module.studioRoutes)
+    path: 'studio', loadChildren: () => import('./pages/dashboard-view/routes/studio-routing.module').then((module) => module.studioRoutes)
   }
 ];
 

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { WatchComponent } from '../../components/watch/watch.component';
+import { WatchComponent } from '../watch.component';
 
 export const watchRoutes: Routes = [
   {
