@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",  
+    "start": "ng serve",
     "dev": "ng serve --configuration development",
     "prod": "ng serve --configuration production",
     "tst": "ng serve --configuration testing",
@@ -29,6 +29,7 @@
     "colorthief": "^2.2.0",
     "ng-zorro-antd": "^16.2.2",
     "ngx-file-drop": "^14.0.2",
+    "ngx-progressbar": "^11.1.0",
     "node-vibrant": "^3.2.1-alpha.1",
     "rxjs": "~7.8.0",
     "zone.js": "~0.13.3"
@@ -47,6 +48,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "tslib": "^2.5.0",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "worker-loader": "^3.0.8"
   }
 }
