@@ -1,14 +1,14 @@
 import { Component, ContentChildren, QueryList, TemplateRef, ViewChildren } from '@angular/core';
-import { Video } from '../../models/video';
+import { Video } from '../../../models/video';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
-import { Playlist } from '../../models/playlist';
-import { VideoVisibilityComponent } from '../../components/upload-video-view/video-visibility/video-visibility.component';
-import { VideoChecksComponent } from '../../components/upload-video-view/video-checks/video-checks.component';
-import { VideoElementsComponent } from '../../components/upload-video-view/video-elements/video-elements.component';
-import { UploadVideoMetadataComponent } from '../../components/upload-video-view/upload-video-metadata/upload-video-metadata.component';
-import { UploadVideoComponent } from '../../components/upload-video-view/upload-video/upload-video.component';
-import { StepsComponent } from '../../components/steps/steps.component';
-import { ModalComponent } from '../../components/modal/modal.component';
+import { Playlist } from '../../../models/playlist';
+import { VideoVisibilityComponent } from '../../upload-video-view/video-visibility/video-visibility.component';
+import { VideoChecksComponent } from '../../upload-video-view/video-checks/video-checks.component';
+import { VideoElementsComponent } from '../../upload-video-view/video-elements/video-elements.component';
+import { UploadVideoMetadataComponent } from '../../upload-video-view/upload-video-metadata/upload-video-metadata.component';
+import { UploadVideoComponent } from '../../upload-video-view/upload-video/upload-video.component';
+import { StepsComponent } from '../../steps/steps.component';
+import { ModalComponent } from '../../modal/modal.component';
 import { NgIf } from '@angular/common';
 
 @Component({
