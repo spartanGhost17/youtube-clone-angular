@@ -9,13 +9,14 @@ import { DropDownComponent } from '../../dropdown/drop-down/drop-down.component'
 import { NgFor, NgClass, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MaterialModule } from 'src/app/module/material/material.module';
 
 @Component({
     selector: 'app-upload-video-metadata',
     templateUrl: './upload-video-metadata.component.html',
     styleUrls: ['./upload-video-metadata.component.scss'],
     standalone: true,
-    imports: [ NgFor, NgClass, CommonModule, FormsModule, DropDownComponent, ChipsComponent, VideoCardBasicComponent, ModalComponent]
+    imports: [ NgFor, NgClass, CommonModule, FormsModule, DropDownComponent, ChipsComponent, VideoCardBasicComponent, ModalComponent],
   })
 export class UploadVideoMetadataComponent {
   
