@@ -1,11 +1,22 @@
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, CdkDropList, CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Icons } from '../../models/icons';
+import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { NgFor, NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-drag-drop-list',
-  templateUrl: './drag-drop-list.component.html',
-  styleUrls: ['./drag-drop-list.component.scss'],
+    selector: 'app-drag-drop-list',
+    templateUrl: './drag-drop-list.component.html',
+    styleUrls: ['./drag-drop-list.component.scss'],
+    standalone: true,
+    imports: [
+        CdkDropList,
+        NgFor,
+        CdkDrag,
+        CdkDragHandle,
+        NgStyle,
+        StandardDropdownComponent,
+    ],
 })
 export class DragDropListComponent {
   icons: Icons = new Icons();

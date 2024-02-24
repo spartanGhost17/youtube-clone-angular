@@ -1,11 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
+import { VideoMiniComponent } from '../video-mini/video-mini.component';
+import { NgStyle, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-video-card',
-  templateUrl: './video-card.component.html',
-  styleUrls: ['./video-card.component.scss']
+    selector: 'app-video-card',
+    templateUrl: './video-card.component.html',
+    styleUrls: ['./video-card.component.scss'],
+    standalone: true,
+    imports: [NgStyle, VideoMiniComponent, NgIf, TooltipDirective, StandardDropdownComponent]
 })
 export class VideoCardComponent {
   @Input() title:string = 'Title saaaaaaa aaaaaa aaaaaaaaaaaaaaaaa aeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee azzdsassad dffffffffffffffffff';

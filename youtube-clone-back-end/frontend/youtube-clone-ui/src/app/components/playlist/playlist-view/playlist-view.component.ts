@@ -2,11 +2,16 @@ import { Component } from '@angular/core';
 
 import { Icons } from 'src/app/models/icons';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { DragDropListComponent } from '../../drag-drop-list/drag-drop-list.component';
+import { PlaylistMetadataComponent } from '../playlist-metadata/playlist-metadata.component';
+import { NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-playlist-view',
-  templateUrl: './playlist-view.component.html',
-  styleUrls: ['./playlist-view.component.scss']
+    selector: 'app-playlist-view',
+    templateUrl: './playlist-view.component.html',
+    styleUrls: ['./playlist-view.component.scss'],
+    standalone: true,
+    imports: [NgStyle, PlaylistMetadataComponent, DragDropListComponent]
 })
 export class PlaylistViewComponent {
 

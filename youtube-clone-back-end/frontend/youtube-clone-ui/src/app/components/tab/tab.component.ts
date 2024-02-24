@@ -1,9 +1,12 @@
 import { Component, ElementRef, Input, ViewChild, NgZone, HostListener  } from '@angular/core';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-tab',
-  templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.scss']
+    selector: 'app-tab',
+    templateUrl: './tab.component.html',
+    styleUrls: ['./tab.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, NgClass]
 })
 export class TabComponent {
   shouldHidePrev: boolean = true;

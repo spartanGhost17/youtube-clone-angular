@@ -15,7 +15,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
-  //{ path: 'login', component: PlaylistMiniComponent },
   { path: '', pathMatch: 'full', redirectTo: '/home/explore' },
   { path: 'login', component: LoginComponent },
   {
@@ -54,9 +53,7 @@ const routes: Routes = [
       {
         path: ':channelName',
         component: ChannelComponent,
-      },
-
-      //{ path: '**', redirectTo: '/home/explore'}
+      }
     ],
   },
   {
@@ -78,37 +75,7 @@ const routes: Routes = [
       },
       { path: '**', redirectTo: '/studio/dashboard' },
     ],
-  },
-  //{ path: '**', redirectTo: '/home/explore'}
-  //user dashboard
-
-  //{
-  //  path: 'studio/dashboard', component: DashboardViewComponent,
-  //children: [
-  //  {
-  //    path: 'dashboard', component: DashboardComponent,
-  //  }
-  //]
-  //},
-
-  //{
-  //  path: 'drag', component: DragDropListComponent,
-  //},
-  /*{
-    path: 'video-player', component: VideoComponent,
-  },
-  {
-    path: 'upload-video', component: UploadVideoComponent,
-  },
-  {
-    path: 'upload-video-details', component: UploadVideoMetadataComponent,
-  },*/
-  //{ path: '**', redirectTo: '/home/explore'}
-
-  //{
-  //  path: 'upload-video-details', component: UploadVideoMetadataComponent,
-  //}
-  //home(frame-body:upload-video)http://localhost:4200/home/(frame-body:upload-video)
+  }
 ];
 
 @NgModule({

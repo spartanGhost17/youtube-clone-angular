@@ -1,5 +1,7 @@
 import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild, EventEmitter, Output, HostListener, QueryList, ViewChildren } from '@angular/core';
 import { Playlist } from '../../../models/playlist';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgStyle, NgClass, NgFor } from '@angular/common';
 
 @Directive({
   selector: '[header]'
@@ -9,9 +11,11 @@ export class Header {
 }
 
 @Component({
-  selector: 'app-drop-down',
-  templateUrl: './drop-down.component.html',
-  styleUrls: ['./drop-down.component.scss']
+    selector: 'app-drop-down',
+    templateUrl: './drop-down.component.html',
+    styleUrls: ['./drop-down.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgStyle, NgClass, FormsModule, NgFor]
 })
 export class DropDownComponent implements OnInit {
   @Input() showDropdown: boolean;

@@ -1,10 +1,16 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { Tag } from '../../models/tag';
+import { FormsModule } from '@angular/forms';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-chips',
-  templateUrl: './chips.component.html',
-  styleUrls: ['./chips.component.scss']
+    selector: 'app-chips',
+    templateUrl: './chips.component.html',
+    styleUrls: ['./chips.component.scss'],
+    standalone: true,
+    imports: [NgFor, NzIconModule, NzButtonModule, FormsModule]
 })
 export class ChipsComponent {
   newChipLabel: string;

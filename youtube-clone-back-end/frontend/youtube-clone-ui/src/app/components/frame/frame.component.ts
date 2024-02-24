@@ -1,10 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
+import { RouterOutlet } from '@angular/router';
+import { SidePanelComponent } from '../side-panel/side-panel.component';
+import { NgStyle, NgIf } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
-  selector: 'app-frame',
-  templateUrl: './frame.component.html',
-  styleUrls: ['./frame.component.scss']
+    selector: 'app-frame',
+    templateUrl: './frame.component.html',
+    styleUrls: ['./frame.component.scss'],
+    standalone: true,
+    imports: [HeaderComponent, NgStyle, SidePanelComponent, NgIf, RouterOutlet]
 })
 export class FrameComponent {
   sidebarOpen = false;

@@ -8,8 +8,8 @@ describe('HomeExplorerViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeExplorerViewComponent ]
-    })
+    imports: [HomeExplorerViewComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(HomeExplorerViewComponent);

@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { Video } from '../../models/video';
+import { VideosExplorerComponent } from '../videos-explorer/videos-explorer.component';
 
 @Component({
-  selector: 'app-home-explorer-view',
-  templateUrl: './home-explorer-view.component.html',
-  styleUrls: ['./home-explorer-view.component.scss']
+    selector: 'app-home-explorer-view',
+    templateUrl: './home-explorer-view.component.html',
+    styleUrls: ['./home-explorer-view.component.scss'],
+    standalone: true,
+    imports: [VideosExplorerComponent]
 })
 export class HomeExplorerViewComponent {
   videos: Video[] = [];

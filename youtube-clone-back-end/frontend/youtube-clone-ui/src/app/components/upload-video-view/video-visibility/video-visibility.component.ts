@@ -1,9 +1,12 @@
 import { Component, ViewChildren, QueryList, EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-video-visibility',
-  templateUrl: './video-visibility.component.html',
-  styleUrls: ['./video-visibility.component.scss']
+    selector: 'app-video-visibility',
+    templateUrl: './video-visibility.component.html',
+    styleUrls: ['./video-visibility.component.scss'],
+    standalone: true,
+    imports: [FormsModule]
 })
 export class VideoVisibilityComponent {
   @ViewChildren('radioHalo') radio: QueryList<any>;

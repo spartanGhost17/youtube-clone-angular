@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
 import { Playlist } from '../../../models/playlist';
+import { PlaylistMiniComponent } from '../playlist-mini/playlist-mini.component';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { VideoCardBasicComponent } from '../../video-displays/video-card-basic/video-card-basic.component';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-playlist-dashboard',
-  templateUrl: './playlist-dashboard.component.html',
-  styleUrls: ['./playlist-dashboard.component.scss']
+    selector: 'app-playlist-dashboard',
+    templateUrl: './playlist-dashboard.component.html',
+    styleUrls: ['./playlist-dashboard.component.scss'],
+    standalone: true,
+    imports: [NgFor, VideoCardBasicComponent, StandardDropdownComponent, PlaylistMiniComponent]
 })
 export class PlaylistDashboardComponent {
   dropDownSettingsItems: any[] = [];

@@ -8,8 +8,8 @@ describe('StandardDropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StandardDropdownComponent ]
-    })
+    imports: [StandardDropdownComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(StandardDropdownComponent);

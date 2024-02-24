@@ -1,10 +1,15 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
+import { FormsModule } from '@angular/forms';
+import { NgStyle, NgIf, NgTemplateOutlet } from '@angular/common';
+import { ContainerBgGradiantDirective } from '../../../directives/background-gradiant/container-bg-gradiant.directive';
 
 @Component({
-  selector: 'app-playlist-metadata',
-  templateUrl: './playlist-metadata.component.html',
-  styleUrls: ['./playlist-metadata.component.scss']
+    selector: 'app-playlist-metadata',
+    templateUrl: './playlist-metadata.component.html',
+    styleUrls: ['./playlist-metadata.component.scss'],
+    standalone: true,
+    imports: [ContainerBgGradiantDirective, NgStyle, NgIf, NgTemplateOutlet, FormsModule]
 })
 export class PlaylistMetadataComponent {
   icons: Icons = new Icons();

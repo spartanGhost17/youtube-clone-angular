@@ -1,9 +1,12 @@
 import { Component, ComponentRef, ElementRef, EventEmitter, HostListener, Input, Output, SimpleChanges, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+    selector: 'app-modal',
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.scss'],
+    standalone: true,
+    imports: [NgStyle, NgTemplateOutlet]
 })
 export class ModalComponent {
   

@@ -10,11 +10,22 @@ import {
 import { Icons } from '../../models/icons';
 import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
 import { environment } from 'src/environments/environment';
+import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgStyle, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FormsModule,
+        NgStyle,
+        NgFor,
+        StandardDropdownComponent,
+    ],
 })
 export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';

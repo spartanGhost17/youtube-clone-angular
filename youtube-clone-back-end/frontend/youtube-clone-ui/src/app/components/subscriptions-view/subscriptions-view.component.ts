@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { VideosExplorerComponent } from '../videos-explorer/videos-explorer.component';
 
 @Component({
-  selector: 'app-subscriptions-view',
-  templateUrl: './subscriptions-view.component.html',
-  styleUrls: ['./subscriptions-view.component.scss']
+    selector: 'app-subscriptions-view',
+    templateUrl: './subscriptions-view.component.html',
+    styleUrls: ['./subscriptions-view.component.scss'],
+    standalone: true,
+    imports: [VideosExplorerComponent]
 })
 export class SubscriptionsViewComponent {
   videos: any[] = [];

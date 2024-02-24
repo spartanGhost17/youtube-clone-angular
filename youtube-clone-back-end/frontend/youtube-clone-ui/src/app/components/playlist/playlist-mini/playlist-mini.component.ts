@@ -1,10 +1,13 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Playlist } from '../../../models/playlist';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 
 @Component({
-  selector: 'app-playlist-mini',
-  templateUrl: './playlist-mini.component.html',
-  styleUrls: ['./playlist-mini.component.scss']
+    selector: 'app-playlist-mini',
+    templateUrl: './playlist-mini.component.html',
+    styleUrls: ['./playlist-mini.component.scss'],
+    standalone: true,
+    imports: [StandardDropdownComponent]
 })
 export class PlaylistMiniComponent {
   @Input() playlist: Playlist;

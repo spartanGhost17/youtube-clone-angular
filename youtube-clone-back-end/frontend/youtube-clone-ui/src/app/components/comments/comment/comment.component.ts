@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubComment } from '../../../models/subComment';
 import { Comment } from '../../../models/comment'
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { FormsModule } from '@angular/forms';
+import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-comment',
-  templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.scss']
+    selector: 'app-comment',
+    templateUrl: './comment.component.html',
+    styleUrls: ['./comment.component.scss'],
+    standalone: true,
+    imports: [NgIf, TooltipDirective, FormsModule, NgClass, NgFor, StandardDropdownComponent]
 })
 export class CommentComponent implements OnInit {
   @Input() comment: Comment;

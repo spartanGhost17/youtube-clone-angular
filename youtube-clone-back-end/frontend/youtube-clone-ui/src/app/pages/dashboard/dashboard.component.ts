@@ -2,11 +2,21 @@ import { Component, ContentChildren, QueryList, TemplateRef, ViewChildren } from
 import { Video } from '../../models/video';
 import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
 import { Playlist } from '../../models/playlist';
+import { VideoVisibilityComponent } from '../../components/upload-video-view/video-visibility/video-visibility.component';
+import { VideoChecksComponent } from '../../components/upload-video-view/video-checks/video-checks.component';
+import { VideoElementsComponent } from '../../components/upload-video-view/video-elements/video-elements.component';
+import { UploadVideoMetadataComponent } from '../../components/upload-video-view/upload-video-metadata/upload-video-metadata.component';
+import { UploadVideoComponent } from '../../components/upload-video-view/upload-video/upload-video.component';
+import { StepsComponent } from '../../components/steps/steps.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: true,
+    imports: [NgIf, ModalComponent, StepsComponent, UploadVideoComponent, UploadVideoMetadataComponent, VideoElementsComponent, VideoChecksComponent, VideoVisibilityComponent]
 })
 export class DashboardComponent {
   isVisible: boolean = false;

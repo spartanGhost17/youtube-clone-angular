@@ -8,8 +8,8 @@ describe('PlaylistMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlaylistMetadataComponent ]
-    })
+    imports: [PlaylistMetadataComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PlaylistMetadataComponent);

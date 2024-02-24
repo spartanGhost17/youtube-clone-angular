@@ -2,7 +2,8 @@ import { AfterViewInit, Directive, ElementRef, Input, SimpleChanges } from '@ang
 //import ColorThief from 'colorthief';
 import Vibrant from 'node-vibrant';
 @Directive({
-  selector: '[appContainerBgGradiant]'
+    selector: '[appContainerBgGradiant]',
+    standalone: true
 })
 export class ContainerBgGradiantDirective implements AfterViewInit {
   @Input() thumbnailURL: string;

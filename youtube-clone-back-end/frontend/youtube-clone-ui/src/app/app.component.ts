@@ -1,11 +1,14 @@
 import { Component, enableProdMode } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
 import { ComponentUpdatesService } from './services/app-updates/component-updates.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [RouterOutlet ]
 })
 export class AppComponent {
   isCollapsed = false;
