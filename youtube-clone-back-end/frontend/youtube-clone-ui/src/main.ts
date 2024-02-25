@@ -2,20 +2,27 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
+import { importProvidersFrom, isDevMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule, provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideRouter } from '@angular/router';
+import { provideState, provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { NZ_I18N, uk_UA } from 'ng-zorro-antd/i18n';
 import { NgxFileDropModule } from 'ngx-file-drop';
-import { environment } from 'src/environments/environment';
 import { appRoutes } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
+import {
+  authFeatureKey,
+  authReducer,
+} from './app/components/auth/store/reducers';
 import { IconsProviderModule } from './app/module/icons-provider.module';
 import { MaterialModule } from './app/module/material/material.module';
-import { provideRouter } from '@angular/router';
+import { NgProgressBarModule } from './app/module/ngProgress-bar/ng-progress.module';
+import { provideEffects } from '@ngrx/effects';
+import * as authEffects from './app/components/auth/store/effects';
+
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -24,19 +31,22 @@ bootstrapApplication(AppComponent, {
       FormsModule,
       NgxFileDropModule,
       MaterialModule,
+      NgProgressBarModule,
       //nz-zorro-antd
-      IconsProviderModule,
-      //ngrx
-      StoreModule.forRoot({}, {}),
-      StoreDevtoolsModule.instrument({
-        maxAge: 25,
-        logOnly: environment.production,
-        //autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-        //trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
-        //traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-      })
+      IconsProviderModule
     ),
     provideRouter(appRoutes),
+    //ngrx
+    provideStore(), //register store
+    provideState(authFeatureKey, authReducer), //registered here since the auth feature is shared
+    provideEffects(authEffects),
+    provideStoreDevtools({
+      maxAge: 25, //max actions
+      logOnly: !isDevMode(),
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      trace: false, //If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
+      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
+    }),
     { provide: NZ_I18N, useValue: uk_UA },
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),

@@ -1,7 +1,7 @@
 import { Component, enableProdMode } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment';
-import { ComponentUpdatesService } from './services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from './shared/services/app-updates/component-updates.service';
 
 @Component({
   selector: 'app-root',

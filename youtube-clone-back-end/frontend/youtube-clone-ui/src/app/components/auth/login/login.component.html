@@ -1,5 +1,5 @@
 <div class="login-container">
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
         <div class="auth-form-container">
             <h1 class="title">Login</h1>
             <div class="username-container">
@@ -7,7 +7,7 @@
                     <p>Email or Username</p>
                 </div>
                 <div class="username-text-container">
-                    <input type="text" placeholder="username or email" id="username" name="username" [(ngModel)]="username" autocomplete="off" required/>
+                    <input type="text" placeholder="username or email" id="username" formControlName="username" autocomplete="off"/>
                 </div>
             </div>
             <div class="password-container">
@@ -15,13 +15,13 @@
                     <p>Password</p>
                 </div>
                 <div class="password-text-container inner-icon">
-                    <input class="password-input" #passwordInput placeholder="password" type="password" id="password" name="password" [(ngModel)]="password" required/>
+                    <input class="password-input" #passwordInput placeholder="password" type="password" id="password" formControlName="password"/>
                     <span class="material-symbols-outlined non-selectable" *ngIf="!showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility_off</span>
                     <span class="material-symbols-outlined non-selectable" *ngIf="showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility</span>
                 </div>
             </div>
-            <div class="submit-btn-container">
-                <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">Login</button>
+            <div class="submit-btn-container" [ngClass]="{'isSubmitting': (isSubmitting$ | async)}">
+                <button type="submit" class="submit-btn" [disabled]="(loginFormGroup.invalid || (isSubmitting$ | async) )">Login</button>
             </div>
         </div>
     </form>

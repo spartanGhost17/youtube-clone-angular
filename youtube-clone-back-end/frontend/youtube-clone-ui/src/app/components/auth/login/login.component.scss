@@ -82,12 +82,23 @@ input[type='password'] {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:rgba(13, 79, 156, 1);
+    background-color: rgba(6, 36, 70, 1);//rgba(114, 178, 252, 1);//rgba(13, 79, 156, 1);
     margin-top: 40px;
     height: 40px;
     width: 100%;
     cursor: pointer;
     border-radius: 6px;
+    transition: background-color 0.5s ease;
+}
+
+.submit-btn-container.isSubmitting {
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(6, 36, 70, .4);
+}
+
+.submit-btn-container.isSubmitting .submit-btn {
+    cursor: not-allowed;
 }
 
 .submit-btn {
