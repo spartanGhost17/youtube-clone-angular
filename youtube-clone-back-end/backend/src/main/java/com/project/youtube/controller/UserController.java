@@ -36,7 +36,7 @@ import static com.project.youtube.utils.ExceptionUtils.processError;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
-@RequestMapping(value = API_VERSION+"user/")
+@RequestMapping(value = API_VERSION + "user/")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -50,6 +50,7 @@ public class UserController {
 
     /**
      * register a new user
+     *
      * @param createUserForm the create user form
      * @return the response
      */
@@ -73,8 +74,9 @@ public class UserController {
 
     /**
      * Enabled the user account after creation
+     *
      * @param type the type (account or password)
-     * @param key the UUID random key
+     * @param key  the UUID random key
      * @return the response
      */
     @PostMapping(value = "verify/account")
@@ -83,7 +85,7 @@ public class UserController {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .message(userDTO.getEnabled()? "This account is already verified." : "Account has been verified.")
+                        .message(userDTO.getEnabled() ? "This account is already verified." : "Account has been verified.")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build());
@@ -91,6 +93,7 @@ public class UserController {
 
     /**
      * login a user
+     *
      * @param loginForm the login form
      * @return the response
      */
@@ -103,6 +106,7 @@ public class UserController {
 
     /**
      * Verify 2-factor authentication code
+     *
      * @param codeForm the code
      * @return the response
      */
@@ -112,9 +116,10 @@ public class UserController {
         return ResponseEntity.created(getUri()).body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "user", userDTO
+                        .data(Map.of("user", userDTO))
+                        .tokens(Map.of(
+                                "access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO))
                         ))
                         .message("Code was verified")
                         .status(HttpStatus.OK)
@@ -124,6 +129,7 @@ public class UserController {
 
     /**
      * Get a user's profile
+     *
      * @return the response
      */
     @GetMapping(value = "profile")
@@ -142,6 +148,7 @@ public class UserController {
 
     /**
      * Update user metadata like, username, description etc.
+     *
      * @param updateUserForm the user update form
      * @return the response
      */
@@ -161,8 +168,10 @@ public class UserController {
     }
 
     // START RESET PASSWORD FLOW
+
     /**
      * Request password reset for email
+     *
      * @param email the email
      * @return the response
      */
@@ -180,6 +189,7 @@ public class UserController {
 
     /**
      * verifies the password key for resetting principal's password
+     *
      * @param key the key UUID of password
      * @return the response
      */
@@ -197,8 +207,9 @@ public class UserController {
 
     /**
      * end of reset password update flow. Updates the user password
-     * @param key the key
-     * @param password the new password
+     *
+     * @param key               the key
+     * @param password          the new password
      * @param confirmedPassword the new confirmed password
      * @return the response
      */
@@ -219,14 +230,14 @@ public class UserController {
 
     @GetMapping(value = "refresh/token")
     public ResponseEntity<HttpResponse> getRefreshToken(HttpServletRequest request) {
-        if(isHeaderTokenValid(request)) {
+        if (isHeaderTokenValid(request)) {
             String token = request.getHeader(AUTHORIZATION).substring(AUTH_TOKEN_PREFIX.length());
             UserDTO userDTO = userServiceImpl.getUser(tokenProvider.getSubject(token, request));
             return new ResponseEntity(
                     HttpResponse.builder()
                             .timeStamp(Instant.now().toString())
                             .message("Token refreshed successfully.")
-                            .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                            .tokens(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
                                     "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO))
                             ))
                             .status(HttpStatus.OK)
@@ -256,6 +267,7 @@ public class UserController {
 
     /**
      * get user DTO from context user principal
+     *
      * @param authentication authentication
      * @return the UserDTO
      */
@@ -266,6 +278,7 @@ public class UserController {
 
     /**
      * authenticates the credentials
+     *
      * @param username the username to authenticate
      * @param password the password
      * @return the authentication
@@ -283,6 +296,7 @@ public class UserController {
 
     /**
      * send access and refresh token to user without credentials
+     *
      * @param userDTO the authenticated user
      * @return the response
      */
@@ -291,10 +305,11 @@ public class UserController {
         return ResponseEntity.created(getUri()).body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .data(Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO)),
-                                "user", userDTO
-                        ))
+                        .data(Map.of("user", userDTO))
+                        .tokens(
+                                Map.of("access_token", tokenProvider.createAccessToken(userServiceImpl.getUserPrincipal(userDTO)),
+                                        "refresh_token", tokenProvider.createRefreshToken(userServiceImpl.getUserPrincipal(userDTO))
+                                ))
                         .message("Login success")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -303,6 +318,7 @@ public class UserController {
 
     /**
      * Send a verification code to the user with MFA enable
+     *
      * @param userDTO the authenticated user
      * @return the response
      */
@@ -320,6 +336,7 @@ public class UserController {
 
     /**
      * get URI of context
+     *
      * @return the URI
      */
     private URI getUri() {

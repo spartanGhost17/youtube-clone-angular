@@ -1,9 +1,16 @@
 package com.project.youtube.form;
 
-import javax.validation.constraints.NotEmpty;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+import javax.validation.constraints.NotEmpty;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VerificationCodeForm {
     @NotEmpty(message = "username cannot be empty")
     private String username;
