@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { Icons } from 'src/app/models/icons';
-import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { DragDropListComponent } from '../../../drag-drop-list/drag-drop-list.component';
 import { PlaylistMetadataComponent } from '../playlist-metadata/playlist-metadata.component';
 import { NgStyle } from '@angular/common';

@@ -1,14 +1,14 @@
 import { createAction, createActionGroup, props } from "@ngrx/store";
-import { User } from "../app/models/user";
+import { UserInterface } from "../app/shared/types/user.interface";
 
 const userApiActions = createActionGroup({
-    source: '[User API]',
+    source: '[UserInterface API]',
     events: {
-        'Get User Success': props<{user: User}>,
-        'Get User Failure': props<{user: User}>
+        'Get UserInterface Success': props<{user: UserInterface}>,
+        'Get UserInterface Failure': props<{user: UserInterface}>
     }
 });
 
-export const getUser = createAction('[User] Get User');
-export const getUserSuccess = createAction('[User] Get User Success', props<{user: User}>);
-export const getUserFailure = createAction('[User] Get User Failure', props<{user: User}>);
+export const getUser = createAction('[UserInterface] Get UserInterface');
+export const getUserSuccess = createAction('[UserInterface] Get UserInterface Success', props<{user: UserInterface}>);
+export const getUserFailure = createAction('[UserInterface] Get UserInterface Failure', props<{user: UserInterface}>);

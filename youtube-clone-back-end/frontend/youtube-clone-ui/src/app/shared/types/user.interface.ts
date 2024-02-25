@@ -1,6 +1,6 @@
-import { Role } from "./interface/Role";
+import { Role } from "./Role";
 
-export interface User {
+export interface UserInterface {
     id: string;
     username: string;
     channelName: string;

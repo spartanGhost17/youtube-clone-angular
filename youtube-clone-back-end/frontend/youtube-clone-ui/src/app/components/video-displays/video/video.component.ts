@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
-import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 
 import Vibrant from 'node-vibrant';// stable version node-vibrant@3.1.6
 import { Observable, of } from 'rxjs';

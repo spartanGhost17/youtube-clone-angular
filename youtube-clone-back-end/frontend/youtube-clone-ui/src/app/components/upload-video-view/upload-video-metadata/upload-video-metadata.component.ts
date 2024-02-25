@@ -1,15 +1,14 @@
-import { Component, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
-import { Video } from '../../../models/video';
-import { Playlist } from '../../../models/playlist';
-import { SnackbarService } from '../../../services/snack-bar-messages/snackbar.service';
-import { ModalComponent } from '../../modal/modal.component';
-import { VideoCardBasicComponent } from '../../video-displays/video-card-basic/video-card-basic.component';
-import { ChipsComponent } from '../../chips/chips.component';
-import { DropDownComponent } from '../../dropdown/drop-down/drop-down.component';
-import { NgFor, NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass, NgFor } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MaterialModule } from 'src/app/module/material/material.module';
+import { Playlist } from '../../../models/playlist';
+import { Video } from '../../../models/video';
+import { SnackbarService } from '../../../shared/services/snack-bar-messages/snackbar.service';
+import { ChipsComponent } from '../../chips/chips.component';
+import { DropDownComponent } from '../../dropdown/drop-down/drop-down.component';
+import { ModalComponent } from '../../modal/modal.component';
+import { VideoCardBasicComponent } from '../../video-displays/video-card-basic/video-card-basic.component';
 
 @Component({
     selector: 'app-upload-video-metadata',

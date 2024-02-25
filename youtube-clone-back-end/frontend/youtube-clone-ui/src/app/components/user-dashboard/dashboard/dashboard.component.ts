@@ -1,6 +1,6 @@
 import { Component, ContentChildren, QueryList, TemplateRef, ViewChildren } from '@angular/core';
 import { Video } from '../../../models/video';
-import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { Playlist } from '../../../models/playlist';
 import { VideoVisibilityComponent } from '../../upload-video-view/video-visibility/video-visibility.component';
 import { VideoChecksComponent } from '../../upload-video-view/video-checks/video-checks.component';

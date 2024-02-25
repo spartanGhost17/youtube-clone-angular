@@ -1,31 +1,26 @@
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import {
   Component,
+  EventEmitter,
   Input,
   Output,
-  EventEmitter,
-  ViewChild,
   TemplateRef,
-  ContentChild,
+  ViewChild,
 } from '@angular/core';
-import { Icons } from '../../models/icons';
-import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
-import { environment } from 'src/environments/environment';
-import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgStyle, NgFor } from '@angular/common';
+import { NgProgress, NgProgressModule } from 'ngx-progressbar';
+import { environment } from 'src/environments/environment';
+import { Icons } from '../../models/icons';
+import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
+import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { ProgressBarService } from '../../shared/services/progress-bar/progress-bar.service';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        FormsModule,
-        NgStyle,
-        NgFor,
-        StandardDropdownComponent,
-    ],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [NgIf, FormsModule, NgStyle, NgFor, StandardDropdownComponent, NgProgressModule ],
 })
 export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
@@ -37,8 +32,7 @@ export class HeaderComponent {
   resultBoxDisplay: string = 'none';
   @Input() showSearchBar: boolean = true;
   @Input() openModal: () => void;
-  @Output() uploadVideoButtonClicked: EventEmitter<boolean> =
-    new EventEmitter<boolean>();
+  @Output() uploadVideoButtonClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() showSideBar: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() searchTriggered: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('submenuTemplate') submenuTemplate: TemplateRef<any>;
@@ -50,9 +44,14 @@ export class HeaderComponent {
   ICON_CAMERA: string = '../' + this.icons.iconsPaths['camera-light'];
   ICON_BELL: string = '../' + this.icons.iconsPaths['bell-dark'];
 
-  constructor(private componentUpdatesService: ComponentUpdatesService) {}
+  constructor(
+    private componentUpdatesService: ComponentUpdatesService,
+    private progressBar: NgProgress,
+    public progressBarService: ProgressBarService
+  ) {}
 
   ngOnInit(): void {
+    this.progressBarService.progressRef = this.progressBar.ref('myProgress');
     this.searchResults = [
       { text: 'some text 1' },
       { text: 'some text 2' },
@@ -66,7 +65,6 @@ export class HeaderComponent {
       { text: 'some text 10' },
     ];
     this.environemntName = environment.name;
-    
   }
 
   ngAfterViewInit() {

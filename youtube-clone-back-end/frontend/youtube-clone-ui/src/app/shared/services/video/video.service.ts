@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import end_points  from "../../../resources/end-points.json"
+import end_points  from "../../../../resources/end-points.json"
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, catchError } from 'rxjs';
-import { Video } from '../../models/video';
+import { Video } from '../../../models/video';
 
 @Injectable({
   providedIn: 'root'

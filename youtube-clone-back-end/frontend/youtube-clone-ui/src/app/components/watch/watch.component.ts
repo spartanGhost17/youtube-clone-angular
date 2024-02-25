@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 import { Comment } from '../../models/comment';
 import { CommentsHolderComponent } from '../comments/comments-holder/comments-holder.component';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';

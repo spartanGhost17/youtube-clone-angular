@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Video } from '../../models/video';
-import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { VideoCardBasicComponent } from '../video-displays/video-card-basic/video-card-basic.component';
 import { NgStyle, NgFor } from '@angular/common';
 

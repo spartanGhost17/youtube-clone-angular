@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ComponentUpdatesService } from 'src/app/services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
 import { VideoMiniComponent } from '../video-mini/video-mini.component';

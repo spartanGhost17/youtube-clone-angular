@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { SnackbarService } from '../../../services/snack-bar-messages/snackbar.service';
+import { SnackbarService } from '../../../shared/services/snack-bar-messages/snackbar.service';
 import { NgFor, NgIf, NgTemplateOutlet, NgStyle } from '@angular/common';
 
 @Component({

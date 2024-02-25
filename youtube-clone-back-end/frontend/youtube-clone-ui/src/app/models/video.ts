@@ -1,5 +1,5 @@
 import { Tag } from "./tag";
-import { User } from "./user";
+import { UserInterface } from "../shared/types/user.interface";
 
 export interface Video {
     id: string;
@@ -14,5 +14,5 @@ export interface Video {
     upload_date?: string;
     duration?: number;
     views?: number;
-    user?: User; 
+    user?: UserInterface; 
 }

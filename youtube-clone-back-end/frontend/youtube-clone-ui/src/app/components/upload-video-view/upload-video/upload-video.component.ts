@@ -3,7 +3,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzButtonSize, NzButtonModule } from 'ng-zorro-antd/button';
-import { VideoService } from '../../../services/video/video.service';
+import { VideoService } from '../../../shared/services/video/video.service';
 import { Observable } from 'rxjs';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { Video } from '../../../models/video'

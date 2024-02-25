@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ComponentUpdatesService } from '../../services/app-updates/component-updates.service';
+import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 import { RouterOutlet } from '@angular/router';
 import { SidePanelComponent } from '../side-panel/side-panel.component';
 import { NgStyle, NgIf } from '@angular/common';
