@@ -46,12 +46,12 @@ export class HeaderComponent {
 
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
-    private progressBar: NgProgress,
-    public progressBarService: ProgressBarService
+    //private progressBar: NgProgress,
+    //public progressBarService: ProgressBarService
   ) {}
 
   ngOnInit(): void {
-    this.progressBarService.progressRef = this.progressBar.ref('myProgress');
+    //this.progressBarService.progressRef = this.progressBar.ref('myProgress');
     this.searchResults = [
       { text: 'some text 1' },
       { text: 'some text 2' },
