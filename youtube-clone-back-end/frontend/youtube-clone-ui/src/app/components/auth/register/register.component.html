@@ -1,0 +1,52 @@
+<div class="register-container">
+    <form #formContainer [formGroup]="registerFormGroup" (ngSubmit)="onSubmit()">
+        <div class="auth-form-container">
+            <h1 class="title">Register</h1>
+            <div class="firstname-container">
+                <div class="title-container">
+                    <p>First Name</p>
+                </div>
+                <div class="username-text-container">
+                    <input type="text" placeholder="firstname" id="firstname" formControlName="firstname" autocomplete="off"/>
+                </div>                
+            </div>
+            <div class="lastname-container">
+                <div class="title-container">
+                    <p>Last Name</p>
+                </div>
+                <div class="username-text-container">
+                    <input type="text" placeholder="lastname" id="lastname" formControlName="lastname" autocomplete="off"/>
+                </div>                
+            </div>
+            <div class="email-container">
+                <div class="title-container">
+                    <p>Email</p>
+                </div>
+                <div class="username-text-container">
+                    <input type="text" placeholder="email" id="email" formControlName="email" autocomplete="off"/>
+                </div>                
+            </div>
+            <div class="username-container">
+                <div class="title-container">
+                    <p>Username</p>
+                </div>
+                <div class="username-text-container">
+                    <input type="text" placeholder="username" id="username" formControlName="username" autocomplete="off"/>
+                </div>
+            </div>
+            <div class="password-container">
+                <div class="title-container">
+                    <p>Password</p>
+                </div>
+                <div class="password-text-container inner-icon">
+                    <input class="password-input" #passwordInput placeholder="password" type="password" id="password" formControlName="password"/>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="!showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility_off</span>
+                    <span class="material-symbols-outlined non-selectable" *ngIf="showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility</span>
+                </div>
+            </div>
+            <div class="submit-btn-container" [ngClass]="{'isSubmitting': (isSubmitting$ | async)}">
+                <button type="submit" class="submit-btn" [disabled]="registerFormGroup.invalid">Login</button>
+            </div>
+        </div>
+    </form>
+</div>
