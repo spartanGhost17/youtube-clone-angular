@@ -21,6 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonInclude(NON_NULL)
 public class User {
     private Long id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     private String username;
     @Column(name = "channel_name")
     private String channelName;
@@ -39,5 +43,7 @@ public class User {
     private Boolean usingMfa;
     @Column(name = "profile_picture")
     private String profilePicture;
+    @Column(name = "banner_picture")
+    private String bannerPicture;
     private List<Role> grantedAuthorities;
 }

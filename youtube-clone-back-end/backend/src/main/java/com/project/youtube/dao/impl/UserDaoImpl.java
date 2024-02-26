@@ -425,6 +425,8 @@ public class UserDaoImpl implements UserDao<User> {
      */
     private SqlParameterSource getSqlParameterSource(User user) {
         return new MapSqlParameterSource()
+                .addValue("firstName", user.getFirstName())
+                .addValue("lastName", user.getLastName())
                 .addValue("username", user.getUsername())
                 .addValue("channelName", user.getUsername())
                 .addValue("email", user.getEmail().trim().toLowerCase())

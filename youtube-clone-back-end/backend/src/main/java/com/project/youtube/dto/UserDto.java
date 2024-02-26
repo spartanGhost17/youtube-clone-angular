@@ -13,6 +13,8 @@ import java.util.List;
 @Setter
 public class UserDTO {
     private Long id;
+    private String firstName;
+    private String lastName;
     private String username;
     private String channelName;
     private Date createdAt;
@@ -24,6 +26,7 @@ public class UserDTO {
     private Boolean nonLocked;
     private Boolean usingMfa;
     private String profilePicture;
+    private String bannerPicture;
     private List<Role> authorities;
     /*private String id;
     private String firstName;

@@ -91,6 +91,8 @@ DROP TABLE IF EXISTS Users;
 create TABLE Users
 (
     id              BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name      VARCHAR(150) NOT NULL, --add to insert service
+    last_name       VARCHAR(250) NOT NULL, --add to insert service
     username        VARCHAR(25) NOT NULL,
     channel_name    VARCHAR(100) NOT NULL,
     email           VARCHAR(255) NOT NULL,

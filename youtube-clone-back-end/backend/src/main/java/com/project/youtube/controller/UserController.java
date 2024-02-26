@@ -57,6 +57,8 @@ public class UserController {
     @PostMapping(value = "register")
     public ResponseEntity<HttpResponse> createUser(@RequestBody @Valid CreateUserForm createUserForm) {
         User user = User.builder()
+                .firstName(createUserForm.getFirstname())
+                .lastName(createUserForm.getLastname())
                 .username(createUserForm.getUsername())
                 .email(createUserForm.getEmail())
                 .password(createUserForm.getPassword())

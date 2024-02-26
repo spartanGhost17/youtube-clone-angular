@@ -12,6 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateUserForm {
+    @NotEmpty(message = "firstname cannot be empty")
+    private String firstname;
+    @NotEmpty(message = "lastname cannot be empty")
+    private String lastname;
     @NotEmpty(message = "username cannot be empty")
     private String username;
     @NotEmpty(message = "email cannot be empty")
