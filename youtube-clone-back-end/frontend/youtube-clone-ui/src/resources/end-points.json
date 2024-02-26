@@ -9,6 +9,7 @@
     },
     "USER_END_POINTS": {
         "GET_PROFILE": "/api/v1/user/profile",
-        "LOGIN": "/api/v1/user/login"
+        "LOGIN": "/api/v1/user/login",
+        "REGISTER": "/api/v1/user/register"
     }
 }
