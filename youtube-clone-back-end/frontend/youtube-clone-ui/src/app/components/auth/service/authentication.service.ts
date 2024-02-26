@@ -6,6 +6,7 @@ import resources from '../../../../resources/end-points.json';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
 import { HttpResponseInterface } from '../../../shared/types/httpResponse.interface';
 import { LoginFormInterface } from '../types/loginForm.interface';
+import { RegisterFormInterface } from '../types/registerForm.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,19 @@ export class AuthenticationService {
     return this.http.post<HttpResponseInterface<CurrentUserInterface>>(
       this.apiUrl + resources.USER_END_POINTS.LOGIN,
       loginForm
+    );
+  }
+
+  /**
+   * @param {RegisterFormInterface} the login form
+   * @returns the httpResponse
+   */
+  register(
+    registerForm: RegisterFormInterface
+  ): Observable<HttpResponseInterface<CurrentUserInterface>> {
+    return this.http.post<HttpResponseInterface<CurrentUserInterface>>(
+      this.apiUrl + resources.USER_END_POINTS.REGISTER,
+      registerForm
     );
   }
 }
