@@ -8,4 +8,5 @@ export interface HttpResponseInterface<T> {
     developerMessage?: string;
     data?: any;//Map<string, T>; //TODO: figure out how to make it strongly typed
     tokens?: any;//Map<string, string>; //TODO: figure out how to make it strongly typed
+    [key: string]: any;
 }

@@ -12,7 +12,7 @@ import { ProgressBarService } from '../../../shared/services/progress-bar/progre
 
 
 //create effect is like a listener, listening to some action (start process, success or error)
-export const registerEffect = createEffect(
+export const loginEffect = createEffect(
   (
     //get all actions
     actions$ = inject(Actions),
@@ -44,3 +44,5 @@ export const registerEffect = createEffect(
   },
   { functional: true }
 );
+
+//export const registerEffect

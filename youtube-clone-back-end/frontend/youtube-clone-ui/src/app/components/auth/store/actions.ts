@@ -16,10 +16,3 @@ export const authActions = createActionGroup({
     'Login Failure': props<{errors: ResponseMessagesInterface}>()//emptyProps()
   }
 });
-
-//authActions.register
-//single action
-/*export const login = createAction(
-  '[Auth] Login',
-  props<{ request: LoginFormInterface }>()
-);*/
