@@ -12,6 +12,7 @@ import { RegisterFormInterface } from '../types/registerForm.interface';
 import { Store } from '@ngrx/store';
 import { AuthStateInterface } from '../types/authState.interface';
 import { authActions } from '../store/actions';
+import { fadeInAnimation } from '../../../shared/animation/fade-in.animation';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +20,7 @@ import { authActions } from '../store/actions';
   styleUrls: ['./register.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  animations: [fadeInAnimation]
 })
 export class RegisterComponent {
   showPassword: boolean = false;
@@ -36,13 +38,15 @@ export class RegisterComponent {
    */
   ngOnInit(): void {
     this.registerFormGroup = this.fb.nonNullable.group({
-      firstname: ['Ted', Validators.required],
-      lastname: ['Cruiz', Validators.required],
-      username: ['tempo_ace', Validators.required],
+      firstname: ['kratos', Validators.required],
+      lastname: ['God of war', Validators.required],
+      username: ['kratos_123', Validators.required],
       email: ['tempo@example.com', Validators.email],
       password: ['123456', Validators.required],
     });
   }
+
+  ngAfterViewInit() {}
 
   /**
    * on form submit
@@ -50,8 +54,8 @@ export class RegisterComponent {
   onSubmit(): void {
     if (this.registerFormGroup.valid) {
       const registrationForm: RegisterFormInterface = {
-        firstName: this.registerFormGroup.value.firstname,
-        lastName: this.registerFormGroup.value.lastname,
+        firstname: this.registerFormGroup.value.firstname,
+        lastname: this.registerFormGroup.value.lastname,
         username: this.registerFormGroup.value.username,
         email: this.registerFormGroup.value.email,
         password: this.registerFormGroup.value.password,

@@ -1,6 +1,6 @@
 <div class="register-container">
-    <form #formContainer [formGroup]="registerFormGroup" (ngSubmit)="onSubmit()">
-        <div class="auth-form-container">
+    <form [formGroup]="registerFormGroup" (ngSubmit)="onSubmit()">
+        <div #formContainer class="auth-form-container"> <!--[@fadeIn]-->
             <h1 class="title">Register</h1>
             <div class="firstname-container">
                 <div class="title-container">
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="submit-btn-container" [ngClass]="{'isSubmitting': (isSubmitting$ | async)}">
-                <button type="submit" class="submit-btn" [disabled]="registerFormGroup.invalid">Login</button>
+                <button type="submit" class="submit-btn" [disabled]="registerFormGroup.invalid">Register</button>
             </div>
         </div>
     </form>
