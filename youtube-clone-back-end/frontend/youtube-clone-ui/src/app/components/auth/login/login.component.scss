@@ -8,7 +8,7 @@
 
 .auth-form-container {
     width: 500px;
-    height: 400px;
+    height: 500px;
     padding: 24px;
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(40, 40, 40, 0.5);
@@ -113,4 +113,21 @@ input[type='password'] {
 
 .material-symbols-outlined:hover {
     color: white;
+}
+
+.actions {
+    padding-top: 24px;
+    height: fit-content;
+}
+
+.reset-password, 
+.create-account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reset-password .text-secondary,
+.create-account .text-secondary {
+    color: rgba(6, 36, 70, 1);
 }

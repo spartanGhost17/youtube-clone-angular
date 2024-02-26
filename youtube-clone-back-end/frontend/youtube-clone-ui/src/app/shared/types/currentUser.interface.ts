@@ -2,6 +2,9 @@ import { Role } from "./Role";
 
 export interface CurrentUserInterface {
     id: number;
+    username: string;
+    firstName: string;
+    lastName: string;
     channelName: string;
     createdAt?: Date;
     email?: string;

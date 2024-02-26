@@ -23,7 +23,16 @@
             <div class="submit-btn-container" [ngClass]="{'isSubmitting': (isSubmitting$ | async)}">
                 <button type="submit" class="submit-btn" [disabled]="(loginFormGroup.invalid || (isSubmitting$ | async) )">Login</button>
             </div>
+            <div class="actions">
+                <div class="reset-password">
+                    <span class="text-secondary">Forgot password?</span>&nbsp;&nbsp;
+                    <a routerLink="/reset/password" class="text-primary"> Reset</a> 
+                </div>
+                <div class="create-account">
+                    <span class="text-secondary">Don't have an account?</span>&nbsp;&nbsp;
+                    <a routerLink="/register" class="text-primary"> Sign Up</a> 
+                </div>
+            </div>
         </div>
     </form>
-    
 </div>
