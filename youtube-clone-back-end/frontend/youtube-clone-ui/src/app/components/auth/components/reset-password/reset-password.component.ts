@@ -13,7 +13,7 @@ import { AuthStateInterface } from '../../types/authState.interface';
 import { authActions } from '../../store/actions';
 import { UpdatePasswordFormInterface } from '../../types/updatePasswordForm.interface';
 import { selectAuthState, selectIsPasswordLinkValid, selectIsResetPasswordEmailSent, selectValidationErrors, selectValidationMessages } from '../../store/reducers';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { ResponseMessagesInterface } from '../../../../shared/types/responseMessages.interface';
 import { VerifyPasswordInterface } from '../../types/verifyPassword.interface';
 
@@ -34,11 +34,16 @@ export class ResetPasswordComponent {
   key: string;
   currentType: string;
   currentKey: string;
-  validationMessages$: Observable<ResponseMessagesInterface | null>;
-  validationErrors$: Observable<ResponseMessagesInterface | null>;
-  isResetEmailSent$: Observable<boolean>;
-  isPasswordLinkValid$: Observable<boolean>;
-
+  //validationMessages$: Observable<ResponseMessagesInterface | null>;
+  //validationErrors$: Observable<ResponseMessagesInterface | null>;
+  //isResetEmailSent$: Observable<boolean>;
+  //isPasswordLinkValid$: Observable<boolean>;
+  data$: Observable<{
+    isResetEmailSent: boolean;
+    isPasswordLinkValid: boolean;
+    validationMessages: ResponseMessagesInterface | null;
+    validationErrors: ResponseMessagesInterface | null;
+  }>;
   constructor(
     private fb: FormBuilder,
     private store: Store<{ auth: AuthStateInterface }>,
@@ -49,10 +54,17 @@ export class ResetPasswordComponent {
    * lifecycle hook 
   */
   ngOnInit() {
-    this.isResetEmailSent$ = this.store.select(selectIsResetPasswordEmailSent);
+    /*this.isResetEmailSent$ = this.store.select(selectIsResetPasswordEmailSent);
     this.validationMessages$ = this.store.select(selectValidationMessages);
     this.validationErrors$ = this.store.select(selectValidationErrors);
-    this.isPasswordLinkValid$ = this.store.select(selectIsPasswordLinkValid);
+    this.isPasswordLinkValid$ = this.store.select(selectIsPasswordLinkValid);*/
+
+    this.data$ = combineLatest({
+      isResetEmailSent: this.store.select(selectIsResetPasswordEmailSent),
+      validationMessages: this.store.select(selectValidationMessages),
+      validationErrors: this.store.select(selectValidationErrors),
+      isPasswordLinkValid: this.store.select(selectIsPasswordLinkValid)
+    });
 
     this.openSubscriptions();
     this.resetFormGroup = this.createForm();   
@@ -62,7 +74,21 @@ export class ResetPasswordComponent {
    * open the ngrx subscriptions 
   */
   openSubscriptions() {
-    this.isPasswordLinkValid$.subscribe({
+    this.data$.subscribe({
+      next: (data) => {
+        if(data.isPasswordLinkValid) {
+          this.isPasswordLinkValid = data.isPasswordLinkValid;
+          this.resetFormGroup = this.createForm();  
+        }
+        if(data.isResetEmailSent) {
+          this.isResetEmailSent = data.isResetEmailSent;
+        }
+        console.log(" DATA IS UPDATED!! ");
+        console.log(data);
+      }
+    });
+
+    /*this.isPasswordLinkValid$.subscribe({
       next: (isValid) => {
         this.isPasswordLinkValid = isValid;
         this.resetFormGroup = this.createForm();//reset form if link is valid
@@ -70,7 +96,7 @@ export class ResetPasswordComponent {
     });
     this.isResetEmailSent$.subscribe({
       next: (isResetEmailSent) => this.isResetEmailSent = isResetEmailSent
-    });
+    });*/
     this.store.select(selectAuthState).subscribe({
       next: (authState) => {console.log("AUTH STATE \n"); console.log(authState)}
     });
@@ -99,10 +125,7 @@ export class ResetPasswordComponent {
           //if key and link type are present
           //this.resetFormGroup = this.createForm();
         }
-      }/* else { //if link is invalid reset validation form
-        console.log("reset link ");
-        this.resetFormGroup = this.createForm();
-      }*/
+      }
     });
   }
 
@@ -127,6 +150,7 @@ export class ResetPasswordComponent {
         this.store.dispatch(
           authActions.renewPassword({
             request: updatePassword,
+            key: this.key
           })
         );
       }

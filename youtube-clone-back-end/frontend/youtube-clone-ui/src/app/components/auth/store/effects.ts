@@ -1,15 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
+import { Actions, act, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { ProgressBarService } from '../../../shared/services/progress-bar/progress-bar.service';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
 import { HttpResponseInterface } from '../../../shared/types/httpResponse.interface';
-import { toResponseMessage } from '../../../shared/utils/sharedUtils';
+import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
+import { toResponseMessage, setTokens } from '../../../shared/utils/sharedUtils';
 import { AuthenticationService } from '../service/authentication.service';
 import { authActions } from './actions';
-import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
-import { Router } from '@angular/router';
+import { PersistanceService } from '../../../shared/services/persistance/persistance.service';
 
 //create effect is like a listener, listening to some action (start process, success or error)
 export const loginEffect = createEffect(
@@ -18,6 +19,7 @@ export const loginEffect = createEffect(
     actions$ = inject(Actions),
     authService = inject(AuthenticationService),
     progressBarService = inject(ProgressBarService),
+    peristanceService = inject(PersistanceService),
     router = inject(Router)
   ) => {
     return actions$.pipe(
@@ -28,10 +30,15 @@ export const loginEffect = createEffect(
           map((response: HttpResponseInterface<CurrentUserInterface>) => {
             const user: CurrentUserInterface = response.data.user;
             progressBarService.completeLoading(); //stop progress
-            router.navigate(['/home/explore'])
+
+            const responseMessages: ResponseMessagesInterface = toResponseMessage(response)
+            const tokens = responseMessages.tokens;
+            setTokens(tokens, peristanceService);
+
+
             return authActions.loginSuccess({
               currentUser: user,
-              responseMessages: toResponseMessage(response), //map fields to ResponseMessageInterface
+              responseMessages: responseMessages//toResponseMessage(response), //map fields to ResponseMessageInterface
             });
           }),
           catchError((error: HttpErrorResponse) => {
@@ -40,7 +47,7 @@ export const loginEffect = createEffect(
               authActions.loginFailure({
                 errors: toResponseMessage(error.error),
               })
-            ); //??
+            ); //return observable
           })
         ); //do transformation
       }) //switch map returns a new observable
@@ -192,3 +199,14 @@ export const updatePasswordEffect = createEffect(
   },
   { functional: true }
 );
+
+//redirect navigate to home page
+export const redirectAfterRegisterEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
+  console.log("calling redirectAfterRegisterEffect");
+  return actions$.pipe(
+    ofType(authActions.loginSuccess),
+    tap(() => {
+      router.navigate(['/'])
+    })
+  )
+}, {functional: true, dispatch: false});
