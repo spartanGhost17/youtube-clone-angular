@@ -1,4 +1,4 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
 import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 import { LoginFormInterface } from '../types/loginForm.interface';
