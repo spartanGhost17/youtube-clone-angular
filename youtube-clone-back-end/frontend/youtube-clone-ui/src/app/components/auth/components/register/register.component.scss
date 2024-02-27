@@ -1,4 +1,4 @@
-.login-container {
+.register-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,22 +8,22 @@
 
 .auth-form-container {
     width: 500px;
-    height: fit-content;
-    min-height: 250px;
+    height: 620px;
+    margin-top: 24px;
     padding: 24px;
     border-radius: 6px;
     box-shadow: 0 0 20px rgba(40, 40, 40, 0.5);
-    background-color: rgba(93, 163, 242, 1);
+    background-color: rgba(42, 95, 156, 1);
+    transition: opacity .7s ease;
 }
 
-.username-container,
-.password-container {
+.firstname-container,
+.lastname-container,
+.email-container,
+.username-container {
     margin-top: 20px;
     height: 60px;
     width: 100%;
-}
-
-.username-container {
     border-bottom: 2px solid rgba(13, 79, 156, .4);//grey;
 } 
 
@@ -32,8 +32,15 @@
     height: fit-content;
 }
 
+.password-container {
+    margin-top: 20px;
+    height: 100px;
+    width: 100%;
+} 
+
 .title-container {
-    height: 20px;
+    color: rgba(6, 36, 70, 1);
+    height: 24px;
 } 
 
 .title {
@@ -79,29 +86,13 @@ input[type='password'] {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(6, 36, 70, 1);
-    margin-top: 20px;
+    background-color: rgba(6, 36, 70, 1);//rgba(114, 178, 252, 1);//rgba(13, 79, 156, 1);
+    margin-top: 40px;
     height: 40px;
     width: 100%;
     cursor: pointer;
     border-radius: 6px;
-    transition: transform, background-color .3s ease;
-}
-
-.submit-btn-container:hover {
-    background-color: #0E509C;//rgba(114, 178, 252, 1);
-}
-
-.email-reset-message-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-}
-
-.message {
-    color: rgba(6, 36, 70, 1);
-    font-weight: 400;
+    transition: background-color 0.5s ease;
 }
 
 .submit-btn-container.isSubmitting {
@@ -129,16 +120,6 @@ input[type='password'] {
 }
 
 .actions {
-    padding-top: 14px;
+    padding-top: 24px;
     height: fit-content;
-}
-
-.login-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.login-link .text-secondary {
-    color: rgba(6, 36, 70, 1);
 }

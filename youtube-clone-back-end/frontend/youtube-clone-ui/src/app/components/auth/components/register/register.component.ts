@@ -8,11 +8,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { RegisterFormInterface } from '../types/registerForm.interface';
+import { RegisterFormInterface } from '../../types/registerForm.interface';
 import { Store } from '@ngrx/store';
-import { AuthStateInterface } from '../types/authState.interface';
-import { authActions } from '../store/actions';
-import { fadeInAnimation } from '../../../shared/animation/fade-in.animation';
+import { AuthStateInterface } from '../../types/authState.interface';
+import { authActions } from '../../store/actions';
+import { fadeInAnimation } from '../../../../shared/animation/fade-in.animation';
 
 @Component({
   selector: 'app-register',
