@@ -9,6 +9,7 @@ import { toResponseMessage } from '../../../shared/utils/sharedUtils';
 import { AuthenticationService } from '../service/authentication.service';
 import { authActions } from './actions';
 import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
+import { Router } from '@angular/router';
 
 //create effect is like a listener, listening to some action (start process, success or error)
 export const loginEffect = createEffect(
@@ -16,7 +17,8 @@ export const loginEffect = createEffect(
     //get all actions
     actions$ = inject(Actions),
     authService = inject(AuthenticationService),
-    progressBarService = inject(ProgressBarService)
+    progressBarService = inject(ProgressBarService),
+    router = inject(Router)
   ) => {
     return actions$.pipe(
       ofType(authActions.login), //limit to actions of this type (login is start of login process)
@@ -26,6 +28,7 @@ export const loginEffect = createEffect(
           map((response: HttpResponseInterface<CurrentUserInterface>) => {
             const user: CurrentUserInterface = response.data.user;
             progressBarService.completeLoading(); //stop progress
+            router.navigate(['/home/explore'])
             return authActions.loginSuccess({
               currentUser: user,
               responseMessages: toResponseMessage(response), //map fields to ResponseMessageInterface
@@ -53,7 +56,7 @@ export const registerEffect = createEffect(
     progressBarService = inject(ProgressBarService)
   ) => {
     return actions$.pipe(
-      ofType(authActions.register),//start of registration process
+      ofType(authActions.register), //start of registration process
       switchMap(({ request }) => {
         progressBarService.startLoading();
         return authService.register(request).pipe(
@@ -90,7 +93,7 @@ export const resetPasswordEffect = createEffect(
     progressBarService = inject(ProgressBarService)
   ) => {
     return actions$.pipe(
-      ofType(authActions.resetPassword),//start of registration process
+      ofType(authActions.resetPassword), //start of registration process
       switchMap(({ request }) => {
         progressBarService.startLoading();
         console.log(`request ${request}`);
@@ -126,7 +129,7 @@ export const verifyPasswordResetLinkEffect = createEffect(
     progressBarService = inject(ProgressBarService)
   ) => {
     return actions$.pipe(
-      ofType(authActions.verifyResetLink),//start of registration process
+      ofType(authActions.verifyResetLink), //start of registration process
       switchMap(({ request }) => {
         progressBarService.startLoading();
         return authService.verifyPasswordLink(request).pipe(
@@ -151,4 +154,41 @@ export const verifyPasswordResetLinkEffect = createEffect(
     );
   },
   { functional: true }
-); 
+);
+
+//renew password
+export const updatePasswordEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    authService = inject(AuthenticationService),
+    progressBarService = inject(ProgressBarService),
+    router = inject(Router)
+  ) => {
+    return actions$.pipe(
+      ofType(authActions.renewPassword),
+      switchMap(({ request, key }) => {
+        progressBarService.startLoading();
+
+        return authService.updatePassword(key, request).pipe(
+          map((response: HttpResponseInterface<ResponseMessagesInterface>) => {
+            progressBarService.completeLoading(); //stop progress
+            router.navigate(['/verify/password']);//navigate 
+            return authActions.renewPasswordSuccess({
+              responseMessages: toResponseMessage(response),
+            });
+          }),
+          catchError((error: HttpErrorResponse) => {
+            progressBarService.completeLoading(); //stop progress
+
+            return of(
+              authActions.renewPasswordFailure({
+                errors: toResponseMessage(error.error),
+              })
+            );
+          })
+        );
+      })
+    );
+  },
+  { functional: true }
+);

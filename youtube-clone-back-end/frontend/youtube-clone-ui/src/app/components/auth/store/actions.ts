@@ -25,7 +25,7 @@ export const authActions = createActionGroup({
     'Verify Reset Link Success': props<{responseMessages: ResponseMessagesInterface}>(),
     'Verify Reset Link Failure': props<{errors: ResponseMessagesInterface}>(),
     //renew password
-    'Renew Password': props<{request: UpdatePasswordFormInterface}>(),
+    'Renew Password': props<{request: UpdatePasswordFormInterface, key: string}>(),
     'Renew Password Success': props<{responseMessages: ResponseMessagesInterface}>(),
     'Renew Password Failure': props<{errors: ResponseMessagesInterface}>(),
   }

@@ -7,8 +7,8 @@ import { NgProgressRef } from 'ngx-progressbar';
 export class ProgressBarService {
 
   progressRef: NgProgressRef;
-  defaultColor = '#FFFFFF';
-  successColor = '#FFFFF';
+  defaultColor = '#FF1B1B';//'#FFFFFF';
+  successColor = 'FF1B1B';//'#FFFFF';
   errorColor = '#EF0000';
   currentColor = this.defaultColor;
   constructor() { }
