@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { ResetPasswordComponent } from "../reset-password/reset-password/reset-password.component";
+import { ResetPasswordComponent } from "../reset-password/reset-password.component";
 
 export const authRoutes: Routes = [
   {
