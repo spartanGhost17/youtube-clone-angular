@@ -1,5 +1,7 @@
+import { inject } from "@angular/core";
 import { HttpResponseInterface } from "../types/httpResponse.interface";
 import { ResponseMessagesInterface } from "../types/responseMessages.interface";
+import { PersistanceService } from '../services/persistance/persistance.service';
 
 // Define the copyProperties function
 export function toResponseMessage<T>(source: HttpResponseInterface<T>) : ResponseMessagesInterface {
@@ -33,4 +35,15 @@ export function toResponseMessage<T>(source: HttpResponseInterface<T>) : Respons
         }
     }
     return target;
+}
+
+/**
+ * set tokens in local storage 
+ * @param {any} data the tokens map
+ * @param {PersistanceService} persistanceService 
+*/
+export function setTokens(data: any, persistanceService: PersistanceService): void {
+    for(let key in data) {
+        persistanceService.set(key, data[key]);
+    }
 }
