@@ -10,6 +10,7 @@ const initialState: AuthStateInterface = {
   validationErrors: null,
   accessToken: undefined,
   refreshToken: undefined,
+  isResetPasswordEmailSent: false
 };
 
 const authFeature = createFeature({
@@ -19,17 +20,22 @@ const authFeature = createFeature({
     on(authActions.login, (state) => ({
       ...state,
       isSubmitting: true,
+      isResetPasswordEmailSent: false,
       validationErrors: null, //remove errors if they happened
     })),
     on(authActions.loginSuccess, (state, action) => ({
       ...state,
       isSubmitting: false, 
       currentUser: action.currentUser,
-      validationMessages: action.responseMessages
+      isResetPasswordEmailSent: false,
+      validationMessages: action.responseMessages,
+      validationErrors: null
     })),
     on(authActions.loginFailure, (state, action) => ({
       ...state,
       isSubmitting: false,
+      isResetPasswordEmailSent: false,
+      validationMessages: null,
       validationErrors: action.errors
     })),
 
@@ -37,19 +43,64 @@ const authFeature = createFeature({
     on(authActions.register, (state) => ({
       ...state,
       isSubmitting: true,
+      isResetPasswordEmailSent: false,
       validationErrors: null, //remove errors if they happened
     })),
     on(authActions.registerSucces, (state, action) => ({
       ...state,
       isSubmitting: false, 
+      isResetPasswordEmailSent: false,
       currentUser: action.currentUser,
-      validationMessages: action.responseMessages
+      validationMessages: action.responseMessages,
+      validationErrors: null
     })),
     on(authActions.registerFailure, (state, action) => ({
       ...state,
       isSubmitting: false,
+      isResetPasswordEmailSent: false,
+      validationMessages: null,
       validationErrors: action.errors
-    }))
+    })),
+
+    //--reset password process start
+    //reset password
+    on(authActions.resetPassword, (state) => ({
+      ...state,
+      isSubmitting: true,
+      isResetPasswordEmailSent: false,
+      validationMessages: null,
+      validationErrors: null, //remove errors if they happened
+    })),
+    on(authActions.resetPasswordSuccess, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      isResetPasswordEmailSent: true,
+      validationMessages: action.responseMessages,
+      validationErrors: null
+    })),
+    on(authActions.resetPasswordFailure, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      isResetPasswordEmailSent: false,
+      validationMessages: null,
+      validationErrors: action.errors
+    })),
+    //verify password
+    on(authActions.verifyResetLink, (state) => ({
+      ...state,
+      isSubmitting: false,
+    })),
+    on(authActions.verifyResetLinkSuccess, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      validationMessages: action.responseMessages,
+    })),
+    on(authActions.verifyResetLinkFailure, (state, action) => ({
+      ...state,
+      isSubmitting: false,
+      validationErrors: action.errors
+    })),
+    //update password
   ),
 });
 
@@ -59,5 +110,9 @@ export const {
   selectIsSubmitting,
   selectIsLoading,
   selectCurrentUser,
+  selectIsResetPasswordEmailSent,
+  selectAccessToken,
+  selectRefreshToken,
+  selectValidationMessages,
   selectValidationErrors
 } = authFeature;

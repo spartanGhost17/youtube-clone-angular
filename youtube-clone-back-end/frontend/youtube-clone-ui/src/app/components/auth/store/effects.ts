@@ -8,6 +8,7 @@ import { HttpResponseInterface } from '../../../shared/types/httpResponse.interf
 import { toResponseMessage } from '../../../shared/utils/sharedUtils';
 import { AuthenticationService } from '../service/authentication.service';
 import { authActions } from './actions';
+import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 
 //create effect is like a listener, listening to some action (start process, success or error)
 export const loginEffect = createEffect(
@@ -80,3 +81,74 @@ export const registerEffect = createEffect(
   },
   { functional: true }
 );
+
+//reset password start
+export const resetPasswordEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    authService = inject(AuthenticationService),
+    progressBarService = inject(ProgressBarService)
+  ) => {
+    return actions$.pipe(
+      ofType(authActions.resetPassword),//start of registration process
+      switchMap(({ request }) => {
+        progressBarService.startLoading();
+        console.log(`request ${request}`);
+        return authService.resetPassword(request).pipe(
+          map((response: HttpResponseInterface<ResponseMessagesInterface>) => {
+            progressBarService.completeLoading(); //stop progress
+
+            return authActions.resetPasswordSuccess({
+              responseMessages: toResponseMessage(response),
+            });
+          }),
+          catchError((error: HttpErrorResponse) => {
+            progressBarService.completeLoading(); //stop progress
+
+            return of(
+              authActions.resetPasswordFailure({
+                errors: toResponseMessage(error.error),
+              })
+            );
+          })
+        );
+      }) //get new observable
+    );
+  },
+  { functional: true }
+);
+
+//verifiy password reset link
+export const verifyPasswordResetLinkEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+    authService = inject(AuthenticationService),
+    progressBarService = inject(ProgressBarService)
+  ) => {
+    return actions$.pipe(
+      ofType(authActions.verifyResetLink),//start of registration process
+      switchMap(({ request }) => {
+        progressBarService.startLoading();
+        return authService.verifyPasswordLink(request).pipe(
+          map((response: HttpResponseInterface<ResponseMessagesInterface>) => {
+            progressBarService.completeLoading(); //stop progress
+
+            return authActions.verifyResetLinkSuccess({
+              responseMessages: toResponseMessage(response),
+            });
+          }),
+          catchError((error: HttpErrorResponse) => {
+            progressBarService.completeLoading(); //stop progress
+
+            return of(
+              authActions.verifyResetLinkFailure({
+                errors: toResponseMessage(error.error),
+              })
+            );
+          })
+        );
+      }) //get new observable
+    );
+  },
+  { functional: true }
+); 
