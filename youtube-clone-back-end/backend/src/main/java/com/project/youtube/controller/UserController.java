@@ -2,10 +2,7 @@ package com.project.youtube.controller;
 
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.dto.UserDTO;
-import com.project.youtube.form.CreateUserForm;
-import com.project.youtube.form.LoginForm;
-import com.project.youtube.form.UpdateUserForm;
-import com.project.youtube.form.VerificationCodeForm;
+import com.project.youtube.form.*;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.User;
 import com.project.youtube.model.UserPrincipal;
@@ -195,7 +192,7 @@ public class UserController {
      * @param key the key UUID of password
      * @return the response
      */
-    @GetMapping(value = "verify/password")
+    @PostMapping(value = "verify/password")
     public ResponseEntity<HttpResponse> verifyPasswordKey(@RequestParam("type") String type, @RequestParam("key") String key) {
         userServiceImpl.verifyPasswordKey(key);
         return ResponseEntity.ok().body(
@@ -210,14 +207,13 @@ public class UserController {
     /**
      * end of reset password update flow. Updates the user password
      *
-     * @param key               the key
-     * @param password          the new password
-     * @param confirmedPassword the new confirmed password
+     * @param key                   the key
+     * @param updatePasswordForm    the form with password and confirmed password
      * @return the response
      */
     @PostMapping(value = "reset/password")
-    public ResponseEntity<HttpResponse> resetPassword(@RequestParam("key") String key, @RequestParam("password") String password, @RequestParam("confirmedPassword") String confirmedPassword) {
-        userServiceImpl.updatePassword(key, password, confirmedPassword);
+    public ResponseEntity<HttpResponse> resetPassword(@RequestParam("key") String key, @RequestBody @Valid UpdatePasswordForm updatePasswordForm) {
+        userServiceImpl.updatePassword(key, updatePasswordForm.getPassword(), updatePasswordForm.getConfirmedPassword());
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())

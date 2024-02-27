@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -76,7 +77,6 @@ public class UserDaoImpl implements UserDao<User> {
             //emailService.sendEmail(user.getUsername(), user.getEmail(), verificationUrl, ACCOUNT.getType());
             user.setEnabled(false);
             user.setNonLocked(true);
-
             //return the newly created user
             return user;
             //if error throw exception with appropriate message
@@ -440,10 +440,12 @@ public class UserDaoImpl implements UserDao<User> {
      * @return String Uri
      */
     private String getVerificationUrl(String key, String type) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "user/verify/"+type)
+        //TODO: Changed domain to front-end figure out how to do this with a domain resolver
+        return ServletUriComponentsBuilder.fromUriString("http://localhost:4200/verify/"+type).queryParam("type", type).queryParam("key", key).toUriString();
+        /*return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "user/verify/"+type)
                 .queryParam("type", type)
                 .queryParam("key", key)
-                .toUriString();
+                .toUriString();*/
     }
 
 }
