@@ -71,12 +71,18 @@ export class AuthenticationService {
     verifyPasswordForm: VerifyPasswordInterface
   ): Observable<HttpResponseInterface<ResponseMessagesInterface>> {
     const baseUrl = this.apiUrl;
-    const url = new URL(this.apiUrl + resources.USER_END_POINTS.VERIFY_PASSWORD_URL, baseUrl);
+    const url = new URL(
+      this.apiUrl + resources.USER_END_POINTS.VERIFY_PASSWORD_URL,
+      baseUrl
+    );
     const params = new HttpParams()
-            .append('type', verifyPasswordForm.type)
-            .append('key', verifyPasswordForm.key);
+      .append('type', verifyPasswordForm.type)
+      .append('key', verifyPasswordForm.key);
     console.log(`URL:  ${url}`);
-    return this.http.post<HttpResponseInterface<ResponseMessagesInterface>>(url.toString(), params);
+    return this.http.post<HttpResponseInterface<ResponseMessagesInterface>>(
+      url.toString(),
+      params
+    );
   }
 
   /**
@@ -96,5 +102,18 @@ export class AuthenticationService {
       updatePasswordForm,
       { params }
     );
+  }
+
+  /**
+   * get the profile of logged in user
+   * @returns {Observable<HttpResponseInterface<CurrentUserInterface>>} the user profile
+   */
+  getLoggedInUser(): Observable<HttpResponseInterface<CurrentUserInterface>> {
+    const baseUrl = this.apiUrl;
+    const url = new URL(
+      this.apiUrl + resources.USER_END_POINTS.GET_PROFILE,
+      baseUrl
+    );
+    return this.http.get<HttpResponseInterface<CurrentUserInterface>>(url.toString());
   }
 }
