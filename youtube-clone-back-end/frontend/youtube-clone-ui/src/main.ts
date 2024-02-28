@@ -1,5 +1,6 @@
 import {
   provideHttpClient,
+  withInterceptors,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { importProvidersFrom, isDevMode } from '@angular/core';
@@ -22,6 +23,8 @@ import { MaterialModule } from './app/module/material/material.module';
 import { NgProgressBarModule } from './app/module/ngProgress-bar/ng-progress.module';
 import { provideEffects } from '@ngrx/effects';
 import * as authEffects from './app/components/auth/store/effects';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { httpInterceptorProviders } from './app/components/auth/interceptors/interceptorProvider/httpInterceptorProvider';
 
 
 bootstrapApplication(AppComponent, {
@@ -36,10 +39,14 @@ bootstrapApplication(AppComponent, {
       IconsProviderModule
     ),
     provideRouter(appRoutes),
+    provideHttpClient(withInterceptors(httpInterceptorProviders)),
     //ngrx
-    provideStore(), //register store
+    provideStore({
+      router: routerReducer
+    }), //register store
     provideState(authFeatureKey, authReducer), //registered here since the auth feature is shared
     provideEffects(authEffects),
+    provideRouterStore(), //will helps us manage router navigation in angular way (delete some fields)
     provideStoreDevtools({
       maxAge: 25, //max actions
       logOnly: !isDevMode(),
@@ -48,7 +55,7 @@ bootstrapApplication(AppComponent, {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
     { provide: NZ_I18N, useValue: uk_UA },
-    provideHttpClient(withInterceptorsFromDi()),
+    //provideHttpClient(),
     provideAnimations(),
   ],
 }).catch((err) => console.error(err));
