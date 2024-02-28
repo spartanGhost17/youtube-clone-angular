@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, act, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { ProgressBarService } from '../../../shared/services/progress-bar/progress-bar.service';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
@@ -19,8 +19,7 @@ export const loginEffect = createEffect(
     actions$ = inject(Actions),
     authService = inject(AuthenticationService),
     progressBarService = inject(ProgressBarService),
-    peristanceService = inject(PersistanceService),
-    router = inject(Router)
+    peristanceService = inject(PersistanceService)
   ) => {
     return actions$.pipe(
       ofType(authActions.login), //limit to actions of this type (login is start of login process)
@@ -169,7 +168,6 @@ export const updatePasswordEffect = createEffect(
     actions$ = inject(Actions),
     authService = inject(AuthenticationService),
     progressBarService = inject(ProgressBarService),
-    router = inject(Router)
   ) => {
     return actions$.pipe(
       ofType(authActions.renewPassword),
@@ -179,7 +177,7 @@ export const updatePasswordEffect = createEffect(
         return authService.updatePassword(key, request).pipe(
           map((response: HttpResponseInterface<ResponseMessagesInterface>) => {
             progressBarService.completeLoading(); //stop progress
-            router.navigate(['/verify/password']);//navigate 
+            
             return authActions.renewPasswordSuccess({
               responseMessages: toResponseMessage(response),
             });
@@ -201,12 +199,22 @@ export const updatePasswordEffect = createEffect(
 );
 
 //redirect navigate to home page
-export const redirectAfterRegisterEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
-  console.log("calling redirectAfterRegisterEffect");
+export const redirectAfterLoginEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
   return actions$.pipe(
     ofType(authActions.loginSuccess),
     tap(() => {
       router.navigate(['/'])
+    })
+  )
+}, {functional: true, dispatch: false});
+
+//redirect to verify/password
+export const redirectAfterVerifyPasswordResetLinkEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
+  console.log("calling redirectAfterRegisterEffect");
+  return actions$.pipe(
+    ofType(authActions.renewPassword),
+    tap(() => {
+      router.navigate(['/verify/password'])
     })
   )
 }, {functional: true, dispatch: false});
