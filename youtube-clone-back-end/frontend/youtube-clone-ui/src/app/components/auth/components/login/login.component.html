@@ -20,8 +20,8 @@
                     <span class="material-symbols-outlined non-selectable" *ngIf="showPassword" (click)="togglePasswordVisibility(passwordInput)">visibility</span>
                 </div>
             </div>
-            <div class="error-messages-container" *ngIf="(validationErrors$ | async)?.reason as reason">
-                <p>{{reason}}</p>
+            <div class="error-messages-container error-messages" *ngIf="(validationErrors$ | async)?.reason as reason">
+                <p>&bull; {{reason}}</p>
             </div>
             <div class="submit-btn-container" [ngClass]="{'isSubmitting': (isSubmitting$ | async)}">
                 <button type="submit" class="submit-btn" [disabled]="(loginFormGroup.invalid || (isSubmitting$ | async) )">Login</button>
