@@ -1,8 +1,8 @@
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, CdkDropList, CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Icons } from '../../models/icons';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
-import { NgFor, NgStyle } from '@angular/common';
 
 @Component({
     selector: 'app-drag-drop-list',
@@ -11,11 +11,12 @@ import { NgFor, NgStyle } from '@angular/common';
     standalone: true,
     imports: [
         CdkDropList,
+        NgIf,
         NgFor,
         CdkDrag,
         CdkDragHandle,
         NgStyle,
-        StandardDropdownComponent,
+        StandardDropdownComponent
     ],
 })
 export class DragDropListComponent {
@@ -28,6 +29,8 @@ export class DragDropListComponent {
   rightIcon: string = 'more_vert';
 
   @Input() items: any[] = [];
+  @Input() showViews: boolean = true;
+  @Input() isSmall: boolean = false;
 
   @ViewChildren('draggable') draggables: QueryList<ElementRef>;
   @ViewChild('draggableContainer') draggableContainer: ElementRef<any>;

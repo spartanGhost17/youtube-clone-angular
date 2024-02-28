@@ -6,16 +6,20 @@
                     <span class="material-symbols-outlined burger-icon">{{leftIcon}}</span>
                 </div>
                 <div class="center thumbnail-container">
-                    <div class="thumbnail__center">
-                        <img draggable="false" class="img" alt="" [src]="item.thumbnailURL">
+                    <div class="thumbnail__center" [ngStyle]="{'width': isSmall? '80px':'180px', 'height': isSmall? '80px': '100px'}">
+                        <img draggable="false" class="image" alt="" [src]="item.thumbnailURL">
+                        <div class="video-length">
+                            4:00
+                        </div>
                     </div>
                     <div class="metadata__center">
-                        <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '12px'}">{{item.title}}</h2>
-                        <p class="text-secondary">{{item.channelName}} &bull; {{item.viewCount}} views &bull; {{item.postTime}} ago</p>
+                        <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '6px'}">{{item.title}}</h2>
+                        <p *ngIf="showViews" class="text-secondary">{{item.channelName}} &bull; {{item.viewCount}} views &bull; {{item.postTime}} ago</p>
+                        <p *ngIf="!showViews" class="text-secondary">{{item.channelName}}</p>
                     </div>
                 </div>
                 <div class="end">
-                    <app-standard-dropdown [items]="dropDownItems" [circle]="true"></app-standard-dropdown>
+                    <app-standard-dropdown [icon]="'more_vert'" [items]="dropDownItems" [circle]="true"></app-standard-dropdown>
                 </div>
             </div>
         </div>
