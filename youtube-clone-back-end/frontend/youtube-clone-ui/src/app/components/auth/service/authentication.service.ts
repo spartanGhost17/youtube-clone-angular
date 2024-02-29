@@ -1,6 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import resources from '../../../../resources/end-points.json';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
@@ -10,12 +10,15 @@ import { RegisterFormInterface } from '../types/registerForm.interface';
 import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 import { UpdatePasswordFormInterface } from '../types/updatePasswordForm.interface';
 import { VerifyPasswordInterface } from '../types/verifyPassword.interface';
+import { PersistanceService } from '../../../shared/services/persistance/persistance.service';
+import { TokenType } from '../enum/tokenType.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   apiUrl: string = environment.apiUrl;
+  persistanceService = inject(PersistanceService);
   constructor(private http: HttpClient) {}
 
   /**
@@ -115,5 +118,25 @@ export class AuthenticationService {
       baseUrl
     );
     return this.http.get<HttpResponseInterface<CurrentUserInterface>>(url.toString());
+  }
+
+  /**
+   *  get refresh token if access token expired and write them to local storage
+  */
+  getRefreshToken(): Observable<HttpResponseInterface<ResponseMessagesInterface>> {
+    const baseUrl = this.apiUrl;
+    const url = new URL(
+      this.apiUrl + resources.USER_END_POINTS.REFRESH_TOKEN,
+      baseUrl
+    );
+    
+    const token = this.persistanceService.get(TokenType.REFRESH);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<HttpResponseInterface<ResponseMessagesInterface>>(url.toString(), {headers}).pipe(
+      tap(response => {
+        this.persistanceService.set(TokenType.ACCESS, response.tokens[TokenType.ACCESS]);
+        this.persistanceService.set(TokenType.REFRESH, response.tokens[TokenType.REFRESH]);
+      }),
+    );
   }
 }
