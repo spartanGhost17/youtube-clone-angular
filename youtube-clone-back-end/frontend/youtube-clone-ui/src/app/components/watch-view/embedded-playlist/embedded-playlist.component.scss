@@ -1,0 +1,130 @@
+.embedded-playlist-container {
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 24px;
+    border-radius: 14px;
+    border: .002rem solid grey;
+    z-index: -1;
+
+}
+
+.header {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    padding: 10px;
+    height: fit-content;
+    background-color: rgba(39, 39, 39, 1);
+}
+
+.title {
+    font-size: 1.2rem;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30px;
+}
+
+.visibility {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    width: 80px;
+    height: 100%;//fit-content;
+    border-radius: 6px;
+    font-size: .8rem;
+    background-color: rgba(83, 82, 82, 0.5);
+}
+
+.visibility .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4px;
+}
+
+.metadata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.metadata > * {
+    margin-right: 6px;
+}
+
+.owner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.current-video-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions__left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.actions__right {
+    
+}
+
+.action_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.action_btn:hover {
+    background-color: var(--yt-color-innactive-button-hover);
+}
+
+.embedded-content {
+    overflow-y: scroll;
+    // /overflow-x: hidden;
+    padding-top: 10px;
+    height: fit-content;
+    min-width: 303px;
+    min-height: 358px;
+    max-width: 932px;//402px;
+    max-height: 458px;//720px;//458px
+    z-index: 0;
+}
+
+.drag-drop {
+}
