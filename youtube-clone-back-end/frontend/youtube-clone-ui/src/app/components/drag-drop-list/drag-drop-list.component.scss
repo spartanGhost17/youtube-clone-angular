@@ -1,5 +1,5 @@
 .draggables-container {
-    overflow-y: auto;
+    overflow-y: hidden;
     height: 100%;
     overflow-x: hidden;
 }
@@ -80,7 +80,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 160px;
+    min-width: 140px;
+    //min-width: 160px;
     //width: 160px;
     //height: 100px;
 }
@@ -118,7 +119,7 @@
 .drag-item {
     display: flex;
     height: fit-content;
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
 }
 
 .draggable-list {

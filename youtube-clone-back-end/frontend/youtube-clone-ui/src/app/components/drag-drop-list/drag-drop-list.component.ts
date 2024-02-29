@@ -43,19 +43,21 @@ export class DragDropListComponent {
   isDragging = false;
   listItem: any;
   moveItem: any;
-  dropDownItems: any[];
+  @Input() dropDownItems: any[] = [];
 
   constructor() {
-    this.dropDownItems = [
-      { icon: 'playlist_play', text: 'Add to queue', action: () => {} },
-      { icon: 'schedule', text: 'Save to Watch Later', action: () => {} },
-      { icon: 'playlist_add', text: 'Save to playlist', action: () => {} },
-      { icon: 'delete', text: 'Remove from', action: () => {} },
-      { icon: 'download', text: 'Download', action: () => {} },
-      { icon: 'share', text: 'Share', action: () => {} },
-      { seperator: true },
-      { icon: 'image', text: 'Set as playlist thumbnail', action: () => {} },
-    ];
+    if(this.dropDownItems.length == 0) {
+      this.dropDownItems = [
+        { icon: 'playlist_play', text: 'Add to queue', action: () => {} },
+        { icon: 'schedule', text: 'Save to Watch Later', action: () => {} },
+        { icon: 'playlist_add', text: 'Save to playlist', action: () => {} },
+        { icon: 'delete', text: 'Remove from', action: () => {} },
+        { icon: 'download', text: 'Download', action: () => {} },
+        { icon: 'share', text: 'Share', action: () => {} },
+        { seperator: true },
+        { icon: 'image', text: 'Set as playlist thumbnail', action: () => {} },
+      ];
+    } 
   }
 
   ngOnInit(): void {
