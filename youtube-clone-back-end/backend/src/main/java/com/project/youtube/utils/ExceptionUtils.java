@@ -36,8 +36,15 @@ public class ExceptionUtils {
         if(exception instanceof APIException || exception instanceof BadCredentialsException || exception instanceof DisabledException || exception instanceof LockedException) {
             httpResponse = getHttpResponse(request, response, exception.getMessage(), HttpStatus.BAD_REQUEST);
             writeResponse(response, httpResponse);
+
+        } else if(exception instanceof TokenExpiredException) {
+            String message = "expired token";
+            httpResponse = getHttpResponse(request, response, exception.getMessage(), HttpStatus.UNAUTHORIZED);//send 401 if token expired
+            writeResponse(response, httpResponse);
+
         } else { //other errors just send internal server error
-            httpResponse = getHttpResponse(request, response, exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            String message = "An error occurred please try again";
+            httpResponse = getHttpResponse(request, response, message, HttpStatus.INTERNAL_SERVER_ERROR);
             writeResponse(response, httpResponse);
         }
         log.error(exception.getMessage());

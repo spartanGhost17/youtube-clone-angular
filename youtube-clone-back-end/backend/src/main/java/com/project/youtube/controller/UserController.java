@@ -229,6 +229,7 @@ public class UserController {
     @GetMapping(value = "refresh/token")
     public ResponseEntity<HttpResponse> getRefreshToken(HttpServletRequest request) {
         if (isHeaderTokenValid(request)) {
+            log.info("Refreshing user tokens");
             String token = request.getHeader(AUTHORIZATION).substring(AUTH_TOKEN_PREFIX.length());
             UserDTO userDTO = userServiceImpl.getUser(tokenProvider.getSubject(token, request));
             return new ResponseEntity(
