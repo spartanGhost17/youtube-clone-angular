@@ -39,7 +39,8 @@ bootstrapApplication(AppComponent, {
       IconsProviderModule
     ),
     provideRouter(appRoutes),
-    provideHttpClient(withInterceptors(httpInterceptorProviders)),
+    provideHttpClient(withInterceptorsFromDi()),
+    httpInterceptorProviders,
     //ngrx
     provideStore({
       router: routerReducer
