@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Playlist } from '../../../models/playlist';
+import { Playlist } from '../../types/playlist.interface';
 import end_points  from "../../../../resources/end-points.json"
 
 

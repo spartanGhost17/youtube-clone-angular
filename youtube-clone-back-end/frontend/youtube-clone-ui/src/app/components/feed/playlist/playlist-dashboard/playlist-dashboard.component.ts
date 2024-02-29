@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Playlist } from '../../../../models/playlist';
+import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
 import { PlaylistMiniComponent } from '../playlist-mini/playlist-mini.component';
 import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
 import { VideoCardBasicComponent } from '../../../video-displays/video-card-basic/video-card-basic.component';
@@ -15,10 +15,10 @@ import { NgFor } from '@angular/common';
 export class PlaylistDashboardComponent {
   dropDownSettingsItems: any[] = [];
   dropDownText: string = 'A-Z';
-  playlists: Playlist[]
-  watchLaterPlaylist: Playlist;
-  historyPlaylist: Playlist;
-  likedPlaylist: Playlist;
+  playlists: PlaylistInterface[]
+  watchLaterPlaylist: PlaylistInterface;
+  historyPlaylist: PlaylistInterface;
+  likedPlaylist: PlaylistInterface;
 
   constructor() {}
 
@@ -47,38 +47,38 @@ export class PlaylistDashboardComponent {
 
   getPlaylists(): void {
     this.playlists = [
-      {id: '', title: 'Comics', visibilityStatus: 'PRIVATE', videos: [
+      {id: 0, title: 'Comics', visibilityStatus: 'PRIVATE', videos: [
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
       ]},      
-      {id: '', title: 'Anime music', visibilityStatus: 'PRIVATE', videos: [
+      {id: 1, title: 'Anime music', visibilityStatus: 'PRIVATE', videos: [
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/true_detective.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: '', title: 'C#', visibilityStatus: 'PRIVATE', videos: [
+      {id: 2, title: 'C#', visibilityStatus: 'PRIVATE', videos: [
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/true_detective.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: '', title: 'Computer music', visibilityStatus: 'PRIVATE', videos: [
+      {id: 3, title: 'Computer music', visibilityStatus: 'PRIVATE', videos: [
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_red_glow.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: '', title: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
+      {id: 4, title: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/green_lanter_vs_sinestro.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: '', title: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
+      {id: 5, title: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
         {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
@@ -89,7 +89,7 @@ export class PlaylistDashboardComponent {
 
   getWatchLaterPlaylist(): void {
     this.watchLaterPlaylist = {
-      id: '',
+      id: 1,
       title: 'History',
       visibilityStatus: 'PUBLIC',
       description: '',
@@ -108,7 +108,7 @@ export class PlaylistDashboardComponent {
 
   getHistoryPlaylist(): void {
     this.historyPlaylist = {
-      id: '',
+      id: 2,
       title: 'History',
       visibilityStatus: 'PUBLIC',
       description: '',
@@ -127,7 +127,7 @@ export class PlaylistDashboardComponent {
 
   getLikedPlaylist(): void {
     this.likedPlaylist = {
-      id: '',
+      id: 3,
       title: 'History',
       visibilityStatus: 'PUBLIC',
       description: '',

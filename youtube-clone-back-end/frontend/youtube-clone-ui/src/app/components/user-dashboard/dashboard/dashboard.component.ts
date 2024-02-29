@@ -1,7 +1,7 @@
 import { Component, ContentChildren, QueryList, TemplateRef, ViewChildren } from '@angular/core';
 import { Video } from '../../../models/video';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
-import { Playlist } from '../../../models/playlist';
+import { PlaylistInterface } from '../../../shared/types/playlist.interface';
 import { VideoVisibilityComponent } from '../../upload-video-view/video-visibility/video-visibility.component';
 import { VideoChecksComponent } from '../../upload-video-view/video-checks/video-checks.component';
 import { VideoElementsComponent } from '../../upload-video-view/video-elements/video-elements.component';
@@ -41,9 +41,9 @@ export class DashboardComponent {
   isShowModal: boolean = false;
   @ViewChildren ('stepTemplate') stepsTemplateRefs: QueryList<TemplateRef<any>>;
   video: Video;
-  playlists: Playlist[] = [];
+  playlists: PlaylistInterface[] = [];
   playlistSelection: any[] = [];
-  categories: Playlist[] = [];
+  categories: PlaylistInterface[] = [];
   categorySelection: any[] = [];
 
 
@@ -233,24 +233,24 @@ export class DashboardComponent {
   getCategories() {
     
     this.categories = [
-      {id: '', title: '#C courses', visibilityStatus: 'PUBLIC'},
-      {id: '', title: '#C courses', visibilityStatus: 'PUBLIC'}, 
-      {id: '', title: 'Beats kanye', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Adventyre time', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'DBZ Starter pack', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'black airforce energy', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Trap', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Tom & Jerry', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'AMV', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Anime essay', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'funny videos', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Rap', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Samurai origin', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Pranks', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Meek Mill', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Teletubies', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Batman', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Breaking Bad', visibilityStatus: 'PUBLIC'}
+      {id: 0, title: '#C courses', visibilityStatus: 'PUBLIC'},
+      {id: 1, title: '#C courses', visibilityStatus: 'PUBLIC'}, 
+      {id: 2, title: 'Beats kanye', visibilityStatus: 'PUBLIC'},
+      {id: 3, title: 'Adventyre time', visibilityStatus: 'PUBLIC'},
+      {id: 4, title: 'DBZ Starter pack', visibilityStatus: 'PUBLIC'},
+      {id: 5, title: 'black airforce energy', visibilityStatus: 'PUBLIC'},
+      {id: 6, title: 'Trap', visibilityStatus: 'PUBLIC'},
+      {id: 7, title: 'Tom & Jerry', visibilityStatus: 'PUBLIC'},
+      {id: 8, title: 'AMV', visibilityStatus: 'PUBLIC'},
+      {id: 9, title: 'Anime essay', visibilityStatus: 'PUBLIC'},
+      {id: 10, title: 'funny videos', visibilityStatus: 'PUBLIC'},
+      {id: 11, title: 'Rap', visibilityStatus: 'PUBLIC'},
+      {id: 12, title: 'Samurai origin', visibilityStatus: 'PUBLIC'},
+      {id: 13, title: 'Pranks', visibilityStatus: 'PUBLIC'},
+      {id: 14, title: 'Meek Mill', visibilityStatus: 'PUBLIC'},
+      {id: 15, title: 'Teletubies', visibilityStatus: 'PUBLIC'},
+      {id: 16, title: 'Batman', visibilityStatus: 'PUBLIC'},
+      {id: 17, title: 'Breaking Bad', visibilityStatus: 'PUBLIC'}
     ];
 
     for(const category of this.categories) {
@@ -260,24 +260,24 @@ export class DashboardComponent {
 
   getVideoPlaylists() {
     this.playlists = [
-      {id: '', title: '#C courses', visibilityStatus: 'PUBLIC'},
-      {id: '', title: '#C courses', visibilityStatus: 'PUBLIC'}, 
-      {id: '', title: 'Beats kanye', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Adventyre time', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'DBZ Starter pack', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'black airforce energy', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Trap', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Tom & Jerry', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'AMV', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Anime essay', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'funny videos', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Rap', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Samurai origin', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Pranks', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Meek Mill', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Teletubies', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Batman', visibilityStatus: 'PUBLIC'},
-      {id: '', title: 'Breaking Bad', visibilityStatus: 'PUBLIC'}
+      {id: 1, title: '#C courses', visibilityStatus: 'PUBLIC'},
+      {id: 2, title: '#C courses', visibilityStatus: 'PUBLIC'}, 
+      {id: 3, title: 'Beats kanye', visibilityStatus: 'PUBLIC'},
+      {id: 4, title: 'Adventyre time', visibilityStatus: 'PUBLIC'},
+      {id: 5, title: 'DBZ Starter pack', visibilityStatus: 'PUBLIC'},
+      {id: 6, title: 'black airforce energy', visibilityStatus: 'PUBLIC'},
+      {id: 7, title: 'Trap', visibilityStatus: 'PUBLIC'},
+      {id: 8, title: 'Tom & Jerry', visibilityStatus: 'PUBLIC'},
+      {id: 9, title: 'AMV', visibilityStatus: 'PUBLIC'},
+      {id: 10, title: 'Anime essay', visibilityStatus: 'PUBLIC'},
+      {id: 11, title: 'funny videos', visibilityStatus: 'PUBLIC'},
+      {id: 12, title: 'Rap', visibilityStatus: 'PUBLIC'},
+      {id: 13, title: 'Samurai origin', visibilityStatus: 'PUBLIC'},
+      {id: 14, title: 'Pranks', visibilityStatus: 'PUBLIC'},
+      {id: 15, title: 'Meek Mill', visibilityStatus: 'PUBLIC'},
+      {id: 16, title: 'Teletubies', visibilityStatus: 'PUBLIC'},
+      {id: 17, title: 'Batman', visibilityStatus: 'PUBLIC'},
+      {id: 18, title: 'Breaking Bad', visibilityStatus: 'PUBLIC'}
     ];
 
     for(const playlist of this.playlists) {

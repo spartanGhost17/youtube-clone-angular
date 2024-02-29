@@ -168,16 +168,15 @@ public class TokenProvider {
         Date expiredAt;
         try {
             DecodedJWT decodedJWT = verifier.verify(token);
-            expiredAt = decodedJWT.getExpiresAt();
             return Long.parseLong(decodedJWT.getSubject());
         } catch (TokenExpiredException exception) {
             request.setAttribute("expiredMessage", exception.getMessage());
-            //throw new TokenExpiredException("", expiredAt);
-            throw new APIException("Something went wrong, This token has expired");
+            throw new TokenExpiredException("token expired on "+exception.getExpiredOn().toString(), exception.getExpiredOn());
+            //throw new APIException("Something went wrong, This token has expired");
         } catch (InvalidClaimException exception) {
             request.setAttribute("invalidClaims", exception.getMessage());
-            //throw new InvalidClaimException("Provided claims are not valid");
-            throw new APIException("Invalid claims provided for the token");
+            throw new InvalidClaimException("Provided claims are not valid");
+            //throw new APIException("Invalid claims provided for the token");
         } catch (Exception exception) {
             throw new APIException("something went wrong with the token");
         }

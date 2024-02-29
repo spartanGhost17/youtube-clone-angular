@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Playlist } from '../../../../models/playlist';
+import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
 import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/s
     imports: [StandardDropdownComponent]
 })
 export class PlaylistMiniComponent {
-  @Input() playlist: Playlist;
+  @Input() playlist: PlaylistInterface;
 
   videoCount: number = 0;
   dropDownSettingsItems: any[] = [];

@@ -1,5 +1,5 @@
 import { Component, Directive, ElementRef, Input, OnInit, SimpleChanges, TemplateRef, ViewChild, EventEmitter, Output, HostListener, QueryList, ViewChildren } from '@angular/core';
-import { Playlist } from '../../../models/playlist';
+import { PlaylistInterface } from '../../../shared/types/playlist.interface';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgStyle, NgClass, NgFor } from '@angular/common';
 

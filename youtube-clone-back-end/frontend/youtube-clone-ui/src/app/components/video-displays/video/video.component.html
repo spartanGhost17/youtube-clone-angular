@@ -82,7 +82,8 @@
         </div>
     </div>
     <!--(volumechange)="onVolumeChanged()"-->
-    <video #video [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover', 'border-radius': '14px'}" alt="" 
+    <video #video 
+        [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover', 'border-radius': (!theaterMode || !fullScreenMode)? '14px' : '0px'}" alt="" 
         (click)="togglePlay()" 
         (change)="videoVolumeChange($event)"
         (loadedmetadata)="onLoadedMetadata()"

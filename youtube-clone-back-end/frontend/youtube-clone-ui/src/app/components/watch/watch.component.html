@@ -1,5 +1,4 @@
 <div id="watch-container" #watchContainer class="watch-container blur-bg">
-
     <div class="main-content-container">
         <div #bgColorBlur class="bg-color-blur"></div>
         <div #videoContainer class="video-container" [ngClass]="{'expanded': isCinemaMode}">
@@ -7,6 +6,10 @@
         </div>
         
         <div #recommendationContainer class="recommendations-container">
+            <app-embedded-playlist></app-embedded-playlist>
+
+            <!--<div class="recommendations-container__embedded-playlist">
+            </div>-->
             <div class="recommended-video" *ngFor="let video of videos">
                 <app-video-card
                     [showActions]="true"
