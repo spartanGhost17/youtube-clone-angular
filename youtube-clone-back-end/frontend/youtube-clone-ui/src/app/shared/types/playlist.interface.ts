@@ -1,6 +1,6 @@
-import { Video } from './video';
-export interface Playlist {
-    id?:string;
+import { Video } from '../../models/video';
+export interface PlaylistInterface {
+    id?:number;
     title: string;
     videos?: Video[];
     description?: string;
