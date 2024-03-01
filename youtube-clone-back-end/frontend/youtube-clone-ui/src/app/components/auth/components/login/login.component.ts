@@ -15,6 +15,8 @@ import { selectAuthState, selectIsSubmitting, selectValidationErrors, selectVali
 import { AuthStateInterface } from '../../types/authState.interface';
 import { LoginFormInterface } from '../../types/loginForm.interface';
 import { ResponseMessagesInterface } from '../../../../shared/types/responseMessages.interface';
+import { permissionsActions } from '../../../../shared/store/permission/actions';
+import { GlobalPermissionStateInterface } from '../../../../shared/types/permissionState.interface';
 
 @Component({
   selector: 'app-login',
@@ -55,12 +57,6 @@ export class LoginComponent {
     });
     this.validationMessages$ = this.store.select(selectValidationMessages);
     this.validationErrors$ = this.store.select(selectValidationErrors);
-    /*this.validationMessages$.subscribe((validation) => {
-      if(validation) {
-        this.router.navigate(['/home/explore']);
-      }
-    });*/
-
   }
 
   ngAfterViewInit() {
@@ -75,16 +71,14 @@ export class LoginComponent {
    */
   onSubmit() {
     if (this.loginFormGroup.valid) {
-      console.log(`FORM VALUES ${this.loginFormGroup.value.username}`);
-      console.log(`FORM VALUES ${this.loginFormGroup.value.password}`);
       const loginRequest: LoginFormInterface = {
         username: this.loginFormGroup.value.username,
         password: this.loginFormGroup.value.password,
       };
       this.store.dispatch(authActions.login({ request: loginRequest })); //dispatch current action
+      this.getAllRoles();//dispatch get all permissions != different from user roles
     } else {
       console.error('Invalid form');
-      console.log(`ERROR VALUES ${this.loginFormGroup.value}`);
     }
   }
 
@@ -95,4 +89,11 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
     input.type = input.type === 'password' ? 'text' : 'password';
   }
+
+    /**
+   * get all roles
+   */
+    getAllRoles(): void {
+      this.store.dispatch(permissionsActions.loadAllPermissions());
+    }
 }
