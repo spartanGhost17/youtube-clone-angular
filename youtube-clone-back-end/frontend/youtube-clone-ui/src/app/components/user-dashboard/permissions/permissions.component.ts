@@ -46,6 +46,9 @@ export class PermissionsComponent {
 
   ngOnInit(): void {
     console.log("loading data...")
+  }
+
+  ngAfterViewInit(): void {
     this.combineLatestUpdates();
     this.getCurrentUserState();
   }
