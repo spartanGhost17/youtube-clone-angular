@@ -103,7 +103,7 @@ input[type="range"]::-ms-thumb {
     background-color: var(--yt-color-innactive-button-hover);//rgba(39, 39, 39, 1);
 }
 
-.container {
+.container { //TODO: FIX THIS REMOVE ALL PADDING AND MARGINS
     width: 100%;//only used when viewport is shrunk passed @media query
     height: 100%;
     margin-left: 4px;
