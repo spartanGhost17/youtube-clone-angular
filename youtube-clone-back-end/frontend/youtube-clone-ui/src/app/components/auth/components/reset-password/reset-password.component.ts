@@ -34,10 +34,6 @@ export class ResetPasswordComponent {
   key: string;
   currentType: string;
   currentKey: string;
-  //validationMessages$: Observable<ResponseMessagesInterface | null>;
-  //validationErrors$: Observable<ResponseMessagesInterface | null>;
-  //isResetEmailSent$: Observable<boolean>;
-  //isPasswordLinkValid$: Observable<boolean>;
   data$: Observable<{
     isResetEmailSent: boolean;
     isPasswordLinkValid: boolean;
