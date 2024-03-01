@@ -13,6 +13,10 @@
         "REGISTER": "/api/v1/user/register",
         "RESET_PASSWORD": "/api/v1/user/reset/password",
         "VERIFY_PASSWORD_URL": "/api/v1/user/verify/password", 
-        "REFRESH_TOKEN": "/api/v1/user/refresh/token"
+        "REFRESH_TOKEN": "/api/v1/user/refresh/token",
+        "UPDATE_ROLE": "/api/v1/user/update/role"
+    },
+    "ROLE_END_POINTS": {
+        "GET_ALL": "/api/v1/role/"
     }
 }
