@@ -1,0 +1,28 @@
+<ng-container *ngIf="data$ | async as permissionsData">
+    <div class="permission-container">
+        <h1 class="text-primary title">Authorization Settings</h1>
+        <div class="role-section">
+            <div class="permissions-content">
+                <h4 class="text-primary">Select your prefered role</h4>
+                <mat-form-field>
+                    <mat-label>Choose a Role *</mat-label>
+                    <mat-select [(value)]="selectedRole.name" [ngStyle]="{'height': 'auto'}">
+                        <mat-option (click)="onOptionSelected(role)"  *ngFor="let role of permissionsData.data" [value]="role.name">
+                        {{role.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div class="permissions-section">
+                <h4 class="text-primary">Permissions</h4>
+                <div class="permissions-container">
+                    <input class="permission-item" type="text" *ngFor="let permission of permissions.split(',')" [value]="permission" [disabled]="true">
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="ytcp-button">Update</button>
+        </div>
+    </div>
+</ng-container>

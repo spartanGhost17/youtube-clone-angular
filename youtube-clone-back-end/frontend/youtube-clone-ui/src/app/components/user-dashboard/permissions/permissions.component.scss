@@ -1,0 +1,37 @@
+.permission-container {
+    padding: 10px;
+}
+
+.title {
+    padding-bottom: 10px;
+}
+
+.role-section {
+    display: flex;
+}
+
+.permissions-section {
+    margin-left: 20%;
+}
+
+.permissions-container {
+    border: 2px solid rgba(39, 39, 39, 1);
+    min-width: 400px;
+    max-width: 600px;
+    width: fit-content;//400px;//400px;
+    padding: 10px;
+    overflow-y: scroll;
+    height: 250px;
+    border-radius: 10px;
+}
+
+.permission-item {
+    text-align: center;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    height: 24px;
+    width: 200px;
+    padding: 10px;
+    background-color: #323232;
+    border-radius: 4px;
+}
