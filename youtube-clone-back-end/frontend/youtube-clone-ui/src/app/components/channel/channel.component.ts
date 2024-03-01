@@ -4,7 +4,8 @@ import { VideoCardBasicComponent } from '../video-displays/video-card-basic/vide
 import { TabComponent } from '../tab/tab.component';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
 import { SwitchComponent } from '../switch/switch.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgIf, NgClass, NgFor, DatePipe } from '@angular/common';
+import { ModalComponent } from "../modal/modal.component";
 
 @Component({
     selector: 'app-channel',
@@ -19,10 +20,13 @@ import { NgIf, NgClass, NgFor } from '@angular/common';
         NgClass,
         NgFor,
         VideoCardBasicComponent,
-    ],
+        ModalComponent,
+        DatePipe
+    ]
 })
 export class ChannelComponent {
   isVerified: boolean = true;
+  isInfoVisible: boolean = false;
   subscriptionState: string = 'Subscribed';
   channelName: string = "Green's Lantern Hub";
   userId: string = '@AlJordan';
@@ -38,6 +42,18 @@ export class ChannelComponent {
   latestActive: boolean = true;
   popularActive: boolean = false;
   oldestActive: boolean = false;
+  channelDescription: string = `Nous  Congo buzz , nous émettons depuis la ville de Kinshasa en République démocratique du Congo .  
+  Nous sommes un média centré sur les actualités politiques et culturelles . 
+  Nous éduquons la population. Nous organisons des débat et des reportages dans le seul but d informer, divertir et former la masse.  La seule manière pour vous de  nous aider est de vous abonner et faire abonner les autres. Partagez nos liens le plus possible.      
+  vos suggestions et remarques au  numéro +243972293356.
+  Abonnez-vous ✔ | Partagez ✔ | Commentez ✔ | Aimez ✔
+  Cliquez ici pour voir la chaine :   https://www.youtube.com/channel/UC9SAsV1gFXPFdtZK4215bIg
+  
+  Retrouvez Congo Buzz Tv  sur :
+  
+  https://congobuzz.net
+  https://web.facebook.com/congobuzznet
+  https://instagram.com/congobuzztv?r=nametag`
 
   constructor(private componentUpdatesService: ComponentUpdatesService) {}
 
@@ -58,6 +74,7 @@ export class ChannelComponent {
 
 
     this.componentUpdatesService.sideBarTypeUpdate('hover');
+    this.componentUpdatesService.sideBarCollapsedEmit(true);
     this.videos = [
       {
         id: '',
@@ -276,6 +293,15 @@ export class ChannelComponent {
     this.latestActive = false;
     this.popularActive = false;
     this.oldestActive = true;
+  }
+
+  onMoreInfoClicked(): void {
+    this.isInfoVisible = !this.isInfoVisible;
+  }
+
+  showModalUpdateEvent(isModalClosed: boolean): void {
+    this.isInfoVisible = isModalClosed;
+    console.log(`event ====> ${isModalClosed}`);
   }
 }
 

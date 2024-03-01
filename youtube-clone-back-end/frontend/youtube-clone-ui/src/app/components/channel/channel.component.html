@@ -9,11 +9,17 @@
             </div>
             <div class="channel-meta">
                 <div class="title-interaction-container">
-                    <div class="channel-title-container">
-                        <div class="channel-title">
-                            {{channelName}}
+                    <div class="meta-container">
+                        <div class="channel-title-container">
+                            <div class="channel-title">
+                                {{channelName}}
+                            </div>
+                            <span *ngIf="isVerified" class="material-symbols-outlined">check_circle</span>
                         </div>
-                        <span *ngIf="isVerified" class="material-symbols-outlined">check_circle</span>
+                        <div class="channel-information-container non-selectable" (click)="onMoreInfoClicked()">
+                            <span>More about this channel</span>
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </div>
                     </div>
                     <div>
                         <app-switch></app-switch>
@@ -24,15 +30,6 @@
                             [buttonText]="subscriptionState">
                         </app-standard-dropdown>
                     </div>
-                    <!--<div class="ytcp-button buttons">
-                        <span *ngIf="notifications === 'all'" class="material-symbols-outlined">notifications_active</span>
-                        <span *ngIf="notifications === 'personalized'" class="material-symbols-outlined">notifications</span>
-                        <span *ngIf="notifications === 'none'" class="material-symbols-outlined">notifications_off</span>
-                        <button>
-                            <b>{{subscriptionState}}</b>
-                        </button>
-                        <span class="material-symbols-outlined">expand_more</span>
-                    </div>-->
                 </div>
                 <div class="channel-meta__meta">
                     <div id="id" class="id">
@@ -67,3 +64,68 @@
     </div>
 
 </div>
+
+<!-- templates -->
+<!--more info modal-->
+<!--height of modal 600px   [left]="'50px'"-->
+<app-modal *ngIf="isInfoVisible"
+  [show]="isInfoVisible"
+  [modalWidth]="'500px'"
+  [modalHeight]="'650px'"
+  [top]="'20%'"
+  [headerTemplate]="header"
+  [bodyTemplate]="body"
+  (isShowUpdateEvent)="showModalUpdateEvent($event)">
+</app-modal>
+
+<ng-template #header>
+    <h2 class="text-primary modal-title">About</h2>
+</ng-template>
+
+<ng-template #body>
+  <div class="modal-content-container">
+    <div class="channel__description">
+        <span>{{channelDescription}}</span>
+    </div>
+    <h2 class="text-primary channel-details-title">Channel details</h2>
+    <div class="channel__info-item">
+        <span class="material-symbols-outlined">language</span>
+        <span class="info clickable">www.youtube.com/@Tintin_Dumbo_17</span>
+    </div>
+    <div class="channel__info-item">
+        <span class="material-symbols-outlined">record_voice_over</span>
+        <span class="info">{{'4'}} subscribers</span>
+    </div>
+    <div class="channel__info-item">
+        <span class="material-symbols-outlined">smart_display</span>
+        <span class="info">{{'1'}} video</span>
+    </div>
+    <div class="channel__info-item">
+        <span class="material-symbols-outlined">trending_up</span>
+        <span class="info">{{'51'}} views</span>
+    </div>
+    <div class="channel__info-item">
+        <span class="material-symbols-outlined">info</span>
+        <span class="info">Joined {{'2014-11-25 12:00:00' | date}}</span>
+    </div>
+    <div class="channel__info-item">
+        <span class="material-symbols-outlined">public</span>
+        <span class="info">{{'4'}} subscribers</span>
+    </div>
+    <div class="channel__info-item">
+       <button class="ytcp-button share-btn">
+            <span class="material-symbols-outlined">share</span>
+            <span>share channel</span>
+        </button>
+        <button class="ytcp-button share-btn">
+            <span class="material-symbols-outlined">flag</span>
+            <span>report user</span>
+        </button>
+    </div>
+  </div>
+</ng-template>
+<!--Template footer -->
+<ng-template #footer>
+  <div class="modal-footer">
+  </div>
+</ng-template>
