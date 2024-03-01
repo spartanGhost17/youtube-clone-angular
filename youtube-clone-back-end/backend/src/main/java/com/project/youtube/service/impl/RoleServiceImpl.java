@@ -1,6 +1,7 @@
 package com.project.youtube.service.impl;
 
 import com.project.youtube.dao.impl.RoleDaoImpl;
+import com.project.youtube.dto.UserDTO;
 import com.project.youtube.model.Role;
 import com.project.youtube.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +26,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void adduserToRole(Long userId, String roleName) {
         roleDaoImpl.addRoleToUser(userId, roleName);
+    }
+
+    @Override
+    public List<Role> getRoles() {
+        return roleDaoImpl.getAll();
     }
 
     @Override
@@ -41,7 +48,7 @@ public class RoleServiceImpl implements RoleService {
     }
     @Override
     public void updateUserRole(Long userId, String roleName) {
-
+        roleDaoImpl.updateUserRole(userId, roleName);
     }
 
     /**

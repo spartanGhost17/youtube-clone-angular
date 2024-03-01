@@ -2,6 +2,7 @@ package com.project.youtube.dao.impl;
 
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.RoleDao;
+import com.project.youtube.dto.UserDTO;
 import com.project.youtube.model.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -30,8 +33,12 @@ public class RoleDaoImpl implements RoleDao<Role> {
     }
 
     @Override
-    public Collection<Role> list(int page, int pagesize) {
-        return null;
+    public List<Role> getAll() {
+        try {
+            return jdbcTemplate.query(SELECT_ALL_ROLES, new BeanPropertyRowMapper<>(Role.class));
+        } catch (Exception exception) {
+            throw exception;
+        }
     }
 
     @Override
@@ -61,14 +68,27 @@ public class RoleDaoImpl implements RoleDao<Role> {
     public void addRoleToUser(Long userId, String roleName) {
         log.info("Adding role: {} to user id: {}", roleName, userId);
         try {
-            Role role = jdbcTemplate.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName), BeanPropertyRowMapper.newInstance(Role.class));
+            Role role = getRoleByName(roleName);
             jdbcTemplate.update(INSERT_ROLE_TO_USER_QUERY, Map.of("userId", userId, "roleId", Objects.requireNonNull(role.getId())));
+        } catch(Exception exception) {
+            throw new APIException("An error occurred. Please try again.");
         }
-        catch(EmptyResultDataAccessException exception) {
+    }
+
+    /**
+     * Get role by role name
+     * @param roleName the role name
+     * @return the role
+     */
+    @Override
+    public Role getRoleByName(String roleName) {
+        log.info("Fetching role: {}", roleName);
+        try {
+            return jdbcTemplate.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName), BeanPropertyRowMapper.newInstance(Role.class));
+        } catch(EmptyResultDataAccessException exception) {
             log.error("Could not find role by name: {}", ROLE_USER.name());
             throw new APIException("No role found by name: "+ ROLE_USER.name());
-        }
-        catch(Exception exception) {
+        } catch(Exception exception) {
             throw new APIException("An error occurred. Please try again.");
         }
     }
@@ -93,8 +113,20 @@ public class RoleDaoImpl implements RoleDao<Role> {
         }
     }
 
+    /**
+     * Update user role
+     * @param userId the user id
+     * @param roleName the role name
+     */
     @Override
     public void updateUserRole(Long userId, String roleName) {
-
+        try {
+            Role role = getRoleByName(roleName);
+            log.info("role: {} name: {} for user id {}", role.getId(), role.getName(), userId);
+            jdbcTemplate.update(UPDATE_ROLE_BY_USER_ID, Map.of("userId", userId, "roleId", role.getId()));
+        } catch (Exception exception) {
+            log.error("Could not update user role");
+            throw new APIException("An error occurred. Please try again.");
+        }
     }
 }

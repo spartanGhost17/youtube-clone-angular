@@ -7,6 +7,7 @@ import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.User;
 import com.project.youtube.model.UserPrincipal;
 import com.project.youtube.provider.TokenProvider;
+import com.project.youtube.service.impl.RoleServiceImpl;
 import com.project.youtube.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class UserController {
     @Autowired
     private final UserServiceImpl userServiceImpl;
+    private final RoleServiceImpl roleService;
     private final TokenProvider tokenProvider;
     @Autowired
     private final AuthenticationManager authenticationManager;
@@ -252,6 +254,26 @@ public class UserController {
                             .statusCode(HttpStatus.BAD_REQUEST.value())
                             .build(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * Update the user role
+     * @param userId the user id
+     * @param roleName the role name
+     * @return the response
+     */
+    @PatchMapping(value = "update/role")
+    public ResponseEntity<HttpResponse> updateUserRole(@RequestParam("userId") Long userId, @RequestParam("roleName") String roleName) {
+        roleService.updateUserRole(userId, roleName);
+        UserDTO userDTO = userServiceImpl.getUser(userId);
+        return new ResponseEntity(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Role updated successfully.")
+                        .data(Map.of("user", userDTO))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
     }
 
     private boolean isHeaderTokenValid(HttpServletRequest request) { //TODO: consider making the refresh token part of the authorization filter

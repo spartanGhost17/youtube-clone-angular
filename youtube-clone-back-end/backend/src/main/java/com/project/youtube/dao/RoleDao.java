@@ -1,5 +1,6 @@
 package com.project.youtube.dao;
 
+import com.project.youtube.dto.UserDTO;
 import com.project.youtube.model.Role;
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +12,12 @@ import java.util.Set;
 public interface RoleDao<T extends Role> {
     /*Basic crud*/
     T create(T data);
-    Collection<T> list(int page, int pagesize);
+    List<T> getAll();
     T get(Long id);
     T update(T data);
     Boolean delete(Long id);
 
+    Role getRoleByName(String name);
     /*extra ops*/
     void addRoleToUser(Long userId, String roleName);
     Set<Role> getRoleByUserId(Long userId);

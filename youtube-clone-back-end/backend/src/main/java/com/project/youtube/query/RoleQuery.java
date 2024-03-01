@@ -6,4 +6,6 @@ public class RoleQuery {
     public static final String SELECT_ROLE_BY_USERNAME_QUERY = "SELECT ur.id, r.name, r.permissions, u.username FROM Roles r INNER JOIN UserRoles ur ON ur.role_id = r.id INNER JOIN Users u ON u.id = ur.user_id WHERE u.username = :username";
     public static final String SELECT_ROLE_BY_EMAIL_QUERY = "SELECT ur.id, r.name, r.permissions, u.email FROM Roles r INNER JOIN UserRoles ur ON ur.role_id = r.id INNER JOIN Users u ON u.id = ur.user_id WHERE u.email = :email";
     public static final String SELECT_ROLE_BY_USER_ID_QUERY = "SELECT ur.id, r.name, r.permissions, u.email FROM Roles r INNER JOIN UserRoles ur ON ur.role_id = r.id INNER JOIN Users u ON u.id = ur.user_id WHERE u.id = :userId";
+    public static final String SELECT_ALL_ROLES = "SELECT * FROM Roles" ;
+    public static final String UPDATE_ROLE_BY_USER_ID = "UPDATE UserRoles SET role_id = :roleId WHERE user_id = :userId";
 }
