@@ -10,7 +10,7 @@
       <div class="modal-body" [ngStyle]="{'height': bodyHeight}">
         <ng-container [ngTemplateOutlet]="bodyTemplate"></ng-container>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" *ngIf="footerTemplate">
         <ng-container [ngTemplateOutlet]="footerTemplate"></ng-container>
       </div>
     </div>
