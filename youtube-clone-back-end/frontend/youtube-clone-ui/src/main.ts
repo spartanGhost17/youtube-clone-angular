@@ -23,8 +23,10 @@ import { MaterialModule } from './app/module/material/material.module';
 import { NgProgressBarModule } from './app/module/ngProgress-bar/ng-progress.module';
 import { provideEffects } from '@ngrx/effects';
 import * as authEffects from './app/components/auth/store/effects';
+import * as permissionsEffects from './app/shared/store/permission/effects'
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { httpInterceptorProviders } from './app/components/auth/interceptors/interceptorProvider/httpInterceptorProvider';
+import { permissionsFeatureKey, permissionsReducer } from './app/shared/store/permission/reducers';
 
 
 bootstrapApplication(AppComponent, {
@@ -46,10 +48,11 @@ bootstrapApplication(AppComponent, {
       router: routerReducer
     }), //register store
     provideState(authFeatureKey, authReducer), //registered here since the auth feature is shared
-    provideEffects(authEffects),
+    provideState(permissionsFeatureKey, permissionsReducer),
+    provideEffects(authEffects, permissionsEffects),
     provideRouterStore(), //will helps us manage router navigation in angular way (delete some fields)
     provideStoreDevtools({
-      maxAge: 25, //max actions
+      //maxAge: 25, //max actions
       logOnly: !isDevMode(),
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
       trace: false, //If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
