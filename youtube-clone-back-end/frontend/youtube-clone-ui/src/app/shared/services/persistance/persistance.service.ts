@@ -35,4 +35,15 @@ export class PersistanceService {
     }
     
   }
+  /**
+   * remove item from local storage
+   * @param key 
+  */
+  remove(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch (err) {
+      console.error("Error removing from local storage", err);
+    }
+  }
 }
