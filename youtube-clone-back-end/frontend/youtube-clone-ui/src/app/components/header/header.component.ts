@@ -15,6 +15,9 @@ import { Icons } from '../../models/icons';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
+import { Store } from '@ngrx/store';
+import { AuthStateInterface } from '../auth/types/authState.interface';
+import { authActions } from '../auth/store/actions';
 
 @Component({
   selector: 'app-header',
@@ -46,7 +49,7 @@ export class HeaderComponent {
   ICON_BELL: string = '../' + this.icons.iconsPaths['bell-dark'];
 
   constructor(
-    private componentUpdatesService: ComponentUpdatesService
+    private componentUpdatesService: ComponentUpdatesService, private store: Store<{auth: AuthStateInterface}>
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +96,12 @@ export class HeaderComponent {
 
   switchAccount() {}
 
-  logout() {}
+  /**
+   * logout 
+  */
+  logout() {
+    this.store.dispatch(authActions.logOut());
+  }
 
   addVideoButtonClicked() {
     console.log('add video button');
