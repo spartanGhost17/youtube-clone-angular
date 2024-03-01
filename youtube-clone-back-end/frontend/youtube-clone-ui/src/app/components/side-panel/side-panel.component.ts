@@ -60,6 +60,10 @@ export class SidePanelComponent {
         this.hoverPanel = true;
       }
     });
+
+    this.componentUpdatesService.sideBarCollapsed$.subscribe((collapsed) => {
+      this.collapse = collapsed;
+    });
   }
 
   ngAfterViewInit() {
@@ -143,10 +147,11 @@ export class SidePanelComponent {
             }
           }
           else {
+            //TODO: figure out how to perist user ngrx session
             //this.router.navigate([section[i].navigateTo]);
-            //this.router.navigateByUrl(section[i].navigateTo);
+            this.router.navigate([section[i].navigateTo]);
             // Open the link in a new tab
-            window.open(`${section[i].navigateTo}`, '_blank');
+            //window.open(`${section[i].navigateTo}`, '_blank');
           }
         }
         else {
