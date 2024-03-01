@@ -1,9 +1,4 @@
 <header>
-    <!--<ng-progress id="myProgress"
-        [spinner]="false"
-        [thick]="true"
-        [color]="progressBarService.currentColor">
-    </ng-progress>-->
     <nav class="header container">
         <div id="start">
             <div class="burger">  
@@ -14,7 +9,7 @@
             <div class="production-name">
                 {{environemntName}}
             </div>
-            <div class="yt-icon-container">
+            <div class="yt-icon-container" [appTooltip]="'Home page'" [routerLink]="'/'">
                 <img class="yt-icon burger-img yt-logo" alt="" [src]="ICON_YOUTUBE"/>
             </div>
         </div>

@@ -8,19 +8,20 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgProgress, NgProgressModule } from 'ngx-progressbar';
+import { RouterLink } from '@angular/router';
+import { NgProgressModule } from 'ngx-progressbar';
 import { environment } from 'src/environments/environment';
 import { Icons } from '../../models/icons';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
-import { ProgressBarService } from '../../shared/services/progress-bar/progress-bar.service';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [NgIf, FormsModule, NgStyle, NgFor, StandardDropdownComponent, NgProgressModule ],
+  imports: [NgIf, FormsModule, NgStyle, NgFor, StandardDropdownComponent, NgProgressModule, RouterLink, TooltipDirective],
 })
 export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
@@ -45,13 +46,10 @@ export class HeaderComponent {
   ICON_BELL: string = '../' + this.icons.iconsPaths['bell-dark'];
 
   constructor(
-    private componentUpdatesService: ComponentUpdatesService,
-    //private progressBar: NgProgress,
-    //public progressBarService: ProgressBarService
+    private componentUpdatesService: ComponentUpdatesService
   ) {}
 
   ngOnInit(): void {
-    //this.progressBarService.progressRef = this.progressBar.ref('myProgress');
     this.searchResults = [
       { text: 'some text 1' },
       { text: 'some text 2' },
