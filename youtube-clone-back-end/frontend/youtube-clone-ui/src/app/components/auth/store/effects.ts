@@ -198,6 +198,21 @@ export const updatePasswordEffect = createEffect(
   { functional: true }
 );
 
+export const logOutEffect = createEffect((
+  actions$ = inject(Actions),
+  authService = inject(AuthenticationService)
+) => {
+  return actions$.pipe(
+    
+    ofType(authActions.logOut),
+    tap(() => {
+      authService.logOut();
+    })
+  )
+}, {functional: true, dispatch: false})
+
+/** REDIRECTING  */
+
 //redirect navigate to home page
 export const redirectAfterLoginEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
   return actions$.pipe(
@@ -215,6 +230,16 @@ export const redirectAfterVerifyPasswordResetLinkEffect = createEffect((actions$
     ofType(authActions.renewPassword),
     tap(() => {
       router.navigate(['/verify/password'])
+    })
+  )
+}, {functional: true, dispatch: false});
+
+//redirect to login
+export const redirectAfterLogOutEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
+  return actions$.pipe(
+    ofType(authActions.logOut),
+    tap(() => {
+      router.navigate(['/login'])
     })
   )
 }, {functional: true, dispatch: false});

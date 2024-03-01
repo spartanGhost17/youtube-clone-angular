@@ -1,4 +1,4 @@
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
 import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 import { LoginFormInterface } from '../types/loginForm.interface';
@@ -28,5 +28,7 @@ export const authActions = createActionGroup({
     'Renew Password': props<{request: UpdatePasswordFormInterface, key: string}>(),
     'Renew Password Success': props<{responseMessages: ResponseMessagesInterface}>(),
     'Renew Password Failure': props<{errors: ResponseMessagesInterface}>(),
+    //logOut
+    LogOut: emptyProps(),
   }
 });

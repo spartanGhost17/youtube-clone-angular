@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import resources from '../../../../resources/end-points.json';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
@@ -20,6 +20,18 @@ export class AuthenticationService {
   apiUrl: string = environment.apiUrl;
   persistanceService = inject(PersistanceService);
   constructor(private http: HttpClient) {}
+
+  /**
+   * logout and remove access and refresh tokens 
+  */
+  logOut(): void  {
+    try {
+      this.persistanceService.remove(TokenType.ACCESS);
+      this.persistanceService.remove(TokenType.REFRESH);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   /**
    * login user with login form
