@@ -47,3 +47,14 @@ export function setTokens(data: any, persistanceService: PersistanceService): vo
         persistanceService.set(key, data[key]);
     }
 }
+
+/**
+* Builds a formData object for the update profile picture request
+* @param {File} image the image file
+* @returns {FormData} the formData object
+*/
+export function getFormData(image: File): FormData {
+ const formData = new FormData();
+ formData.append('image', image);
+ return formData;
+}
