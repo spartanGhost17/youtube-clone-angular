@@ -36,21 +36,23 @@
             </div>
         </div>
         <div id="end">
-            <div class="end-icons">
-                <button class="ytcp-button round-button">
-                    <span class="material-symbols-outlined">Notifications</span>
-                </button>
-                <button class="ytcp-button round-button" (click)="addVideoButtonClicked()">
-                    <span class="material-symbols-outlined">video_call</span>
-                </button>
-                <app-standard-dropdown
-                    [circle]="true"
-                    [imageSrc]="ICON_USER"
-                    [isHeader]="true"
-                    [headerTemplate]="dropdownHeaderTemplate"
-                    [items]="iconDropdown">
-                </app-standard-dropdown>
-            </div>
+            <ng-container *ngIf="(data$ | async) as authData">
+                <div class="end-icons">
+                    <button class="ytcp-button round-button">
+                        <span class="material-symbols-outlined">Notifications</span>
+                    </button>
+                    <button class="ytcp-button round-button" (click)="addVideoButtonClicked()">
+                        <span class="material-symbols-outlined">video_call</span>
+                    </button>
+                    <app-standard-dropdown
+                        [circle]="true"
+                        [imageSrc]="authData.currentUser?.profilePicture!"
+                        [isHeader]="true"
+                        [headerTemplate]="dropdownHeaderTemplate"
+                        [items]="iconDropdown">
+                    </app-standard-dropdown>
+                </div>
+            </ng-container>
         </div>
     </nav>
 </header>
@@ -58,36 +60,40 @@
 
 <!-- user icon dropdow title template -->
 <ng-template #dropdownHeaderTemplate>
-    <div class="header__container">
-        <div class="icon-container">
-            <img [src]="'../../../../assets/courage.png'" alt=""/>
+    <ng-container *ngIf="(data$ | async) as authData">
+        <div class="header__container">
+            <div class="icon-container">
+                <img [src]="authData.currentUser?.profilePicture" alt=""/>
+            </div>
+            <div class="username-container">
+                <p class="text-primary username">{{authData.currentUser?.channelName}}</p>
+                <p class="text-primary channelName">@{{authData.currentUser?.username}}</p>
+            </div>
         </div>
-        <div class="username-container">
-            <p class="text-primary username">Tintin_Dumbo17</p>
-            <p class="text-primary channelName">@Tintin_Dumbo17</p>
-        </div>
-    </div>
+    </ng-container>
 </ng-template>
 
 <!--user icon dropdown submenu template-->
 <ng-template #submenuTemplate>
-    <div class="submenu-template-container">
-        <div class="submenu__user-info-container">
-            <p class="text-primary">Mimi</p>
-            <p class="text-secondary">timbo@gmail.com</p>
+    <ng-container *ngIf="(data$ | async) as authData">
+        <div class="submenu-template-container">
+            <div class="submenu__user-info-container">
+                <p class="text-primary">{{authData.currentUser?.firstName}}</p>
+                <p class="text-secondary">{{authData.currentUser?.email}}</p>
+            </div>
+            <div class="submenu__channel-info">
+                <div class="icon-container">
+                    <img [src]="authData.currentUser?.profilePicture" alt=""/>
+                </div>
+                <div class="submenu-channel-info-container">
+                    <h4 class="text-primary submenu-channelName">@{{authData.currentUser?.username}}</h4>
+                    <p class="text-secondary submenu-username">{{authData.currentUser?.channelName}}</p>
+                    <p class="text-secondary sub-count">10K</p>
+                </div>
+                <div class="check">
+                    <span class="material-symbols-outlined">done</span>
+                </div>
+            </div>
         </div>
-        <div class="submenu__channel-info">
-            <div class="icon-container">
-                <img [src]="'../../../../assets/courage.png'" alt=""/>
-            </div>
-            <div class="submenu-channel-info-container">
-                <h4 class="text-primary submenu-channelName">@Tintin_Dumbo17</h4>
-                <p class="text-secondary submenu-username">Tintin_Dumbo17</p>
-                <p class="text-secondary sub-count">10K</p>
-            </div>
-            <div class="check">
-                <span class="material-symbols-outlined">done</span>
-            </div>
-        </div>
-    </div>
+    </ng-container>
 </ng-template>

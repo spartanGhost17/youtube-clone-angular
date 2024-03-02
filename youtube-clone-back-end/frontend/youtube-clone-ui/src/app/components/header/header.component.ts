@@ -1,4 +1,4 @@
-import { NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, CommonModule, NgFor, NgIf, NgStyle } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -9,22 +9,40 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NgProgressModule } from 'ngx-progressbar';
+import { Observable, combineLatest } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { Icons } from '../../models/icons';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
-import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
-import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
-import { Store } from '@ngrx/store';
-import { AuthStateInterface } from '../auth/types/authState.interface';
+import { PersistanceService } from '../../shared/services/persistance/persistance.service';
+import { permissionsActions } from '../../shared/store/permission/actions';
+import { userActions } from '../../shared/store/user/actions';
+import { selectCurrentUser } from '../../shared/store/user/reducers';
+import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
+import { CurrentUserStateInterface } from '../../shared/types/currentUserState.interface';
 import { authActions } from '../auth/store/actions';
+import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { TokenType } from '../auth/enum/tokenType.enum';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [NgIf, FormsModule, NgStyle, NgFor, StandardDropdownComponent, NgProgressModule, RouterLink, TooltipDirective],
+  imports: [
+    CommonModule,
+    NgIf,
+    FormsModule,
+    NgStyle,
+    NgFor,
+    StandardDropdownComponent,
+    NgProgressModule,
+    RouterLink,
+    TooltipDirective,
+    AsyncPipe,
+  ],
 })
 export class HeaderComponent {
   avatarImage: string = '../../../assets/goku.jpg';
@@ -36,7 +54,8 @@ export class HeaderComponent {
   resultBoxDisplay: string = 'none';
   @Input() showSearchBar: boolean = true;
   @Input() openModal: () => void;
-  @Output() uploadVideoButtonClicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() uploadVideoButtonClicked: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
   @Output() showSideBar: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() searchTriggered: EventEmitter<string> = new EventEmitter<string>();
   @ViewChild('submenuTemplate') submenuTemplate: TemplateRef<any>;
@@ -48,8 +67,14 @@ export class HeaderComponent {
   ICON_CAMERA: string = '../' + this.icons.iconsPaths['camera-light'];
   ICON_BELL: string = '../' + this.icons.iconsPaths['bell-dark'];
 
+  data$: Observable<{
+    currentUser: CurrentUserInterface | null | undefined;
+  }>;
+
   constructor(
-    private componentUpdatesService: ComponentUpdatesService, private store: Store<{auth: AuthStateInterface}>
+    private componentUpdatesService: ComponentUpdatesService,
+    private store: Store<{ user: CurrentUserStateInterface }>,
+    private persistanceService: PersistanceService
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +91,15 @@ export class HeaderComponent {
       { text: 'some text 10' },
     ];
     this.environemntName = environment.name;
+    this.data$ = combineLatest({
+      currentUser: this.store.select(selectCurrentUser),
+    });
+
+    //if user is logged in
+    if(this.persistanceService.get(TokenType.ACCESS)) {
+      this.getAllRoles();
+      this.getProfile();
+    }
   }
 
   ngAfterViewInit() {
@@ -97,8 +131,8 @@ export class HeaderComponent {
   switchAccount() {}
 
   /**
-   * logout 
-  */
+   * logout
+   */
   logout() {
     this.store.dispatch(authActions.logOut());
   }
@@ -144,5 +178,19 @@ export class HeaderComponent {
     console.log('toggle side bar ', this.collapseSideBar);
     this.componentUpdatesService.sideBarCollapsedEmit(this.collapseSideBar);
     this.showSideBar.emit(this.collapseSideBar);
+  }
+
+  /**
+   * get all roles
+   */
+  getAllRoles(): void {
+    this.store.dispatch(permissionsActions.loadAllPermissions());
+  }
+
+  /**
+   * get user profile
+   */
+  getProfile(): void {
+    this.store.dispatch(userActions.loadProfile());
   }
 }
