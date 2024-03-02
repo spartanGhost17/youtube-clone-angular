@@ -1,24 +1,21 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
-import { Role } from '../../../shared/types/Role';
-import { MaterialModule } from '../../../module/material/material.module';
-import { NgModel } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { GlobalPermissionStateInterface } from '../../../shared/types/permissionState.interface';
-import { permissionsActions } from '../../../shared/store/permission/actions';
-import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 import { Observable, combineLatest } from 'rxjs';
+import { MaterialModule } from '../../../module/material/material.module';
+import { selectPermissionsData } from '../../../shared/store/permission/reducers';
+import { Role } from '../../../shared/types/Role';
+import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
+import { CurrentUserStateInterface } from '../../../shared/types/currentUserState.interface';
+import { GlobalPermissionStateInterface } from '../../../shared/types/permissionState.interface';
+import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 import {
-  selectAuthState,
-  selectCurrentUser,
   selectIsLoading,
   selectValidationErrors,
-  selectValidationMessages,
+  selectValidationMessages
 } from '../../auth/store/reducers';
-import { selectPermissionsData } from '../../../shared/store/permission/reducers';
-import { AuthStateInterface } from '../../auth/types/authState.interface';
-import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { selectCurrentUser } from '../../../shared/store/user/reducers';
 
 @Component({
   selector: 'app-permissions',
@@ -41,7 +38,7 @@ export class PermissionsComponent {
   }>;
 
   constructor(
-    private store: Store<{ auth: AuthStateInterface, permissions: GlobalPermissionStateInterface }>
+    private store: Store<{ user: CurrentUserStateInterface, permissions: GlobalPermissionStateInterface }>
   ) {}
 
   ngOnInit(): void {
