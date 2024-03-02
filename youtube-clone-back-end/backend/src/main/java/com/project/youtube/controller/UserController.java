@@ -13,12 +13,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -137,10 +139,11 @@ public class UserController {
     public ResponseEntity<HttpResponse> getProfile() {
         Authentication authentication = getAuthenticationFromContext();//SecurityContextHolder.getContext().getAuthentication();
         UserDTO userDTO = getAuthenticatedUser(authentication);//userServiceImpl.getUser(authentication.getName());
+        UserDTO user = userServiceImpl.getUser(userDTO.getId());
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .data(Map.of("user", userDTO))
+                        .data(Map.of("user", user))
                         .message("Profile retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -276,12 +279,49 @@ public class UserController {
                         .build(), HttpStatus.OK);
     }
 
+    /**
+     * update user profile image
+     * @param image the image
+     * @return the
+     */
+    @PatchMapping(value = "update/image")
+    public ResponseEntity<HttpResponse> updateProfileImage(@RequestParam("image") MultipartFile image) {
+        UserDTO userDTO = getAuthenticatedUser(getAuthenticationFromContext());
+        userServiceImpl.updateProfileImage(userDTO, image);
+        log.info("old user id {} name {}", userDTO.getId(), userDTO.getUsername());
+        UserDTO updatedUser = userServiceImpl.getUser(userDTO.getId());
+        log.info("new user id {} name {}", updatedUser.getId(), updatedUser.getUsername());
+        return new ResponseEntity(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Profile image updated.")
+                        .data(Map.of("user", updatedUser))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
+    /**
+     * get user profile image
+     * @param fileName the filename
+     * @return the image byte array
+     */
+    @GetMapping(value = "image/{fileName}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getProfileImage(@PathVariable("fileName") String fileName) {
+        return userServiceImpl.getProfileImage(fileName);
+
+    }
+
     private boolean isHeaderTokenValid(HttpServletRequest request) { //TODO: consider making the refresh token part of the authorization filter
         String token = request.getHeader(AUTHORIZATION).substring(AUTH_TOKEN_PREFIX.length());
         return request.getHeader(AUTHORIZATION) != null && request.getHeader(AUTHORIZATION).startsWith(AUTH_TOKEN_PREFIX)
                 && tokenProvider.isTokenValid(String.valueOf(tokenProvider.getSubject(token, request)), token);
     }
 
+    /**
+     * Get current authentication context
+     * @return the Authentication
+     */
     private Authentication getAuthenticationFromContext() {
         return SecurityContextHolder.getContext().getAuthentication();
     }

@@ -12,7 +12,7 @@ public class ApplicationConstants {
     public static final String USER_VIDEO_MANAGEMENT_SERVICE = "Video management service";
     public static final String JWT_AUTHORITIES_KEY = "authorities";
     public static final String JWT_ROLE_KEY = "role";
-    public static final long ACCESS_TOKEN_EXPIRATION_TIME = 30L * 60 * 1000;//30 minutes
+    public static final long ACCESS_TOKEN_EXPIRATION_TIME = 5L * 24 * 60 * 60 * 1000;//30L * 60 * 1000;//30 minutes TODO: SET EXPIRATION TO 5 DAYS FOR TESTING, REMOVE THIS LATER
     public static final long REFRESH_TOKEN_EXPIRATION_TIME =  5L * 24 * 60 * 60 * 1000;//5 days //TODO:SET TO 30 SECONDS FOR TESTING 30_000;
     public static final String PUBLIC_KEY_PATH = "src/main/resources/rsa/rsa.public";
     public static final String PRIVATE_KEY_PATH = "src/main/resources/rsa/rsa.private";
