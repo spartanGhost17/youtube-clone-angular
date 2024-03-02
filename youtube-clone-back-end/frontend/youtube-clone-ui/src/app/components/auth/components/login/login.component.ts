@@ -11,12 +11,20 @@ import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { authActions } from '../../store/actions';
-import { selectAuthState, selectIsSubmitting, selectValidationErrors, selectValidationMessages } from '../../store/reducers';
+import {
+  selectAuthState,
+  selectIsSubmitting,
+  selectValidationErrors,
+  selectValidationMessages,
+} from '../../store/reducers';
 import { AuthStateInterface } from '../../types/authState.interface';
 import { LoginFormInterface } from '../../types/loginForm.interface';
 import { ResponseMessagesInterface } from '../../../../shared/types/responseMessages.interface';
 import { permissionsActions } from '../../../../shared/store/permission/actions';
 import { GlobalPermissionStateInterface } from '../../../../shared/types/permissionState.interface';
+import { CurrentUserInterface } from '../../../../shared/types/currentUser.interface';
+import { selectCurrentUser } from '../../../../shared/store/user/reducers';
+import { userActions } from '../../../../shared/store/user/actions';
 
 @Component({
   selector: 'app-login',
@@ -38,8 +46,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<{ auth: AuthStateInterface }>,
-    private router: Router
+    private store: Store<{ auth: AuthStateInterface }>
   ) {}
 
   /**
@@ -61,9 +68,14 @@ export class LoginComponent {
 
   ngAfterViewInit() {
     this.store.select(selectAuthState).subscribe({
-      next: (authState) => {console.log("AUTH STATE \n"); console.log(authState)},
-      error: (error) => {console.log(error)}
-    })
+      next: (authState) => {
+        console.log('AUTH STATE \n');
+        console.log(authState);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   /**
@@ -76,7 +88,6 @@ export class LoginComponent {
         password: this.loginFormGroup.value.password,
       };
       this.store.dispatch(authActions.login({ request: loginRequest })); //dispatch current action
-      this.getAllRoles();//dispatch get all permissions != different from user roles
     } else {
       console.error('Invalid form');
     }
@@ -89,11 +100,4 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
     input.type = input.type === 'password' ? 'text' : 'password';
   }
-
-    /**
-   * get all roles
-   */
-    getAllRoles(): void {
-      this.store.dispatch(permissionsActions.loadAllPermissions());
-    }
 }
