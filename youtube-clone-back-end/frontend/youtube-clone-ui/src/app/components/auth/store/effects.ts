@@ -3,14 +3,14 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { PersistanceService } from '../../../shared/services/persistance/persistance.service';
 import { ProgressBarService } from '../../../shared/services/progress-bar/progress-bar.service';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
 import { HttpResponseInterface } from '../../../shared/types/httpResponse.interface';
 import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
-import { toResponseMessage, setTokens } from '../../../shared/utils/sharedUtils';
+import { setTokens, toResponseMessage } from '../../../shared/utils/sharedUtils';
 import { AuthenticationService } from '../service/authentication.service';
 import { authActions } from './actions';
-import { PersistanceService } from '../../../shared/services/persistance/persistance.service';
 
 //create effect is like a listener, listening to some action (start process, success or error)
 export const loginEffect = createEffect(
@@ -19,7 +19,7 @@ export const loginEffect = createEffect(
     actions$ = inject(Actions),
     authService = inject(AuthenticationService),
     progressBarService = inject(ProgressBarService),
-    peristanceService = inject(PersistanceService)
+    peristanceService = inject(PersistanceService),
   ) => {
     return actions$.pipe(
       ofType(authActions.login), //limit to actions of this type (login is start of login process)
@@ -49,7 +49,7 @@ export const loginEffect = createEffect(
             ); //return observable
           })
         ); //do transformation
-      }) //switch map returns a new observable
+      }), //switch map returns a new observable
     ); //group actions
   },
   { functional: true }

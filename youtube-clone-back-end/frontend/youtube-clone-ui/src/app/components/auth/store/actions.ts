@@ -29,6 +29,6 @@ export const authActions = createActionGroup({
     'Renew Password Success': props<{responseMessages: ResponseMessagesInterface}>(),
     'Renew Password Failure': props<{errors: ResponseMessagesInterface}>(),
     //logOut
-    LogOut: emptyProps(),
+    LogOut: emptyProps()
   }
 });
