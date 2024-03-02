@@ -14,7 +14,9 @@
         "RESET_PASSWORD": "/api/v1/user/reset/password",
         "VERIFY_PASSWORD_URL": "/api/v1/user/verify/password", 
         "REFRESH_TOKEN": "/api/v1/user/refresh/token",
-        "UPDATE_ROLE": "/api/v1/user/update/role"
+        "UPDATE_ROLE": "/api/v1/user/update/role",
+        "UPDATE_PROFILE_IMAGE": "/api/v1/user/update/image",
+        "GET_IMAGE": "/api/v1/user/image/"
     },
     "ROLE_END_POINTS": {
         "GET_ALL": "/api/v1/role/"
