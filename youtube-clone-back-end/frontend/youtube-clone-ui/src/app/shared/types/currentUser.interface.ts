@@ -14,6 +14,7 @@ export interface CurrentUserInterface {
     enabled?: boolean;
     nonLocked?: boolean;
     usingMfa?: boolean;
-    profilePictureURL?: string;
+    profilePicture?: string;
+    bannerPicture?: string;
     authorities?: Role[]; 
 }
