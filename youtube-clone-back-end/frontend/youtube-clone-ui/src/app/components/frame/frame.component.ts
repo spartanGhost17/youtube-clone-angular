@@ -16,7 +16,7 @@ export class FrameComponent {
   sidebarOpen = false;
   sidebarType: string;
   @Input() sideMenuOptions: any[] = [];
-  @Input() user: any;
+  @Input() showUserIcon: boolean;
   
   constructor(private componentUpdatesService: ComponentUpdatesService) { 
   }
