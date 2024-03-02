@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FrameComponent } from '../../components/frame/frame.component';
+import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 
 @Component({
     selector: 'app-dashboard-view',
@@ -16,7 +17,7 @@ export class DashboardViewComponent {
     iconURL: '../../../assets/justice_league.jpg'
   };
 
-  constructor() {}
+  constructor(private componentUpdatesService: ComponentUpdatesService) {}
 
 
   ngOnInit(): void {
@@ -31,5 +32,7 @@ export class DashboardViewComponent {
     ];
     
     this.sideMenuOptions = [this.section];
+    this.componentUpdatesService.sideBarCollapsedEmit(true);
+    this.componentUpdatesService.sideBarTypeUpdate('side');
   }
 }
