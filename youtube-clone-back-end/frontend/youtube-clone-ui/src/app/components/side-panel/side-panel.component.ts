@@ -1,56 +1,57 @@
+import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { Icons } from '../../models/icons';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
-import { NgIf, NgStyle, NgFor, NgClass } from '@angular/common';
+import { selectCurrentUser, selectIsLoading, selectValidationErrors, selectValidationMessages } from '../../shared/store/user/reducers';
+import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
+import { CurrentUserStateInterface } from '../../shared/types/currentUserState.interface';
+import { ResponseMessagesInterface } from '../../shared/types/responseMessages.interface';
 
 @Component({
     selector: 'app-side-panel',
     templateUrl: './side-panel.component.html',
     styleUrls: ['./side-panel.component.scss'],
     standalone: true,
-    imports: [NgIf, NgStyle, NgFor, NgClass]
+    imports: [NgIf, NgStyle, NgFor, NgClass, AsyncPipe]
 })
 export class SidePanelComponent {
   @Input() collapse : boolean = false;
+  @Input() showUserIcon: boolean = false;
   hoverPanel : boolean = false;
 
   MIN_WIDTH: string = '72px';
   MAX_WIDTH: string = '240px';
-  @Input() sections: any[];
-  @Input() user: any;
 
-  //@Input() userIconURL:string = '../../../assets/justice_league.jpg'
-  /*icons: Icons = new Icons();
-
-  ICON_HOME: string = '../'+this.icons.iconsPaths['home-light'];
-  ICON_HISTORY: string = '../'+this.icons.iconsPaths['history-light']
-  ICON_WATCH_LATER: string = '../'+this.icons.iconsPaths['clock-light'];
-  ICON_LIKE: string = '../'+this.icons.iconsPaths['like-light'];
-  ICON_LIBRARY: string = '../'+this.icons.iconsPaths['library-light'];
-  ICON_LIBRARY_VIDEO: string = '../'+this.icons.iconsPaths['library-video-light'];
-  ICON_SHORTS: string = '../'+this.icons.iconsPaths['shorts'];
-  ICON_SUBSCRIPTION: string = '../'+this.icons.iconsPaths['subscription-light'];
-  ICON_RADIO_SIGNAL: string = '../'+this.icons.iconsPaths['radio-signal'];
-
-  ICON_USER: string = '../../../assets/goku.jpg';
+  data$: Observable<{
+    isLoading: boolean;
+    currentUser: CurrentUserInterface | null | undefined,
+    validationMessages: ResponseMessagesInterface | null,
+    validationErrors: ResponseMessagesInterface | null
+  }>;
 
   @Input() sections: any[];
-  section1: any[];
-  section2: any[];
-  subcribed_channels: any[];*/
+  //@Input() user: any;
 
   FILL_ICON: string = `'FILL' 1, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
   EMPTY_FILL_ICON: string = `'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
-    private componentUpdatesService :ComponentUpdatesService) {
+    private componentUpdatesService :ComponentUpdatesService, private store: Store<{user: CurrentUserStateInterface}>) {
   }
   /**
    * Lifecycle hook
    */
   ngOnInit() {
     console.log("INITIALIZING DRAWER...")
+    
+    this.data$ = combineLatest({
+      isLoading: this.store.select(selectIsLoading),
+      currentUser: this.store.select(selectCurrentUser),
+      validationMessages: this.store.select(selectValidationMessages),
+      validationErrors: this.store.select(selectValidationErrors)
+    });
 
     this.componentUpdatesService.sideBarType$.subscribe((sidebarType) => {
       if (sidebarType === 'side') {

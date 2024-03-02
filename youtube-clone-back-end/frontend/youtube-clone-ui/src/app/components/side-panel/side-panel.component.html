@@ -1,15 +1,19 @@
 <div *ngIf="!hoverPanel"  class="container panel" [ngStyle]="{'width': collapse? MIN_WIDTH: MAX_WIDTH, 'padding': collapse? '0px':'4px', 'overflow-y': collapse? 'hidden': 'visible'}">
-    <div class="icon-section" *ngIf="user && !collapse">
-        <div class="icon-container">
-            <img [src]="user.iconURL" alt=""/>
+    <ng-container *ngIf="(data$ | async) as currentUserState">
+        <div class="icon-section" *ngIf="showUserIcon && !collapse">
+            <div class="icon-container">
+                <img [src]="currentUserState.currentUser?.profilePicture" alt=""/>
+            </div>
+            <!--*ngIf="!collapse"-->
+            <div class="icon-text"> 
+                <span>{{currentUserState.currentUser?.channelName}}</span>
+            </div>
+             <!--*ngIf="!collapse"-->
+            <div class="icon-text text-secondary">
+                <p>{{currentUserState.currentUser?.username}}</p>
+            </div>
         </div>
-        <div class="icon-text" *ngIf="!collapse">
-            <span>Your channel</span>
-        </div>
-        <div class="icon-text text-secondary" *ngIf="!collapse">
-            <p>{{user.userId}}</p>
-        </div>
-    </div>
+    </ng-container>
     <div class="panel-section">
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners" [ngClass]="{'strecth' : !collapse, 'collapse': collapse, 'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[0]">
             <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
