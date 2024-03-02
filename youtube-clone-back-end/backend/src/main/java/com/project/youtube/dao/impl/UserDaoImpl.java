@@ -7,6 +7,7 @@ import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.enumaration.VerificationType;
 import com.project.youtube.form.UpdateUserForm;
 import com.project.youtube.model.User;
+import com.project.youtube.service.impl.FileUploadTestService;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +26,14 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
@@ -47,6 +54,8 @@ public class UserDaoImpl implements UserDao<User> {
     private final PasswordEncoder passwordEncoder;
     @Autowired
     private final RoleServiceImpl roleService;
+    private final FileUploadTestService fileUploadTestService;
+
     //@Autowired
     //private EmailService emailService;
 
@@ -354,6 +363,25 @@ public class UserDaoImpl implements UserDao<User> {
     }
 
     /**
+     * Update user profile picture
+     * @param userDTO the user
+     * @param image the image file
+     */
+    @Override
+    public void updateProfileImage(UserDTO userDTO, MultipartFile image) {
+        String imageUrl = setUserImageUrl(userDTO.getUsername());
+        userDTO.setProfilePicture(imageUrl);
+        fileUploadTestService.saveImage(image, userDTO.getUsername());//TODO: This should be in service layer, DAO is only for crud and replace with amazonS3 service
+
+        try {
+            jdbcTemplate.update(UPDATE_USER_PROFILE_IMAGE_QUERY, Map.of("userId", userDTO.getId(), "profilePicture", userDTO.getProfilePicture()));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while updating the image");
+        }
+    }
+
+
+    /**
      * Get user by its account verification url
      * @param key the random UUID string
      * @return the user
@@ -446,6 +474,17 @@ public class UserDaoImpl implements UserDao<User> {
                 .queryParam("type", type)
                 .queryParam("key", key)
                 .toUriString();*/
+    }
+
+    /**
+     * build a user image url string
+     * @param username the username
+     * @return the url string
+     */
+    private String setUserImageUrl(String username) {
+        String uploadDate = DateFormatUtils.format(new Date(), DATE_FORMAT);//uploadOn/"+uploadDate+/
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "user/image/"+username+".png")
+                .toUriString();
     }
 
 }

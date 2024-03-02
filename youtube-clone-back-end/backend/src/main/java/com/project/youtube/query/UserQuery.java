@@ -22,4 +22,5 @@ public class UserQuery {
     public static final String SELECT_USER_BY_ACCOUNT_VERIFICATION_URL_QUERY = "SELECT u.* FROM Users AS u INNER JOIN AccountVerifications AS av ON av.user_id = u.id WHERE av.url = :url";
     public static final String UPDATE_USER_ENABLED_BY_ID_QUERY = "UPDATE Users SET enabled = :enabled WHERE id = :userId";
     public static final String UPDATE_USER_METADATA_QUERY = "UPDATE Users SET username =:username, channel_name = :channelName, phone = :phone, description = :description, using_mfa = :usingMfa, profile_picture = :profilePicture WHERE id = :userId";
+    public static final String UPDATE_USER_PROFILE_IMAGE_QUERY = "UPDATE Users SET profile_picture = :profilePicture WHERE id = :userId";
 }

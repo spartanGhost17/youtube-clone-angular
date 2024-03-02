@@ -4,6 +4,7 @@ import com.project.youtube.dto.UserDTO;
 import com.project.youtube.form.UpdateUserForm;
 import com.project.youtube.model.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,4 +34,5 @@ public interface UserDao<T extends User> {
     void updatePassword(String key, String password, String confirmedPassword);
     User verifyAccountKey(String key);
     User updateProfile(UpdateUserForm updateUserForm, Long userId);
+    void updateProfileImage(UserDTO userDTO, MultipartFile image);
 }

@@ -1,6 +1,5 @@
 package com.project.youtube.service.impl;
 
-import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.impl.UserDaoImpl;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
@@ -15,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserDaoImpl userDaoImpl;
     @Autowired
     private final RoleServiceImpl roleService;
-
+    private final FileUploadTestService fileUploadTestService;
     /**
      *
      * @param user
@@ -145,6 +145,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateProfile(UpdateUserForm updateUserForm, Long userId) {
         return mapToUserDTO(userDaoImpl.updateProfile(updateUserForm, userId));
+    }
+
+    /**
+     * Update the user profile image
+     * @param userDTO the user
+     * @param image the image file
+     */
+    @Override
+    public void updateProfileImage(UserDTO userDTO, MultipartFile image) {
+        userDaoImpl.updateProfileImage(userDTO, image);
+    }
+
+    /**
+     * get the user profile image
+     * @param url the image url
+     * @return the byte array for the image
+     */
+    @Override
+    public byte[] getProfileImage(String url) {
+        log.info("getting user for image url {}",url);
+        return fileUploadTestService.getProfileImage(url);//TODO: replace this amazonS3 service
     }
 
     private UserDTO mapToUserDTO(User user) {
