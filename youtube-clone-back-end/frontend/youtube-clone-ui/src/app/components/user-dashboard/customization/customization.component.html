@@ -8,7 +8,7 @@
             <div class="nav-actions">
                 <button class="view-channel-btn" (click)="onViewChannel()">VIEW CHANNEL</button>
                 <button class="cancel-btn" (click)="onCancel()">CANCEL</button>
-                <button class="publish-btn" (click)="onPublish()">PUBLISH</button>
+                <button class="publish-btn" [ngClass]="{'active': isUplaodReady}" [disabled]="!isUplaodReady" (click)="onPublish()">PUBLISH</button>
             </div>
         </ul>
         <div #indicator class="indicator"></div>
@@ -41,7 +41,7 @@
                     <span class="text-secondary">{{item.imageDescription}}</span>
                 </div>
                 <div *ngIf="item.isUserIcon" class="actions">
-                    <button (click)="onChangeUserIcon()">CHANGE</button>
+                    <button (click)="onChangeUserIcon(); fileInput.click()">CHANGE</button>
                     <button (click)="onRemoveUserIcon()">REMOVE</button>
                 </div>
                 <div *ngIf="!item.isUserIcon" class="actions">
@@ -87,3 +87,14 @@
         </div>
     </div>
 </ng-template>
+
+<!-- profile image change form -->
+<!--iles that have an image MIME type, such as JPEG, PNG, GIF, etc-->
+<form enctype="multipart/form-data" style="display: none;">
+    <input type="file" #fileInput (change)="selectProfilePicture($event)" name="image" id="image" placeholder="file" accept="image/*">
+</form>
+
+<!--video MIME types, such as MP4, AVI, MOV, etc-->
+<!--<form style="display: none;">
+    <input type="file" name="video" id="video" placeholder="file" accept="video/*">
+</form>-->

@@ -253,6 +253,11 @@ ul {
     border-radius: 4px;
     color: black;
     background-color: grey;
+    transition: background-color 0.4s ease;
+}
+
+.publish-btn.active {
+    background-color: var(--yt-color-blue);
 }
 
 .view-channel-btn {
