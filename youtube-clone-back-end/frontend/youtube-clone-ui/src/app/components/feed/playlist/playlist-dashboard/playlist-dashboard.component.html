@@ -1,100 +1,102 @@
-<div class="playlist-dashboard-container">
-    <div class="user-info">
-        <div class="user-icon">
-            <img src="../../../../assets/courage.png" alt="">
-        </div>
-        <div class="metadata">
-            <div class="user-name">
-                <h1 class="text-primary display-name">Tintin_modock_17</h1>
+<ng-container *ngIf="data$ | async as currentUserState">
+    <div class="playlist-dashboard-container">
+        <div class="user-info">
+            <div class="user-icon">
+                <img [src]="currentUserState.currentUser?.profilePicture" alt="">
             </div>
-            <div class="action">
-                <span class="text-secondary text-small">@Tintin_modock_17</span>
-                <span class="text-secondary text-small">&bull;</span>
-                <span class="text-secondary text-small">View channel</span>
+            <div class="metadata">
+                <div class="user-name">
+                    <h1 class="text-primary display-name">{{currentUserState.currentUser?.channelName}}</h1>
+                </div>
+                <div class="action">
+                    <span class="text-secondary text-small">@{{currentUserState.currentUser?.username}}</span>
+                    <span class="text-secondary text-small">&bull;</span>
+                    <span class="text-secondary text-small">View channel</span>
+                </div>
+            </div>
+        </div>
+        <!--History-->
+        <div class="playlist-row default-playlist">
+            <div class="header default-header">
+                <div class="section-title-container">
+                    <span class="material-symbols-outlined non-selectable section-icon">history</span>
+                    <h3 class="text-primary section-title">History</h3>
+                </div>
+                <div class="see-all-btn" (click)="onSeePlaylist(historyPlaylist.title)">
+                    <span class="see-all-btn-text">See all</span>
+                </div>
+            </div>
+            <div class="section-content-container">
+                <div class="playlist-mini" *ngFor="let video of historyPlaylist.videos">
+                    <app-video-card-basic 
+                        [video]="video"
+                        [size]="'xtra-small'"
+                        [showIcon]='false'>
+                    </app-video-card-basic>
+                </div>
+            </div>
+        </div>
+        <!--Watch Later-->
+        <div class="playlist-row default-playlist">
+            <div class="header default-header">
+                <div class="section-title-container">
+                    <span class="material-symbols-outlined non-selectable section-icon">schedule</span>
+                    <h3 class="text-primary section-title">Watch Later</h3>
+                </div>
+                <div class="see-all-btn" (click)="onSeePlaylist(watchLaterPlaylist.title)">
+                    <span class="see-all-btn-text">See all</span>
+                </div>
+            </div>
+            <div class="section-content-container">
+                <div class="playlist-mini" *ngFor="let video of watchLaterPlaylist.videos">
+                    <app-video-card-basic 
+                        [video]="video"
+                        [size]="'xtra-small'"
+                        [showIcon]='false'>
+                    </app-video-card-basic>
+                </div>
+            </div>
+        </div>
+        <!-- Playlist -->
+        <div class="playlist-row">
+            <div class="header">
+                <div class="section-title-container">
+                    <span class="material-symbols-outlined non-selectable section-icon">playlist_play</span>
+                    <h3 class="text-primary section-title">Playlists</h3>
+                </div>
+                <app-standard-dropdown
+                    [parentId]="'te'"
+                    [items]="dropDownSettingsItems"
+                    [buttonText]="dropDownText" 
+                    [iconRight]="'expand_more'">
+                </app-standard-dropdown>
+            </div>
+            <div class="section-content-container">
+                <div class="playlist-mini" *ngFor="let playlist of playlists">
+                    <app-playlist-mini [playlist]="playlist"></app-playlist-mini>
+                </div>
+            </div>
+        </div>
+        <!-- Liked videos -->
+        <div class="playlist-row default-playlist">
+            <div class="header default-header">
+                <div class="section-title-container">
+                    <span class="material-symbols-outlined non-selectable section-icon">thumb_up</span>
+                    <h3 class="text-primary section-title">Liked videos</h3>
+                </div>
+                <div class="see-all-btn" (click)="onSeePlaylist(likedPlaylist.title)">
+                    <span class="see-all-btn-text">See all</span>
+                </div>
+            </div>
+            <div class="section-content-container">
+                <div class="playlist-mini" *ngFor="let video of likedPlaylist.videos">
+                    <app-video-card-basic 
+                        [video]="video"
+                        [size]="'xtra-small'"
+                        [showIcon]='false'>
+                    </app-video-card-basic>
+                </div>
             </div>
         </div>
     </div>
-    <!--History-->
-    <div class="playlist-row default-playlist">
-        <div class="header default-header">
-            <div class="section-title-container">
-                <span class="material-symbols-outlined non-selectable section-icon">history</span>
-                <h3 class="text-primary section-title">History</h3>
-            </div>
-            <div class="see-all-btn" (click)="onSeePlaylist(historyPlaylist.title)">
-                <span class="see-all-btn-text">See all</span>
-            </div>
-        </div>
-        <div class="section-content-container">
-            <div class="playlist-mini" *ngFor="let video of historyPlaylist.videos">
-                <app-video-card-basic 
-                    [video]="video"
-                    [size]="'xtra-small'"
-                    [showIcon]='false'>
-                </app-video-card-basic>
-            </div>
-        </div>
-    </div>
-    <!--Watch Later-->
-    <div class="playlist-row default-playlist">
-        <div class="header default-header">
-            <div class="section-title-container">
-                <span class="material-symbols-outlined non-selectable section-icon">schedule</span>
-                <h3 class="text-primary section-title">Watch Later</h3>
-            </div>
-            <div class="see-all-btn" (click)="onSeePlaylist(watchLaterPlaylist.title)">
-                <span class="see-all-btn-text">See all</span>
-            </div>
-        </div>
-        <div class="section-content-container">
-            <div class="playlist-mini" *ngFor="let video of watchLaterPlaylist.videos">
-                <app-video-card-basic 
-                    [video]="video"
-                    [size]="'xtra-small'"
-                    [showIcon]='false'>
-                </app-video-card-basic>
-            </div>
-        </div>
-    </div>
-    <!-- Playlist -->
-    <div class="playlist-row">
-        <div class="header">
-            <div class="section-title-container">
-                <span class="material-symbols-outlined non-selectable section-icon">playlist_play</span>
-                <h3 class="text-primary section-title">Playlists</h3>
-            </div>
-            <app-standard-dropdown
-                [parentId]="'te'"
-                [items]="dropDownSettingsItems"
-                [buttonText]="dropDownText" 
-                [iconRight]="'expand_more'">
-            </app-standard-dropdown>
-        </div>
-        <div class="section-content-container">
-            <div class="playlist-mini" *ngFor="let playlist of playlists">
-                <app-playlist-mini [playlist]="playlist"></app-playlist-mini>
-            </div>
-        </div>
-    </div>
-    <!-- Liked videos -->
-    <div class="playlist-row default-playlist">
-        <div class="header default-header">
-            <div class="section-title-container">
-                <span class="material-symbols-outlined non-selectable section-icon">thumb_up</span>
-                <h3 class="text-primary section-title">Liked videos</h3>
-            </div>
-            <div class="see-all-btn" (click)="onSeePlaylist(likedPlaylist.title)">
-                <span class="see-all-btn-text">See all</span>
-            </div>
-        </div>
-        <div class="section-content-container">
-            <div class="playlist-mini" *ngFor="let video of likedPlaylist.videos">
-                <app-video-card-basic 
-                    [video]="video"
-                    [size]="'xtra-small'"
-                    [showIcon]='false'>
-                </app-video-card-basic>
-            </div>
-        </div>
-    </div>
-</div>
+</ng-container>

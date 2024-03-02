@@ -3,14 +3,20 @@ import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
 import { PlaylistMiniComponent } from '../playlist-mini/playlist-mini.component';
 import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
 import { VideoCardBasicComponent } from '../../../video-displays/video-card-basic/video-card-basic.component';
-import { NgFor } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { CurrentUserStateInterface } from '../../../../shared/types/currentUserState.interface';
+import { Store } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
+import { CurrentUserInterface } from '../../../../shared/types/currentUser.interface';
+import { ResponseMessagesInterface } from '../../../../shared/types/responseMessages.interface';
+import { selectCurrentUser, selectIsLoading, selectValidationErrors, selectValidationMessages } from '../../../../shared/store/user/reducers';
 
 @Component({
     selector: 'app-playlist-dashboard',
     templateUrl: './playlist-dashboard.component.html',
     styleUrls: ['./playlist-dashboard.component.scss'],
     standalone: true,
-    imports: [NgFor, VideoCardBasicComponent, StandardDropdownComponent, PlaylistMiniComponent]
+    imports: [NgFor, VideoCardBasicComponent, StandardDropdownComponent, PlaylistMiniComponent, NgIf, AsyncPipe]
 })
 export class PlaylistDashboardComponent {
   dropDownSettingsItems: any[] = [];
@@ -20,7 +26,14 @@ export class PlaylistDashboardComponent {
   historyPlaylist: PlaylistInterface;
   likedPlaylist: PlaylistInterface;
 
-  constructor() {}
+  data$: Observable<{
+    isLoading: boolean;
+    currentUser: CurrentUserInterface | null | undefined,
+    validationMessages: ResponseMessagesInterface | null,
+    validationErrors: ResponseMessagesInterface | null
+  }>;
+
+  constructor(private store: Store<{user: CurrentUserStateInterface}>) {}
 
   ngOnInit(): void {
     this.setDropDownSettings();
@@ -28,6 +41,19 @@ export class PlaylistDashboardComponent {
     this.getHistoryPlaylist();
     this.getLikedPlaylist();
     this.getWatchLaterPlaylist();
+    this.subscribeToCurrentUserState();
+  }
+
+  /**
+   * open subscription to current user state 
+  */
+  subscribeToCurrentUserState() {
+    this.data$ = combineLatest({
+      isLoading: this.store.select(selectIsLoading),
+      currentUser: this.store.select(selectCurrentUser),
+      validationMessages: this.store.select(selectValidationMessages),
+      validationErrors: this.store.select(selectValidationErrors)
+    })
   }
 
   setDropDownSettings() {
