@@ -100,7 +100,7 @@ create TABLE Users
     phone           VARCHAR(30) DEFAULT NULL,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     verified        BOOLEAN DEFAULT FALSE,
-    description     VARCHAR(255) DEFAULT NULL,
+    description     VARCHAR(5000) DEFAULT NULL,
     enabled         BOOLEAN DEFAULT FALSE,
     banned          BOOLEAN DEFAULT FALSE,
     non_locked      BOOLEAN DEFAULT TRUE,
