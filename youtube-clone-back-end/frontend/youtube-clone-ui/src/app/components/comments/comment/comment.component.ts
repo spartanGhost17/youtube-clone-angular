@@ -17,24 +17,10 @@ export class CommentComponent implements OnInit {
   @Input() comment: Comment;
   @Input() commentList: Comment[];
   @Output() commentUpdate: EventEmitter<Comment> = new EventEmitter<Comment>;
-  @Input() user: any;//: any = {
-  //  username: 'timbaWolf',
-  //  iconURL: '../../../assets/batman_red_glow.jpg'
-  //};
+  @Input() user: any;
 
   dropDownItems: any[];
   
-  /*@Input() imageURL: string = '../../../assets/batman_and_superman_detective_comics.jpg';
-  @Input() username: string = 'dannychan4803';
-  @Input() commentText: string = 'I’m upset Rey didn’t get to finish certain questions. I get the comedic aspect of the interview but let’s hear Rey’s answers more so than Kevin’s outburst.';
-  @Input() postTime: string = '1 hour';
-  @Input() replyCount: number = 64;
-  @Input() subComments: SubComment[] = [];
-
-  
-  like: boolean = false;
-  dislike: boolean = false;
-  showReply: boolean = false;*/
   showReplies: boolean = false;
   //fontVariationSettings: string = `'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
   FILL_ICON: string = `'FILL' 1, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
@@ -63,7 +49,7 @@ export class CommentComponent implements OnInit {
     }
     else {
       this.dropDownItems =  [
-        {icon: 'report', text: 'Report', action: (id: any, childId: any) => this.report(id, childId)},
+        {icon: 'flag', text: 'Report', action: (id: any, childId: any) => this.report(id, childId)},
       ];
     }
   }
