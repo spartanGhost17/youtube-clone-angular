@@ -20,5 +20,8 @@
     },
     "ROLE_END_POINTS": {
         "GET_ALL": "/api/v1/role/"
+    },
+    "REPORT_END_POINTS": {
+        "GET_REPORT_TYPES": "/api/v1/report/types"
     }
 }
