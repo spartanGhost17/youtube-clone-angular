@@ -1,1 +1,28 @@
-<p>report works!</p>
+<div class="report-container">
+    <app-radio-group *ngIf="step === 0"
+        [data]="selection"
+        (selected)="onRadioBtnClicked($event)">
+    </app-radio-group>
+    <div class="report-comment" *ngIf="step === 1">
+        <div class="text-container">
+            <textarea [(ngModel)]="reportForm.description" maxlength="500"  placeholder="Describe the issue *"  name="report" id="report" cols="30" rows="10"></textarea>
+            <div class="description-length">
+                <span>{{reportForm.description? reportForm.description.length : 0}}/500</span>
+            </div>
+        </div>
+    </div>
+    <div class="close-report" *ngIf="step >= 2">
+        <div class="selected-issue">
+            <span class="text-secondary">Issue</span>
+            <p class="text-primary">{{selectedIssue.type}}</p>
+        </div>
+        <div class="time-stamp">
+            <span class="text-secondary">Timestamp selected</span>
+            <p class="text-primary">30:00 test</p>
+        </div>
+        <div class="additional-details">
+            <span class="text-secondary">Additional details</span>
+            <p class="text-primary">{{reportForm.description}}</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+.report-container {
+    width: 100%;
+    height: 100%;
+}
+
+
+textarea {
+    width: 100%;
+    height: 70%;
+    background-color: transparent;
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 4px;
+    resize: none;
+    outline: none;
+    border: none;
+    border-color: none;
+}
+
+textarea::-webkit-scrollbar { // hide scrollbar for text areas
+    width: 0;
+}
+
+.text-container {
+    width: 100%;
+    height: 200px;
+    border: 2px solid rgba(69, 69, 69, 1);
+    transition: 0.4s ease;
+}
+
+.text-container:focus-within {
+    border: 2px solid grey;
+}
+
+.description-length {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    padding-right: 24px;
+}
+
+.selected-issue,
+.time-stamp,
+.additional-details {
+    display: block;
+    margin-bottom: 24px;
+}
