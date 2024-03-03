@@ -1,0 +1,38 @@
+<form>
+    <label [for]="item.type" class="radio" (click)="onRadioBtnClicked(item)" *ngFor="let item of data">
+        <input class="radio__input" (change)="onRadioBtnClicked(item)" type="radio" [id]="item.type" name="options" [value]="item.type">
+        <div #radioHalo class="radio__radio-halo">
+            <div class="radio__radio"></div>
+        </div>
+        <div class="label-text-container">
+            <h2 class="text-primary radio_header">{{item.type}}</h2>
+            <p class="text-secondary radio_description subtitle">
+                {{item.description}}
+            </p>
+        </div>
+    </label>
+    <!--<label for="unlistedId" class="radio">
+        <input class="radio__input" (change)="onRadioBtnClicked('UNLISTED')" type="radio" id="unlistedId" name="options" value="UNLISTED">
+        <div #radioHalo class="radio__radio-halo" (click)="highlightBackground(radioHalo)">
+            <div class="radio__radio"></div>
+        </div>
+        <div class="label-text-container">
+            <h2 class="text-primary radio_header">Unlisted</h2>
+            <p class="text-secondary radio_description subtitle">
+                Anyone with the video link can watch your video
+            </p>
+        </div>
+    </label>
+    <label for="publicId" class="radio">
+        <input class="radio__input" (change)="onRadioBtnClicked('PUBLIC')" type="radio" id="publicId" name="options" value="PUBLIC">
+        <div #radioHalo class="radio__radio-halo" (click)="highlightBackground(radioHalo)">
+            <div class="radio__radio"></div>
+        </div>
+        <div class="label-text-container">
+            <h2 class="text-primary radio_header">Public</h2>
+            <p class="text-secondary radio_description subtitle">
+                Everyone can watch your video
+            </p>
+        </div>
+    </label>-->
+</form>
