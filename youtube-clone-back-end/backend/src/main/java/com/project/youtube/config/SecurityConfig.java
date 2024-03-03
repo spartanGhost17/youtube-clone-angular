@@ -94,6 +94,9 @@ public class SecurityConfig {
                     request
                             .antMatchers(PUBLIC_URLS).permitAll()
                             .antMatchers("/error").permitAll()
+                            .antMatchers(HttpMethod.POST, API_VERSION + "report").hasAuthority("CREATE:REPORT")
+                            .antMatchers(HttpMethod.GET, API_VERSION + "report/item").hasAuthority("READ:REPORT")
+                            .antMatchers(HttpMethod.DELETE, API_VERSION + "report").hasAuthority("DELETE:REPORT")
                             .antMatchers(HttpMethod.DELETE, API_VERSION + "user/delete/**").hasAnyAuthority("DELETE:USER")
                             .antMatchers(HttpMethod.DELETE, API_VERSION + "video/delete/**").hasAnyAuthority("DELETE:VIDEO")
                             .antMatchers(HttpMethod.DELETE, API_VERSION + "report/delete/**").hasAnyAuthority("DELETE:VIDEO", "DELETE:REPORT")
