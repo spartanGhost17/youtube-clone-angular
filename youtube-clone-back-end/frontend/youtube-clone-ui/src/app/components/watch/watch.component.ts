@@ -1,5 +1,11 @@
-import { NgClass, NgFor, NgStyle } from '@angular/common';
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { Comment } from '../../models/comment';
@@ -10,50 +16,75 @@ import { VideoDescriptionComponent } from '../video-description/video-descriptio
 import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
 import { VideoComponent } from '../video-displays/video/video.component';
 import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embedded-playlist.component';
+import { ModalComponent } from '../modal/modal.component';
+import { ReportComponent } from '../report/report/report.component';
+import { ReportTypeInterface } from '../../shared/types/reportType.interface';
 
 @Component({
-    selector: 'app-watch',
-    templateUrl: './watch.component.html',
-    styleUrls: ['./watch.component.scss'],
-    standalone: true,
-    imports: [NgClass, VideoComponent, NgFor, VideoCardComponent, NgStyle, TooltipDirective, VideoDescriptionComponent, StandardDropdownComponent, CommentsHolderComponent, EmbeddedPlaylistComponent]
+  selector: 'app-watch',
+  templateUrl: './watch.component.html',
+  styleUrls: ['./watch.component.scss'],
+  standalone: true,
+  imports: [
+    NgClass,
+    VideoComponent,
+    NgFor,
+    NgIf,
+    VideoCardComponent,
+    NgStyle,
+    TooltipDirective,
+    VideoDescriptionComponent,
+    StandardDropdownComponent,
+    CommentsHolderComponent,
+    EmbeddedPlaylistComponent,
+    ModalComponent,
+    ReportComponent
+  ],
 })
 export class WatchComponent implements OnInit {
   private resizeListener: () => void;
   isCinemaMode: boolean = false;
   isSibeBarCollapsed: boolean = false;
   primaryColorVideoFrame: string;
-  sideBarType: string = 'hover';
-  channelName: string = 'AlJordan';
+  sideBarType: string = 'hover';//TODO: DELETE
+  channelName: string = 'AlJordan';//TODO: DELETE
   SORT_BUTTON_TEXT: string = 'Sort by';
   videos: any[] = [];
   sortOptions: any[] = [];
   videoCardSize: string = 'small';
   
+  isReportModalVisible: boolean = false;
+  selectedReportType: ReportTypeInterface | null;
+  canShowNext: boolean = false;
+  reportStep: number = 0;
   
   comment: Comment = {};
-  
-  test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-  comments: Comment[];//erase this test
+  test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  comments: Comment[]; //erase this test
   //string: string = 'SOME TEST TEXT'
 
   videoContainerWidth: string = '71%';
-  
-
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
-  @ViewChild('recommendationContainer') recommendationContainer: ElementRef<any>;
+  @ViewChild('recommendationContainer')
+  recommendationContainer: ElementRef<any>;
   @ViewChild('interactionContainer') interactionContainer: ElementRef<any>;
   @ViewChild('bgColorBlur') bgColorBlur: ElementRef<any>;
 
-  constructor(private componentUpdatesService : ComponentUpdatesService, private router: Router, private renderer: Renderer2) {}
-  
+  constructor(
+    private componentUpdatesService: ComponentUpdatesService,
+    private router: Router,
+    private renderer: Renderer2
+  ) {}
+
   /**
-   * life cycle function 
-  */
+   * life cycle function
+   */
   ngOnInit() {
+    this.componentUpdatesService.sideBarCollapsedEmit(true);
     this.componentUpdatesService.sideBarTypeUpdate(this.sideBarType);
 
     this.comment = {
@@ -85,20 +116,19 @@ export class WatchComponent implements OnInit {
           to: 'taylorMacarrena267',
           likeCount: 12,
           dislikeCount: 0,
-        }
-      ]
-      
-    }
+        },
+      ],
+    };
 
-    this.comments = [this.comment, this.comment];
+    this.comments = [this.comment]//, this.comment];
 
-    console.log("COMMENT IN PARENT", this.comment)
-    console.log("COMMENT IN PARENT TEST", this.test)
-    
+    console.log('COMMENT IN PARENT', this.comment);
+    console.log('COMMENT IN PARENT TEST', this.test);
+
     this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
+
     this.populateSortOptions();
-    
+
     // Add window resize event listener
     this.resizeListener = this.renderer.listen('window', 'resize', () => {
       this.resetWatchContainerPadding();
@@ -107,43 +137,44 @@ export class WatchComponent implements OnInit {
   }
 
   /**
-   * After view init life cycle function 
-  */
-  ngAfterViewInit() : void {
-
+   * After view init life cycle function
+   */
+  ngAfterViewInit(): void {
     //subscribe to theater mode signal
-    this.componentUpdatesService.videoTheaterMode$.subscribe((isTheaterMode) => {
-      this.isCinemaMode = isTheaterMode;
+    this.componentUpdatesService.videoTheaterMode$.subscribe(
+      (isTheaterMode) => {
+        this.isCinemaMode = isTheaterMode;
 
-      this.resetWatchContainerPadding();
+        this.resetWatchContainerPadding();
 
-      this.resizeBlurBg(this.isCinemaMode);
-      if(this.primaryColorVideoFrame) {
-        this.updateBackgroundGradient(this.primaryColorVideoFrame);
+        this.resizeBlurBg(this.isCinemaMode);
+        if (this.primaryColorVideoFrame) {
+          this.updateBackgroundGradient(this.primaryColorVideoFrame);
+        }
       }
-    });
-    
+    );
+
     //subscribes to video primary hex colors signal
-    this.componentUpdatesService.videoPrimaryColor$.subscribe((primaryColor) => {
-      this.primaryColorVideoFrame = primaryColor;
-      this.updateBackgroundGradient(primaryColor);
-    });
+    this.componentUpdatesService.videoPrimaryColor$.subscribe(
+      (primaryColor) => {
+        this.primaryColorVideoFrame = primaryColor;
+        this.updateBackgroundGradient(primaryColor);
+      }
+    );
 
     this.onVideoContainerExpanded();
     //this.onVideoContainerChange();
   }
 
-
   /**
    * lifecycle method
-  */
+   */
   ngOnDestroy(): void {
     // Remove the window resize event listener when the component is destroyed
     if (this.resizeListener) {
-      this.resizeListener();//????
+      this.resizeListener(); //????
     }
   }
-
 
   /*resetInteractionsContainerWidth(): void {
     console.log("\n\n");
@@ -165,27 +196,25 @@ export class WatchComponent implements OnInit {
   }*/
 
   /**
-   * If view port changes size change the padding accordingly 
-  */
+   * If view port changes size change the padding accordingly
+   */
   resetWatchContainerPadding(): void {
     let viewport = window.innerWidth;
 
-    console.log("view port SIZE ====> ", viewport);
+    console.log('view port SIZE ====> ', viewport);
 
-    if(viewport >= 2500) {
-      if(!this.isCinemaMode) {
+    if (viewport >= 2500) {
+      if (!this.isCinemaMode) {
         this.watchContainer.nativeElement.style.paddingLeft = '340px';
         this.watchContainer.nativeElement.style.paddingRight = '340px';
 
         this.watchContainer.nativeElement.style.paddingTop = '20px';
-      }
-      else {
+      } else {
         this.watchContainer.nativeElement.style.paddingLeft = '0px';
         this.watchContainer.nativeElement.style.paddingRight = '0px';
-        this.watchContainer.nativeElement.style.paddingTop = '0px';        
-      }      
-    }
-    else {
+        this.watchContainer.nativeElement.style.paddingTop = '0px';
+      }
+    } else {
       this.watchContainer.nativeElement.style.paddingLeft = '0px';
       this.watchContainer.nativeElement.style.paddingRight = '0px';
       this.watchContainer.nativeElement.style.paddingTop = '0px';
@@ -193,55 +222,68 @@ export class WatchComponent implements OnInit {
   }
 
   /**
-   * Create sort options drop down 
-  */
+   * Create sort options drop down
+   */
   populateSortOptions() {
     this.sortOptions = [
-      {text: 'Top comments', action: () => {console.log("sort by top comments")}}, 
-      {text: 'Newest first', action: () => {console.log("sort by newest first")}},];
+      {
+        text: 'Top comments',
+        action: () => {
+          console.log('sort by top comments');
+        },
+      },
+      {
+        text: 'Newest first',
+        action: () => {
+          console.log('sort by newest first');
+        },
+      },
+    ];
   }
 
   /**
-   * Resize the blur background 
-   * @param shouldIncrease 
-  */
+   * Resize the blur background
+   * @param shouldIncrease
+   */
   resizeBlurBg(shouldIncrease: boolean) {
     const rect = this.videoContainer.nativeElement.getBoundingClientRect();
-    const widthIncrement = 150;//100;
-    const heightIncrement = 300;//150;
+    const widthIncrement = 150; //100;
+    const heightIncrement = 300; //150;
     let width: number;
-    let height: number; 
-    if(shouldIncrease) {
+    let height: number;
+    if (shouldIncrease) {
       width = rect.width + widthIncrement;
       height = rect.height + heightIncrement;
-    }
-    else {
+    } else {
       width = rect.width - widthIncrement;
-      height = (rect.height - heightIncrement) + 300;
+      height = rect.height - heightIncrement + 300;
     }
     this.bgColorBlur.nativeElement.style.width = `${width + 10}px`;
     this.bgColorBlur.nativeElement.style.height = `${height + 10}px`;
-    
-    console.log("new size width", width, " new size height ", height);
+
+    console.log('new size width', width, ' new size height ', height);
   }
 
   /**
    * update backgroundImage with video primary color every 30 frames.
-   * @param primaryColor 
+   * @param primaryColor
    */
   updateBackgroundGradient(primaryColor: string) {
     const rect = this.videoContainer.nativeElement.getBoundingClientRect();
 
-    const centerX = (rect.width / 2);
-    const centerY = (rect.height / 2); 
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
     console.log('Primary Color ======> ', primaryColor);
 
-    if(primaryColor) {
-
+    if (primaryColor) {
       const rgbColor = this.hexToRgb(primaryColor)!;
       const rgbColorWtOpacity = `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, .6)`;
 
-      this.bgColorBlur.nativeElement.style.backgroundImage = `radial-gradient(circle at ${Math.floor(centerX)}px ${Math.floor(centerY)}px, ${rgbColorWtOpacity}, rgba(255,255,255,0) 80%)`;
+      this.bgColorBlur.nativeElement.style.backgroundImage = `radial-gradient(circle at ${Math.floor(
+        centerX
+      )}px ${Math.floor(
+        centerY
+      )}px, ${rgbColorWtOpacity}, rgba(255,255,255,0) 80%)`;
       this.bgColorBlur.nativeElement.style.filter = 'blur(90px)';
       //this.bgColorBlur.nativeElement.style.backdropFilter = `blur(100px)`;
     }
@@ -251,40 +293,47 @@ export class WatchComponent implements OnInit {
    * convert Hexadecimal string to RGB color
    * @param {string} hex string
    * @returns {number, number, number} red, green, blue color
-  */
-  hexToRgb(hex: string): { r: number, g: number, b: number } | null {
+   */
+  hexToRgb(hex: string): { r: number; g: number; b: number } | null {
     // Remove the hash (#) if it's included
     hex = hex.replace(/^#/, '');
-  
+
     // Parse the hex string to get the RGB values
     const bigint = parseInt(hex, 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
-  
+
     // Check if the hex string is valid
     if (isNaN(r) || isNaN(g) || isNaN(b)) {
       console.error('Invalid hex color:', hex);
       return null;
     }
-  
+
     return { r, g, b };
   }
 
   /**
    * Adjust height of recommendation and interaction containers,
    * based on how much space is available in the watch container.
-  */
-  resetWatchContainersHeight() : void {
-    this.watchContainer.nativeElement.style.height = "auto";
-    let newHeight = this.watchContainer.nativeElement.offsetHeight - this.videoContainer.nativeElement.offsetHeight;
+   */
+  resetWatchContainersHeight(): void {
+    this.watchContainer.nativeElement.style.height = 'auto';
+    let newHeight =
+      this.watchContainer.nativeElement.offsetHeight -
+      this.videoContainer.nativeElement.offsetHeight;
     this.watchContainer.nativeElement.offsetHeight = newHeight;
-    console.log('resetContainersHeight ', this.watchContainer.nativeElement.offsetHeight, ' calc ', newHeight);
+    console.log(
+      'resetContainersHeight ',
+      this.watchContainer.nativeElement.offsetHeight,
+      ' calc ',
+      newHeight
+    );
   }
 
   /**
-   * change column layout if video request more space for theaterMode, else use default layout 
-  */
+   * change column layout if video request more space for theaterMode, else use default layout
+   */
   onVideoContainerExpanded(): void {
     // Use ResizeObserver to listen for size changes on the videoContainer
     const resizeObserver = new ResizeObserver(() => {
@@ -293,8 +342,8 @@ export class WatchComponent implements OnInit {
       const newHeight = this.videoContainer.nativeElement.offsetHeight;
       console.log(`New width: ${newWidth}, New height: ${newHeight}`);
       this.interactionContainer.nativeElement.style.top = `${newHeight + 20}px`;
-      
-      if(!this.isCinemaMode) {      
+
+      if (!this.isCinemaMode) {
         this.recommendationContainer.nativeElement.style.top = '0';
         this.interactionContainer.nativeElement.style.width = `${newWidth}px`;
 
@@ -302,11 +351,14 @@ export class WatchComponent implements OnInit {
         this.videoContainer.nativeElement.style.maxWidth = '1280px';
 
         this.bgColorBlur.nativeElement.style.width = `${newWidth}px`;
-      }
-      else {
+      } else {
         this.videoContainer.nativeElement.style.maxWidth = '100%';
-        this.recommendationContainer.nativeElement.style.top = `${newHeight + 20}px`;
-        this.interactionContainer.nativeElement.style.width = `${newWidth - this.getRecommendationContainerWidth()}px`;
+        this.recommendationContainer.nativeElement.style.top = `${
+          newHeight + 20
+        }px`;
+        this.interactionContainer.nativeElement.style.width = `${
+          newWidth - this.getRecommendationContainerWidth()
+        }px`;
 
         this.videoContainer.nativeElement.style.width = '100%';
         this.bgColorBlur.nativeElement.style.width = `${newWidth}px`;
@@ -319,8 +371,8 @@ export class WatchComponent implements OnInit {
 
   /**
    * change column layout if video request more space for theaterMode, else use default layout
-   * @param isExpended 
-  */
+   * @param isExpended
+   */
   /*onVideoContainerExpanded(): void {
     console.log('HERE ', this.isSibeBarCollapsed)
     if(!this.isCinemaMode) {      
@@ -343,30 +395,30 @@ export class WatchComponent implements OnInit {
   }*/
 
   /**
-   * on channel icon click navigate to channel view 
-  */
+   * on channel icon click navigate to channel view
+   */
   onChannelIconClicked(): void {
-    console.log("onChannelIconClicked");
+    console.log('onChannelIconClicked');
     this.componentUpdatesService.sideBarTypeUpdate('hover');
     this.router.navigate([`home/@${this.channelName}`]);
   }
 
   /**
    * get video of width container
-   * @returns {number} width of video container 
-  */
+   * @returns {number} width of video container
+   */
   getVideoContainerWidth(): number {
     const element = this.videoContainer.nativeElement as HTMLElement;
     const width = element.getBoundingClientRect().width;
-    this.videoContainerWidth = `${width}px`
-    console.log("width of video container ", this.videoContainerWidth);
+    this.videoContainerWidth = `${width}px`;
+    console.log('width of video container ', this.videoContainerWidth);
     return width;
   }
 
   /**
-   * 
-   * @returns 
-  */
+   *
+   * @returns
+   */
   //getVideoContainerHeight(): number {
   //  const element = this.videoContainer.nativeElement as HTMLElement;
   //  const height = element.getBoundingClientRect().height;
@@ -378,13 +430,62 @@ export class WatchComponent implements OnInit {
   /**
    * get width of recommendation container
    * @returns {number} width of recommendation container
-  */
+   */
   getRecommendationContainerWidth(): number {
     const element = this.recommendationContainer.nativeElement as HTMLElement;
     const width = element.getBoundingClientRect().width;
     const wd = window.innerWidth;
 
-    console.log("INNER WIDTH OF VIEWPORT ", wd);
+    console.log('INNER WIDTH OF VIEWPORT ', wd);
     return width;
+  }
+
+  /**
+   * fired when the modal component is closed
+   * @param {boolean} event false when modal is closed 
+  */
+  showReportModalEvent(event: boolean) {
+    this.isReportModalVisible = event;
+    this.onCancelReporting();
+  }
+
+  /**
+   * when report icon clicked 
+   * @param event 
+  */
+  report(event: any) {
+    console.log('show report modal');
+    this.isReportModalVisible = true;
+  }
+  
+  /**
+   * handles selected report type 
+   * @param event 
+  */
+  onSelectedReportType(event: ReportTypeInterface) {
+    this.selectedReportType = event;
+    if(this.selectedReportType.type) {
+      this.canShowNext = true;
+    }
+  }
+
+  /**
+   * cancel reporting 
+  */
+  onCancelReporting() {
+    this.canShowNext = false;
+    this.selectedReportType = null;
+    this.reportStep = 0;
+    this.isReportModalVisible = false;
+  }
+
+  /**
+   * on next button clicked in reporting form 
+  */
+  onNextClicked() {
+    this.reportStep += 1;
+    if(this.reportStep > 2) {
+      this.reportStep = 2;
+    }
   }
 }

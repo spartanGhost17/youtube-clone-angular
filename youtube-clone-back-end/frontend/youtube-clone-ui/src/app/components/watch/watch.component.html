@@ -44,7 +44,6 @@
                                     <span class="material-symbols-outlined non-selectable">thumb_down</span>
                                 </div>
                             </div>
-                            <!--<div class="ytcp-button dislike">Dislike</div>-->
                             <div class="ytcp-button share" [appTooltip]="'Share'">
                                 <span class="material-symbols-outlined non-selectable">share</span>
                                 <span>Share</span>
@@ -56,6 +55,10 @@
                             <div class="ytcp-button download">
                                 <span class="material-symbols-outlined non-selectable">download</span>
                                 <span>Download</span>
+                            </div>
+                            <div class="ytcp-button download" (click)="report($event)">
+                                <span class="material-symbols-outlined non-selectable">flag</span>
+                                <span>Report</span>
                             </div>
                         </div>
                     </div>
@@ -90,3 +93,61 @@
     </div>
 
 </div>
+
+
+<!-- templates -->
+<app-modal *ngIf="isReportModalVisible"
+  [show]="isReportModalVisible"
+  [modalWidth]="'490px'"
+  [modalHeight]="!(reportStep > 0)? '700px' : 'fit-content'"
+  [bodyHeight]="'70%'"
+  [top]="'10%'"
+  [headerTemplate]="header"
+  [bodyTemplate]="body"
+  [footerTemplate]="footer"
+  (isShowUpdateEvent)="showReportModalEvent($event)">
+</app-modal>
+
+<ng-template #header>
+    <h2 class="text-primary modal-title" *ngIf="reportStep < 2"> Report {{'Video'}}</h2>
+    <h2 class="text-primary modal-title" *ngIf="reportStep === 2">Thanks for reporting</h2>
+</ng-template>
+
+<ng-template #body>
+  <div class="report-modal-content-container">
+    <app-report
+        [step]="reportStep"
+        (onSelectedType)="onSelectedReportType($event)">
+    </app-report>
+  </div>
+</ng-template>
+<!--Template footer -->
+<ng-template #footer>
+    <div class="report-modal-footer-container">
+        <div class="report-description">
+            <span class="text-secondary" *ngIf="reportStep < 2">Flagged videos and users are reviewed by YouTube staff 24 hours a day, seven days a week to determine whether they violate Community Guidelines. Accounts are penalised for Community Guidelines violations, and serious or repeated violations can lead to account termination.</span>
+            <span class="text-secondary" *ngIf="reportStep === 2">If we find this content to be in violation of our Community Guidelines, we will remove it.</span>
+        </div>    
+        <div class="report-modal-footer">
+            <button class="text-primary report-cancel-btn" (click)="onCancelReporting()" *ngIf="reportStep < 2">Cancel</button>
+            <button class="text-primary report-next-btn" 
+                [disabled]="!canShowNext" *ngIf="reportStep < 1"
+                (click)="onNextClicked()" 
+                [ngClass]="{'active': canShowNext}">
+                    Next
+            </button>
+            <button class="text-primary report-next-btn" 
+                [disabled]="!canShowNext" *ngIf="reportStep === 1"
+                (click)="onNextClicked()" 
+                [ngClass]="{'active': canShowNext}">
+                    Report
+            </button>
+            <button class="text-primary report-next-btn" 
+            [disabled]="!canShowNext" *ngIf="reportStep === 2"
+            (click)="onCancelReporting()" 
+            [ngClass]="{'active': canShowNext}">
+                    Close
+            </button>
+        </div>
+    </div>
+</ng-template>
