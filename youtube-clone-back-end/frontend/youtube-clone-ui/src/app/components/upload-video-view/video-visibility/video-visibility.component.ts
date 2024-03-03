@@ -1,38 +1,30 @@
 import { Component, ViewChildren, QueryList, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RadioGroupComponent } from '../../radio-group/radio-group.component';
+import { ReportTypeInterface } from '../../../shared/types/reportType.interface';
 
 @Component({
     selector: 'app-video-visibility',
     templateUrl: './video-visibility.component.html',
     styleUrls: ['./video-visibility.component.scss'],
     standalone: true,
-    imports: [FormsModule]
+    imports: [FormsModule, RadioGroupComponent]
 })
 export class VideoVisibilityComponent {
-  @ViewChildren('radioHalo') radio: QueryList<any>;
-  @Output() selected: EventEmitter<string> = new EventEmitter;  
+  selection: ReportTypeInterface[];
+  
   constructor() {}
 
-  highlightBackground(radioHalo: any): void {
-
-    /*console.log(" RADIO ", radioHalo);
-    this.radio.forEach((radio, idx) => {
-      console.log(" =========== \n");
-      console.log(radio);
-      if (radio.nativeElement === radioHalo) {
-        radio.nativeElement.classList.add('clicked-radio-halo');
-        setTimeout(() => {
-        //  this.selectedOption = null;
-        }, 1000); // 1 second
-      } else {
-        radio.nativeElement.classList.remove('clicked-radio-halo');
-      }
-
-    });*/
+  ngOnInit(): void {
+    this.selection = [
+      {id: 1, type: 'PUBLIC', description: 'Everyone can watch your video'},
+      {id: 1, type: 'PRIVATE', description: 'Only you and people who you choose can watch your video'},
+      {id: 1, type: 'UNLISTED', description: 'Anyone with the video link can watch your video'}
+    ];
   }
 
-  onRadioBtnClicked(value: string) {
-    console.log("radioBtnClicked ", value)
-    this.selected.emit(value);
+  onRadioBtnClicked(event: any) { 
+    console.log(`selected radio button`, event)
   }
+
 }

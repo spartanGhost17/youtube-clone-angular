@@ -9,44 +9,10 @@
             <p class="text-secondary subtitle">Make your video public, unlisted or private</p>
         </div>
         <div class="options">
-            <form>
-                <label for="privateRadio" class="radio" (click)="onRadioBtnClicked('PRIVATE')">
-                    <input class="radio__input" (change)="onRadioBtnClicked('PRIVATE')" type="radio" id="privateRadio" name="options" value="PRIVATE">
-                    <div #radioHalo class="radio__radio-halo" (click)="highlightBackground(radioHalo)">
-                        <div class="radio__radio"></div>
-                    </div>
-                    <div class="label-text-container">
-                        <h2 class="text-primary radio_header">Private</h2>
-                        <p class="text-secondary radio_description subtitle">
-                            Only you and people who you choose can watch your video
-                        </p>
-                    </div>
-                </label>
-                <label for="unlistedId" class="radio">
-                    <input class="radio__input" (change)="onRadioBtnClicked('UNLISTED')" type="radio" id="unlistedId" name="options" value="UNLISTED">
-                    <div #radioHalo class="radio__radio-halo" (click)="highlightBackground(radioHalo)">
-                        <div class="radio__radio"></div>
-                    </div>
-                    <div class="label-text-container">
-                        <h2 class="text-primary radio_header">Unlisted</h2>
-                        <p class="text-secondary radio_description subtitle">
-                            Anyone with the video link can watch your video
-                        </p>
-                    </div>
-                </label>
-                <label for="publicId" class="radio">
-                    <input class="radio__input" (change)="onRadioBtnClicked('PUBLIC')" type="radio" id="publicId" name="options" value="PUBLIC">
-                    <div #radioHalo class="radio__radio-halo" (click)="highlightBackground(radioHalo)">
-                        <div class="radio__radio"></div>
-                    </div>
-                    <div class="label-text-container">
-                        <h2 class="text-primary radio_header">Public</h2>
-                        <p class="text-secondary radio_description subtitle">
-                            Everyone can watch your video
-                        </p>
-                    </div>
-                </label>
-            </form>
+            <app-radio-group
+                [data]="selection"
+                (selected)="onRadioBtnClicked($event)">
+            </app-radio-group>
         </div>
     </div>
 </div>
