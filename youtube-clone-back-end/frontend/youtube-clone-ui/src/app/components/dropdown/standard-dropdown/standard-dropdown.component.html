@@ -10,7 +10,8 @@
         </span>
     </div>
     <div *ngIf="circle" class="round-button" [ngStyle]="{'padding': imageSrc? '0' : '10px'}" (click)="showDropdown()">
-        <span class="material-symbols-outlined" *ngIf="icon && icon !== ''" [style.font-variation-settings]="fillIcon? FILL_ICON: EMPTY_FILL_ICON">{{icon}}</span>
+        <!--&& icon !== ''-->
+        <span class="material-symbols-outlined" *ngIf="icon" [style.font-variation-settings]="fillIcon? FILL_ICON: EMPTY_FILL_ICON">{{icon}}</span>
         <div class="img-icon" *ngIf="imageSrc">
             <img class="img-icon" [src]="imageSrc" alt=""/>
         </div>
