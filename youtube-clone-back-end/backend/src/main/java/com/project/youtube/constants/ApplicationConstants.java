@@ -17,4 +17,5 @@ public class ApplicationConstants {
     public static final String PUBLIC_KEY_PATH = "src/main/resources/rsa/rsa.public";
     public static final String PRIVATE_KEY_PATH = "src/main/resources/rsa/rsa.private";
     public static final String AUTH_TOKEN_PREFIX = "Bearer ";
+    public static final String DEFAULT_VIDEO_TITLE = "Video title";
 }
