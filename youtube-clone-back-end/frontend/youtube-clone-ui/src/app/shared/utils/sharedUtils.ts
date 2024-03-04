@@ -75,3 +75,17 @@ export function buildURL(serverUrl: string, resource: string): string {
   const url = new URL(resource, baseUrl);
   return url.toString();
 }
+
+/**
+ * normalize a Capitalized underscored static selection for readibility purposes
+ * @param {string} selection 
+ * @returns the noramlized selection string
+*/
+export function normalizeSelection(selection: string): string {
+  selection = selection.toLocaleLowerCase()
+            .replaceAll('_', ' ')
+            .split(' ')
+            .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+  return selection;
+}
