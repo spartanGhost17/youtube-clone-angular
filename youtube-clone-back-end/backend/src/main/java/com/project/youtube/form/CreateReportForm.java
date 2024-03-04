@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -14,7 +15,9 @@ import javax.validation.constraints.NotEmpty;
 public class CreateReportForm {
     @NotEmpty(message = "userId cannot be empty")
     private Long userId;
+    @Nullable
     private Long videoId;
+    @Nullable
     private Long commentId;
     @NotEmpty(message = "report type id cannot be empty")
     private Long reportTypeId;
