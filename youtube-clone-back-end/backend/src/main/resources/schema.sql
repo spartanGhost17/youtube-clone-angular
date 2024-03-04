@@ -201,24 +201,25 @@ DROP TABLE IF EXISTS Videos;
 
 create TABLE Videos
 (
-    id                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id             BIGINT UNSIGNED NOT NULL,
-    title               VARCHAR(255) NOT NULL,
-    description         VARCHAR(5000) DEFAULT NULL,
-    created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
-    duration            TIME NOT NULL,
-    stop_at             TIME DEFAULT '00:00:00',
-    total_bytes         BIGINT UNSIGNED NOT NULL,
-    stop_at_bytes       BIGINT UNSIGNED DEFAULT 0,
-    views               INTEGER UNSIGNED DEFAULT 0,
-    comment_enabled     BOOLEAN DEFAULT TRUE,
-    thumbnail_url       VARCHAR(255) NOT NULL,
-    video_url           VARCHAR(255) NOT NULL,
-    location            VARCHAR(255) DEFAULT NULL,
-    reported            BOOLEAN DEFAULT FALSE,
+    id                      BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id                 BIGINT UNSIGNED NOT NULL,
+    title                   VARCHAR(255) NOT NULL,
+    description             VARCHAR(5000) DEFAULT NULL,
+    created_at              DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at              DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    duration                TIME NOT NULL,
+    stop_at                 TIME DEFAULT '00:00:00',
+    total_bytes             BIGINT UNSIGNED NOT NULL,
+    stop_at_bytes           BIGINT UNSIGNED DEFAULT 0,
+    views                   INTEGER UNSIGNED DEFAULT 0,
+    comment_enabled         BOOLEAN DEFAULT TRUE,
+    thumbnail_url           VARCHAR(255) NOT NULL,
+    video_url               VARCHAR(255) NOT NULL,
+    location                VARCHAR(255) DEFAULT NULL,
+    reported                BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
     CONSTRAINT UQ_Videos_Video_Url UNIQUE (video_url),
-    CONSTRAINT UQ_Videos_Thumbnail_Url UNIQUE (thumbnail_url)
+    CONSTRAINT UQ_Videos_Thumbnail_Url UNIQUE (thumbnail_url)--drop this
 );
 
 DROP TABLE IF EXISTS Playlists;
@@ -253,7 +254,7 @@ create TABLE Comments
     video_id            BIGINT UNSIGNED NOT NULL,
     comment_text        VARCHAR(4000) NOT NULL,
     created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_updated        DATETIME DEFAULT NULL,
+    last_updated        DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     parent_comment_id   BIGINT UNSIGNED DEFAULT NULL,
     reported            BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
