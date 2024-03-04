@@ -19,6 +19,7 @@ import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embed
 import { ModalComponent } from '../modal/modal.component';
 import { ReportComponent } from '../report/report/report.component';
 import { ReportTypeInterface } from '../../shared/types/reportType.interface';
+import { SpinnerDirective } from '../../directives/spinner/spinner.directive';
 
 @Component({
   selector: 'app-watch',
@@ -38,7 +39,8 @@ import { ReportTypeInterface } from '../../shared/types/reportType.interface';
     CommentsHolderComponent,
     EmbeddedPlaylistComponent,
     ModalComponent,
-    ReportComponent
+    ReportComponent,
+    SpinnerDirective
   ],
 })
 export class WatchComponent implements OnInit {
