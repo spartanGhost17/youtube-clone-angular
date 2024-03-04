@@ -322,7 +322,7 @@ public class UserController {
      * Get current authentication context
      * @return the Authentication
      */
-    private Authentication getAuthenticationFromContext() {
+    private Authentication getAuthenticationFromContext() { //TODO: consider moving this to a util class
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
@@ -332,7 +332,7 @@ public class UserController {
      * @param authentication authentication
      * @return the UserDTO
      */
-    private UserDTO getAuthenticatedUser(Authentication authentication) {
+    private UserDTO getAuthenticatedUser(Authentication authentication) { //TODO: consider moving this to a util class
         //((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserDTO(); //can just come from securityContext
         return ((UserPrincipal) authentication.getPrincipal()).getUserDTO();
     }
