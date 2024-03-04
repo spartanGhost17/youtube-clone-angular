@@ -4,6 +4,8 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.model.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,9 +36,11 @@ import static org.springframework.http.HttpStatus.*;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler implements ErrorController {
     //ErrorController will help handle white label error 404
     //TODO: resolve the following exception HttpMessageNotReadableException
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception exception, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .path(request.getContextPath())
@@ -60,6 +64,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         String fieldErrorMessage = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
         return new ResponseEntity<>(
@@ -81,6 +86,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<HttpResponse> sQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -99,6 +105,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<HttpResponse> badCredentialsException(BadCredentialsException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -117,6 +124,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(APIException.class)
     public ResponseEntity<HttpResponse> apiException(APIException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -135,6 +143,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<HttpResponse> accessDeniedException(AccessDeniedException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -153,6 +162,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(Exception.class)
     public ResponseEntity<HttpResponse> exception(Exception exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -173,6 +183,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(JWTDecodeException.class)
     public ResponseEntity<HttpResponse> exception(JWTDecodeException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -191,6 +202,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<HttpResponse> emptyResultDataAccessException(EmptyResultDataAccessException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -209,6 +221,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<HttpResponse> disabledException(DisabledException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -228,6 +241,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<HttpResponse> lockedException(LockedException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return   new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
@@ -247,6 +261,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<HttpResponse> dataAccessException(DataAccessException exception) {
         log.error(exception.getMessage());
+        LOGGER.error(exception.toString());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(now().toString())
