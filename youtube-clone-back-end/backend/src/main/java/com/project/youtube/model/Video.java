@@ -1,51 +1,49 @@
 package com.project.youtube.model;
 
-import com.project.youtube.enumaration.VideoCategory;
-import com.project.youtube.enumaration.VisibilityStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.Column;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
-//@Document(value = "Video") //this is a mongodb document 'equivalent of SQL table'
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Data
 @EntityScan
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(NON_NULL)
 public class Video {
-
-    @Id
-    private String id;
-    private String title;
-    private String description;
-    private Long duration;
-    private Integer likes;
-    private Integer dislikes;
-    //private Set<String> tags; //should be a foreign key ref to tags table
-    private VisibilityStatus visibilityStatus;
-    private VideoCategory videoCategory;
-    private String genre;
-    private Integer viewCount;
-    private String thumbnailURL;
-    private String videoUrl;
-    //private List<Comment> commentList;
-    /*private Long id;
+    private Long id;
+    @Column(name = "user_id")
     private Long userId;
     private String title;
     private String description;
-    private Date createdAt;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
     private Time duration;
+    @Column(name = "stop_at")
     private Time stopAt;
+    @Column(name = "total_bytes")
     private Long totalBytes;
+    @Column(name = "stop_at_bytes")
     private Long stopAtBytes;
     private Long views;
+    @Column(name = "comment_enabled")
     private Boolean commentEnabled;
+    @Column(name = "thumbnail_url")
     private String thumbnailUrl;
+    @Column(name = "video_url")
     private String videoUrl;
     private String location;
-    private Boolean reported;*/
+    private Boolean reported;
 }
