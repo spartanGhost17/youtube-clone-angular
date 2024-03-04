@@ -3,6 +3,7 @@ package com.project.youtube.service.impl;
 import com.project.youtube.dao.impl.VideoDaoImpl;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.dtomapper.VideoDTOMapper;
+import com.project.youtube.form.LikeForm;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.repository.VideoRepository;
 import com.project.youtube.service.VideoService;
@@ -21,13 +22,13 @@ import static com.project.youtube.dtomapper.VideoDTOMapper.toVideoDto;
 
 @Service
 @RequiredArgsConstructor
-//@Component
 public class VideoServiceImpl implements VideoService {
 
     @Autowired
     private final S3Service s3Service;
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoServiceImpl.class);
     private final VideoDaoImpl videoDao;
+    private final LikeServiceImpl likeService;
     @Override
     public VideoDto uploadVideo(MultipartFile multipartFile, Long userId) {
         return VideoDTOMapper.toVideoDto(videoDao.create(multipartFile, userId));
@@ -50,7 +51,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public VideoDto getVideoMetadataById(Long id) {
-        return mapToVideoDto(videoDao.getVideo(id));
+        VideoDto videoDto = mapToVideoDto(videoDao.getVideo(id));
+        videoDto.setLikeCount(getLikeCount(videoDto));
+        return videoDto;
     }
 
     @Override
@@ -63,6 +66,11 @@ public class VideoServiceImpl implements VideoService {
         return null;
     }
 
+    private Long getLikeCount(VideoDto videoDto) {
+        LikeForm likeForm = new LikeForm();
+        likeForm.setVideoId(videoDto.getId());
+        return likeService.getLikeCount(likeForm);
+    }
     /**
      * map video object to dto
      * @param video
