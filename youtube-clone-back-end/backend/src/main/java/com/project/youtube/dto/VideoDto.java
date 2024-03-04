@@ -1,25 +1,35 @@
 package com.project.youtube.dto;
 
 
-import com.project.youtube.enumaration.VideoCategory;
-import com.project.youtube.enumaration.VisibilityStatus;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.Set;
+import lombok.Setter;
 
-@Data
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class VideoDto {
-    private String id;
+    private Long id;
+    private Long userId;
     private String title;
     private String description;
-    //private int duration;
-    private Set<String> tags;
-    private VisibilityStatus visibilityStatus;
-    private VideoCategory videoCategory;
-    private String genre;
-    private String thumbnailURL;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Time duration;
+    private Time stopAt;
+    private Long totalBytes;
+    private Long stopAtBytes;
+    private Long views;
+    private Boolean commentEnabled;
+    private String thumbnailUrl;
     private String videoUrl;
+    private String location;
+    private boolean reported;
 }
