@@ -87,6 +87,15 @@ export class WatchComponent implements OnInit {
     this.componentUpdatesService.sideBarCollapsedEmit(true);
     this.componentUpdatesService.sideBarTypeUpdate(this.sideBarType);
 
+    this.componentUpdatesService.reportModal$.subscribe({
+      next: (showModal) => {
+        if(showModal) {
+          console.log('modal show ', showModal);
+          this.isReportModalVisible = true;
+        }
+      }
+    });
+
     this.comment = {
       id: '1',
       commentText: `I’m upset Rey didn’t get to finish certain questions. I get the comedic aspect of the interview but let’s hear Rey’s answers more so than Kevin’s outburst.`,
@@ -477,6 +486,7 @@ export class WatchComponent implements OnInit {
     this.selectedReportType = null;
     this.reportStep = 0;
     this.isReportModalVisible = false;
+    this.componentUpdatesService.toggleReportModal(false);
   }
 
   /**

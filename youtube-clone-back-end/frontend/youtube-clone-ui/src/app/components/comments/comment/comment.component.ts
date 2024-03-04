@@ -5,6 +5,7 @@ import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/stan
 import { FormsModule } from '@angular/forms';
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
 import { NgIf, NgClass, NgFor } from '@angular/common';
+import { ComponentUpdatesService } from '../../../shared/services/app-updates/component-updates.service';
 
 @Component({
     selector: 'app-comment',
@@ -29,7 +30,7 @@ export class CommentComponent implements OnInit {
   commentInput:string;
 
 
-  constructor() {}
+  constructor(private componentUpdatesService: ComponentUpdatesService) {}
 
   
   ngOnInit(): void {
@@ -55,6 +56,7 @@ export class CommentComponent implements OnInit {
   }
 
   report(id: any, childId: any): void {
+    this.componentUpdatesService.toggleReportModal(true);
     if(childId) {
       console.log('REPORT This is a subComment = ', childId, ' parent id ', id);
       //TODO: call backend

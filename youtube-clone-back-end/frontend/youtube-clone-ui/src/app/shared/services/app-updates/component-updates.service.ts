@@ -15,6 +15,8 @@ export class ComponentUpdatesService {
 
   videoTheaterMode$: Subject<boolean> = new Subject<boolean>();
   videoPrimaryColor$: Subject<string> = new Subject<string>();//updated every 30 frames
+
+  reportModal$: Subject<boolean> = new BehaviorSubject<boolean>(false);
   
   constructor() { }
 
@@ -46,5 +48,13 @@ export class ComponentUpdatesService {
 
   videoPrimaryColorUpdate(color: string) {
     this.videoPrimaryColor$.next(color);
+  }
+
+  /**
+   * show report modal 
+   * @param {boolean} showModal  
+  */
+  toggleReportModal(showModal: boolean) {
+    this.reportModal$.next(showModal);
   }
 }
