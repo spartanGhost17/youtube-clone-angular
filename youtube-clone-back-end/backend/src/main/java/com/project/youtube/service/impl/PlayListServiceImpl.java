@@ -18,7 +18,6 @@ import static com.project.youtube.constants.ApplicationConstants.*;
 
 @Service
 @RequiredArgsConstructor
-//@Component
 public class PlayListServiceImpl implements PlayListService {
     @Autowired
     private VideoService videoService;
@@ -54,10 +53,10 @@ public class PlayListServiceImpl implements PlayListService {
         PlayList playList = getPlayListById(playListId);
         List<Video> playListVideos = new ArrayList<>();
 
-        for(String videoId : playList.getVideoIds()){
+        /*for(String videoId : playList.getVideoIds()){
             Video video = this.videoService.getVideoById(videoId);
             playListVideos.add(video);
-        }
+        }*/
         return new PlayListDto(playList.getId(), playList.getTitle(), playListVideos, playList.getDescription(), playList.getVisibilityStatus());
     }
 
