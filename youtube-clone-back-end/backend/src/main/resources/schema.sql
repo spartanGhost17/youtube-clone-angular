@@ -355,7 +355,9 @@ create TABLE Likes
     comment_id          BIGINT UNSIGNED DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
     FOREIGN KEY (video_id) REFERENCES Videos (id) ON delete CASCADE ON update CASCADE,
-    FOREIGN KEY (comment_id) REFERENCES Comments (id) ON delete CASCADE ON update CASCADE
+    FOREIGN KEY (comment_id) REFERENCES Comments (id) ON delete CASCADE ON update CASCADE,
+    CONSTRAINT UQ_Likes_Video_Id UNIQUE (user_id, video_id),
+    CONSTRAINT UQ_Likes_Comment_Id UNIQUE (user_id, comment_id)
 );
 
 DROP TABLE IF EXISTS Subscriptions;
