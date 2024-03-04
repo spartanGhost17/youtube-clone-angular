@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.Column;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -28,9 +27,9 @@ public class Comment {
     @Column(name = "comment_text")
     private String commentText;
     @Column(name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
     @Column(name = "last_updated")
-    private Date lastUpdated;
+    private Timestamp lastUpdated;
     @Column(name = "parent_comment_id")
     private Long parentCommentId;
     private boolean reported;
