@@ -1,8 +1,8 @@
 package com.project.youtube.controller;
 
+import com.project.youtube.dto.CommentDto;
 import com.project.youtube.form.CommentPageRequestForm;
 import com.project.youtube.form.CreateCommentForm;
-import com.project.youtube.model.Comment;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.service.impl.CommentServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +69,7 @@ public class CommentController {
      */
     @PatchMapping()
     public ResponseEntity<HttpResponse> updateComment(@RequestParam("text") String commentText, @RequestParam("id") Long id) {
-        Comment comment = commentService.updateComment(commentText, id);
+        CommentDto comment = commentService.updateComment(commentText, id);
         return new ResponseEntity(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
@@ -87,7 +87,7 @@ public class CommentController {
      */
     @GetMapping()
     public ResponseEntity<HttpResponse> getComments(@RequestBody CommentPageRequestForm pageRequestForm) {
-        List<Comment> commentList = commentService.getComments(pageRequestForm.getVideoId(), pageRequestForm.getPageSize(), pageRequestForm.getOffset(), pageRequestForm.getIsSubComment());
+        List<CommentDto> commentList = commentService.getComments(pageRequestForm.getVideoId(), pageRequestForm.getPageSize(), pageRequestForm.getOffset(), pageRequestForm.getIsSubComment());
         return new ResponseEntity(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
