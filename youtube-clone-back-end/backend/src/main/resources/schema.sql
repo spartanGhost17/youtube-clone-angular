@@ -370,7 +370,8 @@ create TABLE Subscriptions
     created_at                  DATETIME DEFAULT CURRENT_TIMESTAMP,
     notification_type           VARCHAR(100) NOT NULL CHECK(notification_type in ('ALL', 'NONE', 'PERSONALISED')),
     FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
-    FOREIGN KEY (subscriber_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE
+    FOREIGN KEY (subscriber_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
+    CONSTRAINT UQ_Subscriptions_User_Id_Subscriber_Id UNIQUE (user_id, subscriber_id) --make sure there is only a single sub to user combination
 );
 
 DROP TABLE IF EXISTS Tags;
