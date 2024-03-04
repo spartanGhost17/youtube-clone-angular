@@ -6,11 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -32,4 +30,6 @@ public class VideoDto {
     private String videoUrl;
     private String location;
     private boolean reported;
+    //extra fields
+    private Long likeCount;
 }
