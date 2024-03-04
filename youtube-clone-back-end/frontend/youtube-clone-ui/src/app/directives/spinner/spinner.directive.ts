@@ -17,16 +17,16 @@ export class SpinnerDirective {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      animation: spin .4s linear infinite;
+      border: 4px solid var(--yt-color-blue);
+      border-top: 4px solid #f3f3f3;
+      animation: spin .8s linear infinite;
     }
 
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    `;
+    `;//#3498db
     const styleElement = this.renderer.createElement('style');
     styleElement.type = 'text/css';
     styleElement.appendChild(this.renderer.createText(styles));
