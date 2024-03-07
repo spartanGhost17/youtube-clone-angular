@@ -1,12 +1,8 @@
 package com.project.youtube.constants;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
-
 
 public class ApplicationConstants {
-    public static final int PLAYLIST_MAXSIZE = 400;
+    //public static final int PLAYLIST_MAXSIZE = 400;
     public static final String API_VERSION = "/api/v1/";
     public static final String TOKEN_ISSUER = "YoutubeClone";
     public static final String USER_VIDEO_MANAGEMENT_SERVICE = "Video management service";
@@ -18,4 +14,6 @@ public class ApplicationConstants {
     public static final String PRIVATE_KEY_PATH = "src/main/resources/rsa/rsa.private";
     public static final String AUTH_TOKEN_PREFIX = "Bearer ";
     public static final String DEFAULT_VIDEO_TITLE = "Video title";
+    public static final int PLAYLIST_MAX_SIZE = 4000;
+    public static final String DEFAULT_VIDEO_VISIBILITY = "DRAFT";
 }
