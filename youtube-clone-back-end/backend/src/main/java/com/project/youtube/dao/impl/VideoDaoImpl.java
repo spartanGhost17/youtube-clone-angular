@@ -3,9 +3,9 @@ package com.project.youtube.dao.impl;
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.VideoDao;
 import com.project.youtube.form.UpdateVideoMetadataForm;
+import com.project.youtube.model.Category;
 import com.project.youtube.model.Video;
 import com.project.youtube.service.impl.FileUploadTestService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bramp.ffmpeg.FFprobe;
@@ -19,27 +19,22 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Time;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 import static com.project.youtube.constants.ApplicationConstants.DEFAULT_VIDEO_TITLE;
-import static com.project.youtube.query.VideoQuery.INSERT_VIDEO_QUERY;
-import static com.project.youtube.query.VideoQuery.SELECT_VIDEO_BY_ID_QUERY;
+import static com.project.youtube.query.VideoQuery.*;
 import static com.project.youtube.utils.SqlUtils.camelToSnake;
 import static java.util.Objects.requireNonNull;
 
@@ -76,7 +71,7 @@ public class VideoDaoImpl implements VideoDao<Video> {
                     "title", DEFAULT_VIDEO_TITLE,
                     "duration", videoLength,
                     "totalBytes", totalBytes,
-                    "thumbnailUrl", "adam---4545454",
+                    "thumbnailUrl", randomId,//TODO: REPLACE WITH ACTUAL THUMBNAIL UUID
                     "videoUrl", videoServerUrl
             );
 
@@ -85,8 +80,8 @@ public class VideoDaoImpl implements VideoDao<Video> {
             jdbcTemplate.update(INSERT_VIDEO_QUERY, params, keyHolder);
 
             log.info("video file: {}, extension: {}, videoServerUrl: {}, totalBytes: {}, videoLength sec: {} sec", url, extension, videoServerUrl, totalBytes, videoLength);
-
-            return getVideo(requireNonNull(keyHolder.getKey().longValue()));
+            Long videoId = requireNonNull(keyHolder.getKey().longValue());
+            return getVideo(videoId);
         } catch (Exception exception) {
             try {
                 throw new Exception("An error occurred ", exception.getCause());
@@ -121,7 +116,6 @@ public class VideoDaoImpl implements VideoDao<Video> {
     public Video updateMetadata(UpdateVideoMetadataForm videoMetadataForm) {
         try {
             SqlParameterSource parameterSource = getSqlParameterSource(videoMetadataForm);
-
             final String UPDATE_VIDEO_BY_ID_QUERY = buildUpdateQuery(parameterSource);
             jdbcTemplate.update(UPDATE_VIDEO_BY_ID_QUERY, parameterSource);
             return getVideo(videoMetadataForm.getVideoId());
@@ -129,6 +123,40 @@ public class VideoDaoImpl implements VideoDao<Video> {
             throw new APIException("An error occurred, could not update video information ");
         }
 
+    }
+
+    /**
+     * get video category
+     * @param videoId the video id
+     * @return the category
+     */
+    @Override
+    public Category getVideoCategory(Long videoId) {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_VIDEO_CATEGORY_BY_VIDEO_ID_QUERY, Map.of("videoId", videoId), new BeanPropertyRowMapper<>(Category.class));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("Could not find a category associated to this video");
+        } catch (Exception exception) {
+            throw exception;
+            //throw new APIException("");
+        }
+    }
+
+    /**
+     * delete a video owned by this user
+     * @param videoId the video id
+     * @param userId the user id
+     */
+    @Override
+    public void delete(Long videoId, Long userId) {
+        try {
+            if(!Objects.equals(getVideo(videoId).getUserId(), userId)) { throw new APIException("You do not own this video"); }
+            jdbcTemplate.update(DELETE_VIDEO_QUERY, Map.of("videoId", videoId, "userId", userId));
+        } catch (APIException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, could not delete the video. Please try again");
+        }
     }
 
     /**
@@ -243,6 +271,16 @@ public class VideoDaoImpl implements VideoDao<Video> {
             }
             // Delete the temporary file
             //Files.deleteIfExists(Paths.get(tempFilePath));
+    }
+
+    /**
+     * check if video has category
+     * @param videoId the video id
+     * @return true if video has an associated category, else false
+     */
+    private boolean hasCategory(Long videoId) {
+        int count = jdbcTemplate.queryForObject(SELECT_VIDEO_CATEGORY_COUNT_QUERY, Map.of("videoId", videoId), Integer.class);
+        return count > 0;
     }
 
     /**
