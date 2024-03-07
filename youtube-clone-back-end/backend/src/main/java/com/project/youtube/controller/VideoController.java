@@ -118,6 +118,42 @@ public class VideoController {
     }
 
     /**
+     * get video category for a video
+     * @param videoId the video id
+     * @return the response
+     */
+    @GetMapping("category")
+    public ResponseEntity<HttpResponse> getCategory(@RequestParam("id") Long videoId) {
+        videoService.getVideoCategory(videoId);
+        return new ResponseEntity(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Category retrieved successfully.")
+                        //.data(Map.of("video", videoDto))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
+    /**
+     * delete a video
+     * @param videoId the video id
+     * @return the response
+     */
+    @DeleteMapping()
+    public ResponseEntity<HttpResponse> deleteVideo(@RequestParam("id") Long videoId) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        videoService.delete(videoId, userId);
+        return new ResponseEntity(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Video deleted.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
+    /**
      * Rest endpoint uploads video to service provider
      *
      * @param file
