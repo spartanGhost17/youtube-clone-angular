@@ -1,22 +1,32 @@
 package com.project.youtube.model;
 
-import com.project.youtube.enumaration.VisibilityStatus;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
 
-import java.util.List;
+import javax.persistence.Column;
+import java.sql.Timestamp;
 
-//@Document(value="PlayList")
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Data
 @EntityScan
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayList {
-    @Id
-    private String id;
-    private String title;
-    private List<String> videoIds;
+@JsonInclude(NON_NULL)
+public class Playlist {
+
+    private Long id;
+    private String name;
+    @Column(name = "user_id")
+    private Long userId;
     private String description;
-    private VisibilityStatus visibilityStatus;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    @Column(name = "last_updated")
+    private Timestamp lastUpdated;
 }
