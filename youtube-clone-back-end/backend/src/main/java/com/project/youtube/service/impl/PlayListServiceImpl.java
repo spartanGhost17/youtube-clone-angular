@@ -1,98 +1,137 @@
 package com.project.youtube.service.impl;
 
-import com.project.youtube.dto.PlayListDto;
-import com.project.youtube.model.PlayList;
-import com.project.youtube.model.Video;
+import com.project.youtube.dao.impl.PlaylistDaoImpl;
+import com.project.youtube.dto.PlaylistDto;
+import com.project.youtube.dto.VideoDto;
+import com.project.youtube.form.PlaylistForm;
+import com.project.youtube.form.VideoItemForm;
+import com.project.youtube.model.Playlist;
+import com.project.youtube.model.Status;
 import com.project.youtube.service.PlayListService;
-import com.project.youtube.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import static com.project.youtube.constants.ApplicationConstants.*;
+import static com.project.youtube.dtomapper.PlaylistDTOMapper.toPlaylistDto;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlayListServiceImpl implements PlayListService {
-    @Autowired
-    private VideoService videoService;
-
+    private final PlaylistDaoImpl playlistDao;
+    private final StatusServiceImpl statusService;
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayListServiceImpl.class);
 
+    /**
+     * create a new playlist
+     * @param playlistForm the playlist creation form
+     * @return the playlist dto (rich object)
+     */
     @Override
-    public PlayListDto createPlaylist(PlayListDto playListDto) {
-        LOGGER.info("Entering createPlaylist");
-        LOGGER.info("Tile "+playListDto.getTitle());
-        LOGGER.info("Description "+playListDto.getDescription());
-        LOGGER.info("VisibilityStatus "+playListDto.getVisibilityStatus());
-        PlayList playList = new PlayList();
-        playList.setTitle(playListDto.getTitle());
-        playList.setDescription(playListDto.getDescription());
-        playList.setVisibilityStatus(playListDto.getVisibilityStatus());
-        //var savedPlayList = playListRepository.save(playList);
-        var savedPlayList = new PlayList();
-
-
-        LOGGER.info("Leaving createPlaylist");
-        return new PlayListDto(savedPlayList.getId(), savedPlayList.getTitle(), new ArrayList<Video>(), savedPlayList.getDescription(), savedPlayList.getVisibilityStatus());
+    public void create(PlaylistForm playlistForm) {
+        playlistDao.create(playlistForm);
     }
 
     /**
-     * Get PlaylistDto by id
-     * @param playListId
-     * @return PlayListDto
+     * get playlist by id
+     * @param playListId the playlist id
+     * @return the playlist dto
      */
     @Override
-    public PlayListDto getPlayList(String playListId) {
-        LOGGER.info("Entering getPlayList for playList id: "+playListId);
-        PlayList playList = getPlayListById(playListId);
-        List<Video> playListVideos = new ArrayList<>();
-
-        /*for(String videoId : playList.getVideoIds()){
-            Video video = this.videoService.getVideoById(videoId);
-            playListVideos.add(video);
-        }*/
-        return new PlayListDto(playList.getId(), playList.getTitle(), playListVideos, playList.getDescription(), playList.getVisibilityStatus());
-    }
-
-
-    /**
-     * Get playlist by Id from database
-     * @param playListId String Id
-     * @return playlist object
-     */
-    @Override
-    public PlayList getPlayListById(String playListId) {
-        LOGGER.info("Getting user playList for playListId: "+playListId);
-        return null;/*this.playListRepository.findById(playListId).orElseThrow(()-> {
-                LOGGER.error("Could not find playList for playListId: "+playListId);
-                return new NoSuchElementException("Could not find playList for for Id "+playListId);
-            }
-        );*/
+    public PlaylistDto getByPlaylistId(Long playListId) {
+        PlaylistDto playlistDto = mapPlaylistToDto(playlistDao.getByPlaylistId(playListId));
+        playlistDto.setVisibilityStatus(statusService.getPlaylistStatus(playListId));
+        playlistDto.setSize(getPlaylistSize(playlistDto.getId()));
+        return playlistDto;
     }
 
     /**
-     * add video in playlist only if playlist doesn't exceed max size
-     * @param videoId string videoId
-     * @param playLiatId string playlistId
-     * @return true if video was added to playlist; else false
+     * get user's owned playlists
+     * @param userId the user id
+     * @return the list of playlists
      */
     @Override
-    public boolean addVideo(String videoId, String playLiatId) {
-        PlayList playList = getPlayListById(playLiatId);
-        boolean canAddvideo = true;
-        if(playList.getVideoIds().size() < PLAYLIST_MAXSIZE) {
-            playList.getVideoIds().add(videoId);
-            //this.playListRepository.save(playList);
-        }
-        else{
-            canAddvideo = false;
-        }
-        return canAddvideo;
+    public List<PlaylistDto> getByUserId(Long userId) {
+        List<PlaylistDto> playlistDto = playlistDao.getByUserId(userId).stream().map(playlist -> {
+            PlaylistDto playlistdto = mapPlaylistToDto(playlist);
+            playlistdto.setVisibilityStatus(statusService.getPlaylistStatus(playlistdto.getId()));
+            playlistdto.setSize(getPlaylistSize(playlistdto.getId()));
+            return playlistdto;
+        }).collect(Collectors.toList());
+        return playlistDto;
     }
+
+    /**
+     * update playlist
+     * @param playlistForm the playlist update form
+     * @return the updated playlist
+     */
+    @Override
+    public PlaylistDto updatePlaylist(PlaylistForm playlistForm) {
+        return  mapPlaylistToDto(playlistDao.updatePlaylist(playlistForm));
+    }
+
+    /**
+     * get videos for the playlist
+     * @param playlistId the playlist id
+     * @return the list of videos
+     */
+    @Override
+    public List<VideoDto> getVideos(Long playlistId) {
+        return playlistDao.getVideos(playlistId).stream().map(videoDto -> {
+            videoDto.setStatus(statusService.getVideoStatus(videoDto.getId()));
+            return videoDto;
+        }).collect(Collectors.toList());
+        //return playlistDao.getVideos(playlistId);
+    }
+
+    /**
+     * update positions of playlist items
+     * @param videosList the video list
+     * @return the list of updated videos
+     */
+    @Override
+    public void updateVideosPosition(List<VideoItemForm> videosList) {
+        playlistDao.updateVideosPosition(videosList);
+    }
+
+    /**
+     * get playlist size
+     * @param playlistId the playlist id
+     * @return the size of the playlist
+     */
+    @Override
+    public Integer getPlaylistSize(Long playlistId) {
+        return playlistDao.getPlaylistSize(playlistId);
+    }
+
+    /**
+     * add video to playlist
+     * @param videoItemForm the video form
+     */
+    @Override
+    public void addVideo(VideoItemForm videoItemForm) {
+        playlistDao.addVideo(videoItemForm);
+    }
+
+    @Override
+    public void delete(Long playlistId, Long userId) {
+        playlistDao.delete(playlistId, userId);
+    }
+
+    /**
+     * map playlist to dto
+     * @param playlist the playlist
+     * @return the
+     */
+    private PlaylistDto mapPlaylistToDto(Playlist playlist) {
+        return toPlaylistDto(playlist);
+    }
+
 }
