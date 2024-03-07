@@ -120,6 +120,25 @@ public class PlaylistController {
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
     }
+
+    /**
+     * get the playlist videos
+     * @param playlistId the playlist id
+     * @return the response
+     */
+    @GetMapping("videos")
+    public ResponseEntity<HttpResponse> getVideos(@RequestParam("id") Long playlistId) {
+        PlaylistDto playlistDto = playListService.getByPlaylistId(playlistId);
+        List<VideoDto> videoDtoList = playListService.getVideos(playlistId);
+        playlistDto.setVideos(videoDtoList);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Video added to playlist updated.")
+                        .data(Map.of("playlist", playlistDto))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
     }
     //public PlayListDto createPlaylist(@RequestParam("title") String title, @RequestParam("description")String description, @RequestParam("visibilityStatus")String visibilityStatus){
     //    return playListServiceImpl.createPlaylist(title, description, visibilityStatus);
