@@ -227,17 +227,20 @@ DROP TABLE IF EXISTS Playlists;
 create TABLE Playlists
 (
     id                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name                VARCHAR(255) NOT NULL,
+    description         VARCHAR(5000) DEFAULT NULL,
     user_id             BIGINT UNSIGNED NOT NULL,
     created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_updated        DATETIME DEFAULT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE
+    last_updated        DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
+    CONSTRAINT UQ_Playlists_User_Id_Name UNIQUE (user_id, name)
 );
 
 DROP TABLE IF EXISTS PlaylistVideos;
 
 create TABLE PlaylistVideos
 (
-    video_position          INTEGER UNSIGNED NOT NULL DEFAULT 0,
+    position                INTEGER UNSIGNED NOT NULL DEFAULT 0,
     playlist_id             BIGINT UNSIGNED NOT NULL,
     video_id                BIGINT UNSIGNED NOT NULL,
     FOREIGN KEY (playlist_id) REFERENCES Playlists (id) ON delete CASCADE ON update CASCADE,
@@ -311,6 +314,18 @@ create TABLE VideoStatus
     CONSTRAINT UQ_VideoStatus_Video_Id UNIQUE (video_id)
 );
 
+DROP TABLE IF EXISTS PlaylistStatus;
+
+create TABLE PlaylistStatus
+(
+    id                          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    playlist_id                 BIGINT UNSIGNED NOT NULL,
+    status_id                   INTEGER UNSIGNED NOT NULL,
+    FOREIGN KEY (playlist_id) REFERENCES Playlists (id) ON delete CASCADE ON update CASCADE,
+    FOREIGN KEY (status_id) REFERENCES Status (id) ON delete RESTRICT ON update CASCADE,
+    CONSTRAINT UQ_PlaylistStatus_Playlist_Id UNIQUE (playlist_id)
+);
+
 DROP TABLE IF EXISTS Categories;
 
 create TABLE Categories
@@ -319,6 +334,7 @@ create TABLE Categories
     category_name       VARCHAR(100) NOT NULL CHECK(category_name in ('CARS_AND_VEHICLES', 'COMEDY', 'EDUCATION', 'ENTERTAINMENT', 'FILM_AND_ANIMATION', 'GAMING', 'HOW_TO_AND_STYLE', 'MUSIC', 'NEWS_AND_POLITICS', 'NON_PROFITS_AND_ACTIVISM', 'PEOPLE_AND_BLOGS', 'PETS_AND_ANIMALS', 'SCIENCE_AND_TECHNOLOGY', 'SPORT', 'TRAVEL_AND_EVENTS')),
     CONSTRAINT UQ_Categories_Category_Name UNIQUE (category_name)
 );
+
 
 DROP TABLE IF EXISTS VideoCategories;
 
@@ -332,17 +348,6 @@ create TABLE VideoCategories
     CONSTRAINT UQ_VideoCategories_Video_Id UNIQUE (video_id)
 );
 
-DROP TABLE IF EXISTS PlaylistStatus;
-
-create TABLE PlaylistStatus
-(
-    id                          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    playlist_id                 BIGINT UNSIGNED NOT NULL,
-    status_id                   INTEGER UNSIGNED NOT NULL,
-    FOREIGN KEY (playlist_id) REFERENCES Playlists (id) ON delete CASCADE ON update CASCADE,
-    FOREIGN KEY (status_id) REFERENCES Status (id) ON delete RESTRICT ON update CASCADE,
-    CONSTRAINT UQ_PlaylistStatus_Playlist_Id UNIQUE (playlist_id)
-);
 
 
 DROP TABLE IF EXISTS Likes;
