@@ -1,7 +1,6 @@
 package com.project.youtube.dto;
 
-import com.project.youtube.model.Video;
-import com.project.youtube.enumaration.VisibilityStatus;
+import com.project.youtube.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayListDto {
-    private String id;
-    private String title;
-    private List<Video> videos;
+public class PlaylistDto {
+    private Long id;
+    private String name;
     private String description;
-    private VisibilityStatus VisibilityStatus;
+    private List<VideoDto> videos;
+    private Status visibilityStatus;
+    private Integer size;
 }
