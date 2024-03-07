@@ -85,6 +85,24 @@ public class PlaylistController {
                         .build(), HttpStatus.OK);
     }
 
+    /**
+     * update the playlist name or description
+     * @param playlistForm
+     * @return
+     */
+    @PatchMapping("update")
+    public ResponseEntity<HttpResponse> updatePlaylist(@RequestBody @Valid PlaylistForm playlistForm) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        playlistForm.setUserId(userId);
+
+        PlaylistDto playlistDto = playListService.updatePlaylist(playlistForm);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Playlist successfully updated.")
+                        .data(Map.of("playlist", playlistDto))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
     }
 
     @PutMapping(value="newPlaylist")
