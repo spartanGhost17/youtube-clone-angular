@@ -155,17 +155,21 @@ public class PlaylistController {
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
     }
-    //public PlayListDto createPlaylist(@RequestParam("title") String title, @RequestParam("description")String description, @RequestParam("visibilityStatus")String visibilityStatus){
-    //    return playListServiceImpl.createPlaylist(title, description, visibilityStatus);
-    //}
 
-    /*@PutMapping(value="/addVideo")
-    public ResponseEntity updatePlayListVideos(@RequestParam("playListId") String playListId, @RequestParam("videoId") String videoId) {
-        return new ResponseEntity<>(playListServiceImpl.addVideo(playListId, videoId), HttpStatus.OK);
-    }*/
-
-    @GetMapping(value="test")
-    public String test() {
-        return "this is a test";
+    /**
+     * delete a playlist
+     * @param playlistId the playlist id
+     * @return the response
+     */
+    @DeleteMapping()
+    public ResponseEntity<HttpResponse> deletePlaylist(@RequestParam("id") Long playlistId) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        playListService.delete(playlistId, userId);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Playlist was deleted successfully.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
     }
 }
