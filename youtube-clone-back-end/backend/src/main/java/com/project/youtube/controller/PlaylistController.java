@@ -68,6 +68,23 @@ public class PlaylistController {
                         .build(), HttpStatus.OK);
     }
 
+    /**
+     * get playlist by user id
+     * @param userId the user id
+     * @return the response
+     */
+    @GetMapping("user")
+    public ResponseEntity<HttpResponse> getPlayListByUserId(@RequestParam("userId") Long userId) {
+        List<PlaylistDto> playlistDto = playListService.getByUserId(userId);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("User playlist retrieved.")
+                        .data(Map.of("playlist", playlistDto))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
     }
 
     @PutMapping(value="newPlaylist")
