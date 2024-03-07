@@ -1,21 +1,35 @@
 package com.project.youtube.controller;
 
-import com.project.youtube.dto.PlayListDto;
+import com.project.youtube.dto.PlaylistDto;
+import com.project.youtube.dto.VideoDto;
+import com.project.youtube.form.PlaylistForm;
+import com.project.youtube.form.VideoItemForm;
+import com.project.youtube.model.HttpResponse;
 import com.project.youtube.service.impl.PlayListServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
+import java.util.List;
+import java.util.Map;
+
+import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
+import static com.project.youtube.utils.AuthenticationUtils.getAuthenticatedUser;
+import static com.project.youtube.utils.AuthenticationUtils.getAuthenticationFromContext;
+
 @RestController
-@RequestMapping(value="/api/v1/playlist/")
+@RequestMapping(value=API_VERSION + "playlist/")
 @RequiredArgsConstructor
 public class PlaylistController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlaylistController.class);
 
     @Autowired
-    private final PlayListServiceImpl playListServiceImpl;
     private final PlayListServiceImpl playListService;
 
     /**
