@@ -139,6 +139,21 @@ public class PlaylistController {
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
     }
+
+    /**
+     * update video position in playlist
+     * @param videoItemForm the video items list in the playlist
+     * @return the response
+     */
+    @PatchMapping("update/videos/position")
+    public ResponseEntity<HttpResponse> updateVideosPosition(@RequestBody @Valid List<VideoItemForm> videoItemForm) {
+        playListService.updateVideosPosition(videoItemForm);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Videos positions updated successfully.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
     }
     //public PlayListDto createPlaylist(@RequestParam("title") String title, @RequestParam("description")String description, @RequestParam("visibilityStatus")String visibilityStatus){
     //    return playListServiceImpl.createPlaylist(title, description, visibilityStatus);
