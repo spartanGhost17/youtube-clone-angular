@@ -31,10 +31,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final RoleServiceImpl roleService;
     private final FileUploadTestService fileUploadTestService;
+
     /**
-     *
-     * @param user
-     * @return
+     * create a user
+     * @param user the user
+     * @return the user dto
      */
     @Override
     public UserDTO createUser(User user) {
@@ -43,6 +44,11 @@ public class UserServiceImpl implements UserService {
         return mapToUserDTO(createdUser);
     }
 
+    /**
+     * get user by id
+     * @param id the user id
+     * @return the user dto
+     */
     @Override
     public UserDTO getUser(Long id) {
         return mapToUserDTO(userDaoImpl.get(id));
