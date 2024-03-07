@@ -105,10 +105,21 @@ public class PlaylistController {
                         .build(), HttpStatus.OK);
     }
 
-    @PutMapping(value="newPlaylist")
-    public PlayListDto createPlaylist(@RequestBody PlayListDto playListDto) {
-        LOGGER.info("Entered createPlaylist endpoint");
-        return playListServiceImpl.createPlaylist(playListDto);
+    /**
+     * add video to playlist
+     * @param videoItemForm the video form
+     * @return the response
+     */
+    @PostMapping("add/video")
+    public ResponseEntity<HttpResponse> addVideo(@RequestBody @Valid VideoItemForm videoItemForm) {
+        playListService.addVideo(videoItemForm);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Video added to playlist updated.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
     }
     //public PlayListDto createPlaylist(@RequestParam("title") String title, @RequestParam("description")String description, @RequestParam("visibilityStatus")String visibilityStatus){
     //    return playListServiceImpl.createPlaylist(title, description, visibilityStatus);
