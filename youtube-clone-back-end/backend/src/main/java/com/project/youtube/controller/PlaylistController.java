@@ -16,6 +16,26 @@ public class PlaylistController {
 
     @Autowired
     private final PlayListServiceImpl playListServiceImpl;
+    private final PlayListServiceImpl playListService;
+
+    /**
+     * create playlist
+     * @param playlistForm the playlist form
+     * @return the response
+     */
+    @PostMapping()
+    public ResponseEntity<HttpResponse> createPlaylist(@RequestBody @Valid PlaylistForm playlistForm) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        playlistForm.setUserId(userId);
+
+        playListService.create(playlistForm);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Playlist successfully created.")
+                        .status(HttpStatus.CREATED)
+                        .statusCode(HttpStatus.CREATED.value())
+                        .build(), HttpStatus.CREATED);
+    }
 
     @GetMapping(value="playList")
     public PlayListDto getPlayList(@RequestParam("id") String playListId) {
