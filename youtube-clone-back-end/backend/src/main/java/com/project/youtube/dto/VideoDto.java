@@ -1,11 +1,13 @@
 package com.project.youtube.dto;
 
 
+import com.project.youtube.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.sql.Time;
 import java.sql.Timestamp;
 
@@ -13,8 +15,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
+//@JsonInclude(NON_NULL)
 public class VideoDto {
     private Long id;
+    private Long position;
     private Long userId;
     private String title;
     private String description;
@@ -32,4 +36,5 @@ public class VideoDto {
     private boolean reported;
     //extra fields
     private Long likeCount;
+    private Status status;
 }
