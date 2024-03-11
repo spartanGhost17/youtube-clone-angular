@@ -72,7 +72,7 @@ public class StatusServiceImpl implements StatusService<Status> {
      */
     @Override
     public Status setPlaylistStatus(Long playlistId, Long statusId) {
-        log.info("update the video status for playlist id: {}, and status id {}",playlistId, statusId);
+        log.info("update the status for playlist id: {}, and status id {}",playlistId, statusId);
         return statusDao.setPlaylistStatus(playlistId, statusId);
     }
 
