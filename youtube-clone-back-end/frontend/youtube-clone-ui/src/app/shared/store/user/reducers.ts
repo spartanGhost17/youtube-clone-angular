@@ -1,4 +1,4 @@
-import { CurrentUserStateInterface } from "../../types/currentUserState.interface";
+import { CurrentUserStateInterface } from "../../types/state/currentUserState.interface";
 import { createFeature, createReducer, on } from '@ngrx/store';
 import { userActions } from './actions';
 import { act } from "@ngrx/effects";
