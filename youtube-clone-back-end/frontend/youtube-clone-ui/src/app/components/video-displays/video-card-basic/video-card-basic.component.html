@@ -1,6 +1,6 @@
 <div class="video-card-basic-container" [ngClass]="{'skeleton': loading, 'xtra-small': size === 'xtra-small', 'small': size === 'small', 'default': size === 'default'}" >
     <div (click)="openVideo()" class="video-container">
-        <app-video-mini *ngIf="!loading" [ThumbnailURL]="video.thumbnailURL" [videoURL]="video.videoURL"></app-video-mini>
+        <app-video-mini *ngIf="!loading" [ThumbnailURL]="video.thumbnailUrl" [videoURL]="video.videoUrl"></app-video-mini>
     </div>
     <div class="video-info-container" *ngIf="size !== 'small'">
         <div class="icon-container" *ngIf="showIcon">
