@@ -5,10 +5,14 @@ import com.project.youtube.dao.UserDao;
 import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dtomapper.UserDTOMapper;
 import com.project.youtube.enumaration.VerificationType;
+import com.project.youtube.form.PlaylistForm;
 import com.project.youtube.form.UpdateUserForm;
+import com.project.youtube.model.Status;
 import com.project.youtube.model.User;
 import com.project.youtube.service.impl.FileUploadTestService;
+import com.project.youtube.service.impl.PlayListServiceImpl;
 import com.project.youtube.service.impl.RoleServiceImpl;
+import com.project.youtube.service.impl.StatusServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -30,7 +34,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.*;
 
-import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
+import static com.project.youtube.constants.ApplicationConstants.*;
 import static com.project.youtube.enumaration.RoleType.ROLE_USER;
 import static com.project.youtube.enumaration.VerificationType.ACCOUNT;
 import static com.project.youtube.enumaration.VerificationType.PASSWORD;
@@ -48,6 +52,8 @@ public class UserDaoImpl implements UserDao<User> {
     private final PasswordEncoder passwordEncoder;
     @Autowired
     private final RoleServiceImpl roleService;
+    private final PlayListServiceImpl playListService;
+    private final StatusServiceImpl statusService;
     private final FileUploadTestService fileUploadTestService;
 
     //@Autowired
@@ -81,6 +87,15 @@ public class UserDaoImpl implements UserDao<User> {
             user.setEnabled(false);
             user.setNonLocked(true);
             //return the newly created user
+            //TODO: Create user default playlists, consider moving this to a service layer
+            Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
+            for(String playlistName : DEFAULT_PLAYLISTS) {
+                PlaylistForm playlistForm = new PlaylistForm();
+                playlistForm.setUserId(user.getId());
+                playlistForm.setName(playlistName);
+                playlistForm.setStatusId(status.getId());
+                playListService.create(playlistForm);//create playlist for this user
+            }
             return user;
             //if error throw exception with appropriate message
         }
