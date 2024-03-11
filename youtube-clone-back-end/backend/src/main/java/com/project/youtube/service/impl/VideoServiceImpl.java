@@ -8,6 +8,7 @@ import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.Category;
 import com.project.youtube.model.Status;
 import com.project.youtube.model.Video;
+import com.project.youtube.model.VideoThumbnail;
 import com.project.youtube.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -15,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.DEFAULT_VIDEO_VISIBILITY;
 import static com.project.youtube.dtomapper.VideoDTOMapper.toVideoDto;
@@ -29,6 +33,7 @@ public class VideoServiceImpl implements VideoService {
     private final VideoDaoImpl videoDao;
     private final LikeServiceImpl likeService;
     private final StatusServiceImpl statusService;
+    private final FileUploadTestService fileUploadTestService;
 
     /**
      * upload video
@@ -40,7 +45,9 @@ public class VideoServiceImpl implements VideoService {
     public VideoDto uploadVideo(MultipartFile multipartFile, Long userId) {
         VideoDto videoDto = VideoDTOMapper.toVideoDto(videoDao.create(multipartFile, userId));
         Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
+        List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
         videoDto.setStatus(updateVideoStatus(videoDto.getId(), status.getId()));
+        videoDto.setVideoThumbnails(thumbnails);
         return videoDto;
     }
 
@@ -51,7 +58,12 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public VideoDto updateVideoMetadata(UpdateVideoMetadataForm updateVideoMetadataForm) {
-        return mapToVideoDto(videoDao.updateMetadata(updateVideoMetadataForm));
+        VideoDto videoDto = mapToVideoDto(videoDao.updateMetadata(updateVideoMetadataForm));
+        //Status status = statusService.getVideoStatus(videoDto.getId());
+        //List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
+        videoDto.setStatus(statusService.getVideoStatus(videoDto.getId()));
+        videoDto.setVideoThumbnails(videoDao.getThumbnails(videoDto.getId()));
+        return videoDto;
     }
 
     /**
@@ -66,6 +78,16 @@ public class VideoServiceImpl implements VideoService {
     }
 
     /**
+     * get video thumbnail
+     * @param fileName the file name
+     * @return the byte array representing the image
+     */
+    @Override
+    public byte[] getThumbnail(String fileName) {
+        return fileUploadTestService.getThumbnailImage(fileName);
+    }
+
+    /**
      * get video metadata
      * @param id the vide id
      * @return the video dto
@@ -75,7 +97,24 @@ public class VideoServiceImpl implements VideoService {
         VideoDto videoDto = mapToVideoDto(videoDao.getVideo(id));
         videoDto.setLikeCount(getLikeCount(videoDto));
         videoDto.setStatus(statusService.getVideoStatus(id));
+        videoDto.setVideoThumbnails(videoDao.getThumbnails(videoDto.getId()));
         return videoDto;
+    }
+
+    /**
+     * get all videos for user
+     * @param userId the user id
+     * @return the response
+     */
+    @Override
+    public List<VideoDto> getAllByUserId(Long userId, Integer pageSize, Integer offset) {
+        return videoDao.getAllByUserId(userId, pageSize, offset).stream().map(video -> {
+            VideoDto videoDto = mapToVideoDto(video);
+            videoDto.setLikeCount(getLikeCount(videoDto));
+            videoDto.setStatus(statusService.getVideoStatus(video.getId()));
+            videoDto.setVideoThumbnails(videoDao.getThumbnails(video.getId()));
+            return videoDto;
+        }).collect(Collectors.toList());
     }
 
     /**
