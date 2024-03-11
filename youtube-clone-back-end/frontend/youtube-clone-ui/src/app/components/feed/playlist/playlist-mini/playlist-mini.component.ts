@@ -31,7 +31,7 @@ export class PlaylistMiniComponent {
   }
 
   setVideoCount() {
-    this.videoCount = this.playlist?.videos? this.playlist.videos.length : 0;
+    this.videoCount = this.playlist.size? this.playlist.size : 0; //this.playlist?.videos? this.playlist.videos.length : 0;
   }
 
   setDropDownSettings() {

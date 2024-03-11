@@ -2,7 +2,7 @@
 <div #container class="mini-playlist-container">
     <div class="thumbnail-container">
         <div #thumbnailContainer class="thumbnail">
-            <img class="" [src]="playlist.videos![0].thumbnailURL" alt="">
+            <img class="" [src]="playlist.videos![0].thumbnailUrl" alt="">
         </div>
         <div #hoverContainer class="thumbnail-hover-container">
             <span class="material-symbols-outlined big-icon non-selectable">play_arrow</span>
@@ -18,7 +18,7 @@
     <div class="metadata-container">
         <div class="playlist-title-container">
             <div class="playlist-title non-selectable">
-                <span class="text-primary">{{playlist.title}}</span>
+                <span class="text-primary">{{playlist.name}}</span>
             </div>
             <div class="drop-down-container">
                 <app-standard-dropdown
