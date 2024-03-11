@@ -147,6 +147,90 @@ public class FileUploadTestService {
     }
 
     /**
+     * save a 10 seconds version of the uploaded video
+     * @param videoFileName the file name
+     * @param videoLengthInSeconds the video length
+     * @return the file name
+     */
+    public String saveGif(String videoFileName, Long videoLengthInSeconds) {
+        Path gifStorageLocation = Paths.get(System.getProperty("user.home") + GIFS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        Path videoFileLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        File videoFile = videoFileLocation.resolve(videoFileName).toFile();
+        if(!Files.exists(gifStorageLocation)) {
+            try {
+                log.info("creating directory it does not exist");
+                Files.createDirectories(gifStorageLocation);
+            } catch (Exception exception) {
+                log.error(exception.getMessage());
+                throw new APIException("Could not create directories to save gifs");
+            }
+            log.info("Created gifs directories");
+        }
+
+        try {
+            String randomId = UUID.randomUUID().toString();
+            // Define output GIF file randomId+".gif"
+            String fileName = randomId + ".mp4";
+            File gifFile = gifStorageLocation.resolve(fileName).toFile();
+            log.info("Creating 10 seconds clip for video ",videoFile.getAbsolutePath());
+
+            // Define the duration of each scene (in seconds)
+            int sceneDuration = 1;
+
+            // Calculate the maximum start timestamp to ensure scenes don't exceed the video length
+            long maxStartTimestamp = videoLengthInSeconds - sceneDuration;
+
+            // Initialize random number generator
+            Random random = new Random();
+
+            // Generate random start timestamps within the valid range for each scene
+            long startTimestamp1 = random.nextInt((int) maxStartTimestamp + 1);
+            long startTimestamp2 = random.nextInt((int) maxStartTimestamp + 1);
+            long startTimestamp3 = random.nextInt((int) maxStartTimestamp + 1);
+
+            // Execute ffmpeg command to extract and concatenate the scenes
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    "ffmpeg",
+                    "-ss", String.valueOf(startTimestamp1), "-i", videoFile.getAbsolutePath(),
+                    "-ss", String.valueOf(startTimestamp2), "-i", videoFile.getAbsolutePath(),
+                    "-ss", String.valueOf(startTimestamp3), "-i", videoFile.getAbsolutePath(),
+                    "-filter_complex", "concat=n=3:v=1:a=0",
+                    "-t", "3", // Set the duration of the output video to 3 seconds
+                    "-c:v", "libx264", "-preset", "ultrafast", // Video codec and encoding options
+                    gifFile.getAbsolutePath()
+            );
+            Process process = processBuilder.start();
+
+            /*// Execute ffmpeg command to convert video to GIF
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    "ffmpeg",
+                    "-i", videoFile.getAbsolutePath(),
+                    "-t", "00:00:10", // Set the duration to 30 seconds
+                    "-vf", "fps=10,scale=320:-1",
+                    "-an", // Remove audio
+                    gifFile.getAbsolutePath()
+            );
+            Process process = processBuilder.start();*/
+
+            //log.info(process.info().toString());
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line;
+            while ((line = errorReader.readLine()) != null) {
+                log.info(line); // or log it
+            }
+            process.waitFor();
+            log.info("saving gif to {} ", gifFile.getAbsolutePath());
+
+            return fileName; //gifFile.getAbsolutePath();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
      * extract thumbnail on upload
      * @param videoFileName the video filename
      * @param videoLength the video length
