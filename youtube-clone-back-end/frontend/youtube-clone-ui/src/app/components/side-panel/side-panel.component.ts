@@ -6,7 +6,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { selectCurrentUser, selectIsLoading, selectValidationErrors, selectValidationMessages } from '../../shared/store/user/reducers';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
-import { CurrentUserStateInterface } from '../../shared/types/currentUserState.interface';
+import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
 import { ResponseMessagesInterface } from '../../shared/types/responseMessages.interface';
 
 @Component({
