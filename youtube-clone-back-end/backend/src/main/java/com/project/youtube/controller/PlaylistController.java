@@ -155,7 +155,7 @@ public class PlaylistController {
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
     }
-
+    //TODO: Add a resource to delete video from playlist
     /**
      * delete a playlist
      * @param playlistId the playlist id

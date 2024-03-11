@@ -98,4 +98,6 @@ public class CommentController {
                         .build(), HttpStatus.OK);
     }
 
+    //TODO: Add resource to get comment by desc
+
 }
