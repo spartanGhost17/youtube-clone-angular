@@ -184,44 +184,53 @@ public class FileUploadTestService {
             Random random = new Random();
 
             // Generate random start timestamps within the valid range for each scene
-            long startTimestamp1 = random.nextInt((int) maxStartTimestamp + 1);
-            long startTimestamp2 = random.nextInt((int) maxStartTimestamp + 1);
-            long startTimestamp3 = random.nextInt((int) maxStartTimestamp + 1);
+            long startTimestamp1 = 0;//random.nextInt((int) maxStartTimestamp + 1);
+            long startTimestamp2;
+            long startTimestamp3;
 
-            // Execute ffmpeg command to extract and concatenate the scenes
-            ProcessBuilder processBuilder = new ProcessBuilder(
-                    "ffmpeg",
-                    "-ss", String.valueOf(startTimestamp1), "-i", videoFile.getAbsolutePath(),
-                    "-ss", String.valueOf(startTimestamp2), "-i", videoFile.getAbsolutePath(),
-                    "-ss", String.valueOf(startTimestamp3), "-i", videoFile.getAbsolutePath(),
-                    "-filter_complex", "concat=n=3:v=1:a=0",
-                    "-t", "3", // Set the duration of the output video to 3 seconds
-                    "-c:v", "libx264", "-preset", "ultrafast", // Video codec and encoding options
-                    gifFile.getAbsolutePath()
-            );
-            Process process = processBuilder.start();
+            do {
+                startTimestamp2 = random.nextInt((int) maxStartTimestamp + 1);
+            } while (startTimestamp2 <= startTimestamp1);
 
-            /*// Execute ffmpeg command to convert video to GIF
-            ProcessBuilder processBuilder = new ProcessBuilder(
-                    "ffmpeg",
-                    "-i", videoFile.getAbsolutePath(),
-                    "-t", "00:00:10", // Set the duration to 30 seconds
-                    "-vf", "fps=10,scale=320:-1",
-                    "-an", // Remove audio
-                    gifFile.getAbsolutePath()
-            );
-            Process process = processBuilder.start();*/
+            do {
+                startTimestamp3 = random.nextInt((int) maxStartTimestamp + 1);
+            } while (startTimestamp3 <= startTimestamp2);
 
-            //log.info(process.info().toString());
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            String line;
-            while ((line = errorReader.readLine()) != null) {
-                log.info(line); // or log it
+            try {
+
+                // Create a ProcessBuilder command to concatenate the segments
+                //TODO: Think of making the scene extraction static start=0:end=1 etc.
+                ProcessBuilder processBuilder = new ProcessBuilder(
+                        "ffmpeg",
+                        "-i", videoFile.getAbsolutePath(),
+                        "-filter_complex",
+                        String.format("[0:v]trim=start=%d:end=%d,setpts=PTS-STARTPTS[v0]; " +
+                                "[0:v]trim=start=%d:end=%d,setpts=PTS-STARTPTS[v1]; " +
+                                "[0:v]trim=start=%d:end=%d,setpts=PTS-STARTPTS[v2]; " +
+                                "[v0][v1][v2]concat=n=3:v=1:a=0[v]", startTimestamp1, (startTimestamp1 + 1), startTimestamp2, (startTimestamp2 + 1), startTimestamp3, (startTimestamp3 + 1)),
+                        /*"[0:v]trim=start=0:end=1,setpts=PTS-STARTPTS[v0]; " +
+                                "[0:v]trim=start=10:end=11,setpts=PTS-STARTPTS[v1]; " +
+                                "[0:v]trim=start=20:end=21,setpts=PTS-STARTPTS[v2]; " +
+                                "[v0][v1][v2]concat=n=3:v=1:a=0[v]",*/
+                        "-map", "[v]",
+                        gifFile.getAbsolutePath()
+                );
+                Process process = processBuilder.start();
+                BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                String line;
+                while ((line = errorReader.readLine()) != null) {
+                    log.info(line); // or log it
+                }
+                process.waitFor();
+                log.info("Gif creating process exited with code: {}", process.exitValue());
+                process.destroy();
+                log.info("saving gif to {} ", gifFile.getAbsolutePath());
+
+                return fileName; //gifFile.getAbsolutePath();
+            } catch (Exception exception) {
+                throw exception;
             }
-            process.waitFor();
-            log.info("saving gif to {} ", gifFile.getAbsolutePath());
 
-            return fileName; //gifFile.getAbsolutePath();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         } catch (InterruptedException e) {
@@ -253,7 +262,7 @@ public class FileUploadTestService {
             }
             log.info("Created gifs directories");
         }
-
+        log.info("Extracting thumbnails from video");
         // Define the number of thumbnails you want
         int numberOfThumbnails = 4;
         // Calculate the interval between thumbnails
@@ -277,7 +286,16 @@ public class FileUploadTestService {
                     thumbnailFile.getAbsolutePath()
             );
             Process process = processBuilder.start();
+
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line;
+            while ((line = errorReader.readLine()) != null) {
+                //log.info(line); // or log it
+            }
+
             process.waitFor();
+            log.info("Thumbnail process exited with code: {}", process.exitValue());
+            process.destroy();
         }
         return thumbnailFileNames;
     }
