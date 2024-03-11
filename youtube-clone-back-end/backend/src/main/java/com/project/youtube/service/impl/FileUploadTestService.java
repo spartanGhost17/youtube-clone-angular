@@ -6,13 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import static com.project.youtube.constants.ApplicationConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +29,7 @@ public class FileUploadTestService {
      * @param username the username
      */
     public void saveImage(MultipartFile image, String username) {
-        Path fileStorageLocation = Paths.get(System.getProperty("user.home")+"/Downloads/images").toAbsolutePath().normalize();
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + PROFILE_IMAGES_DEFAULT_FOLDER).toAbsolutePath().normalize();
         log.info("Got file path {}", fileStorageLocation);
         if(!Files.exists(fileStorageLocation)) {
             try {
