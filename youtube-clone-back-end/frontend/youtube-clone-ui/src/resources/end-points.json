@@ -1,11 +1,18 @@
 {
     "VIDEO_END_POINTS": {
         "UPLOAD_VIDEO": "/api/v1/video/upload",
-        "UPDATE_VIDEO_METADATA": "/api/v1/video/upload/updateMetadata"
+        "UPDATE_VIDEO_METADATA": "/api/v1/video/upload/updateMetadata", 
+        "GET_USER_VIDEOS_PAGE": "/api/v1/video/metadata/all"
     },
     "PLAYLIST_END_POINTS": {
-        "CREATE_PLAYLIST": "/api/v1/playlist/newPlaylist",
-        "GET_PLAYLIST": "/api/v1/playlist/playList"
+        "CREATE": "/api/v1/playlist/",
+        "GET_BY_ID": "/api/v1/playlist/id",
+        "GET_BY_USER": "/api/v1/playlist/user",
+        "UPDATE_METADATA": "/api/v1/playlist/update",
+        "ADD_VIDEO": "/api/v1/playlist/add/video",
+        "GET_VIDEOS": "/api/v1/playlist/videos",
+        "UPDATE_VIDEO_POSITION": "/api/v1/playlist/update/videos/position",
+        "DELETE_VIDEO": "/api/v1/playlist/"
     },
     "USER_END_POINTS": {
         "GET_PROFILE": "/api/v1/user/profile",
@@ -23,5 +30,9 @@
     },
     "REPORT_END_POINTS": {
         "GET_REPORT_TYPES": "/api/v1/report/types"
+    },
+    "CATEGORY_END_POINTS": {
+        "GET_ALL": "/api/v1/category/",
+        "ASSIGN_VIDEO_CATEGORY": "/api/v1/category"
     }
 }
