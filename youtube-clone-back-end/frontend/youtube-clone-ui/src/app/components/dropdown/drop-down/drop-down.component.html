@@ -17,7 +17,7 @@
     <div class="checkboxes">
       <label *ngFor="let playlist of playlists; index as i" class="container" [ngStyle]="{'display':playlist.matchSearch? 'block': 'none'}">
         <div *ngIf="playlist.matchSearch" class="checkbox-content" [ngStyle]="{'display': playlist.matchSearch? 'block': 'none'}" (click)="toggleCheckBox(playlist, input)">
-          <p class="hide-text-overflow">{{playlist.playlist.title}}</p>
+          <p class="hide-text-overflow">{{playlist.playlist.name}}</p>
           <input #input [id]="'checkbox'+i" type="checkbox" [checked]="playlist.checked">
           <span class="checkmark"></span>
         </div>

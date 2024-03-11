@@ -75,7 +75,7 @@ export class DropDownComponent implements OnInit {
     else {
       for(let element of this.playlists) {
         if(element.checked) {
-          this.selectedTitle = element.playlist.title;
+          this.selectedTitle = element.playlist.name;
         }
       }
     } 
@@ -114,7 +114,7 @@ export class DropDownComponent implements OnInit {
   searchStringUpdate(searchString: any): void {
     this.isSearchPlaylist = searchString.length > 0;
     this.playlists.filter((playlist) => {
-      if(!playlist.playlist.title.toLowerCase().includes(searchString.toLowerCase())) {
+      if(!playlist.playlist.name.toLowerCase().includes(searchString.toLowerCase())) {
         playlist.matchSearch = false;
       }
       else {
@@ -151,7 +151,7 @@ export class DropDownComponent implements OnInit {
           this.previousSelected = input.id;//current is now previous
           //make current checkbox active
           this.playlists[checkboxIdx].checked = input.checked;
-          this.selectedTitle = this.playlists[checkboxIdx].playlist.title;
+          this.selectedTitle = this.playlists[checkboxIdx].playlist.name;
         }
       }
       this.savedPlaylists();
