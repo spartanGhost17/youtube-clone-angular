@@ -1,8 +1,9 @@
-import { Video } from '../../models/video';
+import { Video } from './video';
 export interface PlaylistInterface {
     id?:number;
-    title: string;
-    videos?: Video[];
+    name: string;
     description?: string;
+    videos?: Video[];
     visibilityStatus: string;
+    size?: number;
 }
