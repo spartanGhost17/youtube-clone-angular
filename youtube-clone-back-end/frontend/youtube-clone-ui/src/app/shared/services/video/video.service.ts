@@ -1,45 +1,48 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import end_points  from "../../../../resources/end-points.json"
-import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { Observable, catchError } from 'rxjs';
-import { Video } from '../../../models/video';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { HttpResponseInterface } from '../../types/httpResponse.interface';
+import { Video } from '../../types/video';
+import { buildURL, getFormData } from '../../utils/sharedUtils';
+import resources from '../../../../resources/end-points.json'
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideoService {
-  constructor(private httpClient: HttpClient) {}
-  httpOptions = {
-    headers : new HttpHeaders({
-      'Access-Control-Allow-Credentials' : 'true',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
-      'Authorization': ''
-    })
-  };
+  serverUrl: string = environment.apiUrl;
+  VIDEO = resources.VIDEO_END_POINTS;
+
+  constructor(private http: HttpClient) {}
+  
   /**
    * upload video to server
    * @param file video file to upload
    * @returns videoDto object containing video id and video url
    */
-  uploadVideo(file: File): Observable<Video> {
-    /*const httpOptions = {
-      headers : new HttpHeaders({
-        'Access-Control-Allow-Credentials' : 'true',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
-        'Authorization': ''
-      })
-    };*/
-    const formData = new FormData();
-    //console.log(file);
-    formData.append('file', file, file.name);
-    //console.log("in service ",formData);
-    return this.httpClient.post<Video>(end_points.VIDEO_END_POINTS.UPLOAD_VIDEO, formData, this.httpOptions);
+  uploadVideo(file: File): Observable<HttpResponseInterface<Video>> {
+    const url = buildURL(this.serverUrl, this.VIDEO.UPLOAD_VIDEO);
+    const formData: FormData = getFormData(file, 'video');
+    return this.http.post<HttpResponseInterface<Video>>(url, formData)
   }
 
-  uploadVideoMetadata(Video: Video): Observable<Video> {
-    return this.httpClient.post<Video>(end_points.VIDEO_END_POINTS.UPDATE_VIDEO_METADATA, Video, this.httpOptions);
+  uploadVideoMetadata(Video: Video) {
+    
+  }
+
+  /**
+   * get user's videos metadata
+   * @param pageSize the page size
+   * @param offset the offset
+   * @returns {HttpResponseInterface<Video>} the response
+   */
+  getUserVideos(pageSize: number, offset: number): Observable<HttpResponseInterface<Video>> {
+    const url = buildURL(this.serverUrl, this.VIDEO.GET_USER_VIDEOS_PAGE)
+    const params = new HttpParams()
+                        .append('pageSize', pageSize)
+                        .append('offset', offset);
+
+    return this.http.get<HttpResponseInterface<Video>>(url, {params});
   }
 }
