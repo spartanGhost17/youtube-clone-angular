@@ -2,6 +2,7 @@ import { Time } from "@angular/common";
 import { Tag } from "../../models/tag";
 import { Status } from "./status.interface";
 import { UserInterface } from "./user.interface";
+import { VideoThumbnail } from "./videoThumbnail.interface";
 
 export interface Video {
     /*id: string;
@@ -32,7 +33,9 @@ export interface Video {
     stopAtBytes?: number;
     views?: number;
     commentEnabled?: boolean;
+    thumbnailId?: number;
     thumbnailUrl?: string;
+    videoThumbnails?: VideoThumbnail[];
     videoUrl?: string;
     location?: string;
     reported?: boolean;
