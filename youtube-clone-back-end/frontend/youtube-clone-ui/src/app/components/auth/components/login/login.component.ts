@@ -21,7 +21,7 @@ import { AuthStateInterface } from '../../types/authState.interface';
 import { LoginFormInterface } from '../../types/loginForm.interface';
 import { ResponseMessagesInterface } from '../../../../shared/types/responseMessages.interface';
 import { permissionsActions } from '../../../../shared/store/permission/actions';
-import { GlobalPermissionStateInterface } from '../../../../shared/types/permissionState.interface';
+import { GlobalPermissionStateInterface } from '../../../../shared/types/state/permissionState.interface';
 import { CurrentUserInterface } from '../../../../shared/types/currentUser.interface';
 import { selectCurrentUser } from '../../../../shared/store/user/reducers';
 import { userActions } from '../../../../shared/store/user/actions';
