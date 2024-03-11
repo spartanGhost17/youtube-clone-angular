@@ -5,6 +5,7 @@ import com.project.youtube.dao.VideoDao;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.Category;
 import com.project.youtube.model.Video;
+import com.project.youtube.model.VideoThumbnail;
 import com.project.youtube.service.impl.FileUploadTestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
@@ -61,8 +65,15 @@ public class VideoDaoImpl implements VideoDao<Video> {
             String extension = fileUploadTestService.getVideoFileExtension(video);
             String videoServerUrl = generateVideoUrl(randomId, extension);
 
+
             long totalBytes = video.getSize();
             long videoLength = getVideoLength(url);
+
+            String gifFileName = fileUploadTestService.saveGif(randomId + extension, videoLength);//TODO: replace with amazonS3
+            String gifServerUrl = generateGifUrl(gifFileName);
+
+            List<String> thumbnailFileNames = fileUploadTestService.extractThumbnails(randomId + extension, videoLength);
+            List<String> thumbnailServerUrls = generateThumbnailUrls(thumbnailFileNames);
             //get key
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -71,7 +82,8 @@ public class VideoDaoImpl implements VideoDao<Video> {
                     "title", DEFAULT_VIDEO_TITLE,
                     "duration", videoLength,
                     "totalBytes", totalBytes,
-                    "thumbnailUrl", randomId,//TODO: REPLACE WITH ACTUAL THUMBNAIL UUID
+                    "thumbnailId", 1,
+                    "gifUrl", gifServerUrl,
                     "videoUrl", videoServerUrl
             );
 
@@ -81,6 +93,11 @@ public class VideoDaoImpl implements VideoDao<Video> {
 
             log.info("video file: {}, extension: {}, videoServerUrl: {}, totalBytes: {}, videoLength sec: {} sec", url, extension, videoServerUrl, totalBytes, videoLength);
             Long videoId = requireNonNull(keyHolder.getKey().longValue());
+            //TODO: Think about making the operation async
+            /*CompletableFuture<String> future =  CompletableFuture.runAsync(() -> {
+                //run the stuff in here so it's non-blocking
+            });*/
+            createThumbnails(videoId, thumbnailServerUrls);
             return getVideo(videoId);
         } catch (Exception exception) {
             try {
@@ -88,6 +105,42 @@ public class VideoDaoImpl implements VideoDao<Video> {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    /**
+     * create thumbnails entries for video
+     * @param videoId the video id
+     * @param thumbnailUrls the thumbnail url
+     */
+    @Override
+    @Transactional//rollback if errors
+    public void createThumbnails(Long videoId, List<String> thumbnailUrls) {
+        log.info("creating thumbnails for video");
+        try {
+            SqlParameterSource[] args = thumbnailUrls.stream()
+                    .map(thumbnailUrl -> new MapSqlParameterSource()
+                            .addValue("videoId", videoId)
+                            .addValue("thumbnailUrl", thumbnailUrl)
+                    )
+                    .collect(Collectors.toList()).toArray(SqlParameterSource[]::new);
+            jdbcTemplate.batchUpdate(INSERT_VIDEO_THUMBNAILS, args);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, could not create video thumbnails");
+        }
+    }
+
+    /**
+     * get thumbnails for video
+     * @param videoId the video id
+     * @return the list of thumbnails
+     */
+    @Override
+    public List<VideoThumbnail> getThumbnails(Long videoId) {
+        try {
+            return jdbcTemplate.query(SELECT_THUMBNAILS, Map.of("videoId", videoId), new BeanPropertyRowMapper<>(VideoThumbnail.class));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while getting video thumbnails");
         }
     }
 
@@ -123,6 +176,22 @@ public class VideoDaoImpl implements VideoDao<Video> {
             throw new APIException("An error occurred, could not update video information ");
         }
 
+    }
+
+    /**
+     * get all user video
+     * @param userId the user id
+     * @param pageSize the page size
+     * @param offset the offset
+     * @return the list of videos
+     */
+    @Override
+    public List<Video> getAllByUserId(Long userId, Integer pageSize, Integer offset) {
+        try {
+            return jdbcTemplate.query(SELECT_USER_VIDEOS_QUERY, Map.of("userId", userId, "pageSize", pageSize, "offset", offset), new BeanPropertyRowMapper<>(Video.class));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while retrieving all user's videos");
+        }
     }
 
     /**
@@ -294,6 +363,34 @@ public class VideoDaoImpl implements VideoDao<Video> {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "video/watch")
                 .queryParam("v", file)
                 .toUriString();
+    }
+
+    /**
+     * generate server gif uri path
+     * @param fileName the gif fileName
+     * @return the gif url
+     */
+    private String generateGifUrl(String fileName) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "video/gif")
+                .queryParam("v", fileName)
+                .toUriString();
+    }
+
+    /**
+     * generate a server thumbnail uri path
+     * @param thumbnailFiles the files
+     * @return the list of thumbnail urls
+     */
+    private List<String> generateThumbnailUrls(List<String> thumbnailFiles) {
+        List<String> serverPaths = new ArrayList<>();
+        for(String fileName : thumbnailFiles) {
+            serverPaths.add(
+                    ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "video/thumbnail")
+                            .queryParam("t", fileName)
+                            .toUriString()
+            );
+        }
+        return serverPaths;
     }
 
 }
