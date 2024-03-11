@@ -66,6 +66,46 @@ public class FileUploadTestService {
     }
 
     /**
+     * update video thumbnail locally for test development
+     * @param image the image the
+     * @param randomId the username
+     */
+    public void updateThumbnail(MultipartFile image, String randomId) {
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        log.info("Got file path {}", fileStorageLocation);
+        if(!Files.exists(fileStorageLocation)) {
+            try {
+                log.info("creating directory it does not exist");
+                Files.createDirectories(fileStorageLocation);
+            } catch (Exception exception) {
+                log.error(exception.getMessage());
+                throw new APIException("Could not create directories to save user thumbnail images");
+            }
+            log.info("Created image directories");
+        }
+        try {
+            Files.copy(image.getInputStream(), fileStorageLocation.resolve(randomId+".png"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+        log.info("FIle saved in: {} folder", fileStorageLocation);
+    }
+
+    /**
+     * get video thumbnail Image
+     * @param fileName the file name
+     * @return the byte array representing image
+     */
+    public byte[] getThumbnailImage(String fileName) {
+        try {
+            return Files.readAllBytes(Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER +"/"+fileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
      * upload video
      * @param video the video
      * @param videoUrl the url
