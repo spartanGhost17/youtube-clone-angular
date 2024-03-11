@@ -1,1 +1,70 @@
-<p>content works!</p>
+<h2 class="text-primary dashboard-title">Channel content</h2>
+
+<table>
+  <tr class="text-secondary">
+    <th>Video</th>
+    <th>Visibility</th>
+    <th>Date</th>
+    <th>Views</th>
+    <th>Comments</th>
+    <th>Likes(vs dislikes)</th>
+    <th>actions</th>
+  </tr>
+  
+  <tr *ngFor="let video of videos">
+    <!--video-->
+    <td>
+        <div class="video-container">
+            <div class="video-img-container">
+                <img src="../../../../assets/batman2.jpg" alt="">
+                <p class="time-counter non-selectable">{{video.duration}}</p>
+            </div>
+            <div class="title-sub-container">
+                <p class="text-primary video-title">{{video.title}}</p>
+                <p class="text-secondary description">{{video.description ? video.description :'No description'}}</p>
+            </div>
+        </div>
+    </td>
+    <!--Visibility-->
+    <td>
+        <div class="visibility-container">
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'DRAFT'">draft</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'PUBLIC'">public</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'PRIVATE'">lock</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'UNLISTED'">link</span>
+            <p class="status">{{video.status!.statusName}}</p>
+        </div>
+    </td>
+    <!--Date-->
+    <td>
+        <div class="date">
+            {{video.createdAt | date}}
+        </div>
+    </td>
+    <!--Views-->
+    <td>
+        <div class="views-count">
+            {{video.views}}
+        </div>
+    </td>
+    <!--Comments-->
+    <td>
+        <div class="comment-count">
+            0
+        </div>
+    </td>
+    <!--Likes(vs dislikes)-->
+    <td>
+        <div class="like-count">
+            6
+        </div>
+    </td>
+    <td>
+        <div class="actions non-selectable">
+            <div class="ytcp-button action">
+                <span class="material-symbols-outlined">edit</span>
+            </div>
+        </div>
+    </td>
+  </tr>
+</table>
