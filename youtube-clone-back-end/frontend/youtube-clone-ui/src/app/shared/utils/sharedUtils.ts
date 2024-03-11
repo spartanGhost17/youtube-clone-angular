@@ -58,9 +58,9 @@ export function setTokens(
  * @param {File} image the image file
  * @returns {FormData} the formData object
  */
-export function getFormData(image: File): FormData {
+export function getFormData(image: File, key: string): FormData {
   const formData = new FormData();
-  formData.append('image', image);
+  formData.append(key, image);
   return formData;
 }
 
