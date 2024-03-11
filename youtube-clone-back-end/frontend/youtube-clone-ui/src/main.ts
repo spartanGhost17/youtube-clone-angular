@@ -28,7 +28,8 @@ import * as permissionsEffects from './app/shared/store/permission/effects';
 import * as userEffects from './app/shared/store/user/effects';
 import { permissionsFeatureKey, permissionsReducer } from './app/shared/store/permission/reducers';
 import { userFeatureKey, userReducer } from './app/shared/store/user/reducers';
-
+import { playlistFeatureKey, playlistReducer } from './app/shared/store/playlist/reducers';
+import * as playlistEffects from './app/shared/store/playlist/effects'
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -51,7 +52,8 @@ bootstrapApplication(AppComponent, {
     provideState(authFeatureKey, authReducer), //registered here since the auth feature is shared
     provideState(permissionsFeatureKey, permissionsReducer),
     provideState(userFeatureKey, userReducer),
-    provideEffects(authEffects, permissionsEffects, userEffects),
+    provideState(playlistFeatureKey, playlistReducer),
+    provideEffects(authEffects, permissionsEffects, userEffects, playlistEffects),
     provideRouterStore(), //will helps us manage router navigation in angular way (delete some fields)
     provideStoreDevtools({
       maxAge: 25, //max actions
