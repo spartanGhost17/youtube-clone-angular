@@ -146,6 +146,58 @@ public class FileUploadTestService {
         }
     }
 
+    /**
+     * extract thumbnail on upload
+     * @param videoFileName the video filename
+     * @param videoLength the video length
+     * @throws Exception the exception
+     */
+    public List<String> extractThumbnails(String videoFileName, long videoLength) throws Exception {
+        List<String> thumbnailFileNames = new ArrayList<>();
+
+        Path thumbnailStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        Path videoFileLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        File videoFile = videoFileLocation.resolve(videoFileName).toFile();
+
+        if(!Files.exists(thumbnailStorageLocation)) {
+            try {
+                log.info("creating directory it does not exist");
+                Files.createDirectories(thumbnailStorageLocation);
+            } catch (Exception exception) {
+                log.error(exception.getMessage());
+                throw new APIException("Could not create directories to save gifs");
+            }
+            log.info("Created gifs directories");
+        }
+
+        // Define the number of thumbnails you want
+        int numberOfThumbnails = 4;
+        // Calculate the interval between thumbnails
+        long interval = videoLength / (numberOfThumbnails + 1); // Adding 1 to account for the first thumbnail at 0s
+        // Generate random ID for output files
+        String randomId = UUID.randomUUID().toString();
+
+        // Execute ffmpeg command to extract thumbnails
+        for (int i = 0; i < numberOfThumbnails; i++) {
+            long timestamp = (i + 1) * interval; // Calculate timestamp for the current thumbnail
+            String thumbnailName = String.format("%s_thumbnail_%d.jpg", randomId, i + 1);
+            File thumbnailFile = new File(thumbnailStorageLocation.toFile(), thumbnailName);
+            thumbnailFileNames.add(thumbnailName);
+
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    "ffmpeg",
+                    "-i", videoFile.getAbsolutePath(),
+                    "-ss", String.valueOf(timestamp), // Seek to the specified timestamp
+                    "-vframes", "1", // Extract one frame
+                    "-q:v", "2", // Output quality
+                    thumbnailFile.getAbsolutePath()
+            );
+            Process process = processBuilder.start();
+            process.waitFor();
+        }
+        return thumbnailFileNames;
+    }
+
     //Files.write(filePath, video.getBytes());
     //Files.write(video.getInputStream(), fileStorageLocation.resolve(videoUrl + "."+extension));//, StandardCopyOption.REPLACE_EXISTING);
 
