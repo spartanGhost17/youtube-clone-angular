@@ -32,6 +32,7 @@ public class VideoDto {
     private Long views;
     private Boolean commentEnabled;
     private Long thumbnailId;
+    private String thumbnailUrl;
     private List<VideoThumbnail> videoThumbnails;
     private String videoUrl;
     private String gifUrl;
