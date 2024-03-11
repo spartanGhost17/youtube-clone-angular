@@ -3,18 +3,21 @@ package com.project.youtube.controller;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.HttpResponse;
+import com.project.youtube.service.impl.FileUploadTestService;
 import com.project.youtube.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
@@ -89,13 +92,18 @@ public class VideoController {
                         .build(), HttpStatus.OK);
     }
 
-    @GetMapping("thumbnail/{fileName}")
-    public byte[] getThumbnail(@PathVariable("fileName") String fileName) {
-        return new byte[0];
+    @GetMapping(value = "thumbnail", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getThumbnail(@RequestParam("t") String fileName) {
+        return videoService.getThumbnail(fileName);
     }
 
     @GetMapping("watch")
     public byte[] getVideo(@RequestParam("v") String videoUrl) {
+        return new byte[0];
+    }
+
+    @GetMapping("gif")
+    public byte[] getGif(@RequestParam("v") String shortVideoUrl) {
         return new byte[0];
     }
 
@@ -112,6 +120,20 @@ public class VideoController {
                         .timeStamp(Instant.now().toString())
                         .message("Metadata successfully retrieved.")
                         .data(Map.of("video", videoDto))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
+    @GetMapping("metadata/all")
+    public ResponseEntity<HttpResponse> getAllUserVideoMetadata(@RequestParam("pageSize") Integer pageSize, @RequestParam("offset") Integer offset) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        List<VideoDto> videoList = videoService.getAllByUserId(userId, pageSize, offset);
+        return new ResponseEntity(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .message("Metadata successfully retrieved.")
+                        .data(Map.of("video", videoList))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
