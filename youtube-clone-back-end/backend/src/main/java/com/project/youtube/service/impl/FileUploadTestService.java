@@ -59,7 +59,7 @@ public class FileUploadTestService {
      */
     public byte[] getProfileImage(String fileName) {
         try {
-            return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/Downloads/images/"+fileName));
+            return Files.readAllBytes(Paths.get(System.getProperty("user.home") + PROFILE_IMAGES_DEFAULT_FOLDER +"/"+fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
