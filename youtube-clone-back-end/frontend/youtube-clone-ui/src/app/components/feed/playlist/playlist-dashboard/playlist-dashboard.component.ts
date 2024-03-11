@@ -4,7 +4,7 @@ import { PlaylistMiniComponent } from '../playlist-mini/playlist-mini.component'
 import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
 import { VideoCardBasicComponent } from '../../../video-displays/video-card-basic/video-card-basic.component';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { CurrentUserStateInterface } from '../../../../shared/types/currentUserState.interface';
+import { CurrentUserStateInterface } from '../../../../shared/types/state/currentUserState.interface';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { CurrentUserInterface } from '../../../../shared/types/currentUser.interface';
@@ -73,42 +73,42 @@ export class PlaylistDashboardComponent {
 
   getPlaylists(): void {
     this.playlists = [
-      {id: 0, title: 'Comics', visibilityStatus: 'PRIVATE', videos: [
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
+      {id: 0, name: 'Comics', visibilityStatus: 'PRIVATE', videos: [
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/vagabon_manga.jpg'},
       ]},      
-      {id: 1, title: 'Anime music', visibilityStatus: 'PRIVATE', videos: [
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/true_detective.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
+      {id: 1, name: 'Anime music', visibilityStatus: 'PRIVATE', videos: [
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/true_detective.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/batman_and_superman_detective_comics.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/courage.png'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/goku_god_mode.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: 2, title: 'C#', visibilityStatus: 'PRIVATE', videos: [
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/true_detective.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
+      {id: 2, name: 'C#', visibilityStatus: 'PRIVATE', videos: [
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/goku_god_mode.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/true_detective.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/batman_and_superman_detective_comics.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/courage.png'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: 3, title: 'Computer music', visibilityStatus: 'PRIVATE', videos: [
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_red_glow.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
+      {id: 3, name: 'Computer music', visibilityStatus: 'PRIVATE', videos: [
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/batman_red_glow.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/batman_and_superman_detective_comics.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/courage.png'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/goku_god_mode.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: 4, title: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/green_lanter_vs_sinestro.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
+      {id: 4, name: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/green_lanter_vs_sinestro.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/batman_and_superman_detective_comics.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/courage.png'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/goku_god_mode.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/vagabon_manga.jpg'},
       ]},
-      {id: 5, title: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/courage.png'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/goku_god_mode.jpg'},
-        {id: '', title: '', videoStatus: 'DRAFT', thumbnailURL: '../../../../assets/vagabon_manga.jpg'},
+      {id: 5, name: 'Green lantern', visibilityStatus: 'PRIVATE', videos: [
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/courage.png'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/batman_and_superman_detective_comics.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/goku_god_mode.jpg'},
+        {id: 0, title: '', status: {id: 0, statusName: 'DRAFT'}, thumbnailUrl: '../../../../assets/vagabon_manga.jpg'},
       ]},
     ];
   } 
@@ -116,16 +116,16 @@ export class PlaylistDashboardComponent {
   getWatchLaterPlaylist(): void {
     this.watchLaterPlaylist = {
       id: 1,
-      title: 'History',
+      name: 'History',
       visibilityStatus: 'PUBLIC',
       description: '',
       videos: [
-        {id: '', title: 'video 144444444444444444444444444444444444', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/batman2.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
-        {id: '', title: 'video 2', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/courage.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 3', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green-lantern.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
-        {id: '', title: 'video 4', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/superman_sits_on_clouds.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 5', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/mr_wick.jpeg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 6', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/batman_red_glow.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 144444444444444444444444444444444444', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/batman2.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 2', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/courage.png', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 3', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/green-lantern.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 4', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/superman_sits_on_clouds.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 5', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/mr_wick.jpeg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 6', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/batman_red_glow.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
         //{id: '', title: 'video 7', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/light-yagami.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
         //{id: '', title: 'video 8', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green_lantern_rising.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
       ]
@@ -135,16 +135,16 @@ export class PlaylistDashboardComponent {
   getHistoryPlaylist(): void {
     this.historyPlaylist = {
       id: 2,
-      title: 'History',
+      name: 'History',
       visibilityStatus: 'PUBLIC',
       description: '',
       videos: [
-        {id: '', title: 'video 144444444444444444444444444444444444', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/batman2.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
-        {id: '', title: 'video 2', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/courage.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 3', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green-lantern.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
-        {id: '', title: 'video 4', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/superman_sits_on_clouds.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 5', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/mr_wick.jpeg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 6', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/batman_red_glow.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 144444444444444444444444444444444444', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/batman2.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 2', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/courage.png', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 3', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/green-lantern.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 4', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/superman_sits_on_clouds.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 5', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/mr_wick.jpeg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 6', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/batman_red_glow.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
         //{id: '', title: 'video 7', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/light-yagami.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
         //{id: '', title: 'video 8', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green_lantern_rising.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
       ]
@@ -154,16 +154,16 @@ export class PlaylistDashboardComponent {
   getLikedPlaylist(): void {
     this.likedPlaylist = {
       id: 3,
-      title: 'History',
+      name: 'History',
       visibilityStatus: 'PUBLIC',
       description: '',
       videos: [
-        {id: '', title: 'video 144444444444444444444444444444444444', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/batman2.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
-        {id: '', title: 'video 2', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/courage.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 3', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green-lantern.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
-        {id: '', title: 'video 4', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/superman_sits_on_clouds.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 5', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/mr_wick.jpeg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
-        {id: '', title: 'video 6', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/batman_red_glow.jpg', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 144444444444444444444444444444444444', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/batman2.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 2', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/courage.png', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 3', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/green-lantern.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
+        {id: 0, title: 'video 4', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/superman_sits_on_clouds.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 5', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/mr_wick.jpeg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
+        {id: 0, title: 'video 6', status: {id: 0, statusName: 'DRAFT'}, createdAt: new Date('4'), thumbnailUrl: '../../../../assets/batman_red_glow.jpg', videoUrl: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
         //{id: '', title: 'video 7', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/light-yagami.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg', verified: true}},
         //{id: '', title: 'video 8', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green_lantern_rising.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
       ]
