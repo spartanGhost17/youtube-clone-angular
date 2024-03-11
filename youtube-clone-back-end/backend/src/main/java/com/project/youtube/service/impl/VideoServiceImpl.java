@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.DEFAULT_VIDEO_VISIBILITY;
@@ -47,9 +48,12 @@ public class VideoServiceImpl implements VideoService {
         VideoDto videoDto = VideoDTOMapper.toVideoDto(videoDao.create(multipartFile, userId));
         Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
+
         videoDto.setStatus(updateVideoStatus(videoDto.getId(), status.getId()));
         videoDto.setVideoThumbnails(thumbnails);
-        videoDto.setThumbnailUrl(thumbnails.stream().filter(url -> Objects.equals(url.getVideoId(), videoDto.getThumbnailId())).toString());
+
+        Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
+        thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
         return videoDto;
     }
 
@@ -61,12 +65,14 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoDto updateVideoMetadata(UpdateVideoMetadataForm updateVideoMetadataForm) {
         VideoDto videoDto = mapToVideoDto(videoDao.updateMetadata(updateVideoMetadataForm));
-        Status status = statusService.getVideoStatus(videoDto.getId());
+        //Status status = statusService.getVideoStatus(videoDto.getId());
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
 
         videoDto.setStatus(statusService.getVideoStatus(videoDto.getId()));
         videoDto.setVideoThumbnails(videoDao.getThumbnails(videoDto.getId()));
-        videoDto.setThumbnailUrl(thumbnails.stream().filter(url -> Objects.equals(url.getVideoId(), videoDto.getThumbnailId())).toString());
+
+        Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
+        thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
         return videoDto;
     }
 
@@ -101,9 +107,13 @@ public class VideoServiceImpl implements VideoService {
         VideoDto videoDto = mapToVideoDto(videoDao.getVideo(id));
         videoDto.setLikeCount(getLikeCount(videoDto));
         videoDto.setStatus(statusService.getVideoStatus(id));
+
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
         videoDto.setVideoThumbnails(thumbnails);
-        videoDto.setThumbnailUrl(thumbnails.stream().filter(url -> Objects.equals(url.getVideoId(), videoDto.getThumbnailId())).toString());
+
+        Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
+        thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
+
         return videoDto;
     }
 
@@ -121,7 +131,8 @@ public class VideoServiceImpl implements VideoService {
 
             List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
             videoDto.setVideoThumbnails(thumbnails);
-            videoDto.setThumbnailUrl(thumbnails.stream().filter(url -> Objects.equals(url.getVideoId(), videoDto.getThumbnailId())).toString());
+            Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
+            thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
 
             return videoDto;
         }).collect(Collectors.toList());
