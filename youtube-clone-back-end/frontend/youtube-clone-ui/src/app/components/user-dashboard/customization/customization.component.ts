@@ -5,7 +5,7 @@ import { getFormData } from '../../../shared/utils/sharedUtils';
 import { UserService } from '../../../shared/services/user/user.service';
 import { Store } from '@ngrx/store';
 import { userActions } from '../../../shared/store/user/actions';
-import { CurrentUserStateInterface } from '../../../shared/types/currentUserState.interface';
+import { CurrentUserStateInterface } from '../../../shared/types/state/currentUserState.interface';
 import { selectCurrentUser } from '../../../shared/store/user/reducers';
 
 @Component({
@@ -122,7 +122,7 @@ export class CustomizationComponent { //TODO: add material ripple effect
     if(this.selectedFile!.name) {
       console.log("file to upload is...")
       console.log(this.selectedFile)
-      const formData: FormData = getFormData(this.selectedFile!);
+      const formData: FormData = getFormData(this.selectedFile!, 'image');
       this.store.dispatch(userActions.updateProfilePicture({request: formData}));
     }
 

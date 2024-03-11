@@ -6,8 +6,8 @@ import { MaterialModule } from '../../../module/material/material.module';
 import { selectPermissionsData } from '../../../shared/store/permission/reducers';
 import { Role } from '../../../shared/types/Role';
 import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
-import { CurrentUserStateInterface } from '../../../shared/types/currentUserState.interface';
-import { GlobalPermissionStateInterface } from '../../../shared/types/permissionState.interface';
+import { CurrentUserStateInterface } from '../../../shared/types/state/currentUserState.interface';
+import { GlobalPermissionStateInterface } from '../../../shared/types/state/permissionState.interface';
 import { ResponseMessagesInterface } from '../../../shared/types/responseMessages.interface';
 import {
   selectIsLoading,

@@ -56,6 +56,9 @@
     </div>
     <div class="modal-content">
       <app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
+      <!--<ng-container *ngIf="data$ | async as data">
+
+      </ng-container>-->
       <app-upload-video-metadata *ngIf="showVideoDetailSteps && current === 0" 
         (videoTitleChanged)="videoTitleChanged($event)"
         [videoFileName]="staticTitle"
@@ -91,102 +94,11 @@
     </div>
   </div>
 </ng-template>
-
-<!-- steps templates   <p class="text-secondary">Modal Footer</p>-->
-<!--<ng-template #stepTemplate>
-  <app-upload-video (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
-</ng-template>
-<ng-template #stepTemplate>
-  <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)"></app-upload-video-metadata>
-</ng-template>
-<ng-template #stepTemplate>
-  <app-video-elements></app-video-elements>
-</ng-template>-->
-
-<!--<app-header [showSearchBar]="false" (uploadVideoButtonClicked)="showModal($event)"></app-header>
-<nz-layout>
-  <nz-sider class="drawer" nzCollapsible nzWidth="200px">
-    <div class="logo"></div>
-    <ul nz-menu nzTheme="dark" nzMode="inline">
-      <li nz-menu-item>
-        <span nz-icon nzType="home"></span>
-        <span>Home</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="desktop"></span>
-        <span>Subscriptions</span>
-      </li>
-      <li><nz-divider></nz-divider></li>
-      <li nz-menu-item>
-        <span nz-icon nzType="like"></span>
-        <span>Liked Videos</span>
-      </li>
-      <li nz-submenu nzTitle="UserInterface" nzIcon="user">
-        <ul>
-          <li nz-menu-item>Tom</li>
-          <li nz-menu-item>Bill</li>
-          <li nz-menu-item>Alex</li>
-        </ul>
-      </li>
-      <li><nz-divider></nz-divider></li>
-      <li nz-submenu nzTitle="Team" nzIcon="team">
-        <ul>
-          <li nz-menu-item>Team 1</li>
-          <li nz-menu-item>Team 2</li>
-        </ul>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="file"></span>
-        <span>File</span>
-      </li>
-    </ul>
-  </nz-sider>
-  <nz-layout>
-    <nz-content>
-      <div class="inner-content">Bill is a cat.</div>
-    </nz-content>
-  </nz-layout>
-</nz-layout>
-
-<ng-template #videoUploadTitle>
-  <span>{{videoTitle}}</span>
-</ng-template>
-
--- upload video modal --
-<nz-modal [(nzVisible)]="isVisible" [nzTitle]="videoUploadTitle" [nzStyle]="{ top: '20px'}" [nzBodyStyle]="{height:'80%'}" nzWidth="64%" nzClassName="modal-size" (nzOnCancel)="handleCancel()">
-    <div *nzModalContent class="model-content">
-        <nz-steps *ngIf="showVideoDetailSteps" [nzCurrent]="current" nzSize="small">
-          <nz-step nzTitle="Details"></nz-step>
-          <nz-step nzTitle="Video Elements"></nz-step>
-          <nz-step nzTitle="Checks" nzIcon="exclamation-circle"></nz-step>
-          <nz-step nzTitle="Visibility"></nz-step>
-        </nz-steps>
-    
-        <div class="steps-content">
-          <app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
-          <app-upload-video-metadata (videoTitleChanged)="videoTitleChanged($event)" *ngIf="showVideoDetailSteps && current===0"></app-upload-video-metadata>
-          <app-video-elements *ngIf="showVideoDetailSteps && current===1"></app-video-elements>
-        </div>
-    </div>
-    <div *nzModalFooter>
-      <div *ngIf="showVideoDetailSteps" class="steps-action">
-        <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
-          <span>Previous</span>
-        </button>
-        <button nz-button nzType="default" (click)="next()" *ngIf="current < 3">
-          <span>Next</span>
-        </button>
-        <button nz-button nzType="primary" (click)="done()" *ngIf="current === 3">
-          <span>Done</span>
-        </button>
-      </div>
-      <div *ngIf="!showVideoDetailSteps">
-          <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
-          <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
-          and 
-          <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
-          Please make sure that you do not violate others' copyright or privacy rights. 
-          <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
-      </div>
-    </div>
-</nz-modal>-->
+<!--<div *ngIf="!showVideoDetailSteps">
+    <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
+    <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
+    and 
+    <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
+    Please make sure that you do not violate others' copyright or privacy rights. 
+    <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
+</div>-->
