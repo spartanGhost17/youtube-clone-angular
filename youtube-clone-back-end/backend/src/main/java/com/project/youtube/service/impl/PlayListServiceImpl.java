@@ -58,6 +58,7 @@ public class PlayListServiceImpl implements PlayListService {
      */
     @Override
     public List<PlaylistDto> getByUserId(Long userId) {
+        log.info("getting user playlists ");
         List<PlaylistDto> playlistDto = playlistDao.getByUserId(userId).stream().map(playlist -> {
             PlaylistDto playlistdto = mapPlaylistToDto(playlist);
             playlistdto.setVisibilityStatus(statusService.getPlaylistStatus(playlistdto.getId()));
