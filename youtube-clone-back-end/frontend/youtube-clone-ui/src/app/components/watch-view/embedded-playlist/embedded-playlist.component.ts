@@ -83,7 +83,7 @@ export class EmbeddedPlaylistComponent implements OnInit {
     
     this.playlist = {
       id: 22,
-      title: 'Anime and comics',
+      name: 'Anime and comics',
       visibilityStatus: 'private',
       description: 'This is the description',
       videos: this.playlistItems 
