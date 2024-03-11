@@ -21,7 +21,7 @@ import { permissionsActions } from '../../shared/store/permission/actions';
 import { userActions } from '../../shared/store/user/actions';
 import { selectCurrentUser } from '../../shared/store/user/reducers';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
-import { CurrentUserStateInterface } from '../../shared/types/currentUserState.interface';
+import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
 import { authActions } from '../auth/store/actions';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
 import { TokenType } from '../auth/enum/tokenType.enum';
