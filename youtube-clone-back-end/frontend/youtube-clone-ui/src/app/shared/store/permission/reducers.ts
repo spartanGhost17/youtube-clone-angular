@@ -1,5 +1,5 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
-import { GlobalPermissionStateInterface } from "../../types/permissionState.interface";
+import { GlobalPermissionStateInterface } from "../../types/state/permissionState.interface";
 import { permissionsActions } from "./actions";
 
 export const initialState: GlobalPermissionStateInterface = {
