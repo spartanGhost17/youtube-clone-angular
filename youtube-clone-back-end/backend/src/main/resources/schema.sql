@@ -197,6 +197,15 @@ create TABLE TwoFactorVerifications
     CONSTRAINT UQ_TwoFactorVerifications_Code UNIQUE (code)
 );
 
+DROP TABLE IF EXISTS VideoThumbnails;
+
+create TABLE VideoThumbnails (
+    id                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    video_id            BIGINT UNSIGNED NOT NULL,
+    thumbnail_url       VARCHAR(255) NOT NULL,
+    FOREIGN KEY (video_id) REFERENCES Videos (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 DROP TABLE IF EXISTS Videos;
 
 create TABLE Videos
@@ -213,13 +222,14 @@ create TABLE Videos
     stop_at_bytes           BIGINT UNSIGNED DEFAULT 0,
     views                   INTEGER UNSIGNED DEFAULT 0,
     comment_enabled         BOOLEAN DEFAULT TRUE,
-    thumbnail_url           VARCHAR(255) NOT NULL,
+    thumbnail_id            BIGINT UNSIGNED NOT NULL,
     video_url               VARCHAR(255) NOT NULL,
+    gif_url                 VARCHAR(255) DEFAULT NULL,
     location                VARCHAR(255) DEFAULT NULL,
     reported                BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON delete CASCADE ON update CASCADE,
     CONSTRAINT UQ_Videos_Video_Url UNIQUE (video_url),
-    CONSTRAINT UQ_Videos_Thumbnail_Url UNIQUE (thumbnail_url)--drop this
+    CONSTRAINT UQ_Videos_Gif_Url UNIQUE (gif_url)
 );
 
 DROP TABLE IF EXISTS Playlists;
@@ -331,8 +341,8 @@ DROP TABLE IF EXISTS Categories;
 create TABLE Categories
 (
     id                  INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    category_name       VARCHAR(100) NOT NULL CHECK(category_name in ('CARS_AND_VEHICLES', 'COMEDY', 'EDUCATION', 'ENTERTAINMENT', 'FILM_AND_ANIMATION', 'GAMING', 'HOW_TO_AND_STYLE', 'MUSIC', 'NEWS_AND_POLITICS', 'NON_PROFITS_AND_ACTIVISM', 'PEOPLE_AND_BLOGS', 'PETS_AND_ANIMALS', 'SCIENCE_AND_TECHNOLOGY', 'SPORT', 'TRAVEL_AND_EVENTS')),
-    CONSTRAINT UQ_Categories_Category_Name UNIQUE (category_name)
+    name                VARCHAR(100) NOT NULL CHECK(name in ('CARS_AND_VEHICLES', 'COMEDY', 'EDUCATION', 'ENTERTAINMENT', 'FILM_AND_ANIMATION', 'GAMING', 'HOW_TO_AND_STYLE', 'MUSIC', 'NEWS_AND_POLITICS', 'NON_PROFITS_AND_ACTIVISM', 'PEOPLE_AND_BLOGS', 'PETS_AND_ANIMALS', 'SCIENCE_AND_TECHNOLOGY', 'SPORT', 'TRAVEL_AND_EVENTS')),
+    CONSTRAINT UQ_Categories_Name UNIQUE (name)
 );
 
 
@@ -401,7 +411,7 @@ create TABLE VideoTags
 
 select * from Categories;
 
-insert into Categories (category_name)
+insert into Categories (name)
 values  ('CARS_AND_VEHICLES'),
         ('COMEDY'),
         ('EDUCATION'),
