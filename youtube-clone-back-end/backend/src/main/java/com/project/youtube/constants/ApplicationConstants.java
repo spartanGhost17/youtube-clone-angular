@@ -16,4 +16,10 @@ public class ApplicationConstants {
     public static final String DEFAULT_VIDEO_TITLE = "Video title";
     public static final int PLAYLIST_MAX_SIZE = 4000;
     public static final String DEFAULT_VIDEO_VISIBILITY = "DRAFT";
+    public static final String[] DEFAULT_PLAYLISTS = {"Likes", "Watch Later", "History"};
+    public static final String VIDEOS_DEFAULT_FOLDER = "/Downloads/videos";
+    public static final String GIFS_DEFAULT_FOLDER = "/Downloads/gifs";
+    public static final String PROFILE_IMAGES_DEFAULT_FOLDER = "/Downloads/images";
+    public static final String BANNER_IMAGES_DEFAULT_FOLDER = "/Downloads/banners";
+    public static final String VIDEO_THUMBNAILS_DEFAULT_FOLDER = "/Downloads/thumbnail";
 }
