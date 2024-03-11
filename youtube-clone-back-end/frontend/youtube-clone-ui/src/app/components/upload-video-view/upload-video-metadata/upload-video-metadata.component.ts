@@ -3,7 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlaylistInterface } from '../../../shared/types/playlist.interface';
-import { Video } from '../../../models/video';
+import { Video } from '../../../shared/types/video';
 import { SnackbarService } from '../../../shared/services/snack-bar-messages/snackbar.service';
 import { ChipsComponent } from '../../chips/chips.component';
 import { DropDownComponent } from '../../dropdown/drop-down/drop-down.component';
@@ -141,20 +141,20 @@ export class UploadVideoMetadataComponent {
     console.log("Number of newline characters: " + newlineCount);
   }
 
-  //---- new code
   /**
    * Selected playlists from playlist dropdown 
-   * @param event 
+   * @param event list of playlists with selected items
   */
   selectedPlaylists(event: any) {
     this.playlistUpdated.emit(this.playlists);
-    console.log("Playlist selected====> ", event);
   }
 
+  /**
+   * emit selected category
+   * @param event list of categories with selected items
+   */
   selectedCategories(event: any) {
-    console.log("category selected BEFORE====> ", event);
     this.categoriesUpdated.emit(event);
-    console.log("category selected AFTER====> ", event);
   }
 
   /**
@@ -177,7 +177,7 @@ export class UploadVideoMetadataComponent {
   }
 
   updateVideoThumbnail() {
-    this.video.thumbnailURL = this.largeThumbnailURL;
+    this.video.thumbnailUrl = this.largeThumbnailURL;
   }
 
   /**

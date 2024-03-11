@@ -6,7 +6,7 @@ import { NzButtonSize, NzButtonModule } from 'ng-zorro-antd/button';
 import { VideoService } from '../../../shared/services/video/video.service';
 import { Observable } from 'rxjs';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry, NgxFileDropModule } from 'ngx-file-drop';
-import { Video } from '../../../models/video'
+import { Video } from '../../../shared/types/video'
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NgFor } from '@angular/common';
@@ -30,9 +30,9 @@ export class UploadVideoComponent implements OnInit {
   fileName: string;
   isLoading: boolean = false;
   videoUploadResponse: Video = {
-    id: "",
+    id: 0,
     title: "",
-    videoStatus: "",
+    status: {id: 0, statusName:""},
   }
   @Output() videoUploadedSucces: EventEmitter<Object> = new EventEmitter<Object>();
 
@@ -119,7 +119,7 @@ export class UploadVideoComponent implements OnInit {
         this.videoService.uploadVideo(file).subscribe({
           next: (data) => {
             this.isLoading = false;
-            this.videoUploadResponse = data;
+            this.videoUploadResponse = data.data;
             console.log("success !", data.id), 
             this.uploadSuccess()
           },
