@@ -40,10 +40,12 @@ public class Video {
     private Long views;
     @Column(name = "comment_enabled")
     private Boolean commentEnabled;
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
+    @Column(name = "thumbnail_id")
+    private Long thumbnailId;
     @Column(name = "video_url")
     private String videoUrl;
+    @Column(name = "gif_url")
+    private String gifUrl;
     private String location;
     private Boolean reported;
 }

@@ -2,14 +2,15 @@ package com.project.youtube.dto;
 
 
 import com.project.youtube.model.Status;
+import com.project.youtube.model.VideoThumbnail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,8 +31,10 @@ public class VideoDto {
     private Long stopAtBytes;
     private Long views;
     private Boolean commentEnabled;
-    private String thumbnailUrl;
+    private Long thumbnailId;
+    private List<VideoThumbnail> videoThumbnails;
     private String videoUrl;
+    private String gifUrl;
     private String location;
     private boolean reported;
     //extra fields
