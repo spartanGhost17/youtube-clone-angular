@@ -12,6 +12,7 @@ public interface PlayListService {
     void create(PlaylistForm playlistForm);
     PlaylistDto getByPlaylistId(Long playListId);
     List<PlaylistDto> getByUserId(Long userId);
+    List<PlaylistDto> isPresent(Long videoId, Long userId);
     PlaylistDto updatePlaylist(PlaylistForm playlistForm);
     List<VideoDto> getVideos(Long playlistId);
     void updateVideosPosition(List<VideoItemForm> videosList);

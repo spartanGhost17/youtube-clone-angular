@@ -69,6 +69,17 @@ public class PlayListServiceImpl implements PlayListService {
     }
 
     /**
+     * Get all user playlists where video id is present
+     * @param videoId the video
+     * @param userId the user id
+     * @return the list of playlists
+     */
+    @Override
+    public List<PlaylistDto> isPresent(Long videoId, Long userId) {
+        return playlistDao.isPresent(videoId, userId).stream().map(playlist -> mapPlaylistToDto(playlist)).collect(Collectors.toList());
+    }
+
+    /**
      * update playlist
      * @param playlistForm the playlist update form
      * @return the updated playlist
