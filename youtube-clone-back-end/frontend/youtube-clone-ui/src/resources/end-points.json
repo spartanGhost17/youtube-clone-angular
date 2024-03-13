@@ -34,5 +34,16 @@
     "CATEGORY_END_POINTS": {
         "GET_ALL": "/api/v1/category/",
         "ASSIGN_VIDEO_CATEGORY": "/api/v1/category"
+    },
+    "STATUS_END_POINTS": {
+        "GET_ALL": "/api/v1/status/",
+        "UPDATE_VIDEO_STATUS": "/api/v1/status/update/video",
+        "UPDATE_PLAYLIST_STATUS": "/api/v1/status/update/playlist"
+    },
+    "TAG_END_POINTS": {
+        "CREATE": "/api/v1/tag/",
+        "GET_BY_VIDEO_ID": "/api/v1/tag/video",
+        "GET_BY_NAME": "/api/v1/tag/name",
+        "DELETE_BY_TAG_ID": "/api/v1/tag/video/tagId"
     }
 }
