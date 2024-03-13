@@ -18,13 +18,15 @@ import { Icons } from '../../models/icons';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 import { PersistanceService } from '../../shared/services/persistance/persistance.service';
 import { permissionsActions } from '../../shared/store/permission/actions';
+import { playlistActions } from '../../shared/store/playlist/actions';
+import { StatusActions } from '../../shared/store/status/actions';
 import { userActions } from '../../shared/store/user/actions';
 import { selectCurrentUser } from '../../shared/store/user/reducers';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
 import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
+import { TokenType } from '../auth/enum/tokenType.enum';
 import { authActions } from '../auth/store/actions';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
-import { TokenType } from '../auth/enum/tokenType.enum';
 
 @Component({
   selector: 'app-header',
@@ -70,6 +72,7 @@ export class HeaderComponent {
   data$: Observable<{
     currentUser: CurrentUserInterface | null | undefined;
   }>;
+  currentUser: CurrentUserInterface;
 
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
@@ -95,11 +98,8 @@ export class HeaderComponent {
       currentUser: this.store.select(selectCurrentUser),
     });
 
-    //if user is logged in
-    if(this.persistanceService.get(TokenType.ACCESS)) {
-      this.getAllRoles();
-      this.getProfile();
-    }
+
+
   }
 
   ngAfterViewInit() {
@@ -109,6 +109,20 @@ export class HeaderComponent {
     );
     this.componentUpdatesService.sideBarCollapsedEmit(this.collapseSideBar);
     this.populateUserDrowpdown();
+    this.data$.subscribe({
+      next: (data) => {
+        if(data.currentUser) {
+          this.currentUser = data.currentUser
+        }
+      }
+    })
+    //if user is logged in
+    if(this.persistanceService.get(TokenType.ACCESS)) {
+      this.getAllRoles();
+      this.getProfile();
+      this.getAllStatus();
+      this.getUserPlaylists();
+    }
   }
 
   populateUserDrowpdown() {
@@ -192,5 +206,16 @@ export class HeaderComponent {
    */
   getProfile(): void {
     this.store.dispatch(userActions.loadProfile());
+  }
+
+  /**
+   * get all status
+   */
+  getAllStatus(): void {
+    this.store.dispatch(StatusActions.getStatus());
+  }
+
+  getUserPlaylists(): void {
+    this.store.dispatch(playlistActions.getByUser({ request: this.currentUser.id }));
   }
 }
