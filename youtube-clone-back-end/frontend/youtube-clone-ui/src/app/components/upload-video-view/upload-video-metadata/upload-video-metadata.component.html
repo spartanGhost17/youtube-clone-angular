@@ -41,7 +41,7 @@
       </p>
       <div class="thumbnail-grid-container">
         <div (click)="toggleActiveThumbnail(thumbnail)" class="thumbnail-preview" [ngClass]="{'active-thumbnail': thumbnail.isActive}" *ngFor="let thumbnail of thumbnails">
-          <img [src]="thumbnail.url">
+          <img [src]="thumbnail.thumbnailUrl" alt="">
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import { ChipsComponent } from '../../chips/chips.component';
 import { DropDownComponent } from '../../dropdown/drop-down/drop-down.component';
 import { ModalComponent } from '../../modal/modal.component';
 import { VideoCardBasicComponent } from '../../video-displays/video-card-basic/video-card-basic.component';
+import { VideoThumbnail } from '../../../shared/types/videoThumbnail.interface';
 
 @Component({
     selector: 'app-upload-video-metadata',
@@ -46,7 +47,7 @@ export class UploadVideoMetadataComponent {
     { label: 'Orange', value: 'Orange', checked: false }
   ];
 
-  thumbnails: any = [];
+  thumbnails: VideoThumbnail[] = [];
 
   //hGutter = 8;
   //vGutter = 16;
@@ -93,16 +94,10 @@ export class UploadVideoMetadataComponent {
   constructor(private messageService: SnackbarService, private snackBar: MatSnackBar){}
 
   ngOnInit(): void {
-    this.thumbnails = [
-      {url: '../../../../assets/batman.jpg', isActive: true},
-      {url: '../../../../assets/goku_god_mode.jpg', isActive: false},
-      {url: '../../../../assets/green-lantern.jpg', isActive: false},
-      {url: '../../../../assets/mr_wick.jpeg', isActive: false},
-      {url: '../../../../assets/batman.jpg', isActive: false},
-      {url: '../../../../assets/goku_god_mode.jpg', isActive: false},
-      {url: '../../../../assets/green-lantern.jpg', isActive: false},
-      {url: '../../../../assets/mr_wick.jpeg', isActive: false},
-    ];
+    this.thumbnails = this.video.videoThumbnails!;
+    this.thumbnails.forEach((thumbnail) => {
+      thumbnail.isActive = this.video && this.video.thumbnailId === thumbnail.id;
+    });
 
     this.visibility = [
       {playlist: {id: '', title: 'PUBLIC'},checked: false, matchSearch: true},
@@ -110,12 +105,7 @@ export class UploadVideoMetadataComponent {
       {playlist: {id: '', title: 'UNLISTED'},checked: false, matchSearch: true}
     ]
 
-    this.largeThumbnailURL = this.thumbnails[0].url;
-    console.log("this UPLOAD VIDEO COMPONENT IS LOADED");
-    //this.video = {
-    //  thumbnailUrl: this.largeThumbnailURL,
-    //  videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4'
-    //};
+    this.largeThumbnailURL = this.thumbnails[0].thumbnailUrl;
   }
 
 
@@ -166,7 +156,7 @@ export class UploadVideoMetadataComponent {
     for(let i=0; i<this.thumbnails.length; i++) {
       if(thumbnailIndex === i) {
         this.thumbnails[i].isActive = true;
-        this.largeThumbnailURL = this.thumbnails[i].url;
+        this.largeThumbnailURL = this.thumbnails[i].thumbnailUrl;
         console.log("changing LARGE thumbnail ", this.largeThumbnailURL);
       }
       else {
