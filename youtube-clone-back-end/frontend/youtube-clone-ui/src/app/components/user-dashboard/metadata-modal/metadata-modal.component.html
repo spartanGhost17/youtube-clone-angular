@@ -33,6 +33,7 @@
         [video]="video"
         [playlists]="playlistSelection"
         [categories]="categorySelection"
+        (metadataUpdated)="onMetadataUpdated($event)"
         (playlistUpdated)="onPlaylistUpdated($event)"
         (categoriesUpdated)="onCategoriesUpdated($event)">
       </app-upload-video-metadata>

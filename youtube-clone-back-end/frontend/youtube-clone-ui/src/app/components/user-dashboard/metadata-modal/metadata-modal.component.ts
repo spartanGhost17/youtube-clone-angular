@@ -1,39 +1,42 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
   Input,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef,
   ViewChildren,
 } from '@angular/core';
-import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
-import { normalizeSelection } from '../../../shared/utils/sharedUtils';
-import { dashboardActions } from '../dashboard/store/actions';
-import { ComponentUpdatesService } from '../../../shared/services/app-updates/component-updates.service';
-import { VideoCategoriesState } from '../dashboard/types/videoCategoryState.interface';
 import { Store } from '@ngrx/store';
-import { PlaylistInterface } from '../../../shared/types/playlist.interface';
 import { Observable, combineLatest } from 'rxjs';
-import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
-import { CategoryInterface } from '../dashboard/types/category.interface';
-import { Video } from '../../../shared/types/video';
-import { selectCurrentUser } from '../../auth/store/reducers';
+import { ComponentUpdatesService } from '../../../shared/services/app-updates/component-updates.service';
+import { VideoService } from '../../../shared/services/video/video.service';
 import { selectPlaylists } from '../../../shared/store/playlist/reducers';
-import { selectCategories } from '../dashboard/store/reducers';
-import { playlistActions } from '../../../shared/store/playlist/actions';
+import { StatusActions } from '../../../shared/store/status/actions';
+import { selectStatus } from '../../../shared/store/status/reducers';
+import { selectCurrentUser } from '../../../shared/store/user/reducers';
+import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
+import { PlaylistInterface } from '../../../shared/types/playlist.interface';
+import { ReportTypeInterface } from '../../../shared/types/reportType.interface';
+import { CurrentUserStateInterface } from '../../../shared/types/state/currentUserState.interface';
+import { Video } from '../../../shared/types/video';
+import { VideoMetadataForm } from '../../../shared/types/videoMetadataForm.interface';
+import { normalizeSelection } from '../../../shared/utils/sharedUtils';
 import { ModalComponent } from '../../modal/modal.component';
 import { StepsComponent } from '../../steps/steps.component';
-import { UploadVideoComponent } from '../../upload-video-view/upload-video/upload-video.component';
 import { UploadVideoMetadataComponent } from '../../upload-video-view/upload-video-metadata/upload-video-metadata.component';
-import { VideoElementsComponent } from '../../upload-video-view/video-elements/video-elements.component';
+import { UploadVideoComponent } from '../../upload-video-view/upload-video/upload-video.component';
 import { VideoChecksComponent } from '../../upload-video-view/video-checks/video-checks.component';
+import { VideoElementsComponent } from '../../upload-video-view/video-elements/video-elements.component';
 import { VideoVisibilityComponent } from '../../upload-video-view/video-visibility/video-visibility.component';
-import { VideoService } from '../../../shared/services/video/video.service';
-import { selectStatus } from '../../../shared/store/status/reducers';
-import { ReportTypeInterface } from '../../../shared/types/reportType.interface';
+import { dashboardActions } from '../dashboard/store/actions';
+import { selectCategories } from '../dashboard/store/reducers';
+import { CategoryInterface } from '../dashboard/types/category.interface';
+import { VideoCategoriesState } from '../dashboard/types/videoCategoryState.interface';
 import { Status } from '../../../shared/types/status.interface';
-import { StatusActions } from '../../../shared/store/status/actions';
+import { VideoThumbnail } from '../../../shared/types/videoThumbnail.interface';
 
 @Component({
   selector: 'app-metadata-modal',
@@ -59,6 +62,9 @@ export class MetadataModalComponent {
   isConfirmLoading: boolean = false;
   videoUploaded: boolean = false;
   showVideoDetailSteps: boolean = true;
+  videoMetadataForm: VideoMetadataForm;
+  status: Status;
+  thumbnail: VideoThumbnail;
   //videoTitle: string = 'Upload video';
   staticTitle: string = 'Ultra Instinct ｜ Dragon Ball Super.mp4'; //"";
 
@@ -74,15 +80,7 @@ export class MetadataModalComponent {
     currentUser: CurrentUserInterface | null | undefined;
     playlists: PlaylistInterface[];
   }>;
-
-
-  //@Input() videoDto: Video = {
-  //  id: 0,
-  //  title: '',
-  //  status: {id: 0, statusName: ''},
-  //};
-
-  //videoId: string = 'https://youtu.be/GMes87zIQ08'; //"";
+  videoCopy: Video;
 
   current = 0;
   totalSteps: number = 3;
@@ -96,7 +94,7 @@ export class MetadataModalComponent {
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
     private videoService: VideoService,
-    private store: Store<{ dashboard: VideoCategoriesState }>
+    private store: Store<{ user: CurrentUserStateInterface, dashboard: VideoCategoriesState }>
   ) {}
 
   showModal() {
@@ -110,6 +108,7 @@ export class MetadataModalComponent {
       currentUser: this.store.select(selectCurrentUser),
       playlists: this.store.select(selectPlaylists),
     });
+    
 
     /*this.data$.subscribe({
       next: (data) => {
@@ -132,8 +131,16 @@ export class MetadataModalComponent {
         console.log('addVideoClicked ', addVideoClicked);
       }
     );*/
+    this.data$.subscribe({
+      next: (data) => {
+        if(data.currentUser) {
+          this.currentUser = data.currentUser!;
+        }
+      }
+    });
+
+
     if (!this.playlistSelection) {
-      //this.playlists = data.playlists;
       this.populateUserPlaylists();
     }
     this.getVideo();
@@ -232,6 +239,10 @@ export class MetadataModalComponent {
    * update inner text of 'next' button
    */
   updateNextBtn() {
+    if(this.nextBtnText === 'UPLOAD') {
+      //UPLOAD THE METADATA
+    }
+
     if (this.current < this.totalSteps) {
       this.nextBtnText = 'NEXT';
     } else if (this.current === this.totalSteps) {
@@ -248,11 +259,37 @@ export class MetadataModalComponent {
     const videoId = this.video.id;
     this.store.dispatch(StatusActions.updateVideoStatus({videoId, statusId}));
 
-    this.video!.status = {
+    this.video.status = {
       id: statusId,
       statusName: event.type
     }
     console.log('visisbility selected ->', event);
+    this.populateVisibilityStatus();
+  }
+
+  /**
+   * on metadata updated
+   * @param metadata 
+   */
+  onMetadataUpdated(metadata: Video): void {
+    console.log("original metadata ", this.videoCopy);
+    console.log("current metadata", metadata);
+    
+    this.videoMetadataForm = {
+      userId: this.currentUser.id,
+      videoId: this.videoCopy.id,
+      title: this.videoCopy.title,
+      commentEnabled: this.videoCopy.commentEnabled!
+    };
+
+    if(this.videoCopy.description !== metadata.description) {
+      this.videoMetadataForm.description = metadata.description;
+    }
+
+    if(this.videoCopy.location !== metadata.location) {
+      this.videoMetadataForm.location = metadata.location;
+    }
+
   }
 
   /**
@@ -342,28 +379,41 @@ export class MetadataModalComponent {
           this.visibility = statusList!
           .filter((status) => status.statusName !== 'DRAFT')
           .map((status) => {
-            if (status.statusName === 'PRIVATE') {
-              return {
+            if (status.statusName.trim() == 'PRIVATE') {
+              let statusItem: ReportTypeInterface = {
                 id: status.id,
                 type: normalizeSelection(status.statusName),
                 description: 'Only you and people who you choose can watch your video',
+                isActive: this.video.status!.statusName.toUpperCase() === 'PRIVATE'
               };
-            } else if (status.statusName === 'UNLISTED') {
+              return statusItem;
+            } else if (status.statusName.trim() == 'UNLISTED') {
               return {
                 id: status.id,
                 type: normalizeSelection(status.statusName),
                 description: 'Anyone with the video link can watch your video',
+                isActive: this.video.status!.statusName.toUpperCase() === 'UNLISTED'
               };
             } else {
-              return {
+              return {  
                 id: status.id,
                 type: normalizeSelection(status.statusName),
-                description: 'Evevryone can watch your video',
+                description: 'Everyone can watch your video',
+                isActive: this.video.status!.statusName.toUpperCase() === 'PUBLIC'
               };
-            }
+            } 
         });
         }
       },
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.video?.currentValue){
+      this.videoCopy = JSON.parse(JSON.stringify(this.video));
+      this.status = this.videoCopy.status!;
+      this.thumbnail = this.videoCopy.videoThumbnails!.filter(t => t.id === this.videoCopy.thumbnailId)[0];
+      this.populateVisibilityStatus();
+    }
   }
 }
