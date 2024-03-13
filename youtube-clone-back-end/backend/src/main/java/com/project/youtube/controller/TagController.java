@@ -83,7 +83,7 @@ public class TagController {
      */
     @DeleteMapping("video")
     public ResponseEntity<HttpResponse> deleteVideoTags(@RequestParam("id") Long videoId) {
-        tagService.deleteVideoTags(videoId);
+        tagService.deleteVideoTags(videoId);//TODO: This should be called in the video layer
         return new ResponseEntity(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
