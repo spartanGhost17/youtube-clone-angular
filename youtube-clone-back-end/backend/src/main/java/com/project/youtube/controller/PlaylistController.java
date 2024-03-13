@@ -106,6 +106,25 @@ public class PlaylistController {
     }
 
     /**
+     * return user playlists where video is present
+     * @param videoId the video id
+     * @return the  response
+     */
+    @GetMapping("isIn")
+    public ResponseEntity<HttpResponse> videoInPlaylist(@RequestParam("videoId") Long videoId) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+
+        List<PlaylistDto> playlistDtoList = playListService.isPresent(videoId, userId);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Playlists retrieved.")
+                        .data(Map.of("playlist", playlistDtoList))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
+    /**
      * add video to playlist
      * @param videoItemForm the video form
      * @return the response
