@@ -2,31 +2,65 @@ import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { VideoService } from '../../../shared/services/video/video.service';
 import { Video } from '../../../shared/types/video';
+import { MetadataModalComponent } from '../metadata-modal/metadata-modal.component';
+import { Store } from '@ngrx/store';
+import { StatusState } from '../../../shared/types/state/statusState.interface';
+import { selectStatus } from '../../../shared/store/status/reducers';
+import { Status } from '../../../shared/types/status.interface';
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.scss'],
   standalone: true,
-  imports: [NgIf, DatePipe, NgFor]
+  imports: [NgIf, DatePipe, NgFor, MetadataModalComponent]
 })
 export class ContentComponent {
-  pageSize: number = 20;
+
+  pageSize: number = 10;
   offset: number = 0;
   videos: Video[];
+  selectedVideo: Video;
+  showModal: boolean = false;
+  visibility: Status[];
   
-  constructor(private videoService: VideoService) {}
+  constructor(private videoService: VideoService, private store: Store<{status: StatusState}>) {}
 
   /**
    * lifecycle hook
    */
   ngOnInit(): void {
+    //get a page of user videos
     this.videoService.getUserVideos(this.pageSize, this.offset).subscribe({
       next: (response) => {
         this.videos = response.data['video'];
-        console.log("videos ", response.data['video']);
-        console.log("videos assigned ", this.videos)
       }      
+    });
+
+    //select status
+    this.store.select(selectStatus).subscribe({
+      next: (statusList) => {
+        if(statusList?.length! > 0) {
+          this.visibility = statusList!;
+        }
+      }
     })
+  }
+
+  /**
+   * open metadata modal
+   * @param video 
+   */
+  showMetadataModal(video: Video) {
+    this.showModal = true;
+    this.selectedVideo = video;
+  }
+
+  /**
+   * called when modal is closed
+   * @param event 
+   */
+  modalVisibility(event: boolean): void {
+    this.showModal = event;
   }
 }

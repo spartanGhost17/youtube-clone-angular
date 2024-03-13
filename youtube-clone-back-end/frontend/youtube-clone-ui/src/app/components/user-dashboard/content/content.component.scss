@@ -22,9 +22,9 @@ tr:nth-child(even) {
     //background-color: #dddddd;
 }
 
-th:last-child, td:last-child {
-    text-align: right;
-}
+//th:last-child, td:last-child {
+//    text-align: right;
+//}
 
 .dashboard-title {
     display: flex;
@@ -83,11 +83,13 @@ img {
 }
 
 .status {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    display: block;
     height: 25px;
     text-transform: lowercase;
+}
+
+.status::first-letter {
+    text-transform: uppercase;
 }
 
 .actions {

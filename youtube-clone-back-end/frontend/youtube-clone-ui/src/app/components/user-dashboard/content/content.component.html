@@ -16,7 +16,7 @@
     <td>
         <div class="video-container">
             <div class="video-img-container">
-                <img src="../../../../assets/batman2.jpg" alt="">
+                <img [src]="video.thumbnailUrl" alt="">
                 <p class="time-counter non-selectable">{{video.duration}}</p>
             </div>
             <div class="title-sub-container">
@@ -28,10 +28,10 @@
     <!--Visibility-->
     <td>
         <div class="visibility-container">
-            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'DRAFT'">draft</span>
-            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'PUBLIC'">public</span>
-            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'PRIVATE'">lock</span>
-            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName === 'UNLISTED'">link</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName.toUpperCase() === 'DRAFT'">draft</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName.toUpperCase() === 'PUBLIC'">public</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName.toUpperCase() === 'PRIVATE'">lock</span>
+            <span class="material-symbols-outlined text-secondary" *ngIf="video.status!.statusName.toUpperCase() === 'UNLISTED'">link</span>
             <p class="status">{{video.status!.statusName}}</p>
         </div>
     </td>
@@ -56,15 +56,21 @@
     <!--Likes(vs dislikes)-->
     <td>
         <div class="like-count">
-            6
+            0
         </div>
     </td>
     <td>
         <div class="actions non-selectable">
-            <div class="ytcp-button action">
+            <div class="ytcp-button action" (click)="showMetadataModal(video)">
                 <span class="material-symbols-outlined">edit</span>
             </div>
         </div>
     </td>
   </tr>
 </table>
+
+<app-metadata-modal
+    [isShowModal]="showModal"
+    [video]="selectedVideo"
+    (modalVisibility)="modalVisibility($event)">
+</app-metadata-modal>
