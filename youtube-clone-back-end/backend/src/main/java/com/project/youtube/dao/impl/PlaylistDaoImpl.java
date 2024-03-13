@@ -108,7 +108,7 @@ public class PlaylistDaoImpl implements PlaylistDao<Playlist> {
         try {
             SqlParameterSource[] args = videosList.stream()
                             .map(videoItem -> new MapSqlParameterSource()
-                                    .addValue("videoPosition", videoItem.getVideoPosition())
+                                    .addValue("position", videoItem.getVideoPosition())
                                     .addValue("videoId", videoItem.getVideoId())
                                     .addValue("playlistId", videoItem.getPlaylistId())
                             )
@@ -156,13 +156,29 @@ public class PlaylistDaoImpl implements PlaylistDao<Playlist> {
             int currentSize = getPlaylistSize(videoItemForm.getPlaylistId());
             if(!isFull(videoItemForm.getPlaylistId())) {
                 int position = Math.max(currentSize, 0);
-                jdbcTemplate.update(INSERT_PLAYLIST_VIDEO_QUERY, Map.of("playlistId", videoItemForm.getPlaylistId(), "videoId", videoItemForm.getVideoId(), "videoPosition", position));
+                jdbcTemplate.update(INSERT_PLAYLIST_VIDEO_QUERY, Map.of("playlistId", videoItemForm.getPlaylistId(), "videoId", videoItemForm.getVideoId(), "position", position));
             }
         } catch (DataIntegrityViolationException exception) {
             throw new APIException("This video already exists in this playlist.");
         } catch (Exception exception) {
             throw exception;
             //throw new APIException("An error occurred, could not add video to playlist");
+        }
+    }
+
+    /**
+     * get all user playlists where video is present
+     * @param videoId the video id
+     * @param userId the user id
+     * @return the response
+     */
+    @Override
+    public List<Playlist> isPresent(Long videoId, Long userId) {
+        try {
+            return jdbcTemplate.query(SELECT_PLAYLIST_BY_VIDEO_ID_QUERY, Map.of("videoId", videoId, "userId", userId), new BeanPropertyRowMapper<>(Playlist.class));
+        } catch (Exception exception) {
+            throw exception;
+            //throw new APIException("An error occurred, could not retrieve");
         }
     }
 

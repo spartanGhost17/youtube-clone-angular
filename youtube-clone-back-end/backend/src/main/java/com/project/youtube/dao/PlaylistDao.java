@@ -14,6 +14,7 @@ public interface PlaylistDao<T> {
     void updateVideosPosition(List<VideoItemForm> videosList);
     Playlist updatePlaylist(PlaylistForm playlistForm);
     void addVideo(VideoItemForm videoItemForm);
+    List<T> isPresent(Long videoId, Long userId);
     List<VideoDto> getVideos(Long playlistId);
     boolean isFull(Long playlistId);
     Integer getPlaylistSize(Long playlistId);
