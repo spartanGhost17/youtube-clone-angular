@@ -5,10 +5,7 @@ import com.project.youtube.dto.VideoDto;
 import com.project.youtube.dtomapper.VideoDTOMapper;
 import com.project.youtube.form.LikeForm;
 import com.project.youtube.form.UpdateVideoMetadataForm;
-import com.project.youtube.model.Category;
-import com.project.youtube.model.Status;
-import com.project.youtube.model.Video;
-import com.project.youtube.model.VideoThumbnail;
+import com.project.youtube.model.*;
 import com.project.youtube.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,14 +44,17 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoDto uploadVideo(MultipartFile multipartFile, Long userId) {
         VideoDto videoDto = VideoDTOMapper.toVideoDto(videoDao.create(multipartFile, userId));
+        List<Tag> tags = new ArrayList<>();
+
         Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
+        videoDto.setThumbnailId(thumbnails.get(0).getId());
+        videoDto.setThumbnailUrl(thumbnails.get(0).getThumbnailUrl());
+        videoDao.updateMainThumbnailId(videoDto.getId(), thumbnails.get(0).getId());
 
         videoDto.setStatus(updateVideoStatus(videoDto.getId(), status.getId()));
         videoDto.setVideoThumbnails(thumbnails);
-
-        Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
-        thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
+        videoDto.setTags(tags);
         return videoDto;
     }
 
@@ -70,6 +71,9 @@ public class VideoServiceImpl implements VideoService {
 
         videoDto.setStatus(statusService.getVideoStatus(videoDto.getId()));
         videoDto.setVideoThumbnails(videoDao.getThumbnails(videoDto.getId()));
+
+        List<Tag> tags = new ArrayList<>();
+        videoDto.setTags(tags);
 
         Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
         thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
@@ -105,11 +109,15 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoDto getVideoMetadataById(Long id) {
         VideoDto videoDto = mapToVideoDto(videoDao.getVideo(id));
+        List<Tag> tags = new ArrayList<>();
+
         videoDto.setLikeCount(getLikeCount(videoDto));
         videoDto.setStatus(statusService.getVideoStatus(id));
 
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
         videoDto.setVideoThumbnails(thumbnails);
+
+        videoDto.setTags(tags);
 
         Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
         thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
@@ -126,6 +134,10 @@ public class VideoServiceImpl implements VideoService {
     public List<VideoDto> getAllByUserId(Long userId, Integer pageSize, Integer offset) {
         return videoDao.getAllByUserId(userId, pageSize, offset).stream().map(video -> {
             VideoDto videoDto = mapToVideoDto(video);
+
+            List<Tag> tags = new ArrayList<>();
+            videoDto.setTags(tags);
+
             videoDto.setLikeCount(getLikeCount(videoDto));
             videoDto.setStatus(statusService.getVideoStatus(video.getId()));
 
@@ -165,7 +177,8 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public void delete(Long videoId, Long userId) {
-        videoDao.delete(videoId, userId);
+        VideoDto videoDto = getVideoMetadataById(videoId);
+        videoDao.delete(videoDto, userId);
     }
 
     /**

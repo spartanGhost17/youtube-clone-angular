@@ -2,6 +2,7 @@ package com.project.youtube.dao.impl;
 
 import com.project.youtube.Exception.APIException;
 import com.project.youtube.dao.VideoDao;
+import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.Category;
 import com.project.youtube.model.Video;
@@ -14,6 +15,7 @@ import net.bramp.ffmpeg.probe.FFmpegFormat;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 import net.bramp.ffmpeg.probe.FFmpegStream;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -52,10 +54,11 @@ public class VideoDaoImpl implements VideoDao<Video> {
     /**
      * create a video entry
      * @param video the video file
-     * @param userId the logged in user
+     * @param userId the logged-in user
      * @return the video
      */
     @Override
+    @Transactional
     public Video create(MultipartFile video, Long userId) {
         try {
             // Generate a random UUID for the video ID
@@ -77,6 +80,7 @@ public class VideoDaoImpl implements VideoDao<Video> {
             //get key
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
+            //new Time(TimeUnit.SECONDS.toMillis(videoLength));
             Map<String, ?> map = Map.of(
                     "userId", userId,
                     "title", DEFAULT_VIDEO_TITLE,
@@ -101,6 +105,7 @@ public class VideoDaoImpl implements VideoDao<Video> {
             return getVideo(videoId);
         } catch (Exception exception) {
             try {
+                //throw exception;
                 throw new Exception("An error occurred ", exception.getCause());
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -109,7 +114,7 @@ public class VideoDaoImpl implements VideoDao<Video> {
     }
 
     /**
-     * create thumbnails entries for video
+     * create thumbnails entries for uploaded video
      * @param videoId the video id
      * @param thumbnailUrls the thumbnail url
      */
@@ -126,7 +131,8 @@ public class VideoDaoImpl implements VideoDao<Video> {
                     .collect(Collectors.toList()).toArray(SqlParameterSource[]::new);
             jdbcTemplate.batchUpdate(INSERT_VIDEO_THUMBNAILS, args);
         } catch (Exception exception) {
-            throw new APIException("An error occurred, could not create video thumbnails");
+            throw exception;
+            //throw new APIException("An error occurred, could not create video thumbnails");
         }
     }
 
@@ -138,9 +144,26 @@ public class VideoDaoImpl implements VideoDao<Video> {
     @Override
     public List<VideoThumbnail> getThumbnails(Long videoId) {
         try {
-            return jdbcTemplate.query(SELECT_THUMBNAILS, Map.of("videoId", videoId), new BeanPropertyRowMapper<>(VideoThumbnail.class));
+            return jdbcTemplate.query(SELECT_THUMBNAILS_QUERY, Map.of("videoId", videoId), new BeanPropertyRowMapper<>(VideoThumbnail.class));
         } catch (Exception exception) {
             throw new APIException("An error occurred while getting video thumbnails");
+        }
+    }
+
+    /**
+     * update thumbnail main id
+     * @param thumbnailId the id
+     * @param videoId the video id
+     */
+    @Override
+    public void updateMainThumbnailId(Long videoId, Long thumbnailId) {
+        try {
+            jdbcTemplate.update(UPDATE_VIDEO_MAIN_THUMBNAIL_QUERY, Map.of("thumbnailId", thumbnailId, "videoId", videoId));
+        } catch (BadSqlGrammarException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw exception;
+            //throw new APIException("An error occurred while video main thumbnail id");
         }
     }
 
@@ -213,14 +236,18 @@ public class VideoDaoImpl implements VideoDao<Video> {
 
     /**
      * delete a video owned by this user
-     * @param videoId the video id
+     * @param videoDto the video dto
      * @param userId the user id
      */
     @Override
-    public void delete(Long videoId, Long userId) {
+    public void delete(VideoDto videoDto, Long userId) {
         try {
-            if(!Objects.equals(getVideo(videoId).getUserId(), userId)) { throw new APIException("You do not own this video"); }
-            jdbcTemplate.update(DELETE_VIDEO_QUERY, Map.of("videoId", videoId, "userId", userId));
+            if(!Objects.equals(videoDto.getUserId(), userId)) { throw new APIException("You do not own this video"); }
+            fileUploadTestService.deleteVideo(videoDto.getVideoUrl().split("=")[1]);
+            fileUploadTestService.deleteGif(videoDto.getGifUrl().split("=")[1]);
+            videoDto.getVideoThumbnails().forEach(thumbnail -> fileUploadTestService.deleteThumbnails(thumbnail.getThumbnailUrl().split("=")[1]));
+
+            jdbcTemplate.update(DELETE_VIDEO_QUERY, Map.of("videoId", videoDto.getId(), "userId", userId));
         } catch (APIException exception) {
             throw exception;
         } catch (Exception exception) {
