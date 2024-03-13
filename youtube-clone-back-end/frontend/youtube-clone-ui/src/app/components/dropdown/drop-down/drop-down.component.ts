@@ -46,14 +46,16 @@ export class DropDownComponent implements OnInit {
   @ViewChild('dropdown') dropdown: ElementRef<any>;
   @ViewChildren('input') input: QueryList<ElementRef>;
 
-  ngOnInit(): void {
-    this.loadSelectedTitle();
-  }
-
   constructor() {}
+
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.showDropdown) {
+    }
+
+    if(changes.playlists?.currentValue) {
+      this.loadSelectedTitle();
     }
   }
 
