@@ -29,7 +29,9 @@ import * as userEffects from './app/shared/store/user/effects';
 import { permissionsFeatureKey, permissionsReducer } from './app/shared/store/permission/reducers';
 import { userFeatureKey, userReducer } from './app/shared/store/user/reducers';
 import { playlistFeatureKey, playlistReducer } from './app/shared/store/playlist/reducers';
-import * as playlistEffects from './app/shared/store/playlist/effects'
+import * as playlistEffects from './app/shared/store/playlist/effects';
+import * as statusEffects from './app/shared/store/status/effects';
+import { statusFeatureKey, statusReducer } from './app/shared/store/status/reducers';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -53,7 +55,8 @@ bootstrapApplication(AppComponent, {
     provideState(permissionsFeatureKey, permissionsReducer),
     provideState(userFeatureKey, userReducer),
     provideState(playlistFeatureKey, playlistReducer),
-    provideEffects(authEffects, permissionsEffects, userEffects, playlistEffects),
+    provideState(statusFeatureKey, statusReducer),
+    provideEffects(authEffects, permissionsEffects, userEffects, playlistEffects, statusEffects),
     provideRouterStore(), //will helps us manage router navigation in angular way (delete some fields)
     provideStoreDevtools({
       maxAge: 25, //max actions
