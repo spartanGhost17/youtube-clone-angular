@@ -22,22 +22,16 @@ public class UpdateVideoMetadataForm {
     private String title;
     @Nullable
     private String description;
-    //@NotEmpty(message = "video duration cannot be empty.")
-    //private Time duration;
+    //@Nullable
+    //private Long thumbnailId;
     @Nullable
     private Time stopAt;
-    //@Nullable
-    //private Long totalBytes;
     @Nullable
     private Long stopAtBytes;
     @Nullable
     private Long views;
     @NotNull(message = "Must define comment enabled status.")
     private Boolean commentEnabled;
-    //@Nullable
-    //private String thumbnailUrl;
-    //@Nullable
-    //private String videoUrl;
     @Nullable
     private String location;
     @Nullable
