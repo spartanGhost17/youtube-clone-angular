@@ -151,7 +151,7 @@ public class VideoController {
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .message("Category retrieved successfully.")
-                        //.data(Map.of("video", videoDto))
+                        //.data(Map.of("video", videoDto))//TODO: Category should be returned
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
