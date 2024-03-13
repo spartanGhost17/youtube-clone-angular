@@ -202,6 +202,10 @@ export class UploadVideoMetadataComponent {
     this.isNewPlaylist = false;
   }
 
+  /**
+   * on chips updated event
+   * @param tags 
+   */
   chipsUpdated(tags: any) {
     this.video.tags = tags;
     this.onMetadataUpdated();
