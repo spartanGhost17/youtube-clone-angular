@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, EventEmitter, Output } from '@angular/core';
+import { Component, ViewChildren, QueryList, EventEmitter, Output, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RadioGroupComponent } from '../../radio-group/radio-group.component';
 import { ReportTypeInterface } from '../../../shared/types/reportType.interface';
@@ -11,20 +11,22 @@ import { ReportTypeInterface } from '../../../shared/types/reportType.interface'
     imports: [FormsModule, RadioGroupComponent]
 })
 export class VideoVisibilityComponent {
-  selection: ReportTypeInterface[];
+  @Input() selection: ReportTypeInterface[];
+  @Output() selected: EventEmitter<any> = new EventEmitter();
   
   constructor() {}
 
   ngOnInit(): void {
-    this.selection = [
-      {id: 1, type: 'PUBLIC', description: 'Everyone can watch your video'},
-      {id: 1, type: 'PRIVATE', description: 'Only you and people who you choose can watch your video'},
-      {id: 1, type: 'UNLISTED', description: 'Anyone with the video link can watch your video'}
-    ];
+    //this.selection = [
+    //  {id: 1, type: 'PUBLIC', description: 'Everyone can watch your video'},
+    //  {id: 1, type: 'PRIVATE', description: 'Only you and people who you choose can watch your video'},
+    //  {id: 1, type: 'UNLISTED', description: 'Anyone with the video link can watch your video'}
+    //];
   }
 
   onRadioBtnClicked(event: any) { 
     console.log(`selected radio button`, event)
+    this.selected.emit(event);
   }
 
 }
