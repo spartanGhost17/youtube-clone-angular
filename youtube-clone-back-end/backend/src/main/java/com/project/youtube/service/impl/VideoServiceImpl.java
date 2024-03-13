@@ -34,6 +34,7 @@ public class VideoServiceImpl implements VideoService {
     private final LikeServiceImpl likeService;
     private final StatusServiceImpl statusService;
     private final FileUploadTestService fileUploadTestService;
+    private final TagServiceImpl tagService;
 
     /**
      * upload video
@@ -72,8 +73,7 @@ public class VideoServiceImpl implements VideoService {
         videoDto.setStatus(statusService.getVideoStatus(videoDto.getId()));
         videoDto.setVideoThumbnails(videoDao.getThumbnails(videoDto.getId()));
 
-        List<Tag> tags = new ArrayList<>();
-        videoDto.setTags(tags);
+        videoDto.setTags(tagService.getByVideoId(videoDto.getId()));
 
         Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
         thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
@@ -109,7 +109,6 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoDto getVideoMetadataById(Long id) {
         VideoDto videoDto = mapToVideoDto(videoDao.getVideo(id));
-        List<Tag> tags = new ArrayList<>();
 
         videoDto.setLikeCount(getLikeCount(videoDto));
         videoDto.setStatus(statusService.getVideoStatus(id));
@@ -117,7 +116,7 @@ public class VideoServiceImpl implements VideoService {
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
         videoDto.setVideoThumbnails(thumbnails);
 
-        videoDto.setTags(tags);
+        videoDto.setTags(tagService.getByVideoId(videoDto.getId()));
 
         Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
         thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
@@ -135,8 +134,7 @@ public class VideoServiceImpl implements VideoService {
         return videoDao.getAllByUserId(userId, pageSize, offset).stream().map(video -> {
             VideoDto videoDto = mapToVideoDto(video);
 
-            List<Tag> tags = new ArrayList<>();
-            videoDto.setTags(tags);
+            videoDto.setTags(tagService.getByVideoId(videoDto.getId()));
 
             videoDto.setLikeCount(getLikeCount(videoDto));
             videoDto.setStatus(statusService.getVideoStatus(video.getId()));
@@ -179,6 +177,7 @@ public class VideoServiceImpl implements VideoService {
     public void delete(Long videoId, Long userId) {
         VideoDto videoDto = getVideoMetadataById(videoId);
         videoDao.delete(videoDto, userId);
+        tagService.deleteVideoTags(videoId);
     }
 
     /**
