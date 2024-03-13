@@ -146,6 +146,41 @@ public class FileUploadTestService {
         }
     }
 
+    public void deleteVideo(String fileName) {
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+
+        try {
+            File file = new File(fileStorageLocation.toFile(), fileName);
+            Files.delete(file.toPath());
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public void deleteThumbnails(String fileName) {
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+
+        try {
+            File file = new File(fileStorageLocation.toFile(), fileName);
+            Files.delete(file.toPath());
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    public void deleteGif(String fileName) {
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + GIFS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+
+        try {
+            File file = new File(fileStorageLocation.toFile(), fileName);
+            Files.delete(file.toPath());
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+
+
     /**
      * save a 10 seconds version of the uploaded video
      * @param videoFileName the file name
