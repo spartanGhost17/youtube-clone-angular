@@ -2,6 +2,7 @@ package com.project.youtube.dto;
 
 
 import com.project.youtube.model.Status;
+import com.project.youtube.model.Tag;
 import com.project.youtube.model.VideoThumbnail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,4 +42,5 @@ public class VideoDto {
     //extra fields
     private Long likeCount;
     private Status status;
+    private List<Tag> tags;
 }
