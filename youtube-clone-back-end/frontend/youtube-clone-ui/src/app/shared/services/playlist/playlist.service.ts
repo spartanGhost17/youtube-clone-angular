@@ -38,4 +38,16 @@ export class PlaylistService {
     
     return this.http.get<HttpResponseInterface<PlaylistInterface>>(url, {params});
   }
+
+  /**
+   * get playlist containing video
+   * @param {number} videoId the video id 
+   * @returns {HttpResponseInterface<PlaylistInterface[]>} the response
+   */
+  getPlaylistsContainingVideo(videoId: number): Observable<HttpResponseInterface<PlaylistInterface[]>> {
+    const url: string = buildURL(this.apiUrl, this.PLAYLIST.GET_PLAYLIST_CONTAINING_VIDEO);
+    const params = new HttpParams()
+                        .append("videoId", videoId);
+    return this.http.get<HttpResponseInterface<PlaylistInterface[]>>(url, {params});
+  }
 }
