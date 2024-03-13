@@ -12,7 +12,8 @@
         "ADD_VIDEO": "/api/v1/playlist/add/video",
         "GET_VIDEOS": "/api/v1/playlist/videos",
         "UPDATE_VIDEO_POSITION": "/api/v1/playlist/update/videos/position",
-        "DELETE_VIDEO": "/api/v1/playlist/"
+        "DELETE_VIDEO": "/api/v1/playlist/",
+        "GET_PLAYLIST_CONTAINING_VIDEO": "/api/v1/playlist/isIn"
     },
     "USER_END_POINTS": {
         "GET_PROFILE": "/api/v1/user/profile",
