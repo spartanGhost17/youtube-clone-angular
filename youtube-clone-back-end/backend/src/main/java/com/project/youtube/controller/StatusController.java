@@ -30,6 +30,7 @@ public class StatusController {
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
+                        .message("status retrieved")
                         .data(Map.of("status", statusList))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -48,6 +49,7 @@ public class StatusController {
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
+                        .message("Video status retrieved.")
                         .data(Map.of("status", status))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
@@ -66,10 +68,10 @@ public class StatusController {
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
+                        .message("Playlist status retrieved.")
                         .data(Map.of("status", status))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
     }
-
 }
