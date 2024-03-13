@@ -1,6 +1,6 @@
 <form>
     <label [for]="item.type" class="radio" *ngFor="let item of data">
-        <input class="radio__input" (change)="onRadioBtnClicked(item)" type="radio" [id]="item.type" name="options" [value]="item.type">
+        <input class="radio__input" [checked]="item!.isActive" (change)="onRadioBtnClicked(item)" type="radio" [id]="item.type" name="options" [value]="item.type">
         <div #radioHalo class="radio__radio-halo">
             <div class="radio__radio"></div>
         </div>
