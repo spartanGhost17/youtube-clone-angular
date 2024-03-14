@@ -136,6 +136,7 @@ export class DropDownComponent implements OnInit {
     this.previousSelectedIdx = checkboxIdx;
     if(this.multiSelect) {
       this.playlists[checkboxIdx].checked = input.checked;
+      console.log("playlist clicked ==> ",this.playlists[checkboxIdx], " input checked ", input.checked);
       this.selectedPlaylists = this.tallySelectedPlaylist(this.playlists);
     }
     else{
@@ -173,12 +174,12 @@ export class DropDownComponent implements OnInit {
    * Emit selected playlists
   */
   savedPlaylists(): void {
-    const selectedPlaylist = this.playlists.filter(playlist => playlist.checked);
-    if(selectedPlaylist.length > 0){
+    //const selectedPlaylist = this.playlists.filter(playlist => playlist.checked);
+    //if(selectedPlaylist.length > 0){
       this.selectedPlaylistEmit.emit(this.playlists);
       //this.toggleBody();
       this.dropdownBody.nativeElement.style.display = 'none';  
-    } 
+    //} 
   }
 
   /**
