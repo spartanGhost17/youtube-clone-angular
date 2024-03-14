@@ -18,5 +18,6 @@ public interface PlayListService {
     void updateVideosPosition(List<VideoItemForm> videosList);
     Integer getPlaylistSize(Long playlistId);
     void addVideo(VideoItemForm videoItemForm);
+    void deleteVideo(Long userId, Long videoId, Long playlistId);
     void delete(Long playlistId, Long userId);
 }

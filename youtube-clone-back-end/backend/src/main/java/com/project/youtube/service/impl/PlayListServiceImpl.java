@@ -6,7 +6,6 @@ import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.PlaylistForm;
 import com.project.youtube.form.VideoItemForm;
 import com.project.youtube.model.Playlist;
-import com.project.youtube.model.Status;
 import com.project.youtube.service.PlayListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.dtomapper.PlaylistDTOMapper.toPlaylistDto;
@@ -76,7 +74,12 @@ public class PlayListServiceImpl implements PlayListService {
      */
     @Override
     public List<PlaylistDto> isPresent(Long videoId, Long userId) {
-        return playlistDao.isPresent(videoId, userId).stream().map(playlist -> mapPlaylistToDto(playlist)).collect(Collectors.toList());
+        return playlistDao.isPresent(videoId, userId).stream()
+                .map(playlist -> {
+                    PlaylistDto playlistDto = mapPlaylistToDto(playlist);
+                    playlistDto.setSize(getPlaylistSize(playlistDto.getId()));
+                    return playlistDto;
+                }).collect(Collectors.toList());
     }
 
     /**
@@ -130,6 +133,17 @@ public class PlayListServiceImpl implements PlayListService {
     @Override
     public void addVideo(VideoItemForm videoItemForm) {
         playlistDao.addVideo(videoItemForm);
+    }
+
+    /**
+     * delete video from playlist
+     * @param userId the user id
+     * @param videoId the video id
+     * @param playlistId the playlist id
+     */
+    @Override
+    public void deleteVideo(Long userId, Long videoId, Long playlistId) {
+        playlistDao.deleteVideo(userId, videoId, playlistId);
     }
 
     @Override
