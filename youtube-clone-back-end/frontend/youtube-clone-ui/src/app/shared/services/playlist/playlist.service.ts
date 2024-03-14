@@ -7,6 +7,8 @@ import { HttpResponseInterface } from '../../types/httpResponse.interface';
 import { PlaylistInterface } from '../../types/playlist.interface';
 import { buildURL } from '../../utils/sharedUtils';
 import resources from '../../../../resources/end-points.json' 
+import { VideoItemFormInterface } from '../../types/videoItemForm.interface';
+import { Video } from '../../types/video';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +51,28 @@ export class PlaylistService {
     const params = new HttpParams()
                         .append("videoId", videoId);
     return this.http.get<HttpResponseInterface<PlaylistInterface[]>>(url, {params});
+  }
+
+  /**
+   * add a video to the playlist
+   * @param {VideoItemFormInterface} VideoItemForm 
+   * @returns response
+   */
+  addVideo(VideoItemForm: VideoItemFormInterface): Observable<HttpResponseInterface<Video>> {
+    const url: string = buildURL(this.apiUrl, this.PLAYLIST.ADD_VIDEO);
+    return this.http.post<HttpResponseInterface<Video>>(url, VideoItemForm);
+  }
+
+  /**
+   * delete a video from the playlist
+   * @param {VideoItemFormInterface} videoItemForm the video id 
+   * @returns {HttpResponseInterface<Video>} the response
+   */
+  deleteVideo(videoItemForm: VideoItemFormInterface): Observable<HttpResponseInterface<Video>> {
+    const url: string = buildURL(this.apiUrl, this.PLAYLIST.DELETE_VIDEO);
+    const params = new HttpParams().append('videoId', videoItemForm.videoId)
+                                  .append('playlistId', videoItemForm.playlistId);
+
+    return this.http.delete<HttpResponseInterface<Video>>(url, {params});
   }
 }
