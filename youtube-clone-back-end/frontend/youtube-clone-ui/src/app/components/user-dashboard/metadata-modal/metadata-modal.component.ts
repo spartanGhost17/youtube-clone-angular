@@ -12,6 +12,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { ComponentUpdatesService } from '../../../shared/services/app-updates/component-updates.service';
+import { PlaylistService } from '../../../shared/services/playlist/playlist.service';
 import { VideoService } from '../../../shared/services/video/video.service';
 import { selectPlaylists } from '../../../shared/store/playlist/reducers';
 import { StatusActions } from '../../../shared/store/status/actions';
@@ -21,8 +22,11 @@ import { CurrentUserInterface } from '../../../shared/types/currentUser.interfac
 import { PlaylistInterface } from '../../../shared/types/playlist.interface';
 import { ReportTypeInterface } from '../../../shared/types/reportType.interface';
 import { CurrentUserStateInterface } from '../../../shared/types/state/currentUserState.interface';
+import { Status } from '../../../shared/types/status.interface';
 import { Video } from '../../../shared/types/video';
+import { VideoItemFormInterface } from '../../../shared/types/videoItemForm.interface';
 import { VideoMetadataForm } from '../../../shared/types/videoMetadataForm.interface';
+import { VideoThumbnail } from '../../../shared/types/videoThumbnail.interface';
 import { normalizeSelection } from '../../../shared/utils/sharedUtils';
 import { ModalComponent } from '../../modal/modal.component';
 import { StepsComponent } from '../../steps/steps.component';
@@ -35,8 +39,7 @@ import { dashboardActions } from '../dashboard/store/actions';
 import { selectCategories } from '../dashboard/store/reducers';
 import { CategoryInterface } from '../dashboard/types/category.interface';
 import { VideoCategoriesState } from '../dashboard/types/videoCategoryState.interface';
-import { Status } from '../../../shared/types/status.interface';
-import { VideoThumbnail } from '../../../shared/types/videoThumbnail.interface';
+import { playlistActions } from '../../../shared/store/playlist/actions';
 
 @Component({
   selector: 'app-metadata-modal',
@@ -65,6 +68,8 @@ export class MetadataModalComponent {
   videoMetadataForm: VideoMetadataForm;
   status: Status;
   thumbnail: VideoThumbnail;
+  videoInPlaylist: PlaylistInterface[] = [];
+
   //videoTitle: string = 'Upload video';
   staticTitle: string = 'Ultra Instinct ｜ Dragon Ball Super.mp4'; //"";
 
@@ -94,6 +99,7 @@ export class MetadataModalComponent {
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
     private videoService: VideoService,
+    private playlistService: PlaylistService,
     private store: Store<{ user: CurrentUserStateInterface, dashboard: VideoCategoriesState }>
   ) {}
 
@@ -108,7 +114,6 @@ export class MetadataModalComponent {
       currentUser: this.store.select(selectCurrentUser),
       playlists: this.store.select(selectPlaylists),
     });
-    
 
     /*this.data$.subscribe({
       next: (data) => {
@@ -140,12 +145,13 @@ export class MetadataModalComponent {
     });
 
 
-    if (!this.playlistSelection) {
-      this.populateUserPlaylists();
-    }
-    this.getVideo();
+    //if (!this.playlistSelection) {
+    //  this.populateUserPlaylists();
+    //}
+    //this.getVideo();
     this.populateCategories();
-    this.populateVisibilityStatus();
+    //this.populateVisibilityStatus();
+
   }
 
   /**
@@ -300,11 +306,37 @@ export class MetadataModalComponent {
     this.playlistSelection = playlists;
     this.selectedPlaylists = [];
     this.playlistSelection.forEach((playlist: any) => {
-      if (playlist.checked) {
+      
+      const videoItemForm: VideoItemFormInterface = {
+        videoId: this.videoCopy.id,
+        playlistId: playlist.playlist.id
+      }
+      
+      if (playlist.checked) { //add to playlist
         this.selectedPlaylists.push(playlist);
+        if(!this.videoInPlaylist.some(pl => pl.id === playlist.playlist.id)) {
+          console.log("save to playlist ", playlist)
+          console.log("post this ", videoItemForm);
+          
+          this.store.dispatch(playlistActions.addVideo({request: videoItemForm}));
+          playlist.playlist.size += 1; 
+          this.videoInPlaylist = [...this.videoInPlaylist, playlist.playlist];
+        }
+      } 
+      else if(this.videoInPlaylist.some(pl => (pl.id === playlist.playlist.id) && (!playlist.checked))) {//remove from playlist
+        const indexToRemove = this.videoInPlaylist.findIndex(pl => pl.id === playlist.playlist.id);
+
+        if (indexToRemove !== -1) {
+          console.log("removing from playlist", playlist)
+          console.log("delete this ", videoItemForm);
+          
+          this.store.dispatch(playlistActions.deleteVideo({request: videoItemForm}));
+          playlist.playlist.size -= 1;
+          this.videoInPlaylist.splice(indexToRemove, 1);
+        }
       }
     });
-    console.log('playlists i have selected ', this.selectedPlaylists);
+    console.log("video in playlist ", this.videoInPlaylist)
   }
 
   /**
@@ -320,20 +352,6 @@ export class MetadataModalComponent {
       }
     });
     console.log('category i have selected ', this.selectedCategories);
-  }
-
-  //from backend
-  getVideo() {
-    this.video = {
-      id: 0,
-      title: '',
-      description: '',
-      tags: [],
-      status: { id: 0, statusName: 'PUBLIC' },
-      thumbnailUrl: '../../../assets/mr_wick.jpeg',
-      videoUrl:
-        '../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4',
-    };
   }
 
   /**
@@ -354,16 +372,21 @@ export class MetadataModalComponent {
   /**
    * populate user playlists
    */
-  populateUserPlaylists() {
+  populateUserPlaylists(videoInPlaylists: PlaylistInterface[]) {
+    this.selectedPlaylists = [];
     this.playlistSelection = [];
     this.store.select(selectPlaylists).subscribe({
       next: (playlists) => {
-        console.log("got playlists ", playlists);
-        this.playlistSelection = playlists.map((playlist) => ({
-          playlist: { ...playlist, name: normalizeSelection(playlist.name) },
-          checked: false,
-          matchSearch: true,
-        }));
+        this.playlistSelection = playlists.map((playlist) => {
+          const isChecked = videoInPlaylists.some((pl) => pl.id === playlist.id);
+          const plt = {
+            playlist: { ...playlist, name: normalizeSelection(playlist.name) },
+            checked: isChecked,
+            matchSearch: true,
+          }
+          if(isChecked) {this.selectedPlaylists = [...this.selectedPlaylists, plt];}
+          return plt;
+        });
       },
     });
   }
@@ -379,7 +402,7 @@ export class MetadataModalComponent {
           this.visibility = statusList!
           .filter((status) => status.statusName !== 'DRAFT')
           .map((status) => {
-            if (status.statusName.trim() == 'PRIVATE') {
+            if (status.statusName.trim() === 'PRIVATE') {
               let statusItem: ReportTypeInterface = {
                 id: status.id,
                 type: normalizeSelection(status.statusName),
@@ -387,7 +410,7 @@ export class MetadataModalComponent {
                 isActive: this.video.status!.statusName.toUpperCase() === 'PRIVATE'
               };
               return statusItem;
-            } else if (status.statusName.trim() == 'UNLISTED') {
+            } else if (status.statusName.trim() === 'UNLISTED') {
               return {
                 id: status.id,
                 type: normalizeSelection(status.statusName),
@@ -408,12 +431,28 @@ export class MetadataModalComponent {
     });
   }
 
+  /**
+   * get user playlist containing video
+   * @param videoId the video id
+   */
+  videoInPlaylists(videoId: number): void {
+    this.videoInPlaylist = [];
+    this.playlistService.getPlaylistsContainingVideo(videoId).subscribe({
+      next: (playlists) => {
+        this.videoInPlaylist = playlists.data['playlist'];
+        this.populateUserPlaylists(this.videoInPlaylist);
+      }
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.video?.currentValue){
+    if(changes.video?.currentValue) {
+      console.log("CURRENT VALUE: ", changes.video?.currentValue);
       this.videoCopy = JSON.parse(JSON.stringify(this.video));
       this.status = this.videoCopy.status!;
       this.thumbnail = this.videoCopy.videoThumbnails!.filter(t => t.id === this.videoCopy.thumbnailId)[0];
       this.populateVisibilityStatus();
+      this.videoInPlaylists(this.videoCopy.id);
     }
   }
 }
