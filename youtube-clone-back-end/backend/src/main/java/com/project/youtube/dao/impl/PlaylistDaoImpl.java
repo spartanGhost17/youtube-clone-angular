@@ -20,10 +20,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.project.youtube.constants.ApplicationConstants.PLAYLIST_MAX_SIZE;
 import static com.project.youtube.query.PlaylistQuery.*;
@@ -217,6 +217,42 @@ public class PlaylistDaoImpl implements PlaylistDao<Playlist> {
             return jdbcTemplate.queryForObject(SELECT_PLAYLIST_VIDEO_COUNT_BY_PLAYLIST_ID_QUERY, Map.of("playlistId", playlistId), Integer.class);
         } catch (Exception exception) {
             throw new APIException("An error occurred while getting playlist size.");
+        }
+    }
+
+    /**
+     * delete the video from playlist
+     * @param userId the user id
+     * @param videoId the video id
+     * @param playlistId the playlist id
+     */
+    @Override
+    public void deleteVideo(Long userId, Long videoId, Long playlistId) {
+        try {
+            if(!Objects.equals(getByPlaylistId(playlistId).getUserId(), userId)) { throw new APIException("You do not own this playlist"); }
+            //Get all videos
+            List<VideoDto> videoDtoList = getVideos(playlistId);
+            Integer idx = IntStream.range(0, videoDtoList.size())
+                    .filter(i -> Objects.equals(videoDtoList.get(i).getId(), videoId))
+                    .boxed().toList().get(0);
+
+            VideoDto vToDelete = videoDtoList.get(idx);
+            AtomicLong pos = new AtomicLong(vToDelete.getPosition());
+
+            List<VideoItemForm> videoItemFormList = videoDtoList.subList(idx+1, videoDtoList.size()).stream().map(v -> {
+                log.info("pos {}", pos.get());
+                VideoItemForm itemForm = VideoItemForm.builder().videoId(v.getId()).playlistId(playlistId).videoPosition(pos.get()).build();
+                long n = pos.incrementAndGet();
+                log.info("new pos {}", n);
+                log.info("What is the form item {}", itemForm.getVideoPosition());
+                return itemForm;
+            }).toList();
+
+            jdbcTemplate.update(DELETE_PLAYLIST_VIDEO_BY_VIDEO_ID, Map.of("videoId", videoId, "playlistId", playlistId));
+            //update the positions
+            updateVideosPosition(videoItemFormList);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while deleting video "+ exception.getCause());
         }
     }
 

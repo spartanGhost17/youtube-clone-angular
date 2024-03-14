@@ -18,5 +18,6 @@ public interface PlaylistDao<T> {
     List<VideoDto> getVideos(Long playlistId);
     boolean isFull(Long playlistId);
     Integer getPlaylistSize(Long playlistId);
+    void deleteVideo(Long userId, Long videoId, Long playlistId);
     void delete(Long playlistId, Long userId);
 }
