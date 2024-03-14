@@ -7,6 +7,7 @@ import com.project.youtube.form.VideoItemForm;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.service.impl.PlayListServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Delete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,7 +175,24 @@ public class PlaylistController {
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
     }
-    //TODO: Add a resource to delete video from playlist
+
+    /**
+     * delete video from playlist
+     * @param videoItemForm the video item
+     * @return the response
+     */
+    @DeleteMapping("video")
+    public ResponseEntity<HttpResponse> deleteVideo(@RequestBody @Valid VideoItemForm videoItemForm) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        playListService.deleteVideo(userId, videoItemForm.getVideoId(), videoItemForm.getPlaylistId());
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("Videos deleted from playlist.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
     /**
      * delete a playlist
      * @param playlistId the playlist id
