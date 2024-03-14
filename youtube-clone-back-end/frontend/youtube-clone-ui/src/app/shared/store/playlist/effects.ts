@@ -35,3 +35,51 @@ export const getPlaylistEffect = createEffect((
         })
     )
 },{functional: true});
+
+//add video
+export const addVideoEffect = createEffect((
+    actions$ = inject(Actions),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.addVideo),
+        switchMap(({request}) => {
+            return playlistService.addVideo(request).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    return playlistActions.addVideoSuccess({
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.addVideoFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});
+
+//delete video
+export const deleteVideoEffect = createEffect((
+    actions$ = inject(Actions),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.deleteVideo),
+        switchMap(({request}) => {
+            return playlistService.deleteVideo(request).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    return playlistActions.deleteVideoSuccess({
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.deleteFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});

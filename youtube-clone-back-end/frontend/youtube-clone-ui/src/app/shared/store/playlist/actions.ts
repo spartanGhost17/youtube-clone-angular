@@ -26,7 +26,7 @@ export const playlistActions = createActionGroup({
         'Add Video': props<{request: VideoItemFormInterface}>(),
         'Add Video Success': props<{responseMessages: ResponseMessagesInterface}>(),
         'Add Video Failure': props<{errors: ResponseMessagesInterface}>(),
-        //TODO: Add Delete video from playlist 
+        
         'Get Videos': props<{request: number}>(),
         'Get Videos Success': props<{playlist: PlaylistInterface[], responseMessages: ResponseMessagesInterface}>(),
         'Get Videos Failure': props<{errors: ResponseMessagesInterface}>(),
@@ -34,6 +34,10 @@ export const playlistActions = createActionGroup({
         'Update Videos Position': props<{request: VideoItemFormInterface[]}>(),
         'Update Videos Position Success': props<{responeMessages: ResponseMessagesInterface}>(),
         'Update Videos Position Failure': props<{errors: ResponseMessagesInterface}>(),
+
+        'Delete Video': props<{request: VideoItemFormInterface}>(),
+        'Delete Video Success': props<{responseMessages: ResponseMessagesInterface}>(),
+        'Delete Video Failure': props<{errors: ResponseMessagesInterface}>(),
 
         'Delete': props<{request: number}>(),
         'Delete Success': props<{responseMessages: ResponseMessagesInterface}>(),

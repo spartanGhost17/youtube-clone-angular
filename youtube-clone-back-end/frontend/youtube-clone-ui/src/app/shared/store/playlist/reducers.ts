@@ -26,7 +26,37 @@ export const playlistFeature = createFeature({
         on(playlistActions.getByUserFailure, (state, action) => ({
             ...state,
             ValidationErrors: action.errors
-        }))
+        })),
+
+        //add video
+        on(playlistActions.addVideo, (state) => ({
+            ...state,
+            ValidationMessages: null,
+            ValidationErrors: null
+        })),
+        on(playlistActions.addVideoSuccess, (state, action) => ({
+            ...state,
+            ValidationMessages: action.responseMessages
+        })),
+        on(playlistActions.addVideoFailure, (state, action) => ({
+            ...state,
+            ValidationErrors: action.errors
+        })),
+
+        //delete video
+        on(playlistActions.deleteVideo, (state) => ({
+            ...state,
+            ValidationMessages: null,
+            ValidationErrors: null
+        })),
+        on(playlistActions.deleteVideoSuccess, (state, action) => ({
+            ...state,
+            ValidationMessages: action.responseMessages
+        })),
+        on(playlistActions.deleteVideoFailure, (state, action) => ({
+            ...state,
+            ValidationErrors: action.errors
+        })),
     )
 });
 
