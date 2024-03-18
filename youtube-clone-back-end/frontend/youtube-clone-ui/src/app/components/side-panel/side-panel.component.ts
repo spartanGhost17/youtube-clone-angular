@@ -69,6 +69,8 @@ export class SidePanelComponent {
 
   ngAfterViewInit() {
     this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
+    this.sections[0][0].isActive = true;
+    this.makeButtonActive(this.sections[0][0]);
   }
 
   /**
