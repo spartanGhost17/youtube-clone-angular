@@ -2,7 +2,8 @@
     "VIDEO_END_POINTS": {
         "UPLOAD_VIDEO": "/api/v1/video/upload",
         "UPDATE_VIDEO_METADATA": "/api/v1/video/upload/updateMetadata", 
-        "GET_USER_VIDEOS_PAGE": "/api/v1/video/metadata/all"
+        "GET_USER_VIDEOS_PAGE": "/api/v1/video/metadata/all",
+        "DELETE": "/api/v1/video/"
     },
     "PLAYLIST_END_POINTS": {
         "CREATE": "/api/v1/playlist/",
