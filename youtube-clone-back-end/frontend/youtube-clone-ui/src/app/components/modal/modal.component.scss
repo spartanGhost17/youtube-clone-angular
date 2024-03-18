@@ -9,8 +9,8 @@
     color: white;
     width: 100%;
     height: 100%;
-    min-height: 200px;
-    min-width: 960px;
+    //min-height: 200px;
+    //min-width: 960px;
     max-height: 100%;
     overflow: scroll;//hidden;
     background-color: rgba(18, 18, 18, .8);
@@ -27,13 +27,31 @@
     border-radius: 8px;
     width: 67%;
     height: 100%;
-    overflow-y: scroll;
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.6s;
-    animation-name: animatetop;
-    animation-duration: 0.6s;
+    overflow-y: scroll;    
+    //transition: 1.4s ease;
+    //-webkit-animation-name: animatetop;
+    //-webkit-animation-duration: 0.6s;
+    //animation-name: animatetop;
+    //animation-duration: 0.6s;
+
+    transform: scale(0); /* Initial scale set to 0 */
+    transform-origin: center; /* Ensure scaling is centered */
+    animation: scaleIn 0.6s ease forwards; /* Animation to scale from 0 to 1 */
 }
-  
+
+
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0); /* Start from scale 0 */
+        opacity: 0; /* Optionally, start with opacity 0 */
+    }
+    to {
+        transform: scale(1); /* End at scale 1 */
+        opacity: 1; /* Optionally, end with opacity 1 */
+    }
+}
+
 /* Add Animation */
 @-webkit-keyframes animatetop {
     from {top:-300px; left: -300px; bottom: -300px; right: -300px; opacity:0} 
@@ -44,16 +62,6 @@
     from {top:-300px; left: -300px; bottom: -300px; right: -300px; opacity:0} 
     to {top:0; left: 0; bottom:0; right: 0; opacity:1}
 }
-
-/*@-webkit-keyframes animatetop {
-    from {top: 100vh; left: 0; opacity: 0;} // Start from bottom of the viewport 
-    to {top: 50vh; left: 0; opacity: 1;} // Settle in the middle vertically 
-}
-
-@keyframes animatetop {
-    from {top: 100vh; left: 0; opacity: 0;} // Start from bottom of the viewport 
-    to {top: 50vh; left: 0; opacity: 1;} // Settle in the middle vertically 
-}*/
 
   
 /* The Close Button */
@@ -72,7 +80,7 @@
   
 .close:hover,
 .close:focus {
-    background-color: grey;//rgba(29, 24, 24, 1);//;
+    background-color: grey;
     text-decoration: none;
     cursor: pointer;
 }
@@ -83,7 +91,6 @@
     align-items: center;
     justify-content: space-between;
     color: white;
-    //border-bottom: 1px solid grey;
     height: 80px;
 }
   
@@ -101,6 +108,6 @@
     padding: 4px 16px;
     color: white;
     align-items: center;
-    height: fit-content;//40px;
+    height: fit-content;
     border-top: 2px solid rgba(59, 59, 59, 1);
 }
