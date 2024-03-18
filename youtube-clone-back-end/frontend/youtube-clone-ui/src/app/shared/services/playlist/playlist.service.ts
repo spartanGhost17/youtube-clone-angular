@@ -70,9 +70,6 @@ export class PlaylistService {
    */
   deleteVideo(videoItemForm: VideoItemFormInterface): Observable<HttpResponseInterface<Video>> {
     const url: string = buildURL(this.apiUrl, this.PLAYLIST.DELETE_VIDEO);
-    const params = new HttpParams().append('videoId', videoItemForm.videoId)
-                                  .append('playlistId', videoItemForm.playlistId);
-
-    return this.http.delete<HttpResponseInterface<Video>>(url, {params});
+    return this.http.delete<HttpResponseInterface<Video>>(url, { body: videoItemForm });
   }
 }
