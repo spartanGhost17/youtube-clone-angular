@@ -58,8 +58,8 @@ export class TagService {
   deleteTagById(videoId: number, tagId: number): Observable<HttpResponseInterface<Tag[]>> {
     const url = buildURL(this.apiUrl, this.Tag.DELETE_BY_TAG_ID);
     const params = new HttpParams()
-                        .append("id", videoId)
-                        .append("tagId", tagId);
+                        .append("id", videoId.toString())
+                        .append("tagId", tagId.toString());
     
     return this.http.delete<HttpResponseInterface<Tag[]>>(url, {params}); 
   }

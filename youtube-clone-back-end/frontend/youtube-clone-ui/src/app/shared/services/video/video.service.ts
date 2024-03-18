@@ -32,6 +32,17 @@ export class VideoService {
   }
 
   /**
+   * delete video 
+   * @param {number} videoId 
+   * @returns {HttpResponseInterface<Video>} response
+   */
+  deleteVideo(videoId: number): Observable<HttpResponseInterface<Video>> {
+    const url = buildURL(this.serverUrl, this.VIDEO.DELETE);
+    const params = new HttpParams().append('id', videoId);
+    return this.http.delete<HttpResponseInterface<Video>>(url, {params});
+  }
+
+  /**
    * get user's videos metadata
    * @param pageSize the page size
    * @param offset the offset
