@@ -40,6 +40,9 @@ import { selectCategories } from '../dashboard/store/reducers';
 import { CategoryInterface } from '../dashboard/types/category.interface';
 import { VideoCategoriesState } from '../dashboard/types/videoCategoryState.interface';
 import { playlistActions } from '../../../shared/store/playlist/actions';
+import { Tag } from '../../../models/tag';
+import { TagService } from '../../../shared/services/tag/tag.service';
+import { CreateTagForm } from '../../../shared/types/createTagForm.interface';
 
 @Component({
   selector: 'app-metadata-modal',
@@ -99,6 +102,7 @@ export class MetadataModalComponent {
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
     private videoService: VideoService,
+    private tagService: TagService,
     private playlistService: PlaylistService,
     private store: Store<{ user: CurrentUserStateInterface, dashboard: VideoCategoriesState }>
   ) {}
@@ -247,6 +251,7 @@ export class MetadataModalComponent {
   updateNextBtn() {
     if(this.nextBtnText === 'UPLOAD') {
       //UPLOAD THE METADATA
+      //this.videoMetadataForm
     }
 
     if (this.current < this.totalSteps) {
@@ -296,7 +301,55 @@ export class MetadataModalComponent {
       this.videoMetadataForm.location = metadata.location;
     }
 
+    this.updateTags(this.videoCopy.tags!, metadata.tags!);
   }
+
+  /**
+   * add or remove tags from metadata
+   * @param {Tag[]} originalTags the original tags
+   * @param {Tag[]} newTags the new tags
+   */
+  updateTags(originalTags: Tag[], newTags: Tag[]): void {
+    //let addTags: Tag[] = [];
+    //let removeTags: Tag[] = [];
+
+    newTags.forEach((t: Tag) => {
+      if(!originalTags.some((ot: Tag) => t.id === ot.id)) {
+        // Find the maximum id from the originalTags array
+        /*const id = newTags.reduce((max, tag) => (tag.id! > max ? tag.id! : max), -Infinity);
+        let newTag = newTags[newTags.length - 1];
+        newTag = {...newTag, id: id + 1};*/
+        //console.log("the max id is ", id, " size ", newTags.length, " new tag ", newTag)
+        const createTagForm: CreateTagForm = {
+          videoId: this.videoCopy.id,
+          tags: [t.tagName!]
+        };
+        
+        this.tagService.createTag(createTagForm).subscribe({
+          next: (response) => {
+            const idx = newTags.findIndex(t => t.tagName === response.data['tags'][0].tagName && !t.id);
+            console.log("the max id is ", idx, " size ", newTags.length, " new tag ", createTagForm, " inserted tag ", response.data['tags'][0]);
+            
+            newTags[idx] = response.data['tags'][0];
+            this.videoCopy.tags = [...this.videoCopy.tags!, response.data['tags'][0]];
+          }
+        });
+        //addTags = [...addTags, t];
+      }
+    });
+
+    originalTags.forEach((t: Tag) => {
+      if(!newTags.some((ot: Tag) => t.id === ot.id)) {
+        console.log("remove tags", t);
+        this.tagService.deleteTagById(this.videoCopy.id, t.id!).subscribe({
+          next: (data) => {
+            this.videoCopy.tags = this.videoCopy.tags!.filter(tag => tag.id !== t.id);
+          }
+        }); 
+      }
+    });
+  }
+
 
   /**
    * playlist selection update event
