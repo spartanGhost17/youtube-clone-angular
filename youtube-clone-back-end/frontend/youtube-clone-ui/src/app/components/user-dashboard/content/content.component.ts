@@ -7,13 +7,14 @@ import { Store } from '@ngrx/store';
 import { StatusState } from '../../../shared/types/state/statusState.interface';
 import { selectStatus } from '../../../shared/store/status/reducers';
 import { Status } from '../../../shared/types/status.interface';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.scss'],
   standalone: true,
-  imports: [NgIf, DatePipe, NgFor, MetadataModalComponent]
+  imports: [NgIf, DatePipe, NgFor, MetadataModalComponent, ModalComponent]
 })
 export class ContentComponent {
 
@@ -23,6 +24,9 @@ export class ContentComponent {
   selectedVideo: Video;
   showModal: boolean = false;
   visibility: Status[];
+  showDeleteModal: boolean = false;
+  videoToDelete: Video | undefined;
+  deleteMessage: string;
   
   constructor(private videoService: VideoService, private store: Store<{status: StatusState}>) {}
 
@@ -62,5 +66,43 @@ export class ContentComponent {
    */
   modalVisibility(event: boolean): void {
     this.showModal = event;
+  }
+
+  /**
+   * delete video 
+   * @param video 
+   */
+  deleteVideo(video: Video) {
+    this.showDeleteModal = true;
+    this.videoToDelete = video;
+  }
+
+  /**
+   * event fired when video delete modal is closed
+   * @param event 
+   */
+  hideDeleteModal(event: boolean) {
+    this.showDeleteModal = event
+  }
+
+  /**
+   * on cancel delete modal
+   */
+  onCancelDelete() {
+    this.showDeleteModal = false;
+    this.videoToDelete = undefined;
+  }
+
+  /**
+   * on delete video
+   */
+  onDelete() {
+    this.videoService.deleteVideo(this.videoToDelete!.id).subscribe({
+      next: (data) => {
+        this.deleteMessage = data.message;
+        this.videos = this.videos.filter(video => video.id !== this.videoToDelete!.id);
+      }
+    });
+  
   }
 }

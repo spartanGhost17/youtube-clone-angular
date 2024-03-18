@@ -93,6 +93,7 @@ img {
 }
 
 .actions {
+    display: flex;
 }
 
 .action {
@@ -102,4 +103,90 @@ img {
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    margin-right: 4px;
+}
+
+/** delete modal **/
+
+.text-primary {
+
+}
+
+.modal-content-container {
+
+}
+
+.modal-footer {
+    width: 100%;
+}
+
+
+.delete-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.delete-modal-footer > * {
+    margin-right: 10px;
+}
+
+.delete-cancel-btn {
+    text-align: center;
+    width: 80px;
+    height: 30px;
+    border-radius: 24px;
+    transition: color, background-color 0.6s ease;
+}
+
+.delete-cancel-btn:hover {
+    background-color: rgba(69, 69, 69, 1);
+    color: #DE3347;
+}
+
+.delete-next-btn {
+    text-align: center;
+    width: 80px;
+    height: 30px;
+    border-radius: 24px;
+    transition: color, background-color 0.6s ease;
+}
+
+.delete-next-btn.active {
+    color: var(--yt-color-blue);
+}
+
+.delete-next-btn.active:hover {
+    background-color: rgba(90, 142, 238, .6);
+}
+
+.delete-metadata {
+    display: flex;
+}
+
+.metadata__desc {
+    font-size: small;
+    font-weight: 400;
+}
+
+.metadata__title {
+    font-size: 1.2rem;
+    font-weight: 200;
+}
+
+.thumbnail {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.thumbnail img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+}
+
+.delete-title {
+    color: #DE3347;
 }
