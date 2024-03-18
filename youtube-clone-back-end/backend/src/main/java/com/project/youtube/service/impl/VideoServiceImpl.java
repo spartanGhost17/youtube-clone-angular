@@ -8,6 +8,7 @@ import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.*;
 import com.project.youtube.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import static com.project.youtube.dtomapper.VideoDTOMapper.toVideoDto;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VideoServiceImpl implements VideoService {
 
     @Autowired
@@ -175,9 +177,10 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public void delete(Long videoId, Long userId) {
+        log.info("deleting video by id {} ", videoId);
         VideoDto videoDto = getVideoMetadataById(videoId);
-        videoDao.delete(videoDto, userId);
         tagService.deleteVideoTags(videoId);
+        videoDao.delete(videoDto, userId);
     }
 
     /**
