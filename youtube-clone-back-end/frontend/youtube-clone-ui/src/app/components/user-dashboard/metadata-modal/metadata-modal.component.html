@@ -9,23 +9,21 @@
 </app-modal>
 
 <ng-template #header>
-  <h2 class="text-primary" *ngIf="video.title.length<=0">Video Title</h2>
-  <h2 class="text-primary" *ngIf="video.title.length>0">{{video.title}}</h2>
+  <h2 class="text-primary" *ngIf="!showVideoDetailSteps">Upload Video</h2>
+  <h2 class="text-primary" *ngIf="video?.title!.length<=0 && showVideoDetailSteps">Video Title</h2>
+  <h2 class="text-primary" *ngIf="video?.title!.length>0 && showVideoDetailSteps">{{video.title}}</h2>
 </ng-template>
 
 <ng-template #body>
   <div class="modal-content-container">
-    <div class="steps_">
+    <div class="steps_" *ngIf="showVideoDetailSteps">
       <app-steps 
         (activeSection)="onModalActiveSessionChange($event)"
         [currentActive]="current">
       </app-steps>
     </div>
-    <div class="modal-content">
+    <div class="modal-content" [ngStyle]="{'margin-top': '0px'}">
       <app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
-      <!--<ng-container *ngIf="data$ | async as data">
-
-      </ng-container>-->
       <app-upload-video-metadata *ngIf="showVideoDetailSteps && current === 0" 
         (videoTitleChanged)="videoTitleChanged($event)"
         [videoFileName]="staticTitle"
@@ -57,7 +55,7 @@
     <div class="modal-footer-text-container">
       <span class="text-secondary modal-footer-text">Checks complete. No issues found.</span>
     </div>
-    <div class="modal-footer-buttons">
+    <div class="modal-footer-buttons" *ngIf="showVideoDetailSteps">
       <button class="ytcp-button text-secondary footer-back-button" (click)="onPreClicked()">BACK</button>
       <button class="ytcp-button footer-publish-button" (click)="onNextClicked()">{{nextBtnText}}</button>
     </div>

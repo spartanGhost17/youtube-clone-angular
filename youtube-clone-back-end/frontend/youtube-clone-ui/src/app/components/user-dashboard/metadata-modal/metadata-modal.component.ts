@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf, NgStyle } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -43,6 +43,7 @@ import { playlistActions } from '../../../shared/store/playlist/actions';
 import { Tag } from '../../../models/tag';
 import { TagService } from '../../../shared/services/tag/tag.service';
 import { CreateTagForm } from '../../../shared/types/createTagForm.interface';
+import { SnackbarService } from '../../../shared/services/snack-bar-messages/snackbar.service';
 
 @Component({
   selector: 'app-metadata-modal',
@@ -57,6 +58,7 @@ import { CreateTagForm } from '../../../shared/types/createTagForm.interface';
     VideoChecksComponent,
     VideoVisibilityComponent,
     AsyncPipe,
+    NgStyle
   ],
   templateUrl: './metadata-modal.component.html',
   styleUrls: ['./metadata-modal.component.scss'],
@@ -67,7 +69,7 @@ export class MetadataModalComponent {
   isVisible: boolean = false;
   isConfirmLoading: boolean = false;
   videoUploaded: boolean = false;
-  showVideoDetailSteps: boolean = true;
+  
   videoMetadataForm: VideoMetadataForm;
   status: Status;
   thumbnail: VideoThumbnail;
@@ -96,6 +98,7 @@ export class MetadataModalComponent {
 
   @Input() isShowModal: boolean = false;
   @Input() video: Video;
+  @Input() showVideoDetailSteps: boolean = false;
   @Output() modalVisibility: EventEmitter<boolean> = new EventEmitter();
   @ViewChildren('stepTemplate') stepsTemplateRefs: QueryList<TemplateRef<any>>;
 
@@ -104,6 +107,7 @@ export class MetadataModalComponent {
     private videoService: VideoService,
     private tagService: TagService,
     private playlistService: PlaylistService,
+    private messageService: SnackbarService,
     private store: Store<{ user: CurrentUserStateInterface, dashboard: VideoCategoriesState }>
   ) {}
 
@@ -170,13 +174,13 @@ export class MetadataModalComponent {
   }
 
   //????
-  handleOk(): void {
+  /*handleOk(): void {
     this.isConfirmLoading = true;
     setTimeout(() => {
       this.isVisible = false;
       this.isConfirmLoading = false;
     }, 3000);
-  }
+  }*/
   /** hide video upload modal on view closed */
   handleCancel(): void {
     this.isVisible = false;
@@ -195,8 +199,10 @@ export class MetadataModalComponent {
       this.staticTitle = data.fileName;
       this.showVideoDetailSteps = true; //set to true if successfully uploaded video
       //this.videoId = data.videoUploadResponse.id;
+      this.video = data.videoUploadResponse;
+      //this.video.id = data.videoUploadResponse.id;
+      //this.video.thumbnailId = data
       this.video.title = data.fileName;
-      this.video.id = data.videoUploadResponse.id;
       //this.videoUploaded = true;
     }
   }
@@ -250,8 +256,12 @@ export class MetadataModalComponent {
    */
   updateNextBtn() {
     if(this.nextBtnText === 'UPLOAD') {
-      //UPLOAD THE METADATA
-      //this.videoMetadataForm
+      this.videoService.updateVideoMetadata(this.videoMetadataForm).subscribe({
+        next: (data) => {
+          this.messageService.openSnackBar(data.message);
+          this.showModalUpdateEvent(false);
+        }
+      });
     }
 
     if (this.current < this.totalSteps) {
@@ -274,7 +284,6 @@ export class MetadataModalComponent {
       id: statusId,
       statusName: event.type
     }
-    console.log('visisbility selected ->', event);
     this.populateVisibilityStatus();
   }
 
@@ -283,13 +292,11 @@ export class MetadataModalComponent {
    * @param metadata 
    */
   onMetadataUpdated(metadata: Video): void {
-    console.log("original metadata ", this.videoCopy);
-    console.log("current metadata", metadata);
-    
+
     this.videoMetadataForm = {
       userId: this.currentUser.id,
       videoId: this.videoCopy.id,
-      title: this.videoCopy.title,
+      title: metadata.title,//this.videoCopy.title,
       commentEnabled: this.videoCopy.commentEnabled!
     };
 
@@ -312,14 +319,10 @@ export class MetadataModalComponent {
   updateTags(originalTags: Tag[], newTags: Tag[]): void {
     //let addTags: Tag[] = [];
     //let removeTags: Tag[] = [];
-
+    
+    //add tags
     newTags.forEach((t: Tag) => {
       if(!originalTags.some((ot: Tag) => t.id === ot.id)) {
-        // Find the maximum id from the originalTags array
-        /*const id = newTags.reduce((max, tag) => (tag.id! > max ? tag.id! : max), -Infinity);
-        let newTag = newTags[newTags.length - 1];
-        newTag = {...newTag, id: id + 1};*/
-        //console.log("the max id is ", id, " size ", newTags.length, " new tag ", newTag)
         const createTagForm: CreateTagForm = {
           videoId: this.videoCopy.id,
           tags: [t.tagName!]
@@ -328,19 +331,15 @@ export class MetadataModalComponent {
         this.tagService.createTag(createTagForm).subscribe({
           next: (response) => {
             const idx = newTags.findIndex(t => t.tagName === response.data['tags'][0].tagName && !t.id);
-            console.log("the max id is ", idx, " size ", newTags.length, " new tag ", createTagForm, " inserted tag ", response.data['tags'][0]);
-            
             newTags[idx] = response.data['tags'][0];
             this.videoCopy.tags = [...this.videoCopy.tags!, response.data['tags'][0]];
           }
         });
-        //addTags = [...addTags, t];
       }
     });
-
+    //delete tags
     originalTags.forEach((t: Tag) => {
       if(!newTags.some((ot: Tag) => t.id === ot.id)) {
-        console.log("remove tags", t);
         this.tagService.deleteTagById(this.videoCopy.id, t.id!).subscribe({
           next: (data) => {
             this.videoCopy.tags = this.videoCopy.tags!.filter(tag => tag.id !== t.id);
@@ -368,9 +367,6 @@ export class MetadataModalComponent {
       if (playlist.checked) { //add to playlist
         this.selectedPlaylists.push(playlist);
         if(!this.videoInPlaylist.some(pl => pl.id === playlist.playlist.id)) {
-          console.log("save to playlist ", playlist)
-          console.log("post this ", videoItemForm);
-          
           this.store.dispatch(playlistActions.addVideo({request: videoItemForm}));
           playlist.playlist.size += 1; 
           this.videoInPlaylist = [...this.videoInPlaylist, playlist.playlist];
@@ -380,16 +376,12 @@ export class MetadataModalComponent {
         const indexToRemove = this.videoInPlaylist.findIndex(pl => pl.id === playlist.playlist.id);
 
         if (indexToRemove !== -1) {
-          console.log("removing from playlist", playlist)
-          console.log("delete this ", videoItemForm);
-          
           this.store.dispatch(playlistActions.deleteVideo({request: videoItemForm}));
           playlist.playlist.size -= 1;
           this.videoInPlaylist.splice(indexToRemove, 1);
         }
       }
     });
-    console.log("video in playlist ", this.videoInPlaylist)
   }
 
   /**
@@ -404,7 +396,6 @@ export class MetadataModalComponent {
         this.selectedCategories.push(category);
       }
     });
-    console.log('category i have selected ', this.selectedCategories);
   }
 
   /**
@@ -500,10 +491,10 @@ export class MetadataModalComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.video?.currentValue) {
-      console.log("CURRENT VALUE: ", changes.video?.currentValue);
       this.videoCopy = JSON.parse(JSON.stringify(this.video));
       this.status = this.videoCopy.status!;
-      this.thumbnail = this.videoCopy.videoThumbnails!.filter(t => t.id === this.videoCopy.thumbnailId)[0];
+      console.log("video ", this.videoCopy)
+      this.thumbnail = this.videoCopy.videoThumbnails!.length > 0? this.videoCopy.videoThumbnails!.filter(t => t.id === this.videoCopy.thumbnailId)[0] : {id: 0, videoId: 0, thumbnailUrl: ''};
       this.populateVisibilityStatus();
       this.videoInPlaylists(this.videoCopy.id);
     }
