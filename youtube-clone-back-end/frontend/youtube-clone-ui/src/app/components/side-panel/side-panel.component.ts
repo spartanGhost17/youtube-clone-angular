@@ -44,8 +44,7 @@ export class SidePanelComponent {
    * Lifecycle hook
    */
   ngOnInit() {
-    console.log("INITIALIZING DRAWER...")
-    
+      
     this.data$ = combineLatest({
       isLoading: this.store.select(selectIsLoading),
       currentUser: this.store.select(selectCurrentUser),
