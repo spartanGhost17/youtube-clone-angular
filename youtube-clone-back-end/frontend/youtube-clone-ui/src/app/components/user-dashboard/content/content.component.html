@@ -74,6 +74,7 @@
 
 <app-metadata-modal
     [isShowModal]="showModal"
+    [showVideoDetailSteps]="true"
     [video]="selectedVideo"
     (modalVisibility)="modalVisibility($event)">
 </app-metadata-modal>
@@ -103,7 +104,7 @@
                 </div>
                 <div class="metadata">
                     <p class="text-primary metadata__title">{{videoToDelete.title}}</p>
-                    <p class="text-secondary metadata__desc">{{videoToDelete.description ? videoToDelete.description : 'No Description'}}</p>
+                    <p class="text-secondary metadata__desc hide-text-overflow">{{videoToDelete.description ? videoToDelete.description : 'No Description'}}</p>
                 </div>
             </div>
         </ng-container>
