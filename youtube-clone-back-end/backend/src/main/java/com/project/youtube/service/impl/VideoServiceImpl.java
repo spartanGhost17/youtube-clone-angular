@@ -68,6 +68,7 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public VideoDto updateVideoMetadata(UpdateVideoMetadataForm updateVideoMetadataForm) {
+        log.info("updating video metadata for video id: {}",updateVideoMetadataForm.getVideoId());
         VideoDto videoDto = mapToVideoDto(videoDao.updateMetadata(updateVideoMetadataForm));
         //Status status = statusService.getVideoStatus(videoDto.getId());
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
