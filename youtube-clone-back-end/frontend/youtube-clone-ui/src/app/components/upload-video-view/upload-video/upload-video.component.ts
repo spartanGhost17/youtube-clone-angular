@@ -10,6 +10,8 @@ import { Video } from '../../../shared/types/video'
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NgFor } from '@angular/common';
+import { HttpResponseInterface } from '../../../shared/types/httpResponse.interface';
+import { ofType } from '@ngrx/effects';
 
 
 @Component({
@@ -29,11 +31,11 @@ export class UploadVideoComponent implements OnInit {
   uploading: boolean = false;
   fileName: string;
   isLoading: boolean = false;
-  videoUploadResponse: Video = {
+  videoUploadResponse: Video; /*= {
     id: 0,
     title: "",
     status: {id: 0, statusName:""},
-  }
+  }*/
   @Output() videoUploadedSucces: EventEmitter<Object> = new EventEmitter<Object>();
 
 
@@ -57,22 +59,6 @@ export class UploadVideoComponent implements OnInit {
           console.log("Dropped ",droppedFile.relativePath, file);
           this.fileName = droppedFile.relativePath;
           this.fileUploaded = true;
-          /**
-          // You could upload it like this:
-          const formData = new FormData()
-          formData.append('logo', file, relativePath)
-
-          // Headers
-          const headers = new HttpHeaders({
-            'security-token': 'mytoken'
-          })
-
-          this.http.post('https://mybackend.com/api/upload/sanitize-and-save-logo', formData, { headers: headers, responseType: 'blob' })
-          .subscribe(data => {
-            // Sanitized logo returned from backend
-          })
-          **/
-
         });
       } else {
         // It was a directory (empty directories are added, otherwise only files)
@@ -118,10 +104,16 @@ export class UploadVideoComponent implements OnInit {
         this.isLoading = true;
         this.videoService.uploadVideo(file).subscribe({
           next: (data) => {
-            this.isLoading = false;
-            this.videoUploadResponse = data.data;
-            console.log("success !", data.id), 
-            this.uploadSuccess()
+            
+            if(typeof data === 'number') {
+              console.log("upload at percentage ", data);
+            } else {
+              this.isLoading = false;
+              this.videoUploadResponse = data.data;
+              console.log("success !", data.id), 
+              this.uploadSuccess()
+            }
+
           },
           error: (err) => {
             this.isLoading = false;
@@ -136,13 +128,11 @@ export class UploadVideoComponent implements OnInit {
    * emits file upload success and file name on file successfully uploaded
    */
   uploadSuccess() {
-    this.videoUploadedSucces.emit(
-      {
-        uploadStatus: this.fileUploaded,
-        fileName: this.fileName,
-        videoUploadResponse: this.videoUploadResponse
-      }
-    );
+    this.videoUploadedSucces.emit({
+      uploadStatus: this.fileUploaded,
+      fileName: this.fileName,
+      videoUploadResponse: this.videoUploadResponse
+    });
   } 
 
 }
