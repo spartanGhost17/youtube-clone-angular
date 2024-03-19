@@ -30,75 +30,8 @@
 </div>
 
 <!---->
-
-<!--upload video modal-->
-<app-modal *ngIf="isShowModal"
-  [show]="isShowModal"
-  [modalWidth]="'960px'"
-  [headerTemplate]="header"
-  [bodyTemplate]="body"
-  [footerTemplate]="footer"
-  (isShowUpdateEvent)="showModalUpdateEvent($event)">
-</app-modal>
-
-<ng-template #header>
-  <h2 class="text-primary" *ngIf="video.title.length<=0">Video Title</h2>
-  <h2 class="text-primary" *ngIf="video.title.length>0">{{video.title}}</h2>
-</ng-template>
-
-<ng-template #body>
-  <div class="modal-content-container">
-    <div class="steps_">
-      <app-steps 
-        (activeSection)="onModalActiveSessionChange($event)"
-        [currentActive]="current">
-      </app-steps>
-    </div>
-    <div class="modal-content">
-      <app-upload-video *ngIf="!showVideoDetailSteps" (videoUploadedSucces)="videoUploadedSucces($event)"></app-upload-video>
-      <!--<ng-container *ngIf="data$ | async as data">
-
-      </ng-container>-->
-      <app-upload-video-metadata *ngIf="showVideoDetailSteps && current === 0" 
-        (videoTitleChanged)="videoTitleChanged($event)"
-        [videoFileName]="staticTitle"
-        [videoURL]="videoId"
-        [video]="video"
-        [playlists]="playlistSelection"
-        [categories]="categorySelection"
-        (playlistUpdated)="onPlaylistUpdated($event)"
-        (categoriesUpdated)="onCategoriesUpdated($event)">
-      </app-upload-video-metadata>
-      <app-video-elements *ngIf="showVideoDetailSteps && current===1"></app-video-elements>
-      <app-video-checks *ngIf="showVideoDetailSteps && current === 2"></app-video-checks>
-      <app-video-visibility *ngIf="showVideoDetailSteps && current === 3"
-        (selected)="onVisibilitySelected($event)">
-      </app-video-visibility>
-    </div>
-  </div>
-</ng-template>
-<!--Template footer -->
-<ng-template #footer>
-  <div class="modal-footer">
-    <div class="modal-footer-icons-right">
-      <span class="material-symbols-outlined non-selectable">upload</span>
-      <span class="material-symbols-outlined non-selectable">sd</span>
-      <span class="material-symbols-outlined non-selectable">check_circle</span>
-    </div>
-    <div class="modal-footer-text-container">
-      <span class="text-secondary modal-footer-text">Checks complete. No issues found.</span>
-    </div>
-    <div class="modal-footer-buttons">
-      <button class="ytcp-button text-secondary footer-back-button" (click)="onPreClicked()">BACK</button>
-      <button class="ytcp-button footer-publish-button" (click)="onNextClicked()">{{nextBtnText}}</button>
-    </div>
-  </div>
-</ng-template>
-<!--<div *ngIf="!showVideoDetailSteps">
-    <p class="disclaimer">By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
-    <a target="_blank" class="disclaimer" href="https://www.youtube.com/t/terms">Terms of Service</a>
-    and 
-    <a target="_blank" class="link-placeholder" href="https://www.youtube.com/yt/about/policies/">Community Guidelines</a>
-    Please make sure that you do not violate others' copyright or privacy rights. 
-    <a target="_blank" class="style-scope ytcp-uploads-file-picker" href="https://www.youtube.com/yt/copyright">Learn more</a></p>
-</div>-->
+<app-metadata-modal
+    [isShowModal]="isShowModal"
+    [showVideoDetailSteps]="false"
+    (modalVisibility)="showModalUpdateEvent($event)">
+</app-metadata-modal>
