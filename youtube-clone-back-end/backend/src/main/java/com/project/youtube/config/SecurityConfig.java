@@ -44,7 +44,7 @@ public class SecurityConfig {
     private final AuthorizationFilter authorizationFilter;
     private final NotFoundResourceController notFoundResourceController;
     private static final String[] PUBLIC_URLS = { API_VERSION + "user/login/**", API_VERSION + "user/register/**", API_VERSION + "user/verify/code/**", "/error", API_VERSION+"user/reset/password/**",
-            API_VERSION+"user/verify/password", API_VERSION+"user/verify/account", API_VERSION+"user/refresh/token", API_VERSION+"user/image/**", API_VERSION + "video/thumbnail/**" };
+            API_VERSION+"user/verify/password", API_VERSION+"user/verify/account", API_VERSION+"user/refresh/token", API_VERSION+"user/image/**", API_VERSION + "video/thumbnail/**" , API_VERSION + "video/watch"};
 
     /**
      * registers authentication providers with the authentication manager
@@ -117,7 +117,7 @@ public class SecurityConfig {
                 "Accept", "Jwt-Token", "Authorization", "Origin", "Accept", "X-Requested-With",
                 "Access-Control-Request-Method", "Access-Control-Request-Headers"));
         configuration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization",
-                "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "File-Name"));
+                "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "File-Name", "Content-Range"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
