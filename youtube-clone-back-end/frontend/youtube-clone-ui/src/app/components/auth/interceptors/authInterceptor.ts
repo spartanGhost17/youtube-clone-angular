@@ -28,7 +28,8 @@ const PUBLIC_URLS: string[] = [
     API_VERSION + 'user/verify/account',
     API_VERSION + 'user/refresh/token',
     API_VERSION + 'user/image',
-    API_VERSION + 'video/thumbnail'
+    API_VERSION + 'video/thumbnail',
+    API_VERSION + 'video/watch'
 ];
 
 
