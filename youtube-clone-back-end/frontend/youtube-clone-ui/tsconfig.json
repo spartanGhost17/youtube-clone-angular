@@ -28,6 +28,11 @@
       "dom"
     ]
   },
+  "include": [
+    "src/**/*.ts",
+    "node_modules/shaka-player/dist/shaka-player.compiled.js",
+    //"node_modules/shaka-player/dist/shaka-player.ui.debug.d.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
