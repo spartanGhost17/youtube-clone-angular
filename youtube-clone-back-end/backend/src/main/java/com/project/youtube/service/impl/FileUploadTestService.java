@@ -327,13 +327,15 @@ public class FileUploadTestService {
     /**
      * save a 10 seconds version of the uploaded video
      * @param videoFileName the file name
+     * @param extension the video extension
      * @param videoLengthInSeconds the video length
      * @return the file name
      */
-    public String saveGif(String videoFileName, Long videoLengthInSeconds) {
-        Path gifStorageLocation = Paths.get(System.getProperty("user.home") + GIFS_DEFAULT_FOLDER).toAbsolutePath().normalize();
-        Path videoFileLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
-        File videoFile = videoFileLocation.resolve(videoFileName).toFile();
+    public String saveGif(String videoFileName, String extension, Long videoLengthInSeconds) {
+        String videoFolderName = videoFileName;
+        Path gifStorageLocation = Paths.get(System.getProperty("user.home") + GIFS_DEFAULT_FOLDER + "/" + videoFolderName).toAbsolutePath().normalize();
+        Path videoFileLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER + "/" + videoFolderName).toAbsolutePath().normalize();
+        File videoFile = videoFileLocation.resolve(videoFolderName + extension).toFile();
         if(!Files.exists(gifStorageLocation)) {
             try {
                 log.info("creating directory it does not exist");
