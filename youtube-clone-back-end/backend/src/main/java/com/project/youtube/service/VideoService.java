@@ -4,7 +4,12 @@ import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.Category;
 import com.project.youtube.model.Status;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -12,6 +17,9 @@ public interface VideoService {
     VideoDto uploadVideo(MultipartFile multipartFile, Long userId);
     VideoDto updateVideoMetadata(UpdateVideoMetadataForm updateVideoMetadataForm);
     String uploadVideoThumbnail(MultipartFile thumbnailImage, Long videoId);
+    Mono<ResponseEntity<Resource>> streamVideo2(String fileName);
+    Mono<ResponseEntity<ResourceRegion>> streamVideo3(String fileName, HttpHeaders reqHeaders);
+    Mono<ResponseEntity<Resource>> streamVideoABR(String videoFileName, String abrFile);
     byte[] getThumbnail(String fileName);
     VideoDto getVideoMetadataById(Long id);
     List<VideoDto> getAllByUserId(Long userId, Integer pageSize, Integer offset);
