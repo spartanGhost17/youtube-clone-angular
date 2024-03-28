@@ -243,9 +243,11 @@ public class VideoDaoImpl implements VideoDao<Video> {
     public void delete(VideoDto videoDto, Long userId) {
         try {
             if(!Objects.equals(videoDto.getUserId(), userId)) { throw new APIException("You do not own this video"); }
-            fileUploadTestService.deleteVideo(videoDto.getVideoUrl().split("=")[1]);
+            String[] videoUrlParts = videoDto.getVideoUrl().split("/");
+            fileUploadTestService.deleteVideo(videoUrlParts[videoUrlParts.length - 1]);
             fileUploadTestService.deleteGif(videoDto.getGifUrl().split("=")[1]);
-            videoDto.getVideoThumbnails().forEach(thumbnail -> fileUploadTestService.deleteThumbnails(thumbnail.getThumbnailUrl().split("=")[1]));
+            VideoThumbnail firstThumbnail = videoDto.getVideoThumbnails().get(0);
+            fileUploadTestService.deleteThumbnails(firstThumbnail.getThumbnailUrl().split("=")[1]);
 
             jdbcTemplate.update(DELETE_VIDEO_QUERY, Map.of("videoId", videoDto.getId(), "userId", userId));
         } catch (APIException exception) {
