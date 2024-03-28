@@ -349,9 +349,10 @@ export class VideoComponent {
   onLoadedMetadata() {
     console.log('metadata loaded');
     this.captionText = this.video.nativeElement.textTracks[0];
-    this.captionText.mode = 'hidden';
+    //this.captionText.mode = 'hidden';
     this.videoDurationMillisec = this.video.nativeElement.duration;
-    this.videoDuration = this.formatDuration(this.video.nativeElement.duration);
+    this.videoDuration = this.formatDuration(this.videoDurationMillisec);
+    //this.videoDuration = this.formatDuration(this.video.nativeElement.duration);
   }
 
   /**
@@ -365,7 +366,23 @@ export class VideoComponent {
           this.changePlaybackSpeed(subMenuItem.value);    
         }
       });
+    } else if(listItem.text === 'Quality') {
+      console.log(listItem);
+      this.changeVideoBitRate(listItem)
     }
+  } 
+
+  /**
+   * change the video bit rate based on what quality was selected
+   * @param listItem 
+   */
+  changeVideoBitRate(listItem: any) {
+    listItem.subMenu.forEach((subMenuItem: any, idx: any) => {
+      if(subMenuItem.isSelected) {
+        this.selectShakaABRSettings(subMenuItem, idx);
+        //this.changePlaybackSpeed(subMenuItem.value);    
+      }
+    });
   }
 
   //this will come from the modal pop up in the future
@@ -387,16 +404,30 @@ export class VideoComponent {
   }
 
   /**
+   * Update the download progress bar 
+   * 
+  */
+  updateBufferData() {
+    if (this.video.nativeElement.buffered.length > 0) {
+      // Get the start and end time of the first buffered range
+      const startTime = this.video.nativeElement.buffered.start(0);
+      const endTime = this.video.nativeElement.buffered.end(0);
+      this.timelineContainer.nativeElement.style.setProperty("--download-percentage", endTime/100);
+      console.log("Buffered range: " + startTime + " - " + endTime);
+    }
+  }
+
+  /**
    * updates UI with the current time of the video element
    * @param video video element target
   */
   async timeUpdated(video: HTMLVideoElement) {
-
     this.videoCurrentTime = this.formatDuration(video.currentTime);
     const percentage = video.currentTime / this.videoDurationMillisec;
-
     this.timelineContainer.nativeElement.style.setProperty("--progress-position", percentage);
-    await this.captureColors();
+    this.loop();
+    //await this.captureColors();
+    
     //const vibrantPrimaryColor =   (await this.captureColors()).subscribe((color) => {
     //  console.log("SUBSCRIBING TO COLOR: ", color);
     //  this.componentUpdatesService.videoPrimaryColorUpdate(color);
@@ -411,7 +442,7 @@ export class VideoComponent {
   formatDuration(time: any): string {
     let date: string = new Date(time * 1000).toISOString().substring(11, 11 + 8);
     let currentTime: string;
-    //const seconds = Math.floor(time % 60);
+
     const minutes = Math.floor(time / 60) % 60;
     const hours = Math.floor(time / 3600);
     if(hours === 0) {
@@ -474,7 +505,7 @@ export class VideoComponent {
   }
 
   /**
-   * tuggle play
+   * toggle video play state
   */
   togglePlay() {
     this.paused = !this.paused;
