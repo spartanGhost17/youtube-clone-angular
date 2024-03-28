@@ -12,9 +12,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.DEFAULT_VIDEO_VISIBILITY;
+import static com.project.youtube.constants.ApplicationConstants.VIDEOS_DEFAULT_FOLDER;
 import static com.project.youtube.dtomapper.VideoDTOMapper.toVideoDto;
 
 @Service
@@ -37,11 +52,13 @@ public class VideoServiceImpl implements VideoService {
     private final StatusServiceImpl statusService;
     private final FileUploadTestService fileUploadTestService;
     private final TagServiceImpl tagService;
+    private final ResourceLoader resourceLoader;
 
     /**
      * upload video
+     *
      * @param multipartFile the video file
-     * @param userId the user id
+     * @param userId        the user id
      * @return the video dto
      */
     @Override
@@ -63,12 +80,13 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * update video metadata
+     *
      * @param updateVideoMetadataForm
      * @return video dto
      */
     @Override
     public VideoDto updateVideoMetadata(UpdateVideoMetadataForm updateVideoMetadataForm) {
-        log.info("updating video metadata for video id: {}",updateVideoMetadataForm.getVideoId());
+        log.info("updating video metadata for video id: {}", updateVideoMetadataForm.getVideoId());
         VideoDto videoDto = mapToVideoDto(videoDao.updateMetadata(updateVideoMetadataForm));
         //Status status = statusService.getVideoStatus(videoDto.getId());
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
@@ -85,8 +103,9 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * upload video thumbnail
+     *
      * @param thumbnailImage the video thumbnail
-     * @param videoId the video dto
+     * @param videoId        the video dto
      * @return the video url
      */
     @Override
@@ -95,7 +114,112 @@ public class VideoServiceImpl implements VideoService {
     }
 
     /**
+     * load entire file in resource (for short files)
+     * @param fileName the file name
+     * @return the resource
+     */
+    @Override
+    public Mono<ResponseEntity<Resource>> streamVideo2(String fileName) {
+        // Path to your local file
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        File file = new File(fileStorageLocation.toString(), fileName);
+
+        if (!file.exists()) {
+            return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        }
+
+        return Mono.just(ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.resourceLoader.getResource(file.toURI().toString())));
+    }
+
+    /**
+     * get byte range for streaming
+     * @param fileName the file name
+     * @param reqHeaders the request header
+     * @return the resource region
+     */
+    @Override
+    public Mono<ResponseEntity<ResourceRegion>> streamVideo3(String fileName, HttpHeaders reqHeaders) {
+        // Path to your local file
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER + "/" + fileName).toAbsolutePath().normalize();
+        File file = new File(fileStorageLocation.toString(), fileName+".mp4");
+
+        if (!file.exists()) {
+            return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        }
+
+        List<Long> ranges = rangeHeaderToNum(reqHeaders);
+        Long start = ranges.get(0);
+        Long end = ranges.get(1);
+
+        long contentLength = file.length();
+        if (end == null || end > contentLength) {
+            end = contentLength - 1;
+        }
+
+        int minSizeBytes = 100 * 1024;  // 100 KB in bytes
+        int maxSizeBytes = 1 * 1024 * 1024;  // 1 MB in bytes
+        //long rangeLength = maxSizeBytes;//Math.min(maxSizeBytes, end - start + 1);
+        long rangeLength = Math.min(contentLength, end - start + 1);
+        log.info("Getting resource region for file: {}, start: {}, end: {}, contentLength: {}", file.getAbsolutePath(), start, end, contentLength);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentLength(rangeLength);
+        headers.set("Content-Range", "bytes " + start + "-" + end + "/" + contentLength);
+
+        Resource resource = new FileSystemResource(file);
+        ResourceRegion resourceRegion = new ResourceRegion(resource, start, rangeLength);
+
+        return Mono.just(ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).headers(headers).body(resourceRegion));
+    }
+
+    /**
+     * convert range header to array of start - end byte range
+     * @param requestHeaders the request header
+     * @return the list of ranges
+     */
+    public List<Long> rangeHeaderToNum(HttpHeaders requestHeaders) {
+        List<Long> rangeList = new ArrayList<>();
+        int minSizeBytes = 100 * 1024;
+
+        String rangeHeader = requestHeaders.getFirst(HttpHeaders.RANGE);
+        // If Range header is present, parse it
+        if (rangeHeader != null && rangeHeader.startsWith("bytes=")) {
+            String[] range = rangeHeader.substring(6).split("-");
+            long start = Long.parseLong(range[0]);
+            long end = range[1].isEmpty() ? minSizeBytes - 1 : Long.parseLong(range[1]);
+
+            rangeList.add(start);
+            rangeList.add(end);
+        }
+        return rangeList;
+    }
+
+    /**
+     * get segments for adaptive bite rate streaming
+     * @param videoFileName the video file name (also)
+     * @param abrFile the abr file or manifest file
+     * @return the resource to return
+     */
+    @Override
+    public Mono<ResponseEntity<Resource>> streamVideoABR(String videoFileName, String abrFile) {
+        Path dashFolder = Paths.get(System.getProperty("user.home"), VIDEOS_DEFAULT_FOLDER+"/"+ videoFileName +"/"+ abrFile);
+        //log.info("dash folder {}", dashFolder.toFile().getAbsolutePath());
+        Resource resource = new FileSystemResource(dashFolder.toFile());
+
+        if(!resource.exists()) {
+            return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_XML);
+        return Mono.just(ResponseEntity.ok().body(resource));//.headers(headers).body(resource));
+    }
+
+    /**
      * get video thumbnail
+     *
      * @param fileName the file name
      * @return the byte array representing the image
      */
@@ -106,6 +230,7 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * get video metadata
+     *
      * @param id the vide id
      * @return the video dto
      */
@@ -129,6 +254,7 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * get all videos for user
+     *
      * @param userId the user id
      * @return the response
      */
@@ -153,6 +279,7 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * get video category
+     *
      * @param videoId the video id
      * @return the category
      */
@@ -163,7 +290,8 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * update the video status
-     * @param videoId the video id
+     *
+     * @param videoId  the video id
      * @param statusId the status id
      * @return the status
      */
@@ -174,6 +302,7 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * delete a video
+     *
      * @param videoId the video id
      */
     @Override
@@ -186,6 +315,7 @@ public class VideoServiceImpl implements VideoService {
 
     /**
      * get the videos like count
+     *
      * @param videoDto the video dto
      * @return the like count
      */
@@ -194,8 +324,10 @@ public class VideoServiceImpl implements VideoService {
         likeForm.setVideoId(videoDto.getId());
         return likeService.getLikeCount(likeForm);
     }
+
     /**
      * map video object to dto
+     *
      * @param video
      * @return
      */
