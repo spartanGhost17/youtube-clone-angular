@@ -27,6 +27,7 @@
     "@ngrx/router-store": "^16.3.0",
     "@ngrx/store": "^16.3.0",
     "@ngrx/store-devtools": "^16.3.0",
+    "@types/video.js": "^7.3.57",
     "colorthief": "^2.2.0",
     "fluent-ffmpeg": "^2.1.2",
     "ng-zorro-antd": "^16.2.2",
@@ -34,6 +35,8 @@
     "ngx-progressbar": "^11.1.0",
     "node-vibrant": "^3.1.6",
     "rxjs": "~7.8.0",
+    "shaka-player": "^4.7.11",
+    "video.js": "^8.10.0",
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
