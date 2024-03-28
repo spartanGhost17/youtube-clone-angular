@@ -2,13 +2,20 @@ import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/
 import { Icons } from 'src/app/models/icons';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 
-import Vibrant from 'node-vibrant';// stable version node-vibrant@3.1.6
-import { Observable, of } from 'rxjs';
+import { NgClass, NgStyle } from '@angular/common';
+import Vibrant from 'node-vibrant'; // stable version node-vibrant@3.1.6
+import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
+import { VideoService } from '../../../shared/services/video/video.service';
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { SwitchComponent } from '../../switch/switch.component';
-import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
-import { NgClass, NgStyle } from '@angular/common';
+//import * as shaka from 'shaka-player';
 
+export let shaka = require('../../../../../node_modules/shaka-player/dist/shaka-player.compiled');
+//export const shaka = require('../../../../../node_modules/shaka-player/dist/shaka-player.ui.debug')
+//export const shaka = require('../../../../../node_modules/shaka-player/dist/shaka-player.compiled.d.ts')
+
+//for shaka player to work either delete all *.d.ts or downgrade to v3
+//https://stackoverflow.com/questions/74672369/how-to-import-shaka-player-with-typescript
 @Component({
     selector: 'app-video',
     templateUrl: './video.component.html',
@@ -28,6 +35,8 @@ export class VideoComponent {
   VOLUME_MUTED: string = 'muted'; 
 
   paused: boolean = true;
+  isLoop: boolean = false;
+
   videoWasPaused: boolean = false;
   fullScreenMode: boolean = false;
   miniMode: boolean = false;
@@ -50,6 +59,17 @@ export class VideoComponent {
   //
   dropDownSettingsItems: any[] = [];
 
+  mediaSource: MediaSource;
+  sourceBuffer: SourceBuffer;
+  contentLength: number;
+  contentRange: number;
+  url: string;
+  startByte = 0;
+  endByte = 1000 * 1024;//1024 * 1024; // Fetch 1MB at a time
+  videoElement: HTMLVideoElement;
+
+  player: any; //shaka-player
+
   //imports
   icons: Icons = new Icons();
   subtitles: string = this.icons.iconsPaths['subtitles'];
@@ -60,10 +80,13 @@ export class VideoComponent {
   @ViewChild('previewImg') previewImg: ElementRef<any>;
   @ViewChild('thumbnailImg') thumbnailIm: ElementRef<any>;
   @ViewChild('timelineContainer') timelineContainer: ElementRef<any>;
+  @ViewChild('buffering') bufferingIcon: ElementRef<any>;
 
-  @Input() videoURL: string = '../../../../assets/test-videos/My_Hero_Academia_Opening_2.mp4';//'../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4';//'../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki.mp4';
+  @Input() videoURL: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212'
 
-  constructor(private componentUpdatesService: ComponentUpdatesService) {}
+  manifestUri: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212/adaptive.mpd'//'http://localhost:8080/api/v1/video/watch/56c392cc-6000-45cc-a737-fbb9716e572f/adaptive.mpd'//'http://localhost:8080/api/v1/video/watch/94cd3f28-5034-4edc-822b-bebad7e262a9/adaptive.mpd';//= 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+  manifestHls: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212/adaptive.m3u8'//'http://localhost:8080/api/v1/video/watch/56c392cc-6000-45cc-a737-fbb9716e572f/adaptive.m3u8'//'http://localhost:8080/api/v1/video/watch/94cd3f28-5034-4edc-822b-bebad7e262a9/adaptive.m3u8';
+  constructor(private componentUpdatesService: ComponentUpdatesService, private videoService: VideoService) {}
   
   ngOnInit() {
     this.canvas = document.createElement('canvas');
@@ -83,8 +106,8 @@ export class VideoComponent {
       ], action: () => {}},
       {icon: 'tune', text: 'Quality', subMenu: [
         {isSelect: true, text: '720p', value: '720p', isSelected: false},
-        {isSelect: true, text: '360p', value: '360p', isSelected: false},
-        {isSelect: true, text: '144p', value: '144p', isSelected: false},
+        {isSelect: true, text: '480p', value: '480p', isSelected: false},
+        {isSelect: true, text: '240p', value: '240p', isSelected: false},
         {isSelect: true, text: 'Auto', value: 'Auto', isSelected: true},
       ], action: () => {}},
     ];
