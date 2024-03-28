@@ -1,11 +1,12 @@
 import {
   HttpClient,
   HttpEventType,
+  HttpHeaders,
   HttpParams,
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import resources from '../../../../resources/end-points.json';
 import { HttpResponseInterface } from '../../types/httpResponse.interface';
@@ -106,5 +107,32 @@ export class VideoService {
       .append('offset', offset);
 
     return this.http.get<HttpResponseInterface<Video>>(url, { params });
+  }
+
+  streamVideo(url: string, start: number, end: number): Observable<{ data: ArrayBuffer, contentRange: string }> {
+    const headers = new HttpHeaders()
+                    .set('Range', `bytes=${start}-${end}`);
+                    
+    return this.http.get(url, {
+      headers,
+      observe: 'response',
+      responseType: 'arraybuffer' //'blob'//'arraybuffer' as 'json'
+    }).pipe(
+      map((response) => {
+        const contentRange = response.headers.get('Content-Range') ?? '';
+        return { data: response.body!, contentRange: contentRange };
+      })
+    );
+  }
+
+  // Function to convert Base64 to Blob
+  private base64ToBlob(base64: string): Blob {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; ++i) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return new Blob([bytes]);
   }
 }
