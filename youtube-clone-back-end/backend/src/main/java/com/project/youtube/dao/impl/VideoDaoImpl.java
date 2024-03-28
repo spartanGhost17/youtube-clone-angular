@@ -314,19 +314,22 @@ public class VideoDaoImpl implements VideoDao<Video> {
 
     /**
      * get video length and uses local ffprobe for video manipulation
-     * @param fileName the video file name
+     * @param videoUUID the video file name
      * @return the video milliseconds
      */
-    private long getVideoLength(String fileName) throws Exception {
+    private long getVideoLength(String videoUUID) throws Exception {
 
-            Path fileStorageLocation = Paths.get(System.getProperty("user.home")+"/Downloads/videos/"+fileName).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(System.getProperty("user.home")+"/Downloads/videos/"+videoUUID+"/"+videoUUID+".mp4").toAbsolutePath().normalize();
             // Save the uploaded video to a temporary file
             String videoPath = fileStorageLocation.toString();// Change this path to a suitable location
             //video.transferTo(new File(tempFilePath));
             log.info("temp path: {}", videoPath);
             String ffprobeExecutableName = "ffprobe";
 
-            ProcessBuilder processBuilder = new ProcessBuilder("where", ffprobeExecutableName);//find where the ffprobe is on the system
+            String osName = System.getProperty("os.name").toLowerCase();
+            String command = (osName.contains("windows")) ? "where" : "which";
+
+            ProcessBuilder processBuilder = new ProcessBuilder(command, ffprobeExecutableName);//find where the ffprobe is on the system
             Process process = processBuilder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -389,8 +392,8 @@ public class VideoDaoImpl implements VideoDao<Video> {
      */
     private String generateVideoUrl(String random, String extension) {
         String file = random + extension;
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "video/watch")
-                .queryParam("v", file)
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(API_VERSION + "video/watch/"+random)
+                //.queryParam("v", file)
                 .toUriString();
     }
 
