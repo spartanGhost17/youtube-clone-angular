@@ -566,17 +566,123 @@ export class VideoComponent {
 
 
   restartVideo() {
-    //const video: HTMLVideoElement = this.video.nativeElement;
-    //this.video.nativeElement.currentTime = 0;
+    this.video.nativeElement.currentTime = 0;
     //this.togglePlay();
   }
 
   onVideoEnded() {
+    //console.log("video ended??", this.video.nativeElement.currentTime)
     //this.video.nativeElement.pause()
     // Video ended, you can handle looping logic here
     //this.restartVideo();
   }
 
+  /**
+   * initialize media source
+   */
+  initMediaSource() {
+    this.mediaSource = new MediaSource();
+    const mimeType: string = 'video/mp4; codecs="avc1.64001e, mp4a.40.2"';//'video/mp4; codecs="avc1.4D4028, mp4a.40.2"';//, mp4a.40.2"';    
+
+    this.mediaSource.addEventListener('sourceopen', () => {
+      this.sourceBuffer = this.mediaSource.addSourceBuffer(mimeType);      
+      this.loadVideoSegments()
+    });
+    //Assign the MediaSource URL to the video element
+    this.video.nativeElement.src = URL.createObjectURL(this.mediaSource);
+  }
+
+  /**
+   *  load video segments for media source
+  */
+  loadVideoSegments() {
+    const fetchSegment = () => {
+      this.videoService.streamVideo(this.videoURL, this.startByte, this.endByte).subscribe({
+        next: ({ data, contentRange }) => {
+          this.contentRange = Number(contentRange.split(",")[0].split("/")[1]);
+          
+          const rngHeader = contentRange.split(",")[0].split("/")
+          const percentage = Number(rngHeader[0].split('-')[1]) / Number(rngHeader[rngHeader.length - 1]);
+
+          //console.log("content SPLIT ", rngHeader, " percentage ", percentage);//, contentRange.split(",")[0].split("/"));
+          
+          this.timelineContainer.nativeElement.style.setProperty("--download-percentage", percentage);
+          if (!this.mediaSource || this.mediaSource.readyState !== 'open') {
+            return;
+          }
+          const array = new Uint8Array(data);
+          this.sourceBuffer.appendBuffer(array);
+          
+          this.startByte = this.endByte + 1;
+          this.endByte += 1000 * 1024 //100KB Fetch next 1MB segment
+
+          if(this.startByte < this.contentRange) {
+            setTimeout(() => fetchSegment(), 1000);
+            //setTimeout(this.newSubFn.bind(this), 1000);
+          }
+          
+        },
+        error: (err) => {
+          console.error("Error fetching video segment:", err);
+          // Handle errors gracefully
+        }
+      });
+    }
+    fetchSegment();
+  }
+
+  /**
+   * loop video
+  */
+  loop() {    
+    const cl = this.formatDuration(this.video.nativeElement.currentTime);
+    if(this.compareTimes(cl, this.videoDuration) >= 0 && this.isLoop) {
+      this.restartVideo();
+    }
+  }
+
+  /**
+   * on destroy lifecycle hook 
+  */
+  ngOnDestroy() {
+    console.log("destroying...");
+    if (this.mediaSource) {
+      console.log("destroying media source...\n")
+      //this.mediaSource.removeEventListener('sourceopen', this.handleSourceOpen.bind(this));
+      if(this.mediaSource.readyState === 'open') {
+        this.mediaSource.endOfStream();
+      }
+    }
+  }
+
+  /**
+   * compare times
+   * @param {string} time1 
+   * @param {string} time2 
+   * @returns {Number} the comparison
+   */
+  compareTimes(time1: string, time2: string) {
+    const timeSplit1 = time1.split(':').map(Number);
+    const timeSplit2 = time2.split(':').map(Number);
+
+    const date1 = new Date();
+    const date2 = new Date();
+    const seconds1 = (timeSplit1.length >= 1)? date1.setSeconds(timeSplit1[timeSplit1.length -1]) : 0;
+    const minutes1 = (timeSplit1.length >= 2)? date1.setMinutes(timeSplit1[timeSplit1.length -2]) : 0;
+    const hours1 = (timeSplit1.length >= 3)? date1.setHours(timeSplit1[timeSplit1.length -3]) : 0;
+
+    const seconds2 = (timeSplit2.length >= 1)? date2.setSeconds(timeSplit2[timeSplit2.length -1]) : 0;
+    const minutes2 = (timeSplit2.length >= 2)? date2.setMinutes(timeSplit2[timeSplit2.length -2]) : 0;
+    const hours2 = (timeSplit2.length >= 3)? date2.setHours(timeSplit2[timeSplit2.length -3]) : 0;
+
+    if (date1 < date2) {
+      return -1;
+    } else if (date1 > date2) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 
   /**
    * seek to specific point on timeline if scrubbing
