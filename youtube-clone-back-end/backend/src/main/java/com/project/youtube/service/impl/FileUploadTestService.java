@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static com.project.youtube.constants.ApplicationConstants.*;
 
@@ -98,7 +99,8 @@ public class FileUploadTestService {
      */
     public byte[] getThumbnailImage(String fileName) {
         try {
-            return Files.readAllBytes(Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER +"/"+fileName));
+            String folderName = fileName.split("_")[0];
+            return Files.readAllBytes(Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER + "/" + folderName + "/" + fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
