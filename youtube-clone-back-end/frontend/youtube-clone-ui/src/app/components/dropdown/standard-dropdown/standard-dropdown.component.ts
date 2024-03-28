@@ -54,7 +54,7 @@ export class StandardDropdownComponent {
   constructor() {}
 
   ngOnInit(): void {
-    console.log("this is the icon ", this.icon)
+    //console.log("this is the icon ", this.icon)
   }
 
   showDropdown(): void {

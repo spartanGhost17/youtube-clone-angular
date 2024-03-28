@@ -43,8 +43,8 @@
 
 @keyframes scaleIn {
     from {
-        transform: scale(0); /* Start from scale 0 */
-        opacity: 0; /* Optionally, start with opacity 0 */
+        transform: scale(.9); /* Start from scale 0 */
+        opacity: .6; /* Optionally, start with opacity 0 */
     }
     to {
         transform: scale(1); /* End at scale 1 */
