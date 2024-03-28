@@ -22,4 +22,6 @@ public class ApplicationConstants {
     public static final String PROFILE_IMAGES_DEFAULT_FOLDER = "/Downloads/images";
     public static final String BANNER_IMAGES_DEFAULT_FOLDER = "/Downloads/banners";
     public static final String VIDEO_THUMBNAILS_DEFAULT_FOLDER = "/Downloads/thumbnail";
+    public static final String MANIFEST_NAME_MPD = "adaptive.mpd";
+    public static final String MANIFEST_NAME_HLS = "adaptive.m3u8";
 }
