@@ -350,9 +350,9 @@ public class FileUploadTestService {
         try {
             String randomId = UUID.randomUUID().toString();
             // Define output GIF file randomId+".gif"
-            String fileName = randomId + ".mp4";
+            String fileName = videoFileName + ".mp4";
             File gifFile = gifStorageLocation.resolve(fileName).toFile();
-            log.info("Creating 10 seconds clip for video ",videoFile.getAbsolutePath());
+            log.info("Creating 10 seconds clip for video {}",videoFile.getAbsolutePath());
 
             // Define the duration of each scene (in seconds)
             int sceneDuration = 1;
@@ -377,7 +377,6 @@ public class FileUploadTestService {
             } while (startTimestamp3 <= startTimestamp2);
 
             try {
-
                 // Create a ProcessBuilder command to concatenate the segments
                 //TODO: Think of making the scene extraction static start=0:end=1 etc.
                 ProcessBuilder processBuilder = new ProcessBuilder(
@@ -388,11 +387,8 @@ public class FileUploadTestService {
                                 "[0:v]trim=start=%d:end=%d,setpts=PTS-STARTPTS[v1]; " +
                                 "[0:v]trim=start=%d:end=%d,setpts=PTS-STARTPTS[v2]; " +
                                 "[v0][v1][v2]concat=n=3:v=1:a=0[v]", startTimestamp1, (startTimestamp1 + 1), startTimestamp2, (startTimestamp2 + 1), startTimestamp3, (startTimestamp3 + 1)),
-                        /*"[0:v]trim=start=0:end=1,setpts=PTS-STARTPTS[v0]; " +
-                                "[0:v]trim=start=10:end=11,setpts=PTS-STARTPTS[v1]; " +
-                                "[0:v]trim=start=20:end=21,setpts=PTS-STARTPTS[v2]; " +
-                                "[v0][v1][v2]concat=n=3:v=1:a=0[v]",*/
                         "-map", "[v]",
+                        "-movflags", "frag_keyframe+empty_moov+default_base_moof", // Fragment the output
                         gifFile.getAbsolutePath()
                 );
                 Process process = processBuilder.start();
@@ -421,16 +417,17 @@ public class FileUploadTestService {
 
     /**
      * extract thumbnail on upload
-     * @param videoFileName the video filename
+     * @param videoFolderName the video filename
+     * @param extension the video extension
      * @param videoLength the video length
      * @throws Exception the exception
      */
-    public List<String> extractThumbnails(String videoFileName, long videoLength) throws Exception {
+    public List<String> extractThumbnails(String videoFolderName, String extension, long videoLength) throws Exception {
         List<String> thumbnailFileNames = new ArrayList<>();
 
-        Path thumbnailStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER).toAbsolutePath().normalize();
-        Path videoFileLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
-        File videoFile = videoFileLocation.resolve(videoFileName).toFile();
+        Path thumbnailStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER + "/" + videoFolderName).toAbsolutePath().normalize();
+        Path videoFileLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER + "/" + videoFolderName).toAbsolutePath().normalize();
+        File videoFile = videoFileLocation.resolve(videoFolderName + extension).toFile();
 
         if(!Files.exists(thumbnailStorageLocation)) {
             try {
@@ -453,7 +450,7 @@ public class FileUploadTestService {
         // Execute ffmpeg command to extract thumbnails
         for (int i = 0; i < numberOfThumbnails; i++) {
             long timestamp = (i + 1) * interval; // Calculate timestamp for the current thumbnail
-            String thumbnailName = String.format("%s_thumbnail_%d.jpg", randomId, i + 1);
+            String thumbnailName = String.format("%s_thumbnail_%d.jpg", videoFolderName, i + 1);
             File thumbnailFile = new File(thumbnailStorageLocation.toFile(), thumbnailName);
             thumbnailFileNames.add(thumbnailName);
 
