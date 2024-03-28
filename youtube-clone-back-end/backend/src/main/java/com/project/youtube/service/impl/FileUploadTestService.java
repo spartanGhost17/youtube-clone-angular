@@ -110,11 +110,11 @@ public class FileUploadTestService {
     /**
      * upload video
      * @param video the video
-     * @param videoUrl the url
+     * @param randomId the uuid
      */
-    public String saveVideo(MultipartFile video, String videoUrl) {
-        String uploadUrl;
-        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+    public String saveVideo(MultipartFile video, String randomId) {
+        //String uploadUrl;
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER+"/"+randomId).toAbsolutePath().normalize();
         log.info("Got file path {}", fileStorageLocation);
         if(!Files.exists(fileStorageLocation)) {
             try {
@@ -128,55 +128,196 @@ public class FileUploadTestService {
         }
         try {
             String extension = getVideoFileExtension(video);
-            Path fileName = Paths.get(videoUrl + extension);
-            //log.info("Saved video {}",fileName.getFileName().toString());
-            uploadUrl = fileName.getFileName().toString();
 
-            //Files.copy(video.getInputStream(), fileStorageLocation.resolve(fileName.getFileName().toString()));
-            // Save the video to the specified folder
-            File outputFile = new File(fileStorageLocation.toFile(), uploadUrl);
-            log.info("Video full path {}", outputFile.getAbsolutePath());
+            //TODO: COPY TO MP4 First then Fragment the file to make it streamable
+            //ffmpeg -i trailer_1080p.mov -c:v copy -c:a copy bunny.mp4
+            //ffmpeg -i non_fragmented.mp4 -movflags frag_keyframe+empty_moov+default_base_moof fragmented.mp4
+            //https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API/Transcoding_assets_for_MSE
 
-            FileOutputStream outputStream = new FileOutputStream(outputFile);
-            outputStream.write(video.getBytes());
-            outputStream.close();
+            // Save the MultipartFile to a temporary file
+            File tempFile = File.createTempFile(fileStorageLocation.toString(),"temp"+ extension);
+            video.transferTo(tempFile);
 
-            //log.info("FIle saved in: {} folder", fileStorageLocation);
-            return uploadUrl;
+            // Specify the output file
+            String videoCopyFile = "temporary_copy.mp4";
+            String videoFragmentedFile = randomId + ".mp4";
+
+            String videoCopyOutputFile = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER+"/"+randomId+"/"+videoCopyFile).toAbsolutePath().normalize().toString();
+
+            log.info("Start of copying video file to {}",videoCopyOutputFile);
+            // Build and execute the first ffmpeg command
+            ProcessBuilder processBuilder1 = new ProcessBuilder(
+                    "ffmpeg",
+                    "-i", tempFile.getAbsolutePath(),
+                    "-c:v", "copy",
+                    "-c:a", "copy",
+                    videoCopyOutputFile
+            );
+            Process process1 = processBuilder1.start();
+
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process1.getErrorStream()));
+            String line;
+            while ((line = errorReader.readLine()) != null) {
+                log.info(line); // or log it
+            }
+
+            process1.waitFor();
+            process1.destroy();
+
+            // Clean up the temporary file
+            tempFile.delete();
+
+            //generate dash files & manifest
+            Path videoCopyPath = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER+"/"+randomId).toAbsolutePath().normalize();
+            File videoPath = new File(videoCopyPath.toFile(), videoCopyFile);
+
+            String manifestOutput = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER+"/"+randomId+"/adaptive.mpd").toAbsolutePath().normalize().toString();
+
+            log.info("Manifest will be generated at {}",manifestOutput);
+            // Build and execute the second ffmpeg command
+            ProcessBuilder processBuilder2 = new ProcessBuilder(
+                    "ffmpeg",
+                    "-v", "error",
+                    "-y",
+                    "-i", videoPath.getAbsolutePath(),
+                    "-filter_complex", "[0:v]fps=30,split=3[720_in][480_in][240_in];[720_in]scale=-2:720[720_out];[480_in]scale=-2:480[480_out];[240_in]scale=-2:240[240_out]",
+                    "-map", "[720_out]",
+                    "-map", "[480_out]",
+                    "-map", "[240_out]",
+                    "-map", "0:a",
+                    "-b:v:0", "3500k",
+                    "-maxrate:v:0", "3500k",
+                    "-bufsize:v:0", "3500k",
+                    "-b:v:1", "1690k",
+                    "-maxrate:v:1", "1690k",
+                    "-bufsize:v:1", "1690k",
+                    "-b:v:2", "326k",
+                    "-maxrate:v:2", "326k",
+                    "-bufsize:v:2", "326k",
+                    "-b:a:0", "128k",
+                    "-x264-params", "keyint=60:min-keyint=60:scenecut=0",
+                    "-hls_playlist", "1",
+                    "-hls_master_name", MANIFEST_NAME_HLS,
+                    "-seg_duration", "2",
+                    MANIFEST_NAME_MPD
+            );
+            // Set the working directory
+            processBuilder2.directory(fileStorageLocation.toFile());
+            processBuilder2.redirectErrorStream(true);
+
+            Process process2 = processBuilder2.start();
+            BufferedReader errorReader2 = new BufferedReader(new InputStreamReader(process2.getErrorStream()));
+            String line2;
+            while ((line2 = errorReader2.readLine()) != null) {
+                log.info(line2); // or log it
+            }
+            process2.waitFor(1, TimeUnit.MINUTES);
+            process2.destroy();
+
+
+            //fragment the mp4
+            File nonFragmentedFile = new File(fileStorageLocation.toFile(), videoCopyFile);
+            File fragmentedFile = new File(fileStorageLocation.toFile(), videoFragmentedFile);
+
+            // Build and execute the first ffmpeg command
+            ProcessBuilder processBuilder3 = new ProcessBuilder(
+                    "ffmpeg",
+                    "-i", nonFragmentedFile.getAbsolutePath(),
+                    "-movflags", "frag_keyframe+empty_moov+default_base_moof",
+                    fragmentedFile.getAbsolutePath()
+            );
+            Process process3 = processBuilder3.start();
+
+            BufferedReader errorReader3 = new BufferedReader(new InputStreamReader(process3.getErrorStream()));
+            String line3;
+            while ((line3 = errorReader3.readLine()) != null) {
+                log.info(line3); // or log it
+            }
+
+            process3.waitFor();
+            process3.destroy();
+
+            nonFragmentedFile.delete();
+
+            return randomId;
         } catch (IOException exception) {
             throw new RuntimeException(exception);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void deleteVideo(String fileName) {
-        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER).toAbsolutePath().normalize();
-
+    /**
+     * delete video
+     * @param folderName the folder name
+     */
+    public void deleteVideo(String folderName) {
+        log.info("video folder to delete {}",folderName);
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER+"/"+folderName).toAbsolutePath().normalize();
+        log.info("Try to delete the video {}", fileStorageLocation);
         try {
-            File file = new File(fileStorageLocation.toFile(), fileName);
-            Files.delete(file.toPath());
-        } catch (IOException exception) {
+            boolean success = deleteDirectory(fileStorageLocation.toFile());
+            if (success) {
+                log.info("Video Folder deleted successfully.");
+            } else {
+                log.info("Error deleting the folder.");
+            }
+        } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
     }
 
+    /**
+     * delete the folder including files
+     * @param directoryToBeDeleted the directory to delete
+     * @return true if deleted successfully
+     */
+    private boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
+    /**
+     * delete thumbnails
+     * @param fileName the file name
+     */
     public void deleteThumbnails(String fileName) {
-        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER).toAbsolutePath().normalize();
+        String folderName = fileName.split("_")[0];
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEO_THUMBNAILS_DEFAULT_FOLDER + "/" + folderName).toAbsolutePath().normalize();
 
         try {
-            File file = new File(fileStorageLocation.toFile(), fileName);
-            Files.delete(file.toPath());
-        } catch (IOException exception) {
+            boolean success = deleteDirectory(fileStorageLocation.toFile());
+            if (success) {
+                log.info("Thumbnail Folder deleted successfully.");
+            } else {
+                log.info("Error deleting Thumbnail the folder.");
+            }
+        } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
     }
 
+    /**
+     * delete gif
+     * @param fileName the file name
+     */
     public void deleteGif(String fileName) {
-        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + GIFS_DEFAULT_FOLDER).toAbsolutePath().normalize();
-
+        String folderName = fileName.split("\\.")[0];
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + GIFS_DEFAULT_FOLDER + "/" + folderName).toAbsolutePath().normalize();
+        log.info("Try to delete the video folder {}", fileStorageLocation);
         try {
-            File file = new File(fileStorageLocation.toFile(), fileName);
-            Files.delete(file.toPath());
-        } catch (IOException exception) {
+            boolean success = deleteDirectory(fileStorageLocation.toFile());
+            if (success) {
+                log.info("Gif Folder deleted successfully.");
+            } else {
+                log.info("Error deleting Gif the folder.");
+            }
+        } catch (Exception exception) {
             throw new RuntimeException(exception);
         }
     }
