@@ -6,15 +6,23 @@ import com.project.youtube.model.HttpResponse;
 import com.project.youtube.service.impl.FileUploadTestService;
 import com.project.youtube.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.*;
+import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.List;
@@ -27,6 +35,7 @@ import static com.project.youtube.utils.AuthenticationUtils.getAuthenticationFro
 @RestController
 @RequestMapping(value= API_VERSION + "video/")
 @RequiredArgsConstructor
+@Slf4j
 public class VideoController {
 
     @Autowired
@@ -97,10 +106,34 @@ public class VideoController {
         return videoService.getThumbnail(fileName);
     }
 
-    @GetMapping("watch")
-    public byte[] getVideo(@RequestParam("v") String videoUrl) {
-        return new byte[0];
+    /*@GetMapping(value="watch", produces = "video/mp4") //load entire resource
+    public Mono<ResponseEntity<Resource>> streamVideo(@RequestParam("v") String videoUrl, @RequestParam(value = "start", required = false) Long start, @RequestParam(value = "end", required = false) Long end, HttpServletRequest request) {
+        return videoService.streamVideo2(videoUrl, start, end, request);
+    }*/
+
+    /**
+     * stream with byte range
+     * @param videoUrl the video url
+     * @param headers the headers
+     * @return the bytes to return
+     */
+    @GetMapping(value="watch/{videoUrl}", produces = "video/mp4")//, produces = "video/mp4")
+    public Mono<ResponseEntity<ResourceRegion>> streamVideo(@PathVariable String videoUrl, @RequestHeader HttpHeaders headers) {
+        return videoService.streamVideo3(videoUrl, headers);
     }
+
+    /**
+     * stream using adaptive bitrate
+     * @param videoUrl the video url
+     * @param dashFileName the dash file name
+     * @return either the .mpd manifest or the .ms4 chunk
+     */
+    @RequestMapping(value = "watch/{videoUrl}/{dashFileName}", method = {RequestMethod.GET, RequestMethod.HEAD}, produces = "application/dash+xml")//, produces = MediaType.APPLICATION_XML_VALUE) //"application/dash+xml"
+    public Mono<ResponseEntity<Resource>> streamVideoABR(@PathVariable String videoUrl, @PathVariable String dashFileName) {
+        return videoService.streamVideoABR(videoUrl, dashFileName);
+    }
+
+
 
     @GetMapping("gif")
     public byte[] getGif(@RequestParam("v") String shortVideoUrl) {
