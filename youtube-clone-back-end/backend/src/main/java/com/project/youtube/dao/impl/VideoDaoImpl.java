@@ -70,12 +70,12 @@ public class VideoDaoImpl implements VideoDao<Video> {
 
 
             long totalBytes = video.getSize();
-            long videoLength = getVideoLength(url);
+            long videoLength = getVideoLength(randomId);
 
-            String gifFileName = fileUploadTestService.saveGif(randomId + extension, videoLength);//TODO: replace with amazonS3
+            String gifFileName = fileUploadTestService.saveGif(randomId, extension, videoLength);//TODO: replace with amazonS3
             String gifServerUrl = generateGifUrl(gifFileName);
 
-            List<String> thumbnailFileNames = fileUploadTestService.extractThumbnails(randomId + extension, videoLength);
+            List<String> thumbnailFileNames = fileUploadTestService.extractThumbnails(randomId, extension, videoLength);
             List<String> thumbnailServerUrls = generateThumbnailUrls(thumbnailFileNames);
             //get key
             KeyHolder keyHolder = new GeneratedKeyHolder();
