@@ -712,16 +712,7 @@ export class VideoComponent {
     }
   }
 
-  /*detectLeftButton(event: any): boolean {
-    //event = event || window.event;
-    if ("buttons" in event) {
-        return event.buttons == 1;
-    }
-    var button = evt.which || evt.button;
-    return button == 1;
-  }*/
-
-    //adding background color using video frame maybe make this a directive ?
+  //adding background color using video frame maybe make this a directive ?
   /*getPrimary() {
     const video1 = document.getElementById('video');
     const canvas = document.getElementById('canvas');

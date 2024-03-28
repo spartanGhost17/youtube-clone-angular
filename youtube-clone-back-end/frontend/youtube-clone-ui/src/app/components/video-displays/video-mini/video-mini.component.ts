@@ -24,7 +24,7 @@ export class VideoMiniComponent {
 
     const video = this.elementRef.nativeElement.querySelector('video');
     const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    console.log('isFirefox', isFirefox);
+    //console.log('isFirefox', isFirefox);
 
     video.addEventListener('loadedmetadata', () => {//once video is loaded
       if (isFirefox) {
