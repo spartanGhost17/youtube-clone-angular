@@ -89,6 +89,7 @@ public class TagsDaoImpl implements TagsDao<Tag> {
     public Tag createVideoTag(Long videoId, String tagName) {
         try {
             Tag tag = create(tagName);
+            log.info("TAG CREATED tagId: {} name: {}", tag.getId(), tag.getTagName());
             jdbcTemplate.update(INSERT_VIDEO_TAG_QUERY, Map.of("videoId", videoId, "tagId", tag.getId()));
             return tag;
         } catch (Exception exception) {
@@ -133,8 +134,12 @@ public class TagsDaoImpl implements TagsDao<Tag> {
     public void deleteVideoTags(Long videoId) {
         try {
             List<Tag> tags = getByVideoId(videoId);
-            jdbcTemplate.update(DELETE_VIDEO_TAGS_QUERY, Map.of("videoId", videoId));
-            tags.forEach(tag -> delete(tag.getId()));
+            //jdbcTemplate.update(DELETE_VIDEO_TAGS_QUERY, Map.of("videoId", videoId));
+            tags.forEach(tag -> {
+                log.info("deleting this tags for video: {} tag id: {} and name: {}",videoId, tag.getId(), tag.getTagName());
+                deleteVideoTagByTagId(videoId, tag.getId());
+                //delete(tag.getId());
+            });
         } catch (Exception exception) {
             throw new APIException("An error occurred while deleting all video tags");
         }
