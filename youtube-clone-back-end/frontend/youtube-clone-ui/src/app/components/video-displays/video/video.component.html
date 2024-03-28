@@ -1,6 +1,7 @@
 <div #videoContainer class="video-container" [attr.data-volume-level]="volumeLevel" [ngClass]="{'paused': paused, 'full-screen': fullScreenMode, 'theater': theaterMode, 'mini-player-button': miniMode, 'scrubbing': isScrubbing}">
+    <!--<img #thumbnailImg src="../../../assets/goku_god_mode.jpg" alt="" class="thumbnail-img">-->
+    <div #buffering class="buffering-circle"></div>
     <div class="video-controls-container">
-        <!--<img #thumbnailImg src="../../../assets/goku_god_mode.jpg" alt="" class="thumbnail-img">-->
         <div #timelineContainer class="timeline-container"
             (mousedown)="startScrubbing($event)"
             (mouseup)="stopScrubbing($event)"
@@ -8,6 +9,7 @@
             <div class="timeline">
                 <img #previewImg src="../../../assets/green-lantern.jpg" alt="" class="preview-img">
                 <div class="thumb-indicator"></div>
+                <div class="chunk-timeline"></div>
             </div>
         </div>
         <div class="controls">
@@ -41,12 +43,9 @@
                 <app-switch></app-switch>
             </div>
             <div class="captions-container" [ngClass]="{'captions': captions}" [appTooltip]="'Subtitles/closed captions (c)'">
-                {{playbackRate}}x
                 <button (click)="toggleCaptions()" class="closed-caption-button">
                     <span class="material-symbols-outlined">closed_caption</span>
-                    <!--<svg viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M18,11H16.5V10.5H14.5V13.5H16.5V13H18V14A1,1 0 0,1 17,15H14A1,1 0 0,1 13,14V10A1,1 0 0,1 14,9H17A1,1 0 0,1 18,10M11,11H9.5V10.5H7.5V13.5H9.5V13H11V14A1,1 0 0,1 10,15H7A1,1 0 0,1 6,14V10A1,1 0 0,1 7,9H10A1,1 0 0,1 11,10M19,4H5C3.89,4 3,4.89 3,6V18A2,2 0 0,0 5,20H19A2,2 0 0,0 21,18V6C21,4.89 20.1,4 19,4Z" />
-                    </svg>-->
+
                 </button>
             </div>
             <div class="setting-dropdown">
@@ -81,17 +80,40 @@
             </button>
         </div>
     </div>
-    <!--(volumechange)="onVolumeChanged()"-->
-    <video #video 
-        [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover', 'border-radius': (!theaterMode || !fullScreenMode)? '14px' : '0px'}" alt="" 
-        (click)="togglePlay()" 
+    <!--(volumechange)="onVolumeChanged()" class="video-js" <source [src]="videoURL"> [loop]="isLooping"-->
+    <!--(click)="togglePlay()" 
         (change)="videoVolumeChange($event)"
         (loadedmetadata)="onLoadedMetadata()"
         (timeupdate)="timeUpdated(video)"
         (keydown)="handleKeyboardEvent($event)"
         (ended)="onVideoEnded()"
-        [loop]="isLooping">
-        <source [src]="videoURL">
+        [loop]="true"
+        [autoplay]="true"
+        preload="none"-->
+    <!--<div class="video-inner-container">
+        <video #video class="video-js vjs-poster"
+            id="video"
+            [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover', 'border-radius': (!theaterMode || !fullScreenMode)? '14px' : '0px'}" alt="" 
+            (click)="togglePlay()"
+            (change)="videoVolumeChange($event)"
+            (loadedmetadata)="onLoadedMetadata()"
+            (timeupdate)="timeUpdated(video)"
+            (keydown)="handleKeyboardEvent($event)"
+            (ended)="onVideoEnded()"
+            [loop]="true">
+            <track kind="captions" srclang="en" src="">
+        </video>
+    </div>-->
+    <video #video
+        id="video"
+        [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover', 'border-radius': (!theaterMode || !fullScreenMode)? '14px' : '0px'}" alt="" 
+        (click)="togglePlay()"
+        (change)="videoVolumeChange($event)"
+        (loadedmetadata)="onLoadedMetadata()"
+        (timeupdate)="timeUpdated(video)"
+        (keydown)="handleKeyboardEvent($event)"
+        (ended)="onVideoEnded()"
+        [loop]="true">
         <track kind="captions" srclang="en" src="">
     </video>
 </div>

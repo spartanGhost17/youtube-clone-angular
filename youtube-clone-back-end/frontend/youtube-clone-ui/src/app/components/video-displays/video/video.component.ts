@@ -118,7 +118,16 @@ export class VideoComponent {
   */
   ngAfterViewInit() {
     this.paused ? this.video.nativeElement.pause() : this.video.nativeElement.play();
+    //this.extractWave();
+    this.initShackaApp();
+
+    setInterval(() => {
+      this.updateBufferData();
+    }, 1000);
+    //this.initMediaSource();
   }
+
+  
 
   /**
    * if scrubbing on continue scrubbing outside timeline container
@@ -186,6 +195,104 @@ export class VideoComponent {
       case 'c':
         this.toggleCaptions();//needs more implementation
         break;
+    }
+  }
+
+  private initShackaApp() {
+    // Install built-in polyfills to patch browser incompatibilities.
+    shaka.polyfill.installAll();
+
+    // Check to see if the browser supports the basic APIs Shaka needs.
+    if (shaka.Player.isBrowserSupported()) {
+      // Everything looks good!
+      console.log("this browser is supported!!");
+      this.videoElement = this.video.nativeElement;
+      
+      this.initPlayer();
+    } else {
+      // This browser does not have the minimum set of APIs we need.
+      console.error('Browser not supported! ');
+    }
+  }
+
+  private initPlayer() {
+    // Create a Player instance.
+    // var video = document.getElementById('video');
+    this.player = new shaka.Player(this.videoElement);
+
+    //find out how to set mimeType
+
+    // Attach player to the window to make it easy to access in the JS console.
+    // window.player = player;
+
+    // Listen for error events.
+    this.player.addEventListener('error', this.onErrorEvent);
+    this.player.addEventListener('buffering', (event: any) => {
+      this.onBuffering(event);
+    })
+    // Try to load a manifest.
+    // This is an asynchronous process.
+    
+    //player.configure({playRangeStart: 10, playRangeEnd: 30});
+    //player.seekRange()
+    //player.seek(desiredStartTimeInSeconds);
+
+    this.player.load(this.manifestUri).then(() => {
+      
+      this.togglePlay();
+      
+      // This runs if the asynchronous load is successful.
+      console.log('The video has now been loaded!!');
+    }).catch((error: any) => {
+      this.onError(error);
+      console.log("Not an EME supported Browser? Remove the player.");
+      this.player.unload().then(this.manifestHls);//for Apple support
+    });// onError is executed if the asynchronous load fails.
+  }
+
+  private onErrorEvent(event: any) {
+    // Extract the shaka.util.Error object from the event.
+    this.onError(event.detail);
+  }
+
+  private onError(error: any) {
+    // Log the error.
+    console.error('Error code', error.code, 'object', error);
+  }
+
+  /**
+   * video buffering 
+   * @param event 
+   */
+  private onBuffering(event: any) {
+    if(event.buffering) {
+      this.bufferingIcon.nativeElement.style.display = 'block'; // Show the icon
+    } else {
+      this.bufferingIcon.nativeElement.style.display = 'none'; // Hide the icon
+    }
+  }
+
+  /**
+   * handle change bit-rate for shaka player
+   * @param selectedOption the selection option
+   * @param idx the selected index
+   */
+  selectShakaABRSettings(selectedOption: any, idx: number) {
+    if (selectedOption.text.toLowerCase() === 'auto') {
+      // Enable automatic ABR (Adaptive Bitrate) selection
+      this.player.configure({
+        abr: {
+          enabled: true,
+        },
+      });
+    } else {
+
+      this.player.configure({
+        abr: {
+          enabled: false,
+        },
+      });
+      this.player.selectVariantTrack(this.player.getVariantTracks()[idx]);
     }
   }
 

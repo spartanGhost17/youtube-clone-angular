@@ -104,14 +104,14 @@ export class UploadVideoComponent implements OnInit {
         this.isLoading = true;
         this.videoService.uploadVideo(file).subscribe({
           next: (data) => {
-            
+            console.log("uploaded ", data);
             if(typeof data === 'number') {
               console.log("upload at percentage ", data);
             } else {
               this.isLoading = false;
               this.videoUploadResponse = data.data;
-              console.log("success !", data.id), 
-              this.uploadSuccess()
+              console.log("success !", data); 
+              this.uploadSuccess();
             }
 
           },
