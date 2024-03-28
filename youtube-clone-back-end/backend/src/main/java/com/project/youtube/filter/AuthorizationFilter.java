@@ -35,7 +35,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected static final String USER_ID_KEY = "username";
     //TODO: when refactoring user/refresh/token, remove it from white list
     private static final String[] PUBLIC_ROUTES = {API_VERSION + "/user/login", API_VERSION + "user/register", API_VERSION + "/user/verify/code", "/error", API_VERSION + "user/resetpassword/**",
-            API_VERSION + "user/verify/password", API_VERSION + "user/refresh/token", API_VERSION+"user/image", API_VERSION + "video/thumbnail"};
+            API_VERSION + "user/verify/password", API_VERSION + "user/refresh/token", API_VERSION+"user/image", API_VERSION + "video/thumbnail", API_VERSION + "video/watch"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
