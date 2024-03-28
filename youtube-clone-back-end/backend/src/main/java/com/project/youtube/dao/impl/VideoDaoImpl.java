@@ -95,7 +95,7 @@ public class VideoDaoImpl implements VideoDao<Video> {
             params.addValues(map);
             jdbcTemplate.update(INSERT_VIDEO_QUERY, params, keyHolder);
 
-            log.info("video file: {}, extension: {}, videoServerUrl: {}, totalBytes: {}, videoLength sec: {} sec", url, extension, videoServerUrl, totalBytes, videoLength);
+            log.info("video file: {}, extension: {}, videoServerUrl: {}, totalBytes: {}, videoLength sec: {} sec", url+".mp4", extension, videoServerUrl, totalBytes, videoLength);
             Long videoId = requireNonNull(keyHolder.getKey().longValue());
             //TODO: Think about making the operation async
             /*CompletableFuture<String> future =  CompletableFuture.runAsync(() -> {
