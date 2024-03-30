@@ -1,13 +1,16 @@
-import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, Renderer2, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass, NgIf, NgStyle } from '@angular/common';
 import Vibrant from 'node-vibrant'; // stable version node-vibrant@3.1.6
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
 import { VideoService } from '../../../shared/services/video/video.service';
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { SwitchComponent } from '../../switch/switch.component';
+import { animate, keyframes, style, transition, trigger, AnimationEvent } from '@angular/animations';
+import { formatDuration } from '../../../shared/utils/sharedUtils';
+//import { playIconAnimation } from '../../../shared/utils/animations';
 //import * as shaka from 'shaka-player';
 
 export let shaka = require('../../../../../node_modules/shaka-player/dist/shaka-player.compiled');
@@ -21,8 +24,21 @@ export let shaka = require('../../../../../node_modules/shaka-player/dist/shaka-
     templateUrl: './video.component.html',
     styleUrls: ['./video.component.scss'],
     standalone: true,
-    imports: [NgClass, TooltipDirective, SwitchComponent, StandardDropdownComponent, NgStyle]
+    imports: [NgClass, TooltipDirective, SwitchComponent, StandardDropdownComponent, NgStyle, NgIf],
+    animations: [
+      trigger('playIconAnimation', [
+        transition(':enter', [
+          animate('.7s', keyframes([
+            style({ transform: 'scale(.6)', opacity: 0, offset: 0 }),
+            style({ transform: 'scale(1)', opacity: 1, offset: 0.5 }),
+            style({ transform: 'scale(1.4)', offset: 0.75 }),
+            style({ transform: 'scale(2)', opacity: 0, offset: 1 })
+          ]))
+        ])
+      ])
+    ]
 })
+
 export class VideoComponent {
 
   canvas: HTMLCanvasElement;
@@ -69,6 +85,7 @@ export class VideoComponent {
   videoElement: HTMLVideoElement;
 
   player: any; //shaka-player
+  animationState: 'start' | 'void' = 'void'; // Set initial state to 'void'
 
   //imports
   icons: Icons = new Icons();
@@ -81,12 +98,13 @@ export class VideoComponent {
   @ViewChild('thumbnailImg') thumbnailIm: ElementRef<any>;
   @ViewChild('timelineContainer') timelineContainer: ElementRef<any>;
   @ViewChild('buffering') bufferingIcon: ElementRef<any>;
+  @ViewChild('bigPlay') bigPlay: ElementRef<any>;
 
   @Input() videoURL: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212'
 
-  manifestUri: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212/adaptive.mpd'//'http://localhost:8080/api/v1/video/watch/56c392cc-6000-45cc-a737-fbb9716e572f/adaptive.mpd'//'http://localhost:8080/api/v1/video/watch/94cd3f28-5034-4edc-822b-bebad7e262a9/adaptive.mpd';//= 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-  manifestHls: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212/adaptive.m3u8'//'http://localhost:8080/api/v1/video/watch/56c392cc-6000-45cc-a737-fbb9716e572f/adaptive.m3u8'//'http://localhost:8080/api/v1/video/watch/94cd3f28-5034-4edc-822b-bebad7e262a9/adaptive.m3u8';
-  constructor(private componentUpdatesService: ComponentUpdatesService, private videoService: VideoService) {}
+  manifestUri: string = 'http://localhost:8080/api/v1/video/watch/314747d1-b8ba-463e-bd7e-49673c38f05f/adaptive.mpd'//'http://localhost:8080/api/v1/video/watch/61474484-0928-40b3-9b16-3c27bd13301f/adaptive.mpd'//'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
+  manifestHls: string = 'http://localhost:8080/api/v1/video/watch/314747d1-b8ba-463e-bd7e-49673c38f05f/adaptive.m3u8'//'http://localhost:8080/api/v1/video/watch/61474484-0928-40b3-9b16-3c27bd13301f/adaptive.m3u8'//
+  constructor(private componentUpdatesService: ComponentUpdatesService, private videoService: VideoService, private renderer: Renderer2) {}
   
   ngOnInit() {
     this.canvas = document.createElement('canvas');
@@ -118,12 +136,17 @@ export class VideoComponent {
   */
   ngAfterViewInit() {
     this.paused ? this.video.nativeElement.pause() : this.video.nativeElement.play();
-    //this.extractWave();
-    this.initShackaApp();
+    //this.renderer.selectRootElement(this.video.nativeElement).focus();
+    this.video.nativeElement.addEventListener("keydown", (event: any) => {
+      console.log("event keydown ", event);
+      this.handleKeyboardEvent(event);
+    })
 
+    this.initShackaApp();
+    
     setInterval(() => {
       this.updateBufferData();
-    }, 1000);
+    }, 10);
     //this.initMediaSource();
   }
 
@@ -152,13 +175,54 @@ export class VideoComponent {
     }
   }
 
+  /**
+   * on animation event triggered
+   * @param { AnimationEvent } event 
+  */
+  onAnimationEvent(event: AnimationEvent) {
+    if (event.phaseName === 'start') {
+      // Animation started
+      this.onAnimationStart();
+    } else if (event.phaseName === 'done') {
+      // Animation ended
+      this.onAnimationEnd();
+    }  
+  }
+
+  /**
+   * on animation start event 
+  */
+  onAnimationStart() {
+    this.bigPlay.nativeElement.style.display = 'flex';
+    this.bigPlay.nativeElement.style.justifyContent = 'center';
+    this.bigPlay.nativeElement.style.alignItems = 'center';
+  }
+
+  /**
+   * on animation end event 
+  */
+  onAnimationEnd() {
+    this.animationState = 'void'
+    this.bigPlay.nativeElement.style.display = 'none';
+  }
+
+  /**
+   * toggle big play button animation 
+  */
+  toggleAnimation() {
+    console.log("the animation state ", this.animationState);
+    this.animationState = this.animationState === 'start' ? 'void' : 'start'; // Toggle animation state
+  }
 
   /**
    * keyboard events for keyboard shortcuts bindings
    */
   //@HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    const tagName = document.activeElement?.tagName.toLocaleLowerCase();
+  //@HostListener('keydown', ['$event'])
+  handleKeyboardEvent(event: any) { //KeyboardEvent) {
+    console.log("handleKeyboardEvent", event)
+    //const tagName = document.activeElement?.tagName.toLocaleLowerCase();
+    const tagName = (event.target as HTMLElement)?.tagName?.toLowerCase();
     if (tagName === 'input') return;//not want to trigger these on an input field
     switch(event.key.toLocaleLowerCase()) {
       case ' ':
@@ -198,29 +262,30 @@ export class VideoComponent {
     }
   }
 
+  /**
+   * initialize shaka app and check browser support
+  */
   private initShackaApp() {
     // Install built-in polyfills to patch browser incompatibilities.
     shaka.polyfill.installAll();
 
     // Check to see if the browser supports the basic APIs Shaka needs.
     if (shaka.Player.isBrowserSupported()) {
-      // Everything looks good!
-      console.log("this browser is supported!!");
       this.videoElement = this.video.nativeElement;
       
       this.initPlayer();
     } else {
       // This browser does not have the minimum set of APIs we need.
+      // use MSE byte range based API
       console.error('Browser not supported! ');
     }
   }
 
+  /**
+   * initialize shaka player and pass either mpd manifest or hls manifest 
+  */
   private initPlayer() {
-    // Create a Player instance.
-    // var video = document.getElementById('video');
     this.player = new shaka.Player(this.videoElement);
-
-    //find out how to set mimeType
 
     // Attach player to the window to make it easy to access in the JS console.
     // window.player = player;
@@ -238,23 +303,28 @@ export class VideoComponent {
     //player.seek(desiredStartTimeInSeconds);
 
     this.player.load(this.manifestUri).then(() => {
-      
-      this.togglePlay();
-      
+      //this.togglePlay();
       // This runs if the asynchronous load is successful.
-      console.log('The video has now been loaded!!');
     }).catch((error: any) => {
       this.onError(error);
       console.log("Not an EME supported Browser? Remove the player.");
-      this.player.unload().then(this.manifestHls);//for Apple support
+      //this.player.unload().then(this.manifestHls);//for Apple support
     });// onError is executed if the asynchronous load fails.
   }
 
+  /**
+   * on any error event 
+   * @param event 
+  */
   private onErrorEvent(event: any) {
     // Extract the shaka.util.Error object from the event.
     this.onError(event.detail);
   }
 
+  /**
+   * handle error event 
+   * @param error 
+  */
   private onError(error: any) {
     // Log the error.
     console.error('Error code', error.code, 'object', error);
@@ -351,7 +421,7 @@ export class VideoComponent {
     this.captionText = this.video.nativeElement.textTracks[0];
     //this.captionText.mode = 'hidden';
     this.videoDurationMillisec = this.video.nativeElement.duration;
-    this.videoDuration = this.formatDuration(this.videoDurationMillisec);
+    this.videoDuration = formatDuration(this.videoDurationMillisec);
     //this.videoDuration = this.formatDuration(this.video.nativeElement.duration);
   }
 
@@ -390,9 +460,7 @@ export class VideoComponent {
    * update playback speed in .25 increments 
   */
   changePlaybackSpeed(playbackSpeed: any) {
-    ///this.playbackRate = this.video.nativeElement.playbackRate + 0.25;
-    //if(this.playbackRate > 2) this.playbackRate = 0.25;
-    this.video.nativeElement.playbackRate = playbackSpeed;//this.playbackRate;
+    this.video.nativeElement.playbackRate = playbackSpeed;
   }
 
   /**
@@ -412,8 +480,8 @@ export class VideoComponent {
       // Get the start and end time of the first buffered range
       const startTime = this.video.nativeElement.buffered.start(0);
       const endTime = this.video.nativeElement.buffered.end(0);
-      this.timelineContainer.nativeElement.style.setProperty("--download-percentage", endTime/100);
-      console.log("Buffered range: " + startTime + " - " + endTime);
+      this.timelineContainer.nativeElement.style.setProperty("--download-percentage", (endTime - startTime)/100);
+      //console.log("Buffered range: " + startTime + " - " + endTime);
     }
   }
 
@@ -422,7 +490,7 @@ export class VideoComponent {
    * @param video video element target
   */
   async timeUpdated(video: HTMLVideoElement) {
-    this.videoCurrentTime = this.formatDuration(video.currentTime);
+    this.videoCurrentTime = formatDuration(video.currentTime);
     const percentage = video.currentTime / this.videoDurationMillisec;
     this.timelineContainer.nativeElement.style.setProperty("--progress-position", percentage);
     this.loop();
@@ -432,33 +500,6 @@ export class VideoComponent {
     //  console.log("SUBSCRIBING TO COLOR: ", color);
     //  this.componentUpdatesService.videoPrimaryColorUpdate(color);
     //});
-  }
-
-  /**
-   * formats string time by removing leading zeroes in certains instances
-   * @param time string milliseconds
-   * @returns return string formatted
-  */
-  formatDuration(time: any): string {
-    let date: string = new Date(time * 1000).toISOString().substring(11, 11 + 8);
-    let currentTime: string;
-
-    const minutes = Math.floor(time / 60) % 60;
-    const hours = Math.floor(time / 3600);
-    if(hours === 0) {
-      if(minutes < 10){
-        currentTime = date.substring(4, date.length);
-      }
-      currentTime = date.substring(3, date.length);
-    }
-    else if (hours > 0 && hours < 10) {
-      currentTime = date.substring(1, date.length);
-    }
-    else {
-      currentTime = date;
-    }
-
-    return currentTime;
   }
 
   /**
@@ -489,7 +530,6 @@ export class VideoComponent {
    * Toggle mute & set video volume level
   */
   toggleMute() {
-    //console.log('toggle mute before : ', this.volumeLevel);
     if(this.volumeLevel !== 'muted') {
       this.volumeSlider.nativeElement.value = 0;
       this.volumeLevel = this.VOLUME_MUTED;//'muted';
@@ -509,6 +549,7 @@ export class VideoComponent {
   */
   togglePlay() {
     this.paused = !this.paused;
+    this.toggleAnimation();
     this.paused ? this.video.nativeElement.pause() : this.video.nativeElement.play();
   }
 
@@ -565,9 +606,11 @@ export class VideoComponent {
   }
 
 
+  /**
+   * restart video
+   */
   restartVideo() {
     this.video.nativeElement.currentTime = 0;
-    //this.togglePlay();
   }
 
   onVideoEnded() {
@@ -603,8 +646,6 @@ export class VideoComponent {
           
           const rngHeader = contentRange.split(",")[0].split("/")
           const percentage = Number(rngHeader[0].split('-')[1]) / Number(rngHeader[rngHeader.length - 1]);
-
-          //console.log("content SPLIT ", rngHeader, " percentage ", percentage);//, contentRange.split(",")[0].split("/"));
           
           this.timelineContainer.nativeElement.style.setProperty("--download-percentage", percentage);
           if (!this.mediaSource || this.mediaSource.readyState !== 'open') {
@@ -635,7 +676,7 @@ export class VideoComponent {
    * loop video
   */
   loop() {    
-    const cl = this.formatDuration(this.video.nativeElement.currentTime);
+    const cl = formatDuration(this.video.nativeElement.currentTime);
     if(this.compareTimes(cl, this.videoDuration) >= 0 && this.isLoop) {
       this.restartVideo();
     }
@@ -647,8 +688,6 @@ export class VideoComponent {
   ngOnDestroy() {
     console.log("destroying...");
     if (this.mediaSource) {
-      console.log("destroying media source...\n")
-      //this.mediaSource.removeEventListener('sourceopen', this.handleSourceOpen.bind(this));
       if(this.mediaSource.readyState === 'open') {
         this.mediaSource.endOfStream();
       }

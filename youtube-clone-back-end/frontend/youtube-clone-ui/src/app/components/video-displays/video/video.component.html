@@ -1,6 +1,6 @@
 <div #videoContainer class="video-container" [attr.data-volume-level]="volumeLevel" [ngClass]="{'paused': paused, 'full-screen': fullScreenMode, 'theater': theaterMode, 'mini-player-button': miniMode, 'scrubbing': isScrubbing}">
     <!--<img #thumbnailImg src="../../../assets/goku_god_mode.jpg" alt="" class="thumbnail-img">-->
-    <div #buffering class="buffering-circle"></div>
+
     <div class="video-controls-container">
         <div #timelineContainer class="timeline-container"
             (mousedown)="startScrubbing($event)"
@@ -80,17 +80,15 @@
             </button>
         </div>
     </div>
-    <!--(volumechange)="onVolumeChanged()" class="video-js" <source [src]="videoURL"> [loop]="isLooping"-->
-    <!--(click)="togglePlay()" 
-        (change)="videoVolumeChange($event)"
-        (loadedmetadata)="onLoadedMetadata()"
-        (timeupdate)="timeUpdated(video)"
-        (keydown)="handleKeyboardEvent($event)"
-        (ended)="onVideoEnded()"
-        [loop]="true"
-        [autoplay]="true"
-        preload="none"-->
+    <div class="center-video-btn-container">
+        <div #bigPlay class="big-play-icon" [@playIconAnimation]="animationState" (@playIconAnimation.start)="onAnimationEvent($event)" (@playIconAnimation.done)="onAnimationEvent($event)">
+            <span class="material-symbols-outlined" *ngIf="paused">play_arrow</span>
+            <span class="material-symbols-outlined" *ngIf="!paused">pause</span>
+        </div>
+        <div #buffering class="buffering-circle"></div>
+    </div>
     <!--<div class="video-inner-container">
+        [@playIconAnimation]="animationState" (@playIconAnimation.start)="onAnimationEvent($event)" (@playIconAnimation.done)="onAnimationEvent($event)"
         <video #video class="video-js vjs-poster"
             id="video"
             [ngStyle]="{'width': theaterMode? '90%': '100%', 'object-fit': 'cover', 'border-radius': (!theaterMode || !fullScreenMode)? '14px' : '0px'}" alt="" 
@@ -100,7 +98,9 @@
             (timeupdate)="timeUpdated(video)"
             (keydown)="handleKeyboardEvent($event)"
             (ended)="onVideoEnded()"
-            [loop]="true">
+            [loop]="true"
+            [autoplay]="true"
+            preload="none">
             <track kind="captions" srclang="en" src="">
         </video>
     </div>-->
@@ -111,7 +111,6 @@
         (change)="videoVolumeChange($event)"
         (loadedmetadata)="onLoadedMetadata()"
         (timeupdate)="timeUpdated(video)"
-        (keydown)="handleKeyboardEvent($event)"
         (ended)="onVideoEnded()"
         [loop]="true">
         <track kind="captions" srclang="en" src="">
