@@ -12,9 +12,11 @@ export interface UserInterface {
     enabled?: boolean;
     nonLocked?: boolean;
     usingMfa?: boolean;
-    profilePictureURL?: string;
+    profilePicture?: string;
     authorities?: Role[]; 
     iconURL?: string;
+    bannerPicture?: string;
+    videoCount?: number; 
 
     
     
