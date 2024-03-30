@@ -1,18 +1,18 @@
 <div class="channel">
     <div class="banner-container">
-        <img class="banner-img" [src]="bannerURL" />
+        <img class="banner-img" *ngIf="user" [src]="bannerURL" alt=""/>
     </div>
     <div class="channel-content">
-        <div class="channel-info">
+        <div class="channel-info" *ngIf="user">
             <div class="channel-icon">
-                <img class="banner-img" [src]="'../../../assets/green-lantern.jpg'" />
+                <img class="banner-img" [src]="user!.profilePicture" alt=""/>
             </div>
             <div class="channel-meta">
                 <div class="title-interaction-container">
                     <div class="meta-container">
                         <div class="channel-title-container">
                             <div class="channel-title">
-                                {{channelName}}
+                                {{user!.channelName}}
                             </div>
                             <span *ngIf="isVerified" class="material-symbols-outlined">check_circle</span>
                         </div>
@@ -31,15 +31,16 @@
                         </app-standard-dropdown>
                     </div>
                 </div>
-                <div class="channel-meta__meta">
+                <!--*ngIf="data$ | async as currentUserState"-->
+                <div class="channel-meta__meta" *ngIf="user">
                     <div id="id" class="id">
-                        {{userId}}
+                        @{{user.username}}
                     </div>
                     <div class="subscribes-count">
                         {{subscribeCount}} subscribers
                     </div>
                     <div class="videos-count">
-                        {{videosCount}} videos
+                        {{user.videoCount}} videos
                     </div>
                 </div>
             </div>
@@ -56,8 +57,10 @@
         <div class="channel-videos-container">
             <div class="video-item" *ngFor="let video of videos">
                 <app-video-card-basic 
-                    [video]="video" 
-                    [default]="false">
+                    [video]="video"
+                    [user]="user" 
+                    [default]="false"
+                    [loading]="loadingVideos">
                 </app-video-card-basic>
             </div>
         </div>
@@ -84,13 +87,14 @@
 
 <ng-template #body>
   <div class="modal-content-container">
-    <div class="channel__description">
-        <span>{{channelDescription}}</span>
+    <!--*ngIf="data$ | async as currentUserState"-->
+    <div class="channel__description" *ngIf="user">
+        <span>{{user!.description}}</span>
     </div>
     <h2 class="text-primary channel-details-title">Channel details</h2>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">language</span>
-        <span class="info clickable">www.youtube.com/@Tintin_Dumbo_17</span>
+        <span class="info clickable">{{serverUrl +'@'+ user.username}}</span>
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">record_voice_over</span>
@@ -98,7 +102,7 @@
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">smart_display</span>
-        <span class="info">{{'1'}} video</span>
+        <span class="info">{{user.videoCount}} video</span>
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">trending_up</span>
@@ -106,7 +110,7 @@
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">info</span>
-        <span class="info">Joined {{'2014-11-25 12:00:00' | date}}</span>
+        <span class="info">Joined {{user.createdAt | date}}</span>
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">public</span>
