@@ -17,4 +17,5 @@ export interface CurrentUserInterface {
     profilePicture?: string;
     bannerPicture?: string;
     authorities?: Role[]; 
+    videoCount?: number;
 }
