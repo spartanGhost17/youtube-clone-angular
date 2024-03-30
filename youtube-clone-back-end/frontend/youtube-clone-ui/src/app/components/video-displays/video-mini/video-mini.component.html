@@ -10,10 +10,13 @@
 
             </div>
         </div>
-        <video #video class=""  alt="" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-            <source [src]="videoURL">
-        </video> 
-      <!--<img [src]="VIDEO_URL" alt="" [ngStyle]="{'margin-right': '10px'}"/>
-      <p>PLAY ALL</p>-->
+        <div class="video-container">
+          <video #video class=""  alt="" 
+            (mouseenter)="onMouseEnter()" 
+            (mouseleave)="onMouseLeave()"
+            (timeupdate)="onTimeUpdate()"
+            (loadedmetadata)="onLoadedMetadata()">
+          </video>
+        </div>
     </div>
 </div>
