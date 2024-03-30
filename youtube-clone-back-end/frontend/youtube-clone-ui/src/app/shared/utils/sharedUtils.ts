@@ -89,3 +89,30 @@ export function normalizeSelection(selection: string): string {
             .join(' ');
   return selection;
 }
+
+  /**
+   * formats string time by removing leading zeroes in certains instances
+   * @param time string milliseconds
+   * @returns return string formatted
+  */
+export function formatDuration(time: any): string {
+  let date: string = new Date(time * 1000).toISOString().substring(11, 11 + 8);
+  let currentTime: string;
+
+  const minutes = Math.floor(time / 60) % 60;
+  const hours = Math.floor(time / 3600);
+  if(hours === 0) {
+    if(minutes < 10){
+      currentTime = date.substring(4, date.length);
+    }
+    currentTime = date.substring(3, date.length);
+  }
+  else if (hours > 0 && hours < 10) {
+    currentTime = date.substring(1, date.length);
+  }
+  else {
+    currentTime = date;
+  }
+
+  return currentTime;
+}
