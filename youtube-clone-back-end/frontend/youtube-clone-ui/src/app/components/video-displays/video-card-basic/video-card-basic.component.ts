@@ -1,42 +1,55 @@
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
+import { UserInterface } from '../../../shared/types/user.interface';
+import { Video } from '../../../shared/types/video';
 import { VideoMiniComponent } from '../video-mini/video-mini.component';
-import { NgClass, NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-video-card-basic',
-    templateUrl: './video-card-basic.component.html',
-    styleUrls: ['./video-card-basic.component.scss'],
-    standalone: true,
-    imports: [NgClass, NgIf, VideoMiniComponent]
+  selector: 'app-video-card-basic',
+  templateUrl: './video-card-basic.component.html',
+  styleUrls: ['./video-card-basic.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgIf, VideoMiniComponent, DatePipe],
 })
 export class VideoCardBasicComponent {
-  @Input() video: any;
+  
+  @Input() video: Video;
   @Input() loading: boolean = false;
   @Input() default: boolean = true;
-  @Input() size: string = 'default';//either xtra-small, small or default
-  @Input() showIcon: boolean = true; 
-  
-  constructor(private componentUpdatesService: ComponentUpdatesService, private router: Router) {}
+  @Input() size: string = 'default'; //either xtra-small, small or default
+  @Input() showIcon: boolean = true;
+  @Input() user: UserInterface;
+
+  constructor(
+    private componentUpdatesService: ComponentUpdatesService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    console.log('inside video card basic component ', this.video);
+  }
 
   /**
-   * opens video view when video is clicked 
-  */
+   * opens video view when video is clicked
+   */
   openVideo() {
-    if(this.default) {
-      const videoId = "1234455yuwrct";
+    if (this.default) {
+      const videoId = '1234455yuwrct';
       const url = `home/watch`;
-      this.router.navigate([url], {queryParams: {v: `${videoId}`}} );
+      this.router.navigate([url], { queryParams: { v: `${videoId}` } });
     }
   }
 
   /**
-   * opens channel view when avatar or channel name is clicked  
-   * @param video 
-  */
+   * opens channel view when avatar or channel name is clicked
+   * @param video
+   */
   onChannelInfoClicked(video: any): void {
-    if(this.default) {
+    if (this.default) {
       this.router.navigate([`home/@${video.channelName}`]);
     }
   }

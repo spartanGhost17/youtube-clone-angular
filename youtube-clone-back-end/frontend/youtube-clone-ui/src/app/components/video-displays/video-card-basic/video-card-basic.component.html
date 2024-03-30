@@ -1,10 +1,10 @@
 <div class="video-card-basic-container" [ngClass]="{'skeleton': loading, 'xtra-small': size === 'xtra-small', 'small': size === 'small', 'default': size === 'default'}" >
     <div (click)="openVideo()" class="video-container">
-        <app-video-mini *ngIf="!loading" [ThumbnailURL]="video.thumbnailUrl" [videoURL]="video.videoUrl"></app-video-mini>
+        <app-video-mini *ngIf="!loading" [videoMetadata]="video" [ThumbnailURL]="video.thumbnailUrl!" [videoURL]="video.gifUrl!"></app-video-mini>
     </div>
     <div class="video-info-container" *ngIf="size !== 'small'">
         <div class="icon-container" *ngIf="showIcon">
-            <img (click)="onChannelInfoClicked(video)" *ngIf="!loading" id="avatar" alt="" class="user-icon" [src]="video.user.iconURL">
+            <img (click)="onChannelInfoClicked(video)" *ngIf="!loading" id="avatar" alt="" class="user-icon" [src]="user.profilePicture">
             <div class="user-icon" [ngClass]="{'animate-pulse': loading}"></div>
         </div>
         <div id="metadata" class="metadata">
@@ -16,10 +16,10 @@
                 <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
                 <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
                 <div (click)="onChannelInfoClicked(video)" class="channel-name">
-                    <p *ngIf="!loading">{{video.user.channelName}}</p>
-                    <span *ngIf="video.user.verified && !loading" class="material-symbols-outlined">check_circle</span>
+                    <p *ngIf="!loading">{{user.channelName}}</p>
+                    <span *ngIf="user.verified && !loading" class="material-symbols-outlined">check_circle</span>
                 </div>
-                <p *ngIf="!loading" class="views">{{video.likeCount}} Views &bull; {{video.createDate}} </p>
+                <p *ngIf="!loading" class="views">{{video.likeCount}} Views &bull; {{video.createdAt | date }} </p>
             </div>
         </div>
     </div>
