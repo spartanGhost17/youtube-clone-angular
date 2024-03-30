@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -6,13 +6,26 @@ import resources from '../../../../resources/end-points.json';
 import { HttpResponseInterface } from '../../types/httpResponse.interface';
 import { UserInterface } from '../../types/user.interface';
 import { CurrentUserInterface } from '../../types/currentUser.interface';
+import { buildURL } from '../../utils/sharedUtils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   serverURL: string = environment.apiUrl;
+  userResource = resources.USER_END_POINTS;
   constructor(private http: HttpClient) {}
+
+  /**
+   * get user information by username
+   * @param { string } username
+   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response 
+  */
+  getUserById(username: string): Observable<HttpResponseInterface<UserInterface>> {
+    const url = buildURL(this.serverURL, this.userResource.GET_PROFILE_BY_ID);
+    const params: HttpParams = new HttpParams().append('username', username);
+    return this.http.get<HttpResponseInterface<UserInterface>>(url, {params});
+  }
 
   /**
    * get user profile 
