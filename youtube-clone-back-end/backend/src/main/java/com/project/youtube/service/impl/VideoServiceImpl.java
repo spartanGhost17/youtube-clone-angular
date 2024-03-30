@@ -137,12 +137,13 @@ public class VideoServiceImpl implements VideoService {
      * get byte range for streaming
      * @param fileName the file name
      * @param reqHeaders the request header
+     * @param defaultFolder the default folder containing the videos
      * @return the resource region
      */
     @Override
-    public Mono<ResponseEntity<ResourceRegion>> streamVideo3(String fileName, HttpHeaders reqHeaders) {
+    public Mono<ResponseEntity<ResourceRegion>> streamVideo3(String fileName, HttpHeaders reqHeaders, String defaultFolder) {
         // Path to your local file
-        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + VIDEOS_DEFAULT_FOLDER + "/" + fileName).toAbsolutePath().normalize();
+        Path fileStorageLocation = Paths.get(System.getProperty("user.home") + defaultFolder + "/" + fileName).toAbsolutePath().normalize();
         File file = new File(fileStorageLocation.toString(), fileName+".mp4");
 
         if (!file.exists()) {
@@ -286,6 +287,16 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public Category getVideoCategory(Long videoId) {
         return videoDao.getVideoCategory(videoId);
+    }
+
+    /**
+     * get user video count
+     * @param userId the user id
+     * @return the total video count
+     */
+    @Override
+    public Long videoCount(Long userId) {
+        return videoDao.videoCount(userId);
     }
 
     /**

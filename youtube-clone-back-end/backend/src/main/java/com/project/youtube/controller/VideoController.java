@@ -28,7 +28,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
+import static com.project.youtube.constants.ApplicationConstants.*;
 import static com.project.youtube.utils.AuthenticationUtils.getAuthenticatedUser;
 import static com.project.youtube.utils.AuthenticationUtils.getAuthenticationFromContext;
 
@@ -119,7 +119,8 @@ public class VideoController {
      */
     @GetMapping(value="watch/{videoUrl}", produces = "video/mp4")//, produces = "video/mp4")
     public Mono<ResponseEntity<ResourceRegion>> streamVideo(@PathVariable String videoUrl, @RequestHeader HttpHeaders headers) {
-        return videoService.streamVideo3(videoUrl, headers);
+        String defaultFolder = VIDEOS_DEFAULT_FOLDER;
+        return videoService.streamVideo3(videoUrl, headers, defaultFolder);
     }
 
     /**
@@ -133,11 +134,18 @@ public class VideoController {
         return videoService.streamVideoABR(videoUrl, dashFileName);
     }
 
-
-
+    /**
+     * stream gif video
+     * @param shortVideoUrl the short video url
+     * @param headers the request headers
+     * @return the response
+     */
     @GetMapping("gif")
-    public byte[] getGif(@RequestParam("v") String shortVideoUrl) {
-        return new byte[0];
+    public Mono<ResponseEntity<ResourceRegion>> getGif(@RequestParam("v") String shortVideoUrl, @RequestHeader HttpHeaders headers) {
+        log.info("stream gif");
+        String defaultFolder = GIFS_DEFAULT_FOLDER;
+        String videoUrl = shortVideoUrl.split("\\.")[0];
+        return videoService.streamVideo3(videoUrl, headers, defaultFolder);
     }
 
     /**
@@ -160,6 +168,7 @@ public class VideoController {
 
     @GetMapping("metadata/all")
     public ResponseEntity<HttpResponse> getAllUserVideoMetadata(@RequestParam("pageSize") Integer pageSize, @RequestParam("offset") Integer offset) {
+        log.info("Get user videos-------");
         Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
         List<VideoDto> videoList = videoService.getAllByUserId(userId, pageSize, offset);
         return new ResponseEntity(

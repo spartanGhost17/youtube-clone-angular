@@ -184,6 +184,22 @@ public class VideoDaoImpl implements VideoDao<Video> {
     }
 
     /**
+     * get user video count
+     * @param userId the user id
+     * @return the video count
+     */
+    @Override
+    public Long videoCount(Long userId) {
+        Long count = 0L;
+        try {
+            count = jdbcTemplate.queryForObject(SELECT_VIDEO_COUNT_BY_USER_ID_QUERY, Map.of("userId", userId), Long.class);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred");
+        }
+        return count;
+    }
+
+    /**
      * update the video metadata
      * @param videoMetadataForm
      * @return the video

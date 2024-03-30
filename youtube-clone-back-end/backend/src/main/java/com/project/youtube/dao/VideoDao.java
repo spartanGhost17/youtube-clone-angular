@@ -14,6 +14,7 @@ public interface VideoDao<T> {
     List<VideoThumbnail> getThumbnails(Long videoId);
     void updateMainThumbnailId(Long videoId, Long thumbnailId);
     T getVideo(Long id);
+    Long videoCount(Long userId);
     T updateMetadata(UpdateVideoMetadataForm videoMetadataForm);
     List<T> getAllByUserId(Long userId, Integer pageSize, Integer offset);
     Category getVideoCategory(Long videoId);

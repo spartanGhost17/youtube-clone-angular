@@ -18,12 +18,13 @@ public interface VideoService {
     VideoDto updateVideoMetadata(UpdateVideoMetadataForm updateVideoMetadataForm);
     String uploadVideoThumbnail(MultipartFile thumbnailImage, Long videoId);
     Mono<ResponseEntity<Resource>> streamVideo2(String fileName);
-    Mono<ResponseEntity<ResourceRegion>> streamVideo3(String fileName, HttpHeaders reqHeaders);
+    Mono<ResponseEntity<ResourceRegion>> streamVideo3(String fileName, HttpHeaders reqHeaders,  String defaultFolder);
     Mono<ResponseEntity<Resource>> streamVideoABR(String videoFileName, String abrFile);
     byte[] getThumbnail(String fileName);
     VideoDto getVideoMetadataById(Long id);
     List<VideoDto> getAllByUserId(Long userId, Integer pageSize, Integer offset);
     Category getVideoCategory(Long videoId);
+    Long videoCount(Long userId);
     Status updateVideoStatus(Long videoId, Long statusId);
     void delete(Long videoId, Long userId);
 }
