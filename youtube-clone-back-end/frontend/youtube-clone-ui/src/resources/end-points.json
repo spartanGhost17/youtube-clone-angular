@@ -18,6 +18,7 @@
     },
     "USER_END_POINTS": {
         "GET_PROFILE": "/api/v1/user/profile",
+        "GET_PROFILE_BY_ID": "/api/v1/user/profile/id",
         "LOGIN": "/api/v1/user/login",
         "REGISTER": "/api/v1/user/register",
         "RESET_PASSWORD": "/api/v1/user/reset/password",
