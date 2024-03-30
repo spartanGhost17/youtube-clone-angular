@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { Icons } from '../../models/icons';
+import { Store } from '@ngrx/store';
 import { FrameComponent } from '../../components/frame/frame.component';
+import { Icons } from '../../models/icons';
+import { selectCurrentUser } from '../../shared/store/user/reducers';
 
 @Component({
     selector: 'app-home',
@@ -15,6 +16,7 @@ export class HomeComponent {
   section1: any[] = [];
   section2: any[] = [];
   subcribed_channels: any[] = [];
+  username: string;
 
   icons: Icons = new Icons();
   
@@ -22,9 +24,22 @@ export class HomeComponent {
   ICON_SHORTS: string = '../'+this.icons.iconsPaths['shorts'];
   ICON_RADIO_SIGNAL: string = '../'+this.icons.iconsPaths['radio-signal'];
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
+    this.store.select(selectCurrentUser).subscribe({
+      next: (data) => {
+        if(data) {
+          this.username = data.username;
+          this.populateSidePanel();
+        }
+      }
+    });
+    
+    this.populateSidePanel();
+  }
+
+  populateSidePanel() {
     this.section1 = [
       {'isActive':true, text: 'Home', icon: 'home', provider: 'google', type: 'fill', color: 'white', navigateTo: 'explore', sidebarType: 'side'},//this.ICON_HOME
       {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, provider: 'default', type: 'outlined', color: 'white', navigateTo: '', sidebarType: 'side'},//
@@ -32,7 +47,7 @@ export class HomeComponent {
     ];
   
     this.section2 = [
-      {'isActive':false, text: 'Your channel', icon: 'account_box', provider: 'google', type: 'outlined', color: 'white', navigateTo: `home/@`, sidebarType: 'side', isChannel: true},//this.ICON_LIBRARY_VIDEO
+      {'isActive':false, text: 'Your channel', icon: 'account_box', provider: 'google', type: 'outlined', color: 'white', navigateTo: `home/@${this.username}`, sidebarType: 'side', isChannel: true},//this.ICON_LIBRARY_VIDEO
       {'isActive':false, text: 'History', icon: 'history', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'feed/history', sidebarType: 'side'},//this.ICON_HISTORY
       {'isActive':false, text: 'Your videos', icon: 'slideshow', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'studio/dashboard', sidebarType: 'side', newTab: true},//this.ICON_LIBRARY
       {'isActive':false, text: 'Watch Later', icon: 'schedule', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'playlist', sidebarType: 'side', playlistName: 'WL'},//this.ICON_WATCH_LATER
