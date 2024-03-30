@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserDaoImpl userDaoImpl;
     @Autowired
     private final RoleServiceImpl roleService;
+    private final VideoServiceImpl videoService;
     private final FileUploadTestService fileUploadTestService;
 
     /**
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = null;
         if (user != null) {
             userDTO = mapToUserDTO(user);
+            userDTO.setVideoCount(videoService.videoCount(userDTO.getId()));
         }
         return userDTO;
     }
