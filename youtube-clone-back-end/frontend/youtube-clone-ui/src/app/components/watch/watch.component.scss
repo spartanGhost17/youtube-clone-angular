@@ -1,4 +1,5 @@
 .watch-container {
+    position: relative;//delete this
     padding-top: 20px;
     width: 100%;
     height: 100%;
@@ -25,6 +26,74 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    //filter: blur(400px)
+    //background-size: 300%;
+    //filter: blur(200px);
+    //z-index: 0;
+    
+    //background-image: radial-gradient(circle, var(--start-color), var(--end-color));
+    
+    //animation: bg-gradient 5s ease infinite alternate .6s;
+    
+    //background-image: radial-gradient(circle, var(--start-color), var(--end-color));
+    //animation: bg-animation 5s infinite alternate;
+}
+
+.bg-color-blur::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    //background-color: var(--yt-color-red);
+    
+    //box-shadow: 0 0 5px var(--yt-color-red), 0 0 25px var(--yt-color-red);
+    
+    //animation: bg-gradient 4s ease infinite alternate 1s; //.6s;
+    //background-color: var(--yt-color-red);//rgba(255, 255, 255, 0.2);
+    //filter: blur(200px); // Adjust the blur radius as needed /
+    
+    //mix-blend-mode: hard-light;
+    
+    //transition: background-color, box-shadow 0.5s ease;
+    z-index: -1;
+}
+
+/*.bg-color-blur:hover {//::before:hover {
+    box-shadow: 
+        0 0 5px var(--yt-color-blue),
+        0 0 25px var(--yt-color-blue), 0 0 50px var(--yt-color-blue),
+        0 0 80px var(--yt-color-blue);//, 0 0 200px var(--yt-color-red);
+}*/
+
+/*.bg-color-blur::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 80%;
+    filter: blur(100px); // Adjust the blur radius as needed /
+    z-index: 3;
+}*/
+
+@keyframes bg-gradient {
+  0% {
+    background-color: var(--start-color);//var(--yt-color-red);
+    box-shadow: 0 0 5px var(--start-color), 0 0 25px var(--start-color);
+    //opacity: 0;
+    //background-color:  var(--start-color);
+  }
+  100% {
+    background-color: var(--end-color);//var(--yt-color-blue);
+    box-shadow: 
+        0 0 5px var(--end-color),
+        0 0 25px var(--end-color), 0 0 50px var(--end-color),
+        0 0 80px var(--end-color);
+    //opacity: 1;
+    //background-color: var(--end-color);
+  }
 }
 
 .recommendations-container {
@@ -36,7 +105,7 @@
     left: 71%;//73%;
     margin-top: 0;
     order: 2;
-    background-color: var(--yt-color-theme-dark);
+    //background-color: var(--yt-color-theme-dark);
 }
 
 .recommended-video {

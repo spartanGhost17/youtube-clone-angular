@@ -20,6 +20,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { ReportComponent } from '../report/report/report.component';
 import { ReportTypeInterface } from '../../shared/types/reportType.interface';
 import { SpinnerDirective } from '../../directives/spinner/spinner.directive';
+import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-watch',
@@ -66,6 +67,10 @@ export class WatchComponent implements OnInit {
 
   comments: Comment[]; //erase this test
   //string: string = 'SOME TEST TEXT'
+
+  startColor: string = '#a8a8a8'//'0f0f0f';
+  endColor: string = '';
+  currentColor: string = '';
 
   videoContainerWidth: string = '71%';
 
@@ -282,23 +287,44 @@ export class WatchComponent implements OnInit {
   updateBackgroundGradient(primaryColor: string) {
     const rect = this.videoContainer.nativeElement.getBoundingClientRect();
 
+
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     console.log('Primary Color ======> ', primaryColor);
 
     if (primaryColor) {
       const rgbColor = this.hexToRgb(primaryColor)!;
-      const rgbColorWtOpacity = `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, .6)`;
+      const rgbColorWtOpacity = `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, 1)`;//.6)
+      
+      //startColor = rgbColorWtOpacity;
+      
+      this.currentColor = rgbColorWtOpacity;
+      setInterval(() => {
+        
+        this.endColor = this.currentColor;  
+        // Set CSS variables
+        this.bgColorBlur.nativeElement.style.setProperty('--start-color', this.startColor);
+        this.bgColorBlur.nativeElement.style.setProperty('--end-color', this.endColor);
+        //this.bgColorBlur.nativeElement.style.backgroundImage = `radial-gradient(circle, ${this.startColor}, ${this.endColor})`  
+        this.startColor = this.currentColor;
+        
+      }, 5500);
+      
+      //this.videoContainer.nativeElement.style.setProperty('--start-color', this.startColor);
+      //this.videoContainer.nativeElement.style.setProperty('--end-color', this.endColor);
+        
+      
+    }
+  }
 
-      this.bgColorBlur.nativeElement.style.backgroundImage = `radial-gradient(circle at ${Math.floor(
+        /*this.bgColorBlur.nativeElement.style.backgroundImage = `radial-gradient(circle at ${Math.floor(
         centerX
       )}px ${Math.floor(
         centerY
-      )}px, ${rgbColorWtOpacity}, rgba(255,255,255,0) 80%)`;
-      this.bgColorBlur.nativeElement.style.filter = 'blur(90px)';
+      )}px, ${rgbColorWtOpacity}, rgba(255,255,255,0) 80%)`;*/
+      //this.bgColorBlur.nativeElement.style.filter = 'blur(90px)';
       //this.bgColorBlur.nativeElement.style.backdropFilter = `blur(100px)`;
-    }
-  }
 
   /**
    * convert Hexadecimal string to RGB color

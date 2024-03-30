@@ -1,6 +1,7 @@
 <div id="watch-container" #watchContainer class="watch-container blur-bg">
+    <div #bgColorBlur class="bg-color-blur"></div>
     <div class="main-content-container">
-        <div #bgColorBlur class="bg-color-blur"></div>
+        <!--<div #bgColorBlur class="bg-color-blur"></div>-->
         <div #videoContainer class="video-container" [ngClass]="{'expanded': isCinemaMode}">
             <app-video></app-video>
         </div>
