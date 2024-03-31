@@ -28,6 +28,17 @@ export class UserService {
   }
 
   /**
+  * get user information by username
+  * @param { string } username
+  * @returns { Observable<HttpResponseInterface<UserInterface>> } the response 
+  */
+  getUserByUserId(id: number): Observable<HttpResponseInterface<UserInterface>> {
+    const url = buildURL(this.serverURL, this.userResource.GET_PROFILE_BY_USER_ID);
+    const params: HttpParams = new HttpParams().append('id', id);
+    return this.http.get<HttpResponseInterface<UserInterface>>(url, {params});
+  }
+
+  /**
    * get user profile 
    * @returns {Observable<HttpResponseInterface<UserInterface>>} the resposne
   */
