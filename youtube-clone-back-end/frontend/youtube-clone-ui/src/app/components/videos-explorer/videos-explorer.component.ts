@@ -1,9 +1,8 @@
+import { NgFor, NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Video } from '../../shared/types/video';
+import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { VideoCardBasicComponent } from '../video-displays/video-card-basic/video-card-basic.component';
-import { NgStyle, NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-videos-explorer',
@@ -15,31 +14,21 @@ import { NgStyle, NgFor } from '@angular/common';
 export class VideosExplorerComponent {
   
   sibarWidth: string;
-  sidebarType: string = 'hover';
-  @Input() videos: any[] = [];
+  sidebarType: string = 'side';
+  @Input() feed: any[];
+  @Input() loading: boolean;
 
-  constructor(private componentUpdatesService :ComponentUpdatesService, private router: Router){
+  constructor(private componentUpdatesService :ComponentUpdatesService, private router: Router){}
+
+  ngOnInit() {
     this.componentUpdatesService.sideBarCurrentWidth$.subscribe((width) => {
-      console.log(`width ${width}`);
       this.sibarWidth = width;
-    })
-  }
+    });
 
-  ngOnInit() {}
-  
-  openVideo() {
-    const videoId = "1234455yuwrct";
-    const url = `home/watch`;
-    this.router.navigate([url], {queryParams: {v: `${videoId}`}} );
+    this.updateHoverType();
   }
 
   updateHoverType() {
     this.componentUpdatesService.sideBarTypeUpdate(this.sidebarType)
-  }
-
-  test() {
-    this.componentUpdatesService.sideBarCurrentWidth$.subscribe((width) => {
-      console.log(`width ${width}`);
-    })
   }
 }
