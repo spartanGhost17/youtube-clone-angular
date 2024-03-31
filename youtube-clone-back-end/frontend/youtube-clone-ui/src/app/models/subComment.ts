@@ -1,8 +1,9 @@
 export interface SubComment {
-    id?: string,
-    iconURL: string,
-    userId: string,
-    postTime: string,
+    id?: number,
+    imageUrl?: string,
+    userId?: number,
+    username?: string;
+    postTime?: string,
     text: string,
     to: string,
     likeCount: number,

@@ -1,10 +1,10 @@
 <div class="comment-container" *ngIf="comment">
     <div class="user-icon-container">
-        <img [src]="comment.imageURL" alt="batman and superman standing next to each other">
+        <img [src]="comment.imageUrl" alt="batman and superman standing next to each other">
     </div>
     <div class="user-info">
         <div class="user-id">
-            <span>@{{comment.userId}}</span>&nbsp;
+            <span>@{{comment.username}}</span>&nbsp;
             <span class="postStamp">{{comment.postTime}} ago</span>
         </div>
         <div class="comment-text">
@@ -25,7 +25,7 @@
         <div class="reply-container" *ngIf="comment.showReply">
             <div class="reply-input-section">
                 <div class="reply-input-section__icon-container">
-                    <img [src]="user.iconURL" alt="batman and superman standing next to each other">
+                    <img [src]="user.profilePicture" alt="batman and superman standing next to each other">
                 </div>
                 <div class="text-area-container">
                     <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>
@@ -44,11 +44,11 @@
         <div *ngIf="showReplies" class="reply-comments">
             <div class="sub-comment-container" *ngFor="let subComment of comment.subComments">
                 <div class="reply-comments__icon">
-                    <img [src]="subComment.iconURL" alt="">
+                    <img [src]="subComment.imageUrl" alt="">
                 </div>
                 <div class="reply-comments__subcomments">
                     <div class="user-id">
-                        <span>@{{subComment.userId}}</span>&nbsp;
+                        <span>@{{subComment.username}}</span>&nbsp;
                         <span class="postStamp">{{subComment.postTime}} ago</span>
                     </div>
                     <div class="comment-text">

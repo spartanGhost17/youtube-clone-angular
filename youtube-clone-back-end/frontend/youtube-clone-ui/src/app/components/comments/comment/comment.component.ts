@@ -1,11 +1,12 @@
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { SubComment } from '../../../models/subComment';
-import { Comment } from '../../../models/comment'
-import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { FormsModule } from '@angular/forms';
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { Comment } from '../../../models/comment';
+import { SubComment } from '../../../models/subComment';
 import { ComponentUpdatesService } from '../../../shared/services/app-updates/component-updates.service';
+import { UserInterface } from '../../../shared/types/user.interface';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 
 @Component({
     selector: 'app-comment',
@@ -18,7 +19,7 @@ export class CommentComponent implements OnInit {
   @Input() comment: Comment;
   @Input() commentList: Comment[];
   @Output() commentUpdate: EventEmitter<Comment> = new EventEmitter<Comment>;
-  @Input() user: any;
+  @Input() user: UserInterface;
 
   dropDownItems: any[];
   
@@ -42,7 +43,7 @@ export class CommentComponent implements OnInit {
    * else load only report action. 
   */
   loadActions(): void {
-    if(this.user.userId === this.comment.userId) { //if user is comment owner
+    if(this.user.id === this.comment.userId) { //if user is comment owner
       this.dropDownItems =  [
         {icon: 'edit', text: 'Edit', action: (id: any, childId: any) => this.edit(id, childId)},
         {icon: 'delete', text: 'Delete', action: (id: any, childId: any) => this.delete(id, childId)},
@@ -145,9 +146,10 @@ export class CommentComponent implements OnInit {
     
     //if(commetType === 'subComment') {
     const subcomment: SubComment = {
-      id: '1',
-      iconURL: this.user.iconURL,
-      userId: this.user.userId,
+      id: 1,
+      username: this.user!.username,
+      imageUrl: this.user.profilePicture!,
+      userId: this.user.id,
       likeCount: 0,
       postTime: '1',
       text: this.commentInput,

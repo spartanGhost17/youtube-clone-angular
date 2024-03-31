@@ -1,9 +1,10 @@
 import { SubComment } from "./subComment";
 
 export interface Comment {
-    id?: string;
-    userId?: string,
-    imageURL?: string,
+    id?: number;
+    userId?: number,
+    username?: string;
+    imageUrl?: string,
     commentText?: string,
     postTime?: string,
     replyCount?: number,
