@@ -3,7 +3,7 @@
     <div class="main-content-container">
         <!--<div #bgColorBlur class="bg-color-blur"></div>-->
         <div #videoContainer class="video-container" [ngClass]="{'expanded': isCinemaMode}">
-            <app-video></app-video>
+            <app-video [manifestHlsUrl]="manifestMpdUrl" [manifestMpdUrl]="manifestHlsUrl"></app-video>
         </div>
         
         <div #recommendationContainer class="recommendations-container">
@@ -20,17 +20,17 @@
         </div>
         <div #interactionContainer class="interactions-container" [ngStyle]="{'width': videoContainerWidth}">
             <div class="metadata">
-                <div id="title" class="title">
-                    <h1 class="text-primary">Grand Tourismo 5 : opening intro</h1>
+                <div id="title" class="title" [ngClass]="{'skeleton_': loadingMetadata, 'animate-pulse': loadingMetadata}">
+                    <h1 class="text-primary">{{metadata? metadata.title : ''}}</h1>
                 </div>
                 <div class="top-description-container">
                     <div id="top-row" class="description_metadata">
-                        <div (click)="onChannelIconClicked()" class="user-icon-container">
-                            <img class="user-icon" src="../../../assets/goku_god_mode.jpg">
+                        <div (click)="onChannelIconClicked()" class="user-icon-container" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}">
+                            <img class="user-icon" *ngIf="!loadingUserInfo" [src]="user.profilePicture" alt="">
                         </div>
-                        <div class="upload-info">
-                            <div class="channel-title">{{channelName}}</div>
-                            <div class="text-secondary sub-count">194K subcribers</div>
+                        <div class="upload-info" [ngClass]="{'skeleton_': loadingUserInfo}">
+                            <div class="channel-title" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}">{{user? user.channelName : ''}}</div>
+                            <div class="text-secondary sub-count" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}"><p>{{user? '194K subcribers': ''}}</p></div>
                         </div>
                     </div>
                     <div class="action-buttons">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="metadata-container">
-                    <app-video-description></app-video-description>
+                    <app-video-description [metadata]="metadata"></app-video-description>
                 </div>
                 <div class="comment-section">
                     <div class="meta-and-actions">

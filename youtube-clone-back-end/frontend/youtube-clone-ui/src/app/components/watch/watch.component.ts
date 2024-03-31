@@ -6,21 +6,25 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { SpinnerDirective } from '../../directives/spinner/spinner.directive';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { Comment } from '../../models/comment';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
+import { UserService } from '../../shared/services/user/user.service';
+import { VideoService } from '../../shared/services/video/video.service';
+import { ReportTypeInterface } from '../../shared/types/reportType.interface';
+import { UserInterface } from '../../shared/types/user.interface';
+import { Video } from '../../shared/types/video';
 import { CommentsHolderComponent } from '../comments/comments-holder/comments-holder.component';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { ModalComponent } from '../modal/modal.component';
+import { ReportComponent } from '../report/report/report.component';
 import { VideoDescriptionComponent } from '../video-description/video-description.component';
 import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
 import { VideoComponent } from '../video-displays/video/video.component';
 import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embedded-playlist.component';
-import { ModalComponent } from '../modal/modal.component';
-import { ReportComponent } from '../report/report/report.component';
-import { ReportTypeInterface } from '../../shared/types/reportType.interface';
-import { SpinnerDirective } from '../../directives/spinner/spinner.directive';
-import { style } from '@angular/animations';
 
 @Component({
   selector: 'app-watch',
@@ -73,6 +77,13 @@ export class WatchComponent implements OnInit {
   currentColor: string = '';
 
   videoContainerWidth: string = '71%';
+  manifestHlsUrl: string;
+  manifestMpdUrl: string;
+  loadingMetadata: boolean;
+  loadingUserInfo: boolean;
+  videoId: any;
+  metadata: Video;
+  user: UserInterface;
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -84,7 +95,10 @@ export class WatchComponent implements OnInit {
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
     private router: Router,
-    private renderer: Renderer2
+    private activedRoute: ActivatedRoute,
+    private renderer: Renderer2,
+    private videoService: VideoService,
+    private userService: UserService
   ) {}
 
   /**
@@ -103,20 +117,24 @@ export class WatchComponent implements OnInit {
       }
     });
 
+    this.buildManifestUris();
+
     this.comment = {
-      id: '1',
+      id: 0,
       commentText: `I’m upset Rey didn’t get to finish certain questions. I get the comedic aspect of the interview but let’s hear Rey’s answers more so than Kevin’s outburst.`,
-      imageURL: '../../../assets/batman_and_superman_detective_comics.jpg',
-      userId: 'dannychan4803',
+      imageUrl: '../../../assets/batman_and_superman_detective_comics.jpg',
+      userId: 0,
+      username: '',
       postTime: '1 hour',
       likeCount: 10,
       dislikeCount: 0,
       replyCount: 64,
       subComments: [
         {
-          id: '2',
-          iconURL: '../../../assets/light-yagami.png',
-          userId: 'louisBlaster',
+          id: 1,
+          imageUrl: '../../../assets/light-yagami.png',
+          userId: 0,
+          username: 'louisBlaster',
           postTime: '10 minutes',
           text: `My brother, in Terminator 2. Wasn't the terminator more human than us??  👍 🔥`,
           to: 'AceTempo',
@@ -124,9 +142,10 @@ export class WatchComponent implements OnInit {
           dislikeCount: 0,
         },
         {
-          id: '3',
-          iconURL: '../../../assets/goku_god_mode.jpg',
-          userId: 'MonsterHunter2099',
+          id: 2,
+          imageUrl: '../../../assets/goku_god_mode.jpg',
+          userId: 1,
+          username: 'MonsterHunter2099',
           postTime: '4 hours',
           text: `The best terminator day are way behind us dude`,
           to: 'taylorMacarrena267',
@@ -180,6 +199,42 @@ export class WatchComponent implements OnInit {
 
     this.onVideoContainerExpanded();
     //this.onVideoContainerChange();
+  }
+
+  /**
+   * build manifest paths for ABR (adaptive bitrate streaming)
+   */
+  buildManifestUris() {
+    this.activedRoute.queryParams.subscribe((params) => {
+      this.manifestMpdUrl = `${environment.apiUrl}/api/v1/video/watch/${params.v}/adaptive.mpd`;
+      this.manifestHlsUrl = `${environment.apiUrl}/api/v1/video/watch/${params.v}/adaptive.m3u8`;
+      
+      this.loadingMetadata = true;
+      this.loadingUserInfo = true;
+      
+      this.videoId = Number(params.i);
+      this.videoService.getVideoById(this.videoId).subscribe({
+        next: (response: any) => {
+          this.loadingMetadata = false;
+          this.metadata = response.data.video;
+          //console.log("metadata", response.video);
+          this.getUserInfo(this.metadata.userId!);
+        }
+      });
+    });
+  }
+
+  /**
+   * get video owner user info 
+   * @param userId 
+  */
+  getUserInfo(userId: number) {
+    this.userService.getUserByUserId(userId).subscribe({
+      next: (response: any) => {
+        this.user = response.data.user;
+        this.loadingUserInfo = false;
+      }
+    });
   }
 
   /**
@@ -451,18 +506,6 @@ export class WatchComponent implements OnInit {
     console.log('width of video container ', this.videoContainerWidth);
     return width;
   }
-
-  /**
-   *
-   * @returns
-   */
-  //getVideoContainerHeight(): number {
-  //  const element = this.videoContainer.nativeElement as HTMLElement;
-  //  const height = element.getBoundingClientRect().height;
-
-  //  console.log("height of video container =====================> ", height);
-  //  return height;
-  //}
 
   /**
    * get width of recommendation container

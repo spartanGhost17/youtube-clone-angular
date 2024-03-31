@@ -82,17 +82,13 @@
   0% {
     background-color: var(--start-color);//var(--yt-color-red);
     box-shadow: 0 0 5px var(--start-color), 0 0 25px var(--start-color);
-    //opacity: 0;
-    //background-color:  var(--start-color);
   }
   100% {
-    background-color: var(--end-color);//var(--yt-color-blue);
+    background-color: var(--end-color);
     box-shadow: 
         0 0 5px var(--end-color),
         0 0 25px var(--end-color), 0 0 50px var(--end-color),
         0 0 80px var(--end-color);
-    //opacity: 1;
-    //background-color: var(--end-color);
   }
 }
 
@@ -155,6 +151,50 @@
 .user-icon-container {
     padding-top: 8px;
     margin-right: 10px;
+}
+
+.title.skeleton_ {
+    background-color: rgb(45, 42, 42);
+    height: 40px;
+    border-radius: 8px;
+}
+
+.user-icon-container.skeleton_ {
+    background-color: rgb(42, 41, 41);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.upload-info.skeleton_ {
+    height: 44px;
+    width: 200px;   
+}
+
+.upload-info.skeleton_ > * {
+    margin-bottom: 2px;
+}
+
+.upload-info .channel-title.skeleton_ {
+    height: 20px;
+    border-radius: 8px;
+    background-color: rgb(42, 41, 41);
+}
+
+.upload-info .text-secondary.skeleton_ {
+    height: 20px;
+    border-radius: 8px;
+    background-color: rgb(42, 41, 41);
+}
+
+@keyframes pulse {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .subscribe-button {
