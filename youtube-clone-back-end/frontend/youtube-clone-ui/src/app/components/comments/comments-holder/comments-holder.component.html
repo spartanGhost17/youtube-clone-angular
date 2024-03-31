@@ -1,8 +1,11 @@
 <div class="comments-holder">
     <div class="input-container">
         <div class="icon-text-container">
-            <div class="user-icon-container">
-                <img [src]="user.iconURL" alt="batman and superman standing next to each other">
+            <div class="user-icon-container" [ngClass]="{'skeleton_': loading, 'animate-pulse': loading}">
+                <ng-container *ngIf="user">
+                    <img [src]="user.profilePicture" alt="batman and superman standing next to each other">
+                </ng-container>
+                
             </div>
             <div class="text-area-container">
                 <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>

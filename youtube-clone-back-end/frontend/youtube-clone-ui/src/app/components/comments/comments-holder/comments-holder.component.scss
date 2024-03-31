@@ -67,3 +67,18 @@ textarea {
 .comments-buttons button:last-child {
     margin-left: 10px;
 }
+
+.user-icon-container.skeleton_ {
+    border-radius: 50%;
+    background-color: rgb(45, 42, 42);
+}
+
+@keyframes pulse {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

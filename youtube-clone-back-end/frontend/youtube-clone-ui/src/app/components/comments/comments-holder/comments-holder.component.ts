@@ -1,27 +1,38 @@
+import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Comment } from '../../../models/comment';
-import { CommentComponent } from '../comment/comment.component';
-import { NgFor, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Comment } from '../../../models/comment';
+import { selectCurrentUser } from '../../../shared/store/user/reducers';
+import { CurrentUserInterface } from '../../../shared/types/currentUser.interface';
+import { CommentComponent } from '../comment/comment.component';
 @Component({
     selector: 'app-comments-holder',
     templateUrl: './comments-holder.component.html',
     styleUrls: ['./comments-holder.component.scss'],
     standalone: true,
-    imports: [FormsModule, NgFor, CommentComponent, NgStyle]
+    imports: [FormsModule, NgFor, CommentComponent, NgStyle, NgIf, NgClass]
 })
 export class CommentsHolderComponent implements OnInit {
+  loading: boolean;
   @Input() comments: Comment[];
-  //comments_copy: Comment[];
-  @Input() user: any = {
+  @Input() user: CurrentUserInterface;/*: any = {
     userId: 'timbaWolf',
     iconURL: '../../../assets/batman_red_glow.jpg'
-  };
+  };*/
   commentInput: string;
 
-  constructor() {}
+  constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loading = true;
+    this.store.select(selectCurrentUser).subscribe({
+      next: (data) => {
+        this.user = data!;
+        this.loading = false;
+      }
+    });
+  }
 
   onCancelReply(): void {
     this.commentInput = '';
@@ -30,10 +41,11 @@ export class CommentsHolderComponent implements OnInit {
   onReply(): void {
     let commentsCount = this.comments.length+1;
     let comment: Comment = {
-      id: commentsCount.toString(), //ID will come from the db auto incrementing
+      id: commentsCount, //ID will come from the db auto incrementing
+      username: this.user.username,
       commentText: this.commentInput,
-      imageURL: this.user.iconURL,
-      userId: this.user.userId,
+      imageUrl: this.user.profilePicture,
+      userId: this.user.id,
       likeCount: 0,
       dislikeCount: 0,
       postTime: '2 hours',
