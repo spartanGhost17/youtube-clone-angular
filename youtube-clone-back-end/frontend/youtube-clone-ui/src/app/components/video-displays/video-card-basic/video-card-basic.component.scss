@@ -1,11 +1,6 @@
 .video-card-basic-container{
-    width: 260px;//350px;
-    height: 150px;//fit-content;
-    //padding-bottom: 0px;
-    //max-height: 200px;
-    //min-width: 240px;
-    //max-width: 400px;
-    //background-color: pink;
+    width: 260px;
+    height: 150px;
     
     white-space: nowrap;
     overflow: hidden;
@@ -153,10 +148,6 @@
     50% {
         opacity: 0.5;
     }
-
-    //80% {
-    //    opacity: 0.8;
-    //}
 }
 
 .animate-pulse {

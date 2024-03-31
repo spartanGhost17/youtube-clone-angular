@@ -27,20 +27,15 @@ export class VideoCardBasicComponent {
     private router: Router
   ) {}
 
-  ngOnInit() {}
-
-  ngAfterViewInit() {
-    console.log('inside video card basic component ', this.video);
-  }
-
   /**
    * opens video view when video is clicked
    */
   openVideo() {
     if (this.default) {
-      const videoId = '1234455yuwrct';
-      const url = `home/watch`;
-      this.router.navigate([url], { queryParams: { v: `${videoId}` } });
+      const url: string = `home/watch`;
+      let vUrlParts: string[] = this.video.videoUrl!.split("/");
+      const videoId = vUrlParts[vUrlParts.length - 1];
+      this.router.navigate([url], { queryParams: { v: `${videoId}`, i: `${this.video.id}` } });
     }
   }
 
@@ -50,7 +45,7 @@ export class VideoCardBasicComponent {
    */
   onChannelInfoClicked(video: any): void {
     if (this.default) {
-      this.router.navigate([`home/@${video.channelName}`]);
+      this.router.navigate([`home/@${this.user.username}`]);
     }
   }
 }

@@ -1,5 +1,6 @@
 <div class="video-card-basic-container" [ngClass]="{'skeleton': loading, 'xtra-small': size === 'xtra-small', 'small': size === 'small', 'default': size === 'default'}" >
-    <div (click)="openVideo()" class="video-container">
+    <div class="video-container" *ngIf="loading"></div>
+    <div (click)="openVideo()" class="video-container" *ngIf="!loading">
         <app-video-mini *ngIf="!loading" [videoMetadata]="video" [ThumbnailURL]="video.thumbnailUrl!" [videoURL]="video.gifUrl!"></app-video-mini>
     </div>
     <div class="video-info-container" *ngIf="size !== 'small'">
@@ -15,7 +16,7 @@
             <div class="secondary-text">
                 <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
                 <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
-                <div (click)="onChannelInfoClicked(video)" class="channel-name">
+                <div (click)="onChannelInfoClicked(video)" class="channel-name" *ngIf="!loading">
                     <p *ngIf="!loading">{{user.channelName}}</p>
                     <span *ngIf="user.verified && !loading" class="material-symbols-outlined">check_circle</span>
                 </div>
