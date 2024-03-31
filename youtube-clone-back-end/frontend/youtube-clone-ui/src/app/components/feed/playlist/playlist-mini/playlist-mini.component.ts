@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
 import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
 
