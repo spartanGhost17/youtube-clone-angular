@@ -98,11 +98,13 @@ export class VideoService {
    * @returns {HttpResponseInterface<Video>} the response
    */
   getUserVideos(
+    userId: number,
     pageSize: number,
     offset: number
   ): Observable<HttpResponseInterface<Video>> {
     const url = buildURL(this.serverUrl, this.VIDEO.GET_USER_VIDEOS_PAGE);
     const params = new HttpParams()
+      .append('userId', userId)
       .append('pageSize', pageSize)
       .append('offset', offset);
 
@@ -123,6 +125,17 @@ export class VideoService {
         return { data: response.body!, contentRange: contentRange };
       })
     );
+  }
+
+  /**
+   * get the video metadata by video id
+   * @param { number } id the video id
+   * @returns the response
+  */
+  getVideoById(id: number): Observable<HttpResponseInterface<Video>> {
+    const params = new HttpParams().append('id', id);
+    const url = buildURL(this.serverUrl, this.VIDEO.GET_BY_ID);
+    return this.http.get<HttpResponseInterface<Video>>(url, {params});
   }
 
   // Function to convert Base64 to Blob
