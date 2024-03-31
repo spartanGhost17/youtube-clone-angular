@@ -172,13 +172,32 @@ public class UserController {
     }
 
     /**
-     * get profile by id
+     * get profile by username
      * @param username the username
      * @return the response
      */
     @GetMapping(value = "profile/id")
-    public ResponseEntity<HttpResponse> getUserById(@RequestParam("username") String username) {
+    public ResponseEntity<HttpResponse> getUserByUsername(@RequestParam("username") String username) {
         UserDTO userDTO = userServiceImpl.getUser(username);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", userDTO))
+                        .message("Profile updated")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    /**
+     * get profile by id
+     * @param id the username
+     * @return the response
+     */
+    @GetMapping(value = "profile/userId")
+    public ResponseEntity<HttpResponse> getUserById(@RequestParam("id") Long id) {
+        UserDTO userDTO = userServiceImpl.getUser(id);
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
