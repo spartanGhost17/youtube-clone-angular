@@ -1,13 +1,15 @@
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { VideoService } from '../../../shared/services/video/video.service';
-import { Video } from '../../../shared/types/video';
-import { MetadataModalComponent } from '../metadata-modal/metadata-modal.component';
 import { Store } from '@ngrx/store';
-import { StatusState } from '../../../shared/types/state/statusState.interface';
+import { VideoService } from '../../../shared/services/video/video.service';
 import { selectStatus } from '../../../shared/store/status/reducers';
+import { selectCurrentUser } from '../../../shared/store/user/reducers';
+import { CurrentUserStateInterface } from '../../../shared/types/state/currentUserState.interface';
+import { StatusState } from '../../../shared/types/state/statusState.interface';
 import { Status } from '../../../shared/types/status.interface';
+import { Video } from '../../../shared/types/video';
 import { ModalComponent } from '../../modal/modal.component';
+import { MetadataModalComponent } from '../metadata-modal/metadata-modal.component';
 
 @Component({
   selector: 'app-content',
@@ -28,18 +30,26 @@ export class ContentComponent {
   videoToDelete: Video | undefined;
   deleteMessage: string;
   
-  constructor(private videoService: VideoService, private store: Store<{status: StatusState}>) {}
+  constructor(private videoService: VideoService, private store: Store<{status: StatusState, user: CurrentUserStateInterface}>) {}
 
   /**
    * lifecycle hook
    */
   ngOnInit(): void {
-    //get a page of user videos
-    this.videoService.getUserVideos(this.pageSize, this.offset).subscribe({
-      next: (response) => {
-        this.videos = response.data['video'];
-      }      
-    });
+
+    this.store.select(selectCurrentUser).subscribe({
+      next: (data) => {
+        if(data) {
+          //get a page of user videos
+          this.videoService.getUserVideos(data.id, this.pageSize, this.offset).subscribe({
+            next: (response) => {
+              this.videos = response.data['video'];
+            }      
+          });
+        }
+      }
+    })
+    
 
     //select status
     this.store.select(selectStatus).subscribe({

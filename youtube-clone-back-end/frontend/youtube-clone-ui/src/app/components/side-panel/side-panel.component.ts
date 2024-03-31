@@ -63,6 +63,7 @@ export class SidePanelComponent {
 
     this.componentUpdatesService.sideBarCollapsed$.subscribe((collapsed) => {
       this.collapse = collapsed;
+      
       this.onCollapse(this.collapse);
     });
   }
