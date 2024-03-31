@@ -164,14 +164,15 @@ public class VideoController {
     }
 
     /**
-     * get logged in yser video page
+     * get video page by user id
      * @param pageSize the page size
      * @param offset the offset
+     * @param userId the user id
      * @return the response
      */
     @GetMapping("metadata/all")
-    public ResponseEntity<HttpResponse> getAllUserVideoMetadata(@RequestParam("pageSize") Integer pageSize, @RequestParam("offset") Integer offset) {
-        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+    public ResponseEntity<HttpResponse> getAllUserVideoMetadata(@RequestParam("userId") Long userId, @RequestParam("pageSize") Integer pageSize, @RequestParam("offset") Integer offset) {
+        //Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
         List<VideoDto> videoList = videoService.getAllByUserId(userId, pageSize, offset);
         return new ResponseEntity(
                 HttpResponse.builder()
