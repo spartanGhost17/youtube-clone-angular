@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, TemplateRef } from '@angular/core';
-import { NgIf, NgClass, NgStyle, NgTemplateOutlet, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-standard-dropdown',
@@ -16,8 +16,8 @@ export class StandardDropdownComponent {
   @Input() iconRight: string;
   @Input() iconLeft: string;
   @Input() minWidth: string;
-  @Input() parentId: string;
-  @Input() childId: string;
+  @Input() parentId: number;
+  @Input() childId: number;
   @Input() imageSrc: string;
   @Input() icon: string;
   @Input() fillIcon: boolean;
