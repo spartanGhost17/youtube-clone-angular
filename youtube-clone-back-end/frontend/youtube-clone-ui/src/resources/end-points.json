@@ -3,7 +3,11 @@
         "UPLOAD_VIDEO": "/api/v1/video/upload",
         "UPDATE_VIDEO_METADATA": "/api/v1/video/update/metadata", 
         "GET_USER_VIDEOS_PAGE": "/api/v1/video/metadata/all",
+        "GET_BY_ID": "/api/v1/video/metadata",
         "DELETE": "/api/v1/video/"
+    },
+    "FEED_END_POINTS": {
+        "GET_DEFAULT": "/api/v1/feed/default"
     },
     "PLAYLIST_END_POINTS": {
         "CREATE": "/api/v1/playlist/",
@@ -19,6 +23,7 @@
     "USER_END_POINTS": {
         "GET_PROFILE": "/api/v1/user/profile",
         "GET_PROFILE_BY_ID": "/api/v1/user/profile/id",
+        "GET_PROFILE_BY_USER_ID": "/api/v1/user/profile/userId",
         "LOGIN": "/api/v1/user/login",
         "REGISTER": "/api/v1/user/register",
         "RESET_PASSWORD": "/api/v1/user/reset/password",
