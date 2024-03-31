@@ -2,22 +2,22 @@ import { AsyncPipe, DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
+import { environment } from '../../../environments/environment';
+import { ProgressBarService } from '../../shared/services/progress-bar/progress-bar.service';
 import { UserService } from '../../shared/services/user/user.service';
-import { selectCurrentUser } from '../../shared/store/user/reducers';
+import { VideoService } from '../../shared/services/video/video.service';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
+import { HttpResponseInterface } from '../../shared/types/httpResponse.interface';
 import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
 import { UserInterface } from '../../shared/types/user.interface';
+import { Video } from '../../shared/types/video';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
 import { ModalComponent } from '../modal/modal.component';
 import { SwitchComponent } from '../switch/switch.component';
 import { TabComponent } from '../tab/tab.component';
 import { VideoCardBasicComponent } from '../video-displays/video-card-basic/video-card-basic.component';
-import { HttpResponseInterface } from '../../shared/types/httpResponse.interface';
-import { environment } from '../../../environments/environment';
-import { VideoService } from '../../shared/services/video/video.service';
-import { Video } from '../../shared/types/video';
 
 @Component({
   selector: 'app-channel',
@@ -68,14 +68,17 @@ export class ChannelComponent {
     currentUser: CurrentUserInterface | null | undefined;
   }>;
 
-  loadingVideos: boolean = true;
+  loadingVideos: boolean;
+  defaultSize = 10;
+  videoArray: Video[];
 
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
     private store: Store<{ user: CurrentUserStateInterface }>,
     private userService: UserService,
     private route: ActivatedRoute,
-    private videoService: VideoService
+    private videoService: VideoService,
+    private progressBarService: ProgressBarService
   ) {}
 
   ngOnInit() {
@@ -98,7 +101,8 @@ export class ChannelComponent {
 
     this.componentUpdatesService.sideBarTypeUpdate('hover');
     this.componentUpdatesService.sideBarCollapsedEmit(true);
-    this.videos = [];
+
+    this.videos = new Array(this.defaultSize).fill(null);
 
     this.populateTabs();
     this.getUsernameFromUrl();
@@ -155,6 +159,7 @@ export class ChannelComponent {
    */
   getUsernameFromUrl(): void {
     this.route.params.subscribe((params) => {
+      console.log("PARAMS", params);
       const user: string = params.channelName;
       this.username = user.substring(1, user.length);
       this.userService.getUserById(this.username).subscribe({
@@ -169,13 +174,22 @@ export class ChannelComponent {
    * get videos  
   */
   getVideos() {
-    this.videoService.getUserVideos(this.videoPageSize, this.videoOffset).subscribe({
-      next: (data: HttpResponseInterface<Video[]>) => {
-        if(data.data) {
-          this.loadingVideos = false;
-          this.videos = [...this.videos, ...data.data.video];
+    this.progressBarService.startLoading();
+    this.loadingVideos = true;
+    setTimeout(() => {
+      this.videoService.getUserVideos(this.user.id, this.videoPageSize, this.videoOffset).subscribe({
+        next: (data: HttpResponseInterface<Video[]>) => {
+          if(data.data) {
+            this.progressBarService.completeLoading();
+
+            this.videos = [...this.videos.filter(video => video !== null)];//remove place holder entries
+            this.videos = [...this.videos, ...data.data.video];//replace them
+            this.loadingVideos = false;
+            this.videoOffset += this.videoPageSize; 
+          }
         }
-      }
-    })
+      });
+
+    }, 4000);
   }
 }
