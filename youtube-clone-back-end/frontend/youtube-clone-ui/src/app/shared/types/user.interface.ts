@@ -1,7 +1,8 @@
 import { Role } from "./Role";
+import { Video } from "./video";
 
 export interface UserInterface {
-    id: string;
+    id: number;
     username: string;
     channelName: string;
     createdAt?: Date;
@@ -16,7 +17,8 @@ export interface UserInterface {
     authorities?: Role[]; 
     iconURL?: string;
     bannerPicture?: string;
-    videoCount?: number; 
+    videoCount?: number;
+    Videos?: Video[]; 
 
     
     
