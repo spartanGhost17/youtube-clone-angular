@@ -2,14 +2,14 @@ import { Component, ElementRef, HostListener, Input, Renderer2, ViewChild } from
 import { Icons } from 'src/app/models/icons';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 
+import { animate, AnimationEvent, keyframes, style, transition, trigger } from '@angular/animations';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import Vibrant from 'node-vibrant'; // stable version node-vibrant@3.1.6
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
 import { VideoService } from '../../../shared/services/video/video.service';
+import { formatDuration } from '../../../shared/utils/sharedUtils';
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { SwitchComponent } from '../../switch/switch.component';
-import { animate, keyframes, style, transition, trigger, AnimationEvent } from '@angular/animations';
-import { formatDuration } from '../../../shared/utils/sharedUtils';
 //import { playIconAnimation } from '../../../shared/utils/animations';
 //import * as shaka from 'shaka-player';
 
@@ -101,9 +101,8 @@ export class VideoComponent {
   @ViewChild('bigPlay') bigPlay: ElementRef<any>;
 
   @Input() videoURL: string = 'http://localhost:8080/api/v1/video/watch/52532f11-0414-4982-8381-b9c6545d7212'
-
-  manifestUri: string = 'http://localhost:8080/api/v1/video/watch/314747d1-b8ba-463e-bd7e-49673c38f05f/adaptive.mpd'//'http://localhost:8080/api/v1/video/watch/61474484-0928-40b3-9b16-3c27bd13301f/adaptive.mpd'//'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd';
-  manifestHls: string = 'http://localhost:8080/api/v1/video/watch/314747d1-b8ba-463e-bd7e-49673c38f05f/adaptive.m3u8'//'http://localhost:8080/api/v1/video/watch/61474484-0928-40b3-9b16-3c27bd13301f/adaptive.m3u8'//
+  @Input() manifestMpdUrl: string;
+  @Input() manifestHlsUrl: string;
   constructor(private componentUpdatesService: ComponentUpdatesService, private videoService: VideoService, private renderer: Renderer2) {}
   
   ngOnInit() {
@@ -302,13 +301,13 @@ export class VideoComponent {
     //player.seekRange()
     //player.seek(desiredStartTimeInSeconds);
 
-    this.player.load(this.manifestUri).then(() => {
+    this.player.load(this.manifestMpdUrl).then(() => {
       //this.togglePlay();
       // This runs if the asynchronous load is successful.
     }).catch((error: any) => {
       this.onError(error);
       console.log("Not an EME supported Browser? Remove the player.");
-      //this.player.unload().then(this.manifestHls);//for Apple support
+      this.player.unload().then(this.manifestHlsUrl);//for Apple support
     });// onError is executed if the asynchronous load fails.
   }
 
@@ -437,7 +436,6 @@ export class VideoComponent {
         }
       });
     } else if(listItem.text === 'Quality') {
-      console.log(listItem);
       this.changeVideoBitRate(listItem)
     }
   } 
@@ -450,7 +448,6 @@ export class VideoComponent {
     listItem.subMenu.forEach((subMenuItem: any, idx: any) => {
       if(subMenuItem.isSelected) {
         this.selectShakaABRSettings(subMenuItem, idx);
-        //this.changePlaybackSpeed(subMenuItem.value);    
       }
     });
   }
