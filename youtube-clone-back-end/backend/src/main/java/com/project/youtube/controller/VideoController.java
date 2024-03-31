@@ -1,9 +1,9 @@
 package com.project.youtube.controller;
 
+import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.HttpResponse;
-import com.project.youtube.service.impl.FileUploadTestService;
 import com.project.youtube.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,18 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.support.ResourceRegion;
-import org.springframework.http.*;
-import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.List;
@@ -166,9 +163,14 @@ public class VideoController {
                         .build(), HttpStatus.OK);
     }
 
+    /**
+     * get logged in yser video page
+     * @param pageSize the page size
+     * @param offset the offset
+     * @return the response
+     */
     @GetMapping("metadata/all")
     public ResponseEntity<HttpResponse> getAllUserVideoMetadata(@RequestParam("pageSize") Integer pageSize, @RequestParam("offset") Integer offset) {
-        log.info("Get user videos-------");
         Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
         List<VideoDto> videoList = videoService.getAllByUserId(userId, pageSize, offset);
         return new ResponseEntity(

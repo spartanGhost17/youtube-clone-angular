@@ -29,6 +29,7 @@ public class UserDTO {
     private String bannerPicture;
     private List<Role> authorities;
     private Long videoCount;
+    private List<VideoDto> videos;
     /*private String id;
     private String firstName;
     private String lastName;
