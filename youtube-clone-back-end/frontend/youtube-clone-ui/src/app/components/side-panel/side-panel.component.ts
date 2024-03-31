@@ -1,13 +1,13 @@
 import { AsyncPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest } from 'rxjs';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { selectCurrentUser, selectIsLoading, selectValidationErrors, selectValidationMessages } from '../../shared/store/user/reducers';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
-import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
 import { ResponseMessagesInterface } from '../../shared/types/responseMessages.interface';
+import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
 
 @Component({
     selector: 'app-side-panel',
@@ -63,6 +63,7 @@ export class SidePanelComponent {
 
     this.componentUpdatesService.sideBarCollapsed$.subscribe((collapsed) => {
       this.collapse = collapsed;
+      this.onCollapse(this.collapse);
     });
   }
 
@@ -75,16 +76,27 @@ export class SidePanelComponent {
   /**
    * Lifecycle hook
    */
-  ngOnChanges(changes: SimpleChanges) {
+  /*ngOnChanges(changes: SimpleChanges) {
     if(!this.hoverPanel) {
       if(changes.collapse.currentValue) {
-        console.log('collapse => ', changes.collapse.currentValue);
+        //console.log('collapse => ', changes.collapse.currentValue);
         this.componentUpdatesService.sideBarWidthUpdate(this.MIN_WIDTH);//broadcast width of side panel
       }
       else if(!changes.collapse.currentValue) {
-        console.log('false =>  ', changes.collapse.currentValue);
+        //console.log('false =>  ', changes.collapse.currentValue);
         this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
       }
+    }
+  }*/
+
+  onCollapse(collapsed: boolean) {
+    if(collapsed) {
+      //console.log('collapse => ', changes.collapse.currentValue);
+      this.componentUpdatesService.sideBarWidthUpdate(this.MIN_WIDTH);//broadcast width of side panel
+    }
+    else {
+      //console.log('false =>  ', changes.collapse.currentValue);
+      this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
     }
   }
 
@@ -135,7 +147,7 @@ export class SidePanelComponent {
           
           if(!section[i].newTab) {
             if(section[i].isChannel) {
-              this.router.navigate([`${section[i].navigateTo}${section[i].text}`]);
+              this.router.navigate([`${section[i].navigateTo}`]);//${section[i].text}
             }
             else {
               console.log("navigate to ", section[i].navigateTo)
