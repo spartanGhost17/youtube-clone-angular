@@ -1,10 +1,10 @@
+import { NgIf, NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
-import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
+import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { VideoMiniComponent } from '../video-mini/video-mini.component';
-import { NgStyle, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-video-card',
@@ -22,7 +22,7 @@ export class VideoCardComponent {
   @Input() ThumbnailURL:string = '../../../assets/batman_and_superman_detective_comics.jpg'//'../../../assets/grand_tourismo.jpg';
   @Input() videoURL:string = '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4';
   @Input() style: string = 'default';//either 'default' or 'horizontal'
-  @Input() channelId: string = 'AlJordanFord';
+  @Input() channelId: number = 0;
   @Input() showActions: boolean = true;
   @Input() size: string = 'large';//small or large
   dropDownItems: any[];
