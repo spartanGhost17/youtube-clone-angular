@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { LinkifyPipe } from '../../pipes/linkify/linkify.pipe';
 import { NewlineToBrPipe } from '../../pipes/newline-to-br/newline-to-br.pipe';
 import { Video } from '../../shared/types/video';
+import { style } from '@angular/animations';
 
 @Component({
     selector: 'app-video-description',
@@ -15,8 +16,8 @@ export class VideoDescriptionComponent {
   @ViewChild('content') content : ElementRef<any>;
   @Input() metadata: Video;
 
-  MAX_CONTENT_HEIGHT : string = '400px';
-  MIN_CONTENT_HEIGHT : string = '50px';
+  MAX_CONTENT_HEIGHT : string = '500px';
+  MIN_CONTENT_HEIGHT : string = '44px';
   SHOW_MORE: string = '...more';
 
   isShowMore: boolean = false;
@@ -28,6 +29,7 @@ export class VideoDescriptionComponent {
     this.isShowMore = !this.isShowMore;
     if(this.isShowMore) {
       this.content.nativeElement.style.height = this.MAX_CONTENT_HEIGHT;
+      this.content.nativeElement.style.overflowY = 'scroll';
       this.SHOW_MORE  = 'Show less';
       this.isShowLess = false;
     }
@@ -37,6 +39,7 @@ export class VideoDescriptionComponent {
     this.isShowLess = !this.isShowLess;
     if(this.isShowLess) {
       this.content.nativeElement.style.height = this.MIN_CONTENT_HEIGHT;
+      this.content.nativeElement.style.overflowY = 'hidden';
       this.SHOW_MORE  = '...more';
       this.isShowMore = false;
     }
