@@ -62,18 +62,27 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public VideoDto uploadVideo(MultipartFile multipartFile, Long userId) {
         VideoDto videoDto = VideoDTOMapper.toVideoDto(videoDao.create(multipartFile, userId));
-        List<Tag> tags = new ArrayList<>();
-
         Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
+        statusService.setVideoStatus(videoDto.getId(), status.getId());
+        VideoDto video = getVideoMetadataById(videoDto.getId());
+
+        List<VideoThumbnail> thumbnails = videoDao.getThumbnails(video.getId());
+        video.setThumbnailId(thumbnails.get(0).getId());
+        video.setThumbnailUrl(thumbnails.get(0).getThumbnailUrl());
+        videoDao.updateMainThumbnailId(video.getId(), thumbnails.get(0).getId());
+        video.setVideoThumbnails(thumbnails);
+        /*List<Tag> tags = new ArrayList<>();
+
+        //Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
         List<VideoThumbnail> thumbnails = videoDao.getThumbnails(videoDto.getId());
         videoDto.setThumbnailId(thumbnails.get(0).getId());
         videoDto.setThumbnailUrl(thumbnails.get(0).getThumbnailUrl());
         videoDao.updateMainThumbnailId(videoDto.getId(), thumbnails.get(0).getId());
 
-        videoDto.setStatus(updateVideoStatus(videoDto.getId(), status.getId()));
+        //videoDto.setStatus(updateVideoStatus(videoDto.getId(), status.getId()));
         videoDto.setVideoThumbnails(thumbnails);
-        videoDto.setTags(tags);
-        return videoDto;
+        //videoDto.setTags(tags);*/
+        return video;
     }
 
     /**
@@ -216,6 +225,11 @@ public class VideoServiceImpl implements VideoService {
         return Mono.just(ResponseEntity.ok().body(resource));//.headers(headers).body(resource));
     }
 
+    @Override
+    public List<VideoThumbnail> getThumbnails(Long videoId) {
+        return videoDao.getThumbnails(videoId);
+    }
+
     /**
      * get video thumbnail
      *
@@ -328,7 +342,7 @@ public class VideoServiceImpl implements VideoService {
      * @param videoDto the video dto
      * @return the like count
      */
-    private Long getLikeCount(VideoDto videoDto) {
+    public Long getLikeCount(VideoDto videoDto) {
         LikeForm likeForm = new LikeForm();
         likeForm.setVideoId(videoDto.getId());
         return likeService.getLikeCount(likeForm);
