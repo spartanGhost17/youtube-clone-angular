@@ -191,6 +191,11 @@
 
 /** info modal **/
 
+.channel__description {
+    height: fit-content;
+    margin-bottom: 6px;
+}
+
 .channel__info-item {
     display: flex;
     align-items: center;

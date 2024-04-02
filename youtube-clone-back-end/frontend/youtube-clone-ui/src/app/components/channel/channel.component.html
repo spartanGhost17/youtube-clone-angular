@@ -88,7 +88,7 @@
 <ng-template #body>
   <div class="modal-content-container">
     <!--*ngIf="data$ | async as currentUserState"-->
-    <div class="channel__description" *ngIf="user">
+    <div class="channel__description" *ngIf="user.description">
         <span>{{user!.description}}</span>
     </div>
     <h2 class="text-primary channel-details-title">Channel details</h2>
