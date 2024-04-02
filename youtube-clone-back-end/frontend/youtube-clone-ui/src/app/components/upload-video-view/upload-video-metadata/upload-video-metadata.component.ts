@@ -12,6 +12,8 @@ import { VideoThumbnail } from '../../../shared/types/videoThumbnail.interface';
 import { Store } from '@ngrx/store';
 import { selectStatus } from '../../../shared/store/status/reducers';
 import { normalizeSelection } from '../../../shared/utils/sharedUtils';
+import { PlaylistForm } from '../../../shared/types/playlistForm.interface';
+import { playlistActions } from '../../../shared/store/playlist/actions';
 
 @Component({
     selector: 'app-upload-video-metadata',
@@ -23,27 +25,23 @@ import { normalizeSelection } from '../../../shared/utils/sharedUtils';
 export class UploadVideoMetadataComponent {
   
   largeThumbnailURL: string = '';
-  //descriptionText: string = '';
-  //titleText: string = '';
+
   newPlaylistDescription: string = '';
   newPlaylistTitle: string = '';
   
   MAX_DESCRIPTION_COUNT: number = 5000;
   MAX_TITLE_COUNT: number = 100;
 
-  //titleValue: string | null = null;
-  //textValue: string | null = null;
   showExtraMetadataText: string = 'SHOW MORE';
   
   showDropdown: boolean = false;
   isVisibleNewPlaylist: boolean = false;
   shouldShowExtraMeta: boolean = false;
-  //allPlaylistsChecked: boolean = false;
+
   showPlayList: boolean = false;
-  //indeterminate:boolean = true;
   isNewPlaylist: boolean = false;
   
-
+  newPlVisibilityId: number;
   thumbnails: VideoThumbnail[] = [];
   count = 4;
 
@@ -101,13 +99,9 @@ export class UploadVideoMetadataComponent {
    * @param event 
   */
   onEnterKeyPressedDescrpt(event: any): void {
-    console.log('Enter key pressed before ', this.video.description);
     // Append a newline character to the current ngModel value newlineToSpace
     this.video.description += '\n';//maybe delete this
-    console.log('Enter key pressed before ', this.video.description);
     let newlineCount = (this.video.description!.match(/\n/g) || []).length;
-
-    console.log("Number of newline characters: " + newlineCount);
   }
 
   /**
@@ -167,11 +161,29 @@ export class UploadVideoMetadataComponent {
     this.isNewPlaylist = event;
   }
 
+  selectedNewPlVisisbility(event: any[]) {
+    console.log("new playlist visibility ", event);
+    event.forEach((pl: any) => {
+      if(pl.checked) {
+        this.newPlVisibilityId = pl.playlist.id;
+      }
+    });
+  }
+
   /**
    * makes a post request to create a new playlist  
   */
   createPlaylist() {
+    const playlistForm: PlaylistForm = {
+      name: this.newPlaylistTitle,
+      description: this.newPlaylistDescription,
+      statusId: this.newPlVisibilityId
+    }
 
+    if(this.newPlVisibilityId && this.newPlaylistTitle.length > 0 && this.newPlaylistDescription.length > 0) {
+      this.store.dispatch(playlistActions.create({request: playlistForm}));
+      this.isNewPlaylist = false;
+    }
   }
 
   /**
@@ -189,7 +201,6 @@ export class UploadVideoMetadataComponent {
   chipsUpdated(tags: any) {
     this.video.tags = tags;
     this.onMetadataUpdated();
-    console.log("updated chips ", tags);
   }
 
   /**
@@ -218,7 +229,6 @@ export class UploadVideoMetadataComponent {
 
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
-    console.log("toggleDropdown", this.showDropdown);
   }
 
   showUserPlayLists(){
