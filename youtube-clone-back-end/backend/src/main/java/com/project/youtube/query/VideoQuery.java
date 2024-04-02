@@ -12,5 +12,5 @@ public class VideoQuery {
     public static final String SELECT_USER_VIDEOS_QUERY = "SELECT * FROM Videos WHERE user_id = :userId ORDER BY created_at DESC LIMIT :pageSize OFFSET :offset";
     public static final String UPDATE_VIDEO_MAIN_THUMBNAIL_QUERY = "UPDATE Videos SET thumbnail_id = :thumbnailId WHERE id = :videoId";
     public static final String SELECT_VIDEO_COUNT_BY_USER_ID_QUERY = "SELECT COUNT(*) FROM Videos as v WHERE v.user_id = :userId";
-    public static final String SELECT_VIDEO_FEED_QUERY = "SELECT v.* FROM Videos as v ORDER BY v.created_at DESC LIMIT :pageSize OFFSET :offset";
+    public static final String SELECT_VIDEO_FEED_QUERY = "SELECT v.* FROM Videos as v INNER JOIN VideoStatus AS vs ON v.id = vs.video_id INNER JOIN Status AS s ON s.id = vs.status_id WHERE s.status_name = 'PUBLIC' ORDER BY v.created_at DESC LIMIT :pageSize OFFSET :offset";
 }
