@@ -6,6 +6,7 @@ import com.project.youtube.form.PlaylistForm;
 import com.project.youtube.form.VideoItemForm;
 import com.project.youtube.model.HttpResponse;
 import com.project.youtube.service.impl.PlayListServiceImpl;
+import com.project.youtube.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.sql.Delete;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ public class PlaylistController {
 
     @Autowired
     private final PlayListServiceImpl playListService;
+    private final VideoServiceImpl videoService;
 
     /**
      * create playlist
@@ -44,9 +46,11 @@ public class PlaylistController {
         playlistForm.setUserId(userId);
 
         playListService.create(playlistForm);
+        List<PlaylistDto> playlistDtoList = playListService.getByUserId(userId);
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .message("Playlist successfully created.")
+                        .data(Map.of("playlist", playlistDtoList))
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
                         .build(), HttpStatus.CREATED);
@@ -81,6 +85,19 @@ public class PlaylistController {
                 HttpResponse.builder()
                         .message("User playlist retrieved.")
                         .data(Map.of("playlist", playlistDto))
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build(), HttpStatus.OK);
+    }
+
+    @GetMapping("name")
+    public ResponseEntity<HttpResponse> getHistory(@RequestParam("pageSize") Long pageSize, @RequestParam("offset") Long offset, @RequestParam("userId") Long userId, @RequestParam("name") String name) {
+        //Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        PlaylistDto playlist = playListService.getByName(pageSize, offset, userId, name);
+        return new ResponseEntity<>(
+                HttpResponse.builder()
+                        .message("User playlist retrieved.")
+                        .data(Map.of("playlist", playlist))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
@@ -133,9 +150,12 @@ public class PlaylistController {
     @PostMapping("add/video")
     public ResponseEntity<HttpResponse> addVideo(@RequestBody @Valid VideoItemForm videoItemForm) {
         playListService.addVideo(videoItemForm);
+        VideoDto videoDto = playListService.getVideoById(videoItemForm.getVideoId(), videoItemForm.getPlaylistId());
+
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .message("Video added to playlist updated.")
+                        .data(Map.of("video", videoDto))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
@@ -147,9 +167,9 @@ public class PlaylistController {
      * @return the response
      */
     @GetMapping("videos")
-    public ResponseEntity<HttpResponse> getVideos(@RequestParam("id") Long playlistId) {
+    public ResponseEntity<HttpResponse> getVideos(@RequestParam("id") Long playlistId, @RequestParam("pageSize") Long pageSize, @RequestParam("offset") Long offset) {
         PlaylistDto playlistDto = playListService.getByPlaylistId(playlistId);
-        List<VideoDto> videoDtoList = playListService.getVideos(playlistId);
+        List<VideoDto> videoDtoList = playListService.getVideos(playlistId, pageSize, offset);
         playlistDto.setVideos(videoDtoList);
         return new ResponseEntity<>(
                 HttpResponse.builder()
