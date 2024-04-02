@@ -109,7 +109,7 @@ export class UploadVideoComponent implements OnInit {
               console.log("upload at percentage ", data);
             } else {
               this.isLoading = false;
-              this.videoUploadResponse = data.data;
+              this.videoUploadResponse = data.data.video;
               console.log("success !", data); 
               this.uploadSuccess();
             }
