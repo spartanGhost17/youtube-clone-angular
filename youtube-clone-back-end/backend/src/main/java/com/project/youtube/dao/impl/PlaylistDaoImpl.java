@@ -20,7 +20,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -147,16 +149,42 @@ public class PlaylistDaoImpl implements PlaylistDao<Playlist> {
     }
 
     /**
+     * get user playlist by name
+     * @param userId the user id
+     * @param name the name
+     * @return the playlist
+     */
+    @Override
+    public Playlist getByName(Long userId, String name) {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_PLAYLIST_BY_NAME_QUERY, Map.of("name", name, "userId", userId), new BeanPropertyRowMapper<>(Playlist.class));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("No playlist found for name "+name);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while retrieving playlist, please try again");
+        }
+    }
+
+    /**
      * add a video to playlist
      * @param videoItemForm
      */
     @Override
     public void addVideo(VideoItemForm videoItemForm) {
         try {
+            //KeyHolder keyHolder = new GeneratedKeyHolder();
             int currentSize = getPlaylistSize(videoItemForm.getPlaylistId());
             if(!isFull(videoItemForm.getPlaylistId())) {
                 int position = Math.max(currentSize, 0);
-                jdbcTemplate.update(INSERT_PLAYLIST_VIDEO_QUERY, Map.of("playlistId", videoItemForm.getPlaylistId(), "videoId", videoItemForm.getVideoId(), "position", position));
+
+                log.info("inserting video into playlist");
+                MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+                parameterSource.addValue("playlistId", videoItemForm.getPlaylistId());
+                parameterSource.addValue("videoId", videoItemForm.getVideoId());
+                parameterSource.addValue("position", position);
+
+                jdbcTemplate.update(INSERT_PLAYLIST_VIDEO_QUERY, parameterSource);//, keyHolder);
+                //jdbcTemplate.update(INSERT_PLAYLIST_VIDEO_QUERY, Map.of("playlistId", videoItemForm.getPlaylistId(), "videoId", videoItemForm.getVideoId(), "position", position));
             }
         } catch (DataIntegrityViolationException exception) {
             throw new APIException("This video already exists in this playlist.");
@@ -190,7 +218,38 @@ public class PlaylistDaoImpl implements PlaylistDao<Playlist> {
     @Override
     public List<VideoDto> getVideos(Long playlistId) {
         try {
-            return jdbcTemplate.query(SELECT_PLAYLIST_VIDEOS_QUERY, Map.of("playlistId", playlistId), new BeanPropertyRowMapper<>(VideoDto.class));
+            return jdbcTemplate.query(SELECT_ALL_PLAYLIST_VIDEOS_QUERY, Map.of("playlistId", playlistId), new BeanPropertyRowMapper<>(VideoDto.class));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred, could not retrieve playlist videos.");
+        }
+    }
+
+    /**
+     * get video by video id
+     * @param videoId the video id
+     * @param playlistId the playlist id
+     * @return the video
+     */
+    @Override
+    public VideoDto getVideoById(Long videoId, Long playlistId) {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_PLAYLIST_VIDEO_BY_ID_QUERY, Map.of("videoId", videoId, "playlistId", playlistId), new BeanPropertyRowMapper<>(VideoDto.class));
+        } catch (EmptyResultDataAccessException exception) {
+          throw new APIException("could not retrieve video id "+ videoId +" playlist id "+playlistId);
+        } catch (Exception exception) {
+            throw exception;
+        }
+    }
+
+    /**
+     * get a page of videos associated with this playlist
+     * @param playlistId the playlist id
+     * @return the
+     */
+    @Override
+    public List<VideoDto> getVideos(Long playlistId, Long pageSize, Long offset) {
+        try {
+            return jdbcTemplate.query(SELECT_PLAYLIST_VIDEOS_QUERY, Map.of("playlistId", playlistId, "pageSize", pageSize, "offset", offset), new BeanPropertyRowMapper<>(VideoDto.class));
         } catch (Exception exception) {
             throw new APIException("An error occurred, could not retrieve playlist videos.");
         }
