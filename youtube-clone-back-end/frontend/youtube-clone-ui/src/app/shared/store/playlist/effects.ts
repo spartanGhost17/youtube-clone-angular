@@ -36,6 +36,118 @@ export const getPlaylistEffect = createEffect((
     )
 },{functional: true});
 
+//create playlist
+export const createPlaylistEffect = createEffect((
+    actions$ = inject(Actions),
+    progressBarService = inject(ProgressBarService),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.create),
+        switchMap(({request}) => {
+            return playlistService.createPlaylist(request).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    const playlists: PlaylistInterface[] = response.data['playlist'];
+
+                    return playlistActions.createSuccess({
+                        playlists: playlists,
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.getByUserFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});
+
+//get history playlist
+export const getHistoryEffect = createEffect((
+    actions$ = inject(Actions),
+    progressBarService = inject(ProgressBarService),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.getHistory),
+        switchMap(({userId, name, pageSize, offset}) => {
+            return playlistService.getByName(userId, pageSize, offset, name).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    const playlists: PlaylistInterface = response.data['playlist'];
+
+                    return playlistActions.getHistorySuccess({
+                        playlist: playlists,
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.getHistoryFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});
+
+//get history playlist
+export const getWatchedLaterEffect = createEffect((
+    actions$ = inject(Actions),
+    progressBarService = inject(ProgressBarService),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.getWatchLater),
+        switchMap(({userId, name, pageSize, offset}) => {
+            return playlistService.getByName(userId, pageSize, offset, name).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    const playlists: PlaylistInterface = response.data['playlist'];
+
+                    return playlistActions.getWatchLaterSuccess({
+                        playlist: playlists,
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.getWatchLaterFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});
+
+//get history playlist
+export const getLikedEffect = createEffect((
+    actions$ = inject(Actions),
+    progressBarService = inject(ProgressBarService),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.getLiked),
+        switchMap(({userId, name, pageSize, offset}) => {
+            return playlistService.getByName(userId, pageSize, offset, name).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    const playlists: PlaylistInterface = response.data['playlist'];
+
+                    return playlistActions.getLikedSuccess({
+                        playlist: playlists,
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.getLikedFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});
+
 //add video
 export const addVideoEffect = createEffect((
     actions$ = inject(Actions),

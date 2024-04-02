@@ -8,13 +8,25 @@ export const playlistActions = createActionGroup({
     source: 'playlist',
     events: {
         'Create': props<{request: PlaylistForm}>(),
-        'Create Success': props<{responseMessages: ResponseMessagesInterface}>(),
+        'Create Success': props<{playlists: PlaylistInterface[], responseMessages: ResponseMessagesInterface}>(),
         'Create Failure': props<{errors: ResponseMessagesInterface}>(),
 
         'Get By Id': props<{request: number}>(),
         'Get By Id Success': props<{playlist: PlaylistInterface, responseMessages: ResponseMessagesInterface}>(),
         'Get By Id Failure': props<{errors: ResponseMessagesInterface}>(),
-        
+
+        'Get History': props<{pageSize: number, offset: number, userId: number, name: string}>(),
+        'Get History Success': props<{playlist: PlaylistInterface, responseMessages: ResponseMessagesInterface}>(),
+        'Get History Failure': props<{errors: ResponseMessagesInterface}>(),
+
+        'Get Watch Later': props<{pageSize: number, offset: number, userId: number, name: string}>(),
+        'Get Watch Later Success': props<{playlist: PlaylistInterface, responseMessages: ResponseMessagesInterface}>(),
+        'Get Watch Later Failure': props<{errors: ResponseMessagesInterface}>(),
+
+        'Get Liked': props<{pageSize: number, offset: number, userId: number, name: string}>(),
+        'Get Liked Success': props<{playlist: PlaylistInterface, responseMessages: ResponseMessagesInterface}>(),
+        'Get Liked Failure': props<{errors: ResponseMessagesInterface}>(),
+
         'Get By User': props<{request: number}>(),
         'Get By User Success': props<{playlists: PlaylistInterface[], responseMessages: ResponseMessagesInterface}>(),
         'Get By User Failure': props<{errors: ResponseMessagesInterface}>(),
