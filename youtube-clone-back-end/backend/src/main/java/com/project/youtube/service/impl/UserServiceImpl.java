@@ -152,7 +152,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDTO updateProfile(UpdateUserForm updateUserForm, Long userId) {
-        return mapToUserDTO(userDaoImpl.updateProfile(updateUserForm, userId));
+        userDaoImpl.updateProfile(updateUserForm, userId);
+        User user = userDaoImpl.get(userId);
+        return mapToUserDTO(user);
     }
 
     /**
