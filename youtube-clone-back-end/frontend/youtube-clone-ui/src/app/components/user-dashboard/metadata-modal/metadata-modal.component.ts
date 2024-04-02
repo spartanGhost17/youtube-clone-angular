@@ -44,6 +44,7 @@ import { Tag } from '../../../models/tag';
 import { TagService } from '../../../shared/services/tag/tag.service';
 import { CreateTagForm } from '../../../shared/types/createTagForm.interface';
 import { SnackbarService } from '../../../shared/services/snack-bar-messages/snackbar.service';
+import { request } from 'http';
 
 @Component({
   selector: 'app-metadata-modal',
@@ -86,9 +87,12 @@ export class MetadataModalComponent {
   selectedCategories: any[] = [];
   selectedPlaylists: any[]; // = [];
 
+  fetchInitData: boolean = false;
+
   data$: Observable<{
     currentUser: CurrentUserInterface | null | undefined;
     playlists: PlaylistInterface[];
+    visibility: Status[] | null
   }>;
   videoCopy: Video;
 
@@ -121,6 +125,7 @@ export class MetadataModalComponent {
     this.data$ = combineLatest({
       currentUser: this.store.select(selectCurrentUser),
       playlists: this.store.select(selectPlaylists),
+      visibility: this.store.select(selectStatus)
     });
 
     /*this.data$.subscribe({
@@ -148,18 +153,26 @@ export class MetadataModalComponent {
       next: (data) => {
         if(data.currentUser) {
           this.currentUser = data.currentUser!;
+          if(!this.fetchInitData) {
+            this.fetchInitData = true;
+            this.getPlaylists(this.currentUser); 
+            this.getStatus();
+          }
         }
       }
     });
 
-
-    //if (!this.playlistSelection) {
-    //  this.populateUserPlaylists();
-    //}
-    //this.getVideo();
     this.populateCategories();
-    //this.populateVisibilityStatus();
+  }
 
+  getPlaylists(currentUser: CurrentUserInterface) {
+    this.store.dispatch(playlistActions.getByUser({request: currentUser.id}));
+    this.videoInPlaylists(this.videoCopy.id);
+  }
+
+  getStatus() {
+    this.store.dispatch(StatusActions.getStatus());
+    this.populateVisibilityStatus();
   }
 
   /**
@@ -192,7 +205,6 @@ export class MetadataModalComponent {
    * @param data
    */
   videoUploadedSucces(data: any) {
-    console.log(data.uploadStatus, ' name ', data.fileName);
 
     if (data) {
       //this.videoTitle = data.fileName;
@@ -262,6 +274,8 @@ export class MetadataModalComponent {
           this.showModalUpdateEvent(false);
         }
       });
+      this.nextBtnText = 'NEXT';
+      this.current = 0;
     }
 
     if (this.current < this.totalSteps) {
@@ -317,8 +331,6 @@ export class MetadataModalComponent {
    * @param {Tag[]} newTags the new tags
    */
   updateTags(originalTags: Tag[], newTags: Tag[]): void {
-    //let addTags: Tag[] = [];
-    //let removeTags: Tag[] = [];
     
     //add tags
     newTags.forEach((t: Tag) => {
@@ -484,6 +496,7 @@ export class MetadataModalComponent {
     this.playlistService.getPlaylistsContainingVideo(videoId).subscribe({
       next: (playlists) => {
         this.videoInPlaylist = playlists.data['playlist'];
+        this.videoInPlaylist = this.videoInPlaylist.filter((playlist) => playlist.name?.toLowerCase() !== 'history');
         this.populateUserPlaylists(this.videoInPlaylist);
       }
     });
@@ -493,7 +506,7 @@ export class MetadataModalComponent {
     if(changes.video?.currentValue) {
       this.videoCopy = JSON.parse(JSON.stringify(this.video));
       this.status = this.videoCopy.status!;
-      console.log("video ", this.videoCopy)
+
       this.thumbnail = this.videoCopy.videoThumbnails!.length > 0? this.videoCopy.videoThumbnails!.filter(t => t.id === this.videoCopy.thumbnailId)[0] : {id: 0, videoId: 0, thumbnailUrl: ''};
       this.populateVisibilityStatus();
       this.videoInPlaylists(this.videoCopy.id);
