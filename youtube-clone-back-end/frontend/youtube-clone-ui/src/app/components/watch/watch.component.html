@@ -3,7 +3,7 @@
     <div class="main-content-container">
         <!--<div #bgColorBlur class="bg-color-blur"></div>-->
         <div #videoContainer class="video-container" [ngClass]="{'expanded': isCinemaMode}">
-            <app-video [manifestHlsUrl]="manifestMpdUrl" [manifestMpdUrl]="manifestHlsUrl"></app-video>
+            <app-video [videoId]="videoId" [manifestHlsUrl]="manifestMpdUrl" [manifestMpdUrl]="manifestHlsUrl"></app-video>
         </div>
         
         <div #recommendationContainer class="recommendations-container">
@@ -12,10 +12,10 @@
             <!--<div class="recommendations-container__embedded-playlist">
             </div>-->
             <div class="recommended-video" *ngFor="let video of videos">
-                <app-video-card
+                <!--<app-video-card
                     [showActions]="true"
                     [size]="videoCardSize">
-                </app-video-card>
+                </app-video-card>-->
             </div>
         </div>
         <div #interactionContainer class="interactions-container" [ngStyle]="{'width': videoContainerWidth}">

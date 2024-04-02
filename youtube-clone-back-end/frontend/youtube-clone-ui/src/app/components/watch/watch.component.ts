@@ -217,7 +217,6 @@ export class WatchComponent implements OnInit {
         next: (response: any) => {
           this.loadingMetadata = false;
           this.metadata = response.data.video;
-          //console.log("metadata", response.video);
           this.getUserInfo(this.metadata.userId!);
         }
       });
@@ -241,6 +240,8 @@ export class WatchComponent implements OnInit {
    * lifecycle method
    */
   ngOnDestroy(): void {
+    //this.componentUpdatesService.sideBarTypeUpdate('side');
+
     // Remove the window resize event listener when the component is destroyed
     if (this.resizeListener) {
       this.resizeListener(); //????
