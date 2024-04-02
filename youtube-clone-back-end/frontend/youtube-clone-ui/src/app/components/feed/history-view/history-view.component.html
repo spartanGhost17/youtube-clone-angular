@@ -7,11 +7,13 @@
             <p>Yesterday</p>
         </div>
         <div class="videos-container">
-            <div class="watched-video" *ngFor="let video of watchedVideos">
-                <app-video-card
-                    [id]="video">
-                </app-video-card>
-            </div>
+            <ng-container *ngIf="videoHistory.length > 0">
+                <div class="watched-video" *ngFor="let video of videoHistory">
+                    <app-video-card
+                        [video]="video">
+                    </app-video-card>
+                </div>
+            </ng-container>
         </div> 
     </div>
 </div>
