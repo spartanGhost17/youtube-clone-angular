@@ -18,7 +18,8 @@
         "GET_VIDEOS": "/api/v1/playlist/videos",
         "UPDATE_VIDEO_POSITION": "/api/v1/playlist/update/videos/position",
         "DELETE_VIDEO": "/api/v1/playlist/video",
-        "GET_PLAYLIST_CONTAINING_VIDEO": "/api/v1/playlist/isIn"
+        "GET_PLAYLIST_CONTAINING_VIDEO": "/api/v1/playlist/isIn",
+        "GET_BY_NAME": "/api/v1/playlist/name"
     },
     "USER_END_POINTS": {
         "GET_PROFILE": "/api/v1/user/profile",
@@ -30,6 +31,7 @@
         "VERIFY_PASSWORD_URL": "/api/v1/user/verify/password", 
         "REFRESH_TOKEN": "/api/v1/user/refresh/token",
         "UPDATE_ROLE": "/api/v1/user/update/role",
+        "UPDATE_PROFILE": "/api/v1/user/profile",
         "UPDATE_PROFILE_IMAGE": "/api/v1/user/update/image",
         "GET_IMAGE": "/api/v1/user/image/"
     },
