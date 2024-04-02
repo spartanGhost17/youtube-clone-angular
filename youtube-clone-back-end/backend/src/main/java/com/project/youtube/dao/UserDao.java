@@ -33,6 +33,6 @@ public interface UserDao<T extends User> {
     User verifyPasswordKey(String key);
     void updatePassword(String key, String password, String confirmedPassword);
     User verifyAccountKey(String key);
-    User updateProfile(UpdateUserForm updateUserForm, Long userId);
+    void updateProfile(UpdateUserForm updateUserForm, Long userId);
     void updateProfileImage(UserDTO userDTO, MultipartFile image);
 }

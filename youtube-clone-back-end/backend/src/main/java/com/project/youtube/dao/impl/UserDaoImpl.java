@@ -88,7 +88,7 @@ public class UserDaoImpl implements UserDao<User> {
             user.setNonLocked(true);
             //return the newly created user
             //TODO: Create user default playlists, consider moving this to a service layer
-            Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
+            Status status = statusService.getByName(DEFAULT_PLAYLIST_VISIBILITY);
             for(String playlistName : DEFAULT_PLAYLISTS) {
                 PlaylistForm playlistForm = new PlaylistForm();
                 playlistForm.setUserId(user.getId());
@@ -359,14 +359,24 @@ public class UserDaoImpl implements UserDao<User> {
      * @param updateUserForm the user profile form for update
      */
     @Override
-    public User updateProfile(UpdateUserForm updateUserForm, Long userId) {
+    public void updateProfile(UpdateUserForm updateUserForm, Long userId) {
         try {
-            Map<String, ?> map = Map.of("username", updateUserForm.getUsername(), "channelName", updateUserForm.getChannelName(), "phone", updateUserForm.getPhone(), "description", updateUserForm.getDescription(), "usingMfa", updateUserForm.getUsingMfa(), "profilePicture", updateUserForm.getProfilePicture(), "userId", userId);
-            jdbcTemplate.update(UPDATE_USER_METADATA_QUERY, map);
-            return get(userId);
+            Map<String, Object> params = new HashMap<>();
+            params.put("username", updateUserForm.getUsername());
+            params.put("channelName", updateUserForm.getChannelName());
+            params.put("usingMfa", updateUserForm.getUsingMfa());
+            params.put("profilePicture", updateUserForm.getProfilePicture());
+            params.put("userId", userId);
+
+            // Add phone and description to the parameters map regardless of nullability
+            params.put("phone", updateUserForm.getPhone());
+            params.put("description", updateUserForm.getDescription());
+            jdbcTemplate.update(UPDATE_USER_METADATA_QUERY, params);//Map.of("username", updateUserForm.getUsername(), "channelName", updateUserForm.getChannelName(), "phone", updateUserForm.getPhone(), "description", updateUserForm.getDescription(), "usingMfa", updateUserForm.getUsingMfa(), "profilePicture", updateUserForm.getProfilePicture(), "userId", userId));
         } catch (ConstraintViolationException exception) {
+            //DataIntegrityViolationException: PreparedStatementCallback; SQL [UPDATE Users SET username =?, channel_name = ?, phone = ?, description = ?, using_mfa = ?, profile_picture = ? WHERE id = ?]; Column 'channel_name' cannot be null;
             throw new APIException("The username, channel name must be unique");
         } catch (Exception exception) {
+            log.error("Error: {}",exception.toString());
             throw new APIException("An error occurred, please try again.");
         }
     }
