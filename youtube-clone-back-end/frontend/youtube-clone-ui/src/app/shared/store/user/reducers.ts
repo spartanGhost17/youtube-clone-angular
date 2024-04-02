@@ -46,7 +46,25 @@ export const userFeature = createFeature({
             ...state,
             isLoading: true,
             validationErrors: action.errors
-        }))
+        })),
+
+        //update profile
+        on(userActions.update, (state) => ({
+            ...state,
+            isLoading: true,
+            validationErrors: null
+        })),
+        on(userActions.updateSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            currentUser: action.currentUser,
+            responseMessages: action.responseMessages
+        })),
+        on(userActions.updateFailure, (state, action) => ({
+            ...state,
+            isLoading: true,
+            validationErrors: action.errors
+        })),
     )
 });
 

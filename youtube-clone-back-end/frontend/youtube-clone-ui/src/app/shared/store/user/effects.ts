@@ -8,6 +8,8 @@ import { HttpResponseInterface } from "../../types/httpResponse.interface";
 import { CurrentUserInterface } from "../../types/currentUser.interface";
 import { toResponseMessage } from "../../utils/sharedUtils";
 import { HttpErrorResponse } from "@angular/common/http";
+import { UpdateUserForm } from '../../types/updateUserForm.interface';
+import { request } from 'http';
 
 export const updateProfilePictureEffect = createEffect((
     actions$ = inject(Actions),
@@ -62,6 +64,31 @@ export const loadProfileEffect = createEffect((
                 }),
                 catchError((error: HttpErrorResponse) => {
                     return of(userActions.loadProfileFailure({
+                        errors: toResponseMessage(error.error)
+                    }));
+                })
+            )
+        })
+    )
+}, {functional: true});
+
+//update profile
+export const updateProfileEffect = createEffect((
+    actions$ = inject(Actions),
+    userService = inject(UserService)
+) => {
+    return actions$.pipe(
+        ofType(userActions.update),
+        switchMap(({request}) => {
+            return userService.updateProfile(request).pipe(
+                map((response: HttpResponseInterface<CurrentUserInterface>) => {
+                    return userActions.updateSuccess({
+                        currentUser: response.data['user'],
+                        responseMessages: toResponseMessage(response)
+                    });
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(userActions.updateFailure({
                         errors: toResponseMessage(error.error)
                     }));
                 })
