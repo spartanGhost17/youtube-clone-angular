@@ -1,34 +1,29 @@
-import { NgIf, NgStyle } from '@angular/common';
+import { DatePipe, NgIf, NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
 import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive';
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { VideoMiniComponent } from '../video-mini/video-mini.component';
+import { Video } from '../../../shared/types/video';
 
 @Component({
     selector: 'app-video-card',
     templateUrl: './video-card.component.html',
     styleUrls: ['./video-card.component.scss'],
     standalone: true,
-    imports: [NgStyle, VideoMiniComponent, NgIf, TooltipDirective, StandardDropdownComponent]
+    imports: [NgStyle, VideoMiniComponent, NgIf, TooltipDirective, StandardDropdownComponent, DatePipe]
 })
 export class VideoCardComponent {
-  @Input() title:string = 'Title saaaaaaa aaaaaa aaaaaaaaaaaaaaaaa aeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee azzdsassad dffffffffffffffffff';
+  @Input() video: Video;
   @Input() channelName:string = 'Channel name';
-  @Input() likeCount:string = '12.5K';
-  @Input() postTime:string = '4 hours ago';
 
-  @Input() ThumbnailURL:string = '../../../assets/batman_and_superman_detective_comics.jpg'//'../../../assets/grand_tourismo.jpg';
-  @Input() videoURL:string = '../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4';
   @Input() style: string = 'default';//either 'default' or 'horizontal'
   @Input() channelId: number = 0;
   @Input() showActions: boolean = true;
   @Input() size: string = 'large';//small or large
   dropDownItems: any[];
   tooltipContent: string = 'Remove from watch history';
-  description = "lfejefjejfjejfelfjelfjveljrlejrflkerfkelrkfelrkf dsjdsldlskdslkdskksdlk  lskdkslkdlsdklskdlsdklskdlksdlksdkds skdlskdlksd klsdkslkdsdlksdksdlkds kksld ksldkdlksdlklsdkldsksdlk";
-  //recommendationCardHeight: string = '140px';
 
   constructor(private componentUpdatesService : ComponentUpdatesService, private router: Router) {}
 

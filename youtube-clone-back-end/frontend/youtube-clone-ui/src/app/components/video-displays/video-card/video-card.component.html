@@ -1,50 +1,53 @@
-<div class="video-card-container">
-    <div class="thumbnail-mini-player" [ngStyle]="{'width': size == 'large'? '246px' : '168px',
-                                                    'height': size == 'large'? '138px' : '94px'}">
-        <!--[videoURL]="'../../../assets/test-videos/Y2Mate.is - Gran Turismo 5 Opening Montage-6Z1TL_VEEQo-720p-1654232433855.mp4'"-->
-        <app-video-mini 
-            [ThumbnailURL]="ThumbnailURL">
-        </app-video-mini>
-    </div>
-    <div class="metadata">
-        <div class="metadata__top-container">
-            <div class="title" [ngStyle]="{'font-size': size == 'large'? '1.2rem':'1rem'}">
-                <span>{{title}}</span>
+<ng-container *ngIf="video">
+    <div class="video-card-container">
+        <div class="thumbnail-mini-player" [ngStyle]="{'width': size == 'large'? '246px' : '168px',
+                                                        'height': size == 'large'? '138px' : '94px'}">
+            <app-video-mini 
+                [videoMetadata]="video"
+                [videoURL]="video.gifUrl!"
+                [ThumbnailURL]="video.thumbnailUrl!">
+            </app-video-mini>
+        </div>
+        <div class="metadata">
+            <div class="metadata__top-container">
+                <div class="title" [ngStyle]="{'font-size': size == 'large'? '1.2rem':'1rem'}">
+                    <span>{{video.title}}</span>
+                </div>
+                <div class="actions" *ngIf="showActions">
+                    <button class="ytcp-button round-button"
+                        [appTooltip]="tooltipContent"
+                        (click)="removeFromWatchHistory(channelId)">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                    <app-standard-dropdown
+                        [parentId]="channelId"
+                        [items]="dropDownItems"
+                        [icon]="'more_vert'" 
+                        [circle]="true">
+                    </app-standard-dropdown>
+                </div>
             </div>
-            <div class="actions" *ngIf="showActions">
-                <button class="ytcp-button round-button"
-                    [appTooltip]="tooltipContent"
-                    (click)="removeFromWatchHistory(channelId)">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                <app-standard-dropdown
-                    [parentId]="channelId"
-                    [items]="dropDownItems"
-                    [icon]="'more_vert'" 
-                    [circle]="true">
-                </app-standard-dropdown>
+            <div class="channel-info">
+                <div class="channel-name" 
+                    [ngStyle]="{'font-size': size == 'large'? '.8rem':'.7rem'}"
+                    [appTooltip]="channelName"
+                    (click)="onChannelClicked()">
+                        {{channelName}}
+                </div>&nbsp;
+                <div class="likes" *ngIf="size === 'large'" [ngStyle]="{'font-size':'.7rem'}">{{video.likeCount}}</div>&nbsp;
+                <div class="likes" *ngIf="size === 'large'">&bull;</div>&nbsp;
+                <div class="post-time" *ngIf="size === 'large'" [ngStyle]="{'font-size': '.7rem'}">{{video.createdAt | date: 'dd MM yyyy'}}</div>
+            </div>
+            <div class="description" *ngIf="size === 'large'">
+                <p [ngStyle]="{'font-size': '.7rem'}">
+                    {{video.description}}
+                </p>
+            </div>
+            <div class="channel-meta" *ngIf="size === 'small'">
+                <div class="likes" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{video.likeCount}}</div>
+                <div class="likes">&bull;</div>
+                <div class="post-time" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{video.createdAt | date: 'dd MM yyyy'}}</div>
             </div>
         </div>
-        <div class="channel-info">
-            <div class="channel-name" 
-                [ngStyle]="{'font-size': size == 'large'? '.8rem':'.7rem'}"
-                [appTooltip]="channelName"
-                (click)="onChannelClicked()">
-                    {{channelName}}
-            </div>&nbsp;
-            <div class="likes" *ngIf="size === 'large'" [ngStyle]="{'font-size':'.7rem'}">{{likeCount}}</div>&nbsp;
-            <div class="likes" *ngIf="size === 'large'">&bull;</div>&nbsp;
-            <div class="post-time" *ngIf="size === 'large'" [ngStyle]="{'font-size': '.7rem'}">{{postTime}}</div>
-        </div>
-        <div class="description" *ngIf="size === 'large'">
-            <p [ngStyle]="{'font-size': '.7rem'}">
-                {{description}}
-            </p>
-        </div>
-        <div class="channel-meta" *ngIf="size === 'small'">
-            <div class="likes" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{likeCount}}</div>
-            <div class="likes">&bull;</div>
-            <div class="post-time" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{postTime}}</div>
-        </div>
     </div>
-</div>
+</ng-container>
