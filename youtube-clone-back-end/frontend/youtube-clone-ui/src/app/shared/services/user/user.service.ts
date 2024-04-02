@@ -7,6 +7,7 @@ import { HttpResponseInterface } from '../../types/httpResponse.interface';
 import { UserInterface } from '../../types/user.interface';
 import { CurrentUserInterface } from '../../types/currentUser.interface';
 import { buildURL } from '../../utils/sharedUtils';
+import { UpdateUserForm } from '../../types/updateUserForm.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -64,9 +65,18 @@ export class UserService {
    */
   updateProfilePicture(formData: FormData): Observable<HttpResponseInterface<CurrentUserInterface>> {
     const path = this.buildURL(this.serverURL, resources.USER_END_POINTS.UPDATE_PROFILE_IMAGE);
-    console.log(path);
     return this.http.patch<HttpResponseInterface<CurrentUserInterface>>(path, formData);
   }
+
+  /**
+   * update user profile 
+   * @param { UpdateUserForm } updateUserForm 
+   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response
+  */
+  updateProfile(updateUserForm: UpdateUserForm): Observable<HttpResponseInterface<UserInterface>> {
+    const url = this.buildURL(this.serverURL, this.userResource.UPDATE_PROFILE);
+    return this.http.patch<HttpResponseInterface<UserInterface>>(url, updateUserForm);
+  } 
 
   /**
    * builds a URI path for any request 
