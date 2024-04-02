@@ -8,7 +8,7 @@
             <div class="nav-actions">
                 <button class="view-channel-btn" (click)="onViewChannel()">VIEW CHANNEL</button>
                 <button class="cancel-btn" (click)="onCancel()">CANCEL</button>
-                <button class="publish-btn" [ngClass]="{'active': isUplaodReady}" [disabled]="!isUplaodReady" (click)="onPublish()">PUBLISH</button>
+                <button class="publish-btn" [ngClass]="{'active': isUplaodReady || isMetaUploadReady }" [disabled]="!isUplaodReady && !isMetaUploadReady" (click)="onPublish()">PUBLISH</button>
             </div>
         </ul>
         <div #indicator class="indicator"></div>
@@ -58,23 +58,23 @@
             <h4 class="text-primary">Name</h4>
             <p class="text-secondary title-description">Choose a channel name that represents you and your content. Changes made to your name and picture are only visible on YouTube and not on other Google services. You can change your name twice in 14 days. </p>
             <div class="text-input-container single-line">
-                <textarea [innerHTML]="'TintinDumbo'" placeholder="username" name="username_text" id="" cols="30" rows="10"></textarea>
+                <textarea (ngModelChange)="onChannelNameChange($event)" [(ngModel)]="channelName" placeholder="channel name" name="channel_name_text" id="" cols="30" rows="10"></textarea>
             </div>
         </div>
         <div class="basic-info__handle-container">
             <h4 class="text-primary">Handle</h4>
             <p class="text-secondary title-description">Choose your unique handle by adding letters and numbers. You can change your handle back within 14 days. Handles can be changed twice every 14 days.</p>
             <div class="text-input-container single-line inner-icon">
-                <textarea [innerHTML]="'@TintinDumbo'" placeholder="username" name="username_text" id="" cols="30" rows="10"></textarea>
+                <textarea (ngModelChange)="onHandleChange($event)" [(ngModel)]="handle"  placeholder="username" name="username_text" id="" cols="30" rows="10"></textarea>
                 <span class="material-symbols-outlined non-selectable action" *ngIf="isUsernameUnique" [style.font-variation-settings]="FILL_ICON" [ngStyle]="{'color': 'green'}"> check_circle</span>
                 <span class="material-symbols-outlined non-selectable action" *ngIf="!isUsernameUnique" [style.font-variation-settings]="FILL_ICON" [ngStyle]="{'color': 'red'}">cancel</span>
             </div>
-            <p class="text-secondary">https://www.youtube.com/@TinTin_Dumbo_17</p>
+            <p class="text-secondary">https://www.youtube.com/@{{currentUser.username}}</p>
         </div>
         <div class="basic-info__description-container">
             <h4 class="text-primary title-description">Description</h4>
             <div class="multi-line-input-container">
-                <textarea placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places." name="username_text" id="" cols="30" rows="10"></textarea>
+                <textarea placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places." (ngModelChange)="onDescriptionChange($event)" [(ngModel)]="description" name="username_text" id="" cols="30" rows="10"></textarea>
             </div>
         </div>
         <div class="basic-info__channel-url-container">
