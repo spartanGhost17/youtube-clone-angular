@@ -41,7 +41,8 @@ export class VideoMiniComponent {
     private videoService: VideoService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     this.video.nativeElement.addEventListener('timeUpdate', () => {
@@ -73,13 +74,11 @@ export class VideoMiniComponent {
   onMouseEnter() {
     this.play = true;
     this.initMediaSource();
-    //this.loadVideoSegments();
+    
     this.video.nativeElement.play();
   }
 
   onMouseLeave() {
-    console.log("mouseleave triggered");
-    //this.clearSourceBuffer(this.sourceBuffer);
     this.play = false;
     this.startByte = 0;
     this.endByte = 1000 * 1024;
