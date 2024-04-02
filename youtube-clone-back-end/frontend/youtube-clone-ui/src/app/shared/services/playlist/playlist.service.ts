@@ -23,9 +23,41 @@ export class PlaylistService {
    * @param {PlaylistForm} playlistForm the playlist creation form 
    * @returns response
    */
-  createPlaylist(playlistForm: PlaylistForm): Observable<HttpResponseInterface<PlaylistInterface>> {
+  createPlaylist(playlistForm: PlaylistForm): Observable<HttpResponseInterface<PlaylistInterface[]>> {
     const url: string = buildURL(this.apiUrl, this.PLAYLIST.CREATE);
-    return this.http.post<HttpResponseInterface<PlaylistInterface>>(url, playlistForm);
+    return this.http.post<HttpResponseInterface<PlaylistInterface[]>>(url, playlistForm);
+  }
+
+  /**
+   * get a page of videos in playlist
+   * @param { number } playlistId 
+   * @param { number } pageSize 
+   * @param { number } offset 
+   * @returns { Observable<HttpResponseInterface<Video[]>> } the response
+   */
+  getVideos(playlistId: number, pageSize: number, offset: number): Observable<HttpResponseInterface<Video[]>> {
+    const url: string = buildURL(this.apiUrl, this.PLAYLIST.GET_VIDEOS);
+    const params: HttpParams = new HttpParams().append('id', playlistId)
+                                              .append('pageSize', pageSize)
+                                              .append('offset', offset);
+    return this.http.get<HttpResponseInterface<Video[]>>(url, {params});
+  }
+
+  /**
+   * get playlist by name
+   * @param { number } userId the user id 
+   * @param { number } pageSize the page size
+   * @param { number } offset the offset 
+   * @param { string } name the playlist name 
+   * @returns { Observable<HttpResponseInterface<PlaylistInterface>> } the response
+   */
+  getByName(userId: number, pageSize: number, offset: number, name: string): Observable<HttpResponseInterface<PlaylistInterface>> {
+    const url: string = buildURL(this.apiUrl, this.PLAYLIST.GET_BY_NAME)
+    const params: HttpParams = new HttpParams().append('userId', userId)
+                                              .append('pageSize', pageSize)
+                                              .append('offset', offset)
+                                              .append('name', name);
+    return this.http.get<HttpResponseInterface<PlaylistInterface>>(url, {params});
   }
 
   /**
