@@ -129,14 +129,10 @@
     display: flex;
     flex-wrap: wrap;//wrap to next line when overflow
     width: fit-content;
-    height: fit-content;
-    //overflow-y: scroll;//hidden;//scroll;
     max-height: 440px;
-    //min-width: 200px;
+    overflow: hidden;
     padding-top: 10px;
     padding-right: 0;
-    //scrollbar-width: 0;
-    //background-color: pink;
 }
 
 .playlist-mini {

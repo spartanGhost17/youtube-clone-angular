@@ -27,13 +27,18 @@
                 </div>
             </div>
             <div class="section-content-container">
-                <div class="playlist-mini" *ngFor="let video of historyPlaylist.videos">
-                    <app-video-card-basic 
-                        [video]="video"
-                        [size]="'xtra-small'"
-                        [showIcon]='false'>
-                    </app-video-card-basic>
-                </div>
+                <ng-container *ngIf="historyPlaylist">
+                    <div class="playlist-mini" *ngFor="let video of historyPlaylist.videos">
+                        <app-video-card-basic
+                            [channelName]="video.channelName!"
+                            [username]="video.username!"
+                            [video]="video"
+                            [size]="'xtra-small'"
+                            [showIcon]='false'>
+                        </app-video-card-basic>
+                    </div>
+                </ng-container>
+                
             </div>
         </div>
         <!--Watch Later-->
@@ -49,11 +54,11 @@
             </div>
             <div class="section-content-container">
                 <div class="playlist-mini" *ngFor="let video of watchLaterPlaylist.videos">
-                    <app-video-card-basic 
+                    <!--<app-video-card-basic 
                         [video]="video"
                         [size]="'xtra-small'"
                         [showIcon]='false'>
-                    </app-video-card-basic>
+                    </app-video-card-basic>-->
                 </div>
             </div>
         </div>
@@ -90,11 +95,11 @@
             </div>
             <div class="section-content-container">
                 <div class="playlist-mini" *ngFor="let video of likedPlaylist.videos">
-                    <app-video-card-basic 
+                    <!--<app-video-card-basic 
                         [video]="video"
                         [size]="'xtra-small'"
                         [showIcon]='false'>
-                    </app-video-card-basic>
+                    </app-video-card-basic>-->
                 </div>
             </div>
         </div>
