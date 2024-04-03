@@ -44,5 +44,7 @@ export interface Video {
     status?: Status;
     gifUrl?: string;
     tags?: Tag[];
+    username?: string;
+    channelName?: string;
     user?: UserInterface
 }
