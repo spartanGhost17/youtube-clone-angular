@@ -16,7 +16,7 @@ import { VideosExplorerComponent } from '../videos-explorer/videos-explorer.comp
 export class HomeExplorerViewComponent {
   feedMetadata: UserInterface[] = [];
   loadingVideos: boolean;
-  defaultSize = 10;
+  defaultSize = 20;
   pageSize: number = 20;
   offset: number = 0;
 

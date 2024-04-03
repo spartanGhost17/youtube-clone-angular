@@ -239,18 +239,15 @@ export class VideoComponent {
   }
 
   /**
-   * Add video to history 
+   * Add video to history if not in history 
   */
   addToHistory() {
     this.playlistService.getPlaylistsContainingVideo(this.videoId).subscribe({
       next: (response: HttpResponseInterface<PlaylistInterface[]>) => {
         if(response) {
-          //this.history
-          console.log("Should try to add to history ?")
           const history: PlaylistInterface = response.data.playlist.filter((pl: any) => pl.name.toLowerCase().trim() === 'history')[0];
           console.log(" retrieved the history -------> ", response.data.playlist.filter((pl: any) => pl.name.toLowerCase().trim() === 'history'));
           if(!history) {
-            console.log("Video not in history so add it")
             let videoItemForm: VideoItemFormInterface = {
               videoId: this.videoId,
               playlistId: this.history.id!
