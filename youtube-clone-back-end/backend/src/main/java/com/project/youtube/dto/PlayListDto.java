@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PlaylistDto {
     private Long id;
+    private String thumbnailUrl;
     private String name;
     private String description;
     private List<VideoDto> videos;

@@ -4,6 +4,7 @@ import com.project.youtube.dto.UserDTO;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.HttpResponse;
+import com.project.youtube.service.impl.UserServiceImpl;
 import com.project.youtube.service.impl.VideoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public class VideoController {
 
     @Autowired
     private final VideoServiceImpl videoService;
+    private final UserServiceImpl userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
 

@@ -242,6 +242,26 @@ public class PlaylistDaoImpl implements PlaylistDao<Playlist> {
     }
 
     /**
+     * get thumbnail url of first video in playlist
+     * @param playlistId
+     * @return the thumbnail url
+     */
+    @Override
+    public String getThumbnailUrl(Long playlistId) {
+        String thumbnail = "";
+        try {
+            if(getPlaylistSize(playlistId) > 0) {
+                 thumbnail = jdbcTemplate.queryForObject(SELECT_PLAYLIST_THUMBNAIL_URL_QUERY, Map.of("playlistId", playlistId), String.class);
+            }
+            return thumbnail;
+        } catch (EmptyResultDataAccessException exception) {
+          return thumbnail;
+        } catch (Exception exception) {
+            throw exception;
+        }
+    }
+
+    /**
      * get a page of videos associated with this playlist
      * @param playlistId the playlist id
      * @return the

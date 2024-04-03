@@ -6,6 +6,7 @@ import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.PlaylistForm;
 import com.project.youtube.form.VideoItemForm;
 import com.project.youtube.model.Playlist;
+import com.project.youtube.model.User;
 import com.project.youtube.model.VideoThumbnail;
 import com.project.youtube.service.PlayListService;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,9 @@ public class PlayListServiceImpl implements PlayListService {
         playlistDto.setVisibilityStatus(statusService.getPlaylistStatus(playListId));
         playlistDto.setSize(getPlaylistSize(playlistDto.getId()));
         playlistDto.setVideos(new ArrayList<>());
+        if(playlistDao.getPlaylistSize(playlistDto.getId()) > 0) {
+            playlistDto.setThumbnailUrl(playlistDao.getThumbnailUrl(playlistDto.getId()));
+        }
         return playlistDto;
     }
 
@@ -69,6 +73,9 @@ public class PlayListServiceImpl implements PlayListService {
             playlistdto.setVisibilityStatus(statusService.getPlaylistStatus(playlistdto.getId()));
             playlistdto.setSize(getPlaylistSize(playlistdto.getId()));
             playlistdto.setVideos(new ArrayList<>());
+            if(playlistDao.getPlaylistSize(playlistdto.getId()) > 0) {
+                playlistdto.setThumbnailUrl(playlistDao.getThumbnailUrl(playlistdto.getId()));
+            }
             return playlistdto;
         }).collect(Collectors.toList());
         return playlistDto;
@@ -87,6 +94,10 @@ public class PlayListServiceImpl implements PlayListService {
                     PlaylistDto playlistDto = mapPlaylistToDto(playlist);
                     playlistDto.setSize(getPlaylistSize(playlistDto.getId()));
                     playlistDto.setVideos(new ArrayList<>());
+
+                    if(playlistDao.getPlaylistSize(playlistDto.getId()) > 0) {
+                        playlistDto.setThumbnailUrl(playlistDao.getThumbnailUrl(playlistDto.getId()));
+                    }
                     return playlistDto;
                 }).collect(Collectors.toList());
     }
@@ -100,6 +111,9 @@ public class PlayListServiceImpl implements PlayListService {
     public PlaylistDto updatePlaylist(PlaylistForm playlistForm) {
         PlaylistDto playlistDto = mapPlaylistToDto(playlistDao.updatePlaylist(playlistForm));
         playlistDto.setVideos(new ArrayList<>());
+        if(playlistDao.getPlaylistSize(playlistDto.getId()) > 0) {
+            playlistDto.setThumbnailUrl(playlistDao.getThumbnailUrl(playlistDto.getId()));
+        }
         return  playlistDto;
     }
 
@@ -115,6 +129,9 @@ public class PlayListServiceImpl implements PlayListService {
         playlistDao.getVideos(playlistDto.getId(), pageSize, offset);
         playlistDto.setVisibilityStatus(statusService.getPlaylistStatus(playlistDto.getId()));
         playlistDto.setSize(getPlaylistSize(playlistDto.getId()));
+        if(playlistDao.getPlaylistSize(playlistDto.getId()) > 0) {
+            playlistDto.setThumbnailUrl(playlistDao.getThumbnailUrl(playlistDto.getId()));
+        }
         return playlistDto;
     }
 
@@ -127,6 +144,7 @@ public class PlayListServiceImpl implements PlayListService {
      */
     @Override
     public List<VideoDto> getVideos(Long playlistId, Long pageSize, Long offset) {
+
         return playlistDao.getVideos(playlistId, pageSize, offset).stream().map(videoDto -> {
             videoDto.setStatus(statusService.getVideoStatus(videoDto.getId()));
             videoDto.setLikeCount(videoService.getLikeCount(videoDto));
@@ -139,6 +157,11 @@ public class PlayListServiceImpl implements PlayListService {
 
             Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
             thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
+
+            User user = videoService.getOwner(videoDto.getUserId());
+            videoDto.setUsername(user.getUsername());
+            videoDto.setChannelName(user.getChannelName());
+
             return videoDto;
         }).collect(Collectors.toList());
         //return playlistDao.getVideos(playlistId);

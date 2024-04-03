@@ -19,6 +19,7 @@ public interface PlaylistDao<T> {
     List<VideoDto> getVideos(Long playlistId, Long pageSize, Long offset);
     List<VideoDto> getVideos(Long playlistId);
     VideoDto getVideoById(Long videoId, Long playlistId);
+    String getThumbnailUrl(Long playlistId);
     boolean isFull(Long playlistId);
     Integer getPlaylistSize(Long playlistId);
     void deleteVideo(Long userId, Long videoId, Long playlistId);
