@@ -159,6 +159,16 @@
     border-radius: 8px;
 }
 
+.subscription-state-btn {
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+    z-index: 4;
+    //margin-right: 6px;
+    //padding-right: 8px;
+    background-color: pink;
+}
+
 .user-icon-container.skeleton_ {
     background-color: rgb(42, 41, 41);
     width: 40px;

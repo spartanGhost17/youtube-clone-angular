@@ -25,6 +25,9 @@ import { VideoDescriptionComponent } from '../video-description/video-descriptio
 import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
 import { VideoComponent } from '../video-displays/video/video.component';
 import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embedded-playlist.component';
+import { Store } from '@ngrx/store';
+import { selectCurrentUser } from '../../shared/store/user/reducers';
+import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
 
 @Component({
   selector: 'app-watch',
@@ -45,7 +48,8 @@ import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embed
     EmbeddedPlaylistComponent,
     ModalComponent,
     ReportComponent,
-    SpinnerDirective
+    SpinnerDirective,
+    StandardDropdownComponent
   ],
 })
 export class WatchComponent implements OnInit {
@@ -54,7 +58,9 @@ export class WatchComponent implements OnInit {
   isSibeBarCollapsed: boolean = false;
   primaryColorVideoFrame: string;
   sideBarType: string = 'hover';//TODO: DELETE
-  channelName: string = 'AlJordan';//TODO: DELETE
+  
+  //channelName: string = 'AlJordan';//TODO: DELETE
+  
   SORT_BUTTON_TEXT: string = 'Sort by';
   videos: any[] = [];
   sortOptions: any[] = [];
@@ -84,6 +90,9 @@ export class WatchComponent implements OnInit {
   videoId: any;
   metadata: Video;
   user: UserInterface;
+  currentUser: CurrentUserInterface;
+  subscriptionActions: any;
+  subscriptionState: string = 'Subscribed';
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -98,7 +107,8 @@ export class WatchComponent implements OnInit {
     private activedRoute: ActivatedRoute,
     private renderer: Renderer2,
     private videoService: VideoService,
-    private userService: UserService
+    private userService: UserService,
+    private store: Store
   ) {}
 
   /**
@@ -107,6 +117,8 @@ export class WatchComponent implements OnInit {
   ngOnInit() {
     this.componentUpdatesService.sideBarCollapsedEmit(true);
     this.componentUpdatesService.sideBarTypeUpdate(this.sideBarType);
+    this.getCurrentUser();
+    this.populateSubscriptionActions();
 
     this.componentUpdatesService.reportModal$.subscribe({
       next: (showModal) => {
@@ -247,6 +259,38 @@ export class WatchComponent implements OnInit {
       this.resizeListener(); //????
     }
   }
+
+  /**
+   * get current user from state
+   */
+  getCurrentUser() {
+    this.store.select(selectCurrentUser).subscribe({
+      next: (user) => {
+        if(user) {
+          this.currentUser = user;
+        }
+      }
+    })
+  }
+
+  populateSubscriptionActions() {
+    this.subscriptionActions = [
+      { icon: 'notifications_active', text: 'All',  action: () => this.subscribe() },
+      { icon: 'notifications', text: 'Personalised', action: () => {} },
+      { icon: 'notifications_off', text: 'None', action: () => {} },
+      { icon: 'person_remove', text: 'Unsubscribe', action: () => this.unsubscribe() }
+    ];
+  }
+
+  subscribe(): void {
+    
+    console.log(" subscribe --> to ", this.metadata.username, " with id ", this.metadata.userId, " for user id ", this.currentUser.id);
+  }
+
+  unsubscribe(): void {
+    console.log(" unsubscribe --> from ", this.metadata.username, " with id ", this.metadata.userId, " for user id ", this.currentUser.id);
+  }
+
 
   /*resetInteractionsContainerWidth(): void {
     console.log("\n\n");
@@ -491,9 +535,8 @@ export class WatchComponent implements OnInit {
    * on channel icon click navigate to channel view
    */
   onChannelIconClicked(): void {
-    console.log('onChannelIconClicked');
     this.componentUpdatesService.sideBarTypeUpdate('hover');
-    this.router.navigate([`home/@${this.channelName}`]);
+    this.router.navigate([`home/@${this.user.username}`]);
   }
 
   /**
