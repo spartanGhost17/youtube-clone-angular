@@ -40,7 +40,10 @@ public class VideoDto {
     private String location;
     private boolean reported;
     //extra fields
+    private Long playlistId;
     private Long likeCount;
     private Status status;
     private List<Tag> tags;
+    private String username;
+    private String channelName;
 }

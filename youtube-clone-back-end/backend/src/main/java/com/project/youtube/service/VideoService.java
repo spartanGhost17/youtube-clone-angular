@@ -4,6 +4,7 @@ import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.Category;
 import com.project.youtube.model.Status;
+import com.project.youtube.model.User;
 import com.project.youtube.model.VideoThumbnail;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceRegion;
@@ -24,6 +25,7 @@ public interface VideoService {
     Long getLikeCount(VideoDto videoDto);
     List<VideoThumbnail> getThumbnails(Long videoId);
     byte[] getThumbnail(String fileName);
+    User getOwner(Long userId);
     VideoDto getVideoMetadataById(Long id);
     List<VideoDto> getAllByUserId(Long userId, Integer pageSize, Integer offset);
     Category getVideoCategory(Long videoId);

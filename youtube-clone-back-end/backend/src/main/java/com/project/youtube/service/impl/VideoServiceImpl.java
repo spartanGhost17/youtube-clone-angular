@@ -71,6 +71,10 @@ public class VideoServiceImpl implements VideoService {
         video.setThumbnailUrl(thumbnails.get(0).getThumbnailUrl());
         videoDao.updateMainThumbnailId(video.getId(), thumbnails.get(0).getId());
         video.setVideoThumbnails(thumbnails);
+
+        User user = videoDao.getOwner(userId);
+        video.setUsername(user.getUsername());
+        video.setChannelName(user.getChannelName());
         /*List<Tag> tags = new ArrayList<>();
 
         //Status status = statusService.getByName(DEFAULT_VIDEO_VISIBILITY);
@@ -105,6 +109,11 @@ public class VideoServiceImpl implements VideoService {
 
         Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
         thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
+
+        User user = videoDao.getOwner(videoDto.getUserId());
+        videoDto.setUsername(user.getUsername());
+        videoDto.setChannelName(user.getChannelName());
+
         return videoDto;
     }
 
@@ -241,6 +250,11 @@ public class VideoServiceImpl implements VideoService {
         return fileUploadTestService.getThumbnailImage(fileName);
     }
 
+    @Override
+    public User getOwner(Long userId) {
+        return videoDao.getOwner(userId);
+    }
+
     /**
      * get video metadata
      *
@@ -262,6 +276,11 @@ public class VideoServiceImpl implements VideoService {
         Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
         thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
 
+        User user = videoDao.getOwner(videoDto.getUserId());
+        videoDto.setUsername(user.getUsername());
+        videoDto.setChannelName(user.getChannelName());
+
+
         return videoDto;
     }
 
@@ -273,6 +292,8 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public List<VideoDto> getAllByUserId(Long userId, Integer pageSize, Integer offset) {
+        User user = videoDao.getOwner(userId);
+
         return videoDao.getAllByUserId(userId, pageSize, offset).stream().map(video -> {
             VideoDto videoDto = mapToVideoDto(video);
 
@@ -285,6 +306,9 @@ public class VideoServiceImpl implements VideoService {
             videoDto.setVideoThumbnails(thumbnails);
             Optional<VideoThumbnail> thumbnailOptional = thumbnails.stream().filter(thumbnail -> Objects.equals(thumbnail.getId(), videoDto.getThumbnailId())).findFirst();
             thumbnailOptional.ifPresent(thumbnail -> videoDto.setThumbnailUrl(thumbnail.getThumbnailUrl()));
+
+            videoDto.setUsername(user.getUsername());
+            videoDto.setChannelName(user.getChannelName());
 
             return videoDto;
         }).collect(Collectors.toList());

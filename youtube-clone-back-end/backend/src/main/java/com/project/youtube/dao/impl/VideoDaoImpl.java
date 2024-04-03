@@ -5,6 +5,7 @@ import com.project.youtube.dao.VideoDao;
 import com.project.youtube.dto.VideoDto;
 import com.project.youtube.form.UpdateVideoMetadataForm;
 import com.project.youtube.model.Category;
+import com.project.youtube.model.User;
 import com.project.youtube.model.Video;
 import com.project.youtube.model.VideoThumbnail;
 import com.project.youtube.service.impl.FileUploadTestService;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 import static com.project.youtube.constants.ApplicationConstants.DEFAULT_VIDEO_TITLE;
+import static com.project.youtube.query.UserQuery.SELECT_USER_BY_ID;
 import static com.project.youtube.query.VideoQuery.*;
 import static com.project.youtube.utils.SqlUtils.camelToSnake;
 import static java.util.Objects.requireNonNull;
@@ -178,6 +180,17 @@ public class VideoDaoImpl implements VideoDao<Video> {
             throw new APIException("Could not find the video");
         } catch (Exception exception) {
             throw new APIException("An error occurred, please try again.");
+        }
+    }
+
+    @Override
+    public User getOwner(Long userId) {
+        try {
+            return jdbcTemplate.queryForObject(SELECT_USER_BY_ID, Map.of("id", userId), new BeanPropertyRowMapper<>(User.class));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("Could not find user");
+        } catch (Exception exception) {
+            throw new APIException("An error occurred");
         }
     }
 
