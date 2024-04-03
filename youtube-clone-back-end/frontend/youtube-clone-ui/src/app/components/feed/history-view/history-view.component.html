@@ -10,6 +10,7 @@
             <ng-container *ngIf="videoHistory.length > 0">
                 <div class="watched-video" *ngFor="let video of videoHistory">
                     <app-video-card
+                        [channelName]="video.channelName!"
                         [video]="video">
                     </app-video-card>
                 </div>
