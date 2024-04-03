@@ -27,6 +27,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,7 @@ import static com.project.youtube.enumaration.RoleType.ROLE_USER;
 import static com.project.youtube.enumaration.VerificationType.ACCOUNT;
 import static com.project.youtube.enumaration.VerificationType.PASSWORD;
 import static com.project.youtube.query.UserQuery.*;
+import static com.project.youtube.query.VideoQuery.SELECT_VIDEO_COUNT_BY_USER_ID_QUERY;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.time.DateUtils.addDays;
 
@@ -265,6 +267,51 @@ public class UserDaoImpl implements UserDao<User> {
         } catch (Exception exception) {
             throw new APIException("An error occurred. Please try again.");
         }
+    }
+
+    /**
+     * get
+     * @param subscriptionId
+     * @param subscriberId
+     * @return
+     */
+    @Override
+    public List<User> getSubscribedTo(Long subscriptionId, Long subscriberId) {
+        try {
+            return jdbcTemplate.query(IS_SUBSCRIBE_TO_QUERY, Map.of("subscriptionId", subscriptionId, "subscriberId", subscriberId), new BeanPropertyRowMapper<>(User.class));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new APIException("Could find ");
+        } catch (Exception exception) {
+            throw exception;
+        }
+    }
+
+    @Override
+    public Long videoCount(Long userId) {
+        Long count = 0L;
+        try {
+            count = jdbcTemplate.queryForObject(SELECT_VIDEO_COUNT_BY_USER_ID_QUERY, Map.of("userId", userId), Long.class);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred");
+        }
+        return count;
+    }
+
+    /**
+     * subscribe to a user
+     * @param subscriptionId the user being subscribed to
+     * @param subscriberId the logged-in user
+     * @return the user
+     */
+    @Override
+    public User subscribe(Long subscriptionId, Long subscriberId) {
+        try {
+            jdbcTemplate.update(SUBSCRIBE_TO_USER_QUERY, Map.of("subscriptionId", subscriptionId, "subscriberId", subscriberId));
+            return get(subscriptionId);
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while subscribing");
+        }
+
     }
 
     /**

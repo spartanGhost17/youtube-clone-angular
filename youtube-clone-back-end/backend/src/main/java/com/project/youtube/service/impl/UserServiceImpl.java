@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     private final UserDaoImpl userDaoImpl;
     @Autowired
     private final RoleServiceImpl roleService;
-    private final VideoServiceImpl videoService;
     private final FileUploadTestService fileUploadTestService;
 
     /**
@@ -67,7 +66,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = null;
         if (user != null) {
             userDTO = mapToUserDTO(user);
-            userDTO.setVideoCount(videoService.videoCount(userDTO.getId()));
+            userDTO.setVideoCount(userDaoImpl.videoCount(userDTO.getId()));
         }
         return userDTO;
     }
@@ -123,6 +122,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO verifyCode(String username, String code) {
         return mapToUserDTO(userDaoImpl.verifyCode(username, code));
+    }
+
+    /**
+     * subscribe to a channel
+     * @param subscriptionId the id of channel to subscribe to
+     * @param subscriberId the logged-in user
+     * @return the user being subscribed to
+     */
+    @Override
+    public UserDTO subscribe(Long subscriptionId, Long subscriberId) {
+        return mapToUserDTO(userDaoImpl.subscribe(subscriptionId, subscriberId));
+    }
+
+    /**
+     * get subscribe to
+     * @param subscriptionId
+     * @param subscriberId
+     * @return
+     */
+    @Override
+    public List<UserDTO> getSubscribedTo(Long subscriptionId, Long subscriberId) {
+        List<User> user = userDaoImpl.getSubscribedTo(subscriptionId, subscriberId);
+        List<UserDTO> userDTOList = new ArrayList<>();
+        user.forEach(u -> {
+            userDTOList.add(mapToUserDTO(u));
+        });
+        return userDTOList;
+    }
+
+    /**
+     * check if user is subscribed to the channel
+     * @param subscriptionId the id of channel subscribed to
+     * @param subscriberId the logged-in user
+     * @return the user being subscribed to
+     */
+    @Override
+    public UserDTO subscribedTo(Long subscriptionId, Long subscriberId) {
+        return mapToUserDTO(userDaoImpl.subscribe(subscriptionId, subscriberId));
     }
 
 

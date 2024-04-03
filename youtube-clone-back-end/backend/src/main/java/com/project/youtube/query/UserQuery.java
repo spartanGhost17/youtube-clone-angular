@@ -13,6 +13,8 @@ public class UserQuery {
     public static final String SELECT_USER_BY_USER_CODE_QUERY = "SELECT * FROM Users WHERE id = (SELECT user_id FROM TwoFactorVerifications WHERE code = :code AND user_id = :userId)";
     //public static final String SELECT_USER_BY_USER_CODE_QUERY  = "SELECT u.* FROM Users u INNER JOIN TwoFactorVerifications tfa ON u.id = tfa.user_id WHERE tfa.code = :code AND tfa.user_id = :userId";
     public static final String SELECT_EXPIRED_CODE_QUERY = "SELECT expiration_date < NOW() AS is_expired FROM TwoFactorVerifications WHERE code = :code AND user_id = :userId";
+    public static final String IS_SUBSCRIBE_TO_QUERY = "SELECT * FROM Subscriptions WHERE user_id = :subscriptionId AND subscriber_id = :subscriberId";
+    public static final String SUBSCRIBE_TO_USER_QUERY = "INSERT INTO Subscriptions (user_id, subscriber_id, notification_type) VALUES (:subscriptionId, :subscriberId, 'PERSONALISED')";
     public static final String DELETE_PASSWORD_VERIFICATION_BY_USER_ID_QUERY = "DELETE FROM ResetPasswordVerifications WHERE user_id = :userId";
     public static final String INSERT_PASSWORD_VERIFICATION_BY_USER_ID_QUERY = "INSERT INTO ResetPasswordVerifications (user_id, url, expiration_date) VALUES (:userId, :url, :expirationDate)";
     public static final String SELECT_EXPIRED_PASSWORD_VERIFICATION_URL_QUERY = "SELECT expiration_date < NOW() AS is_expired FROM ResetPasswordVerifications WHERE url = :url";

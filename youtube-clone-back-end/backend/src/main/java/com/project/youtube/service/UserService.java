@@ -18,6 +18,9 @@ public interface UserService {
     void sendVerificationCode(UserDTO userDTO);
     UserPrincipal getUserPrincipal(UserDTO userDTO);
     UserDTO verifyCode(String username, String code);
+    UserDTO subscribe(Long subscriptionId, Long subscriberId);
+    List<UserDTO> getSubscribedTo(Long subscriptionId, Long subscriberId);
+    UserDTO subscribedTo(Long subscriptionId, Long subscriberId);
     void resetPassword(String email);
     UserDTO verifyPasswordKey(String key);
     void updatePassword(String key, String password, String confirmedPassword);
