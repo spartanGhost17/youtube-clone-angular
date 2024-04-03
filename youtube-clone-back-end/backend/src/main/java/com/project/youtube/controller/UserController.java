@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
@@ -198,6 +199,35 @@ public class UserController {
     @GetMapping(value = "profile/userId")
     public ResponseEntity<HttpResponse> getUserById(@RequestParam("id") Long id) {
         UserDTO userDTO = userServiceImpl.getUser(id);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", userDTO))
+                        .message("Profile updated")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @GetMapping(value = "isSubscribed")
+    public ResponseEntity<HttpResponse> isSubscribed(@RequestParam("to") Long to, @RequestParam("subscriber") Long subscriber) {
+        List<UserDTO> user = userServiceImpl.getSubscribedTo(to, subscriber);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", user))
+                        .message("Profile updated")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @GetMapping(value = "subscribe")
+    public ResponseEntity<HttpResponse> subscribe(@RequestParam("to") Long subscriptionId) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        UserDTO userDTO = userServiceImpl.subscribe(subscriptionId, userId);
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
