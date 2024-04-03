@@ -45,8 +45,8 @@ export class HomeComponent {
   populateSidePanel(username: string) {
     this.section1 = [
       {'isActive':true, text: 'Home', icon: 'home', provider: 'google', type: 'fill', color: 'white', navigateTo: 'explore', sidebarType: 'side'},//this.ICON_HOME
-      //{'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, provider: 'default', type: 'outlined', color: 'white', navigateTo: '', sidebarType: 'side'},//
-      {'isActive':false, text: 'Subscriptions', icon: 'subscriptions', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'feed/subscription', sidebarType: 'side'}//this.ICON_SUBSCRIPTION
+      {'isActive':false, text: 'Shorts', icon: this.ICON_SHORTS, provider: 'default', type: 'outlined', color: 'white', navigateTo: '', sidebarType: 'side'},//
+      //{'isActive':false, text: 'Subscriptions', icon: 'subscriptions', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'feed/subscription', sidebarType: 'side'}//this.ICON_SUBSCRIPTION
     ];
   
     this.section2 = [
