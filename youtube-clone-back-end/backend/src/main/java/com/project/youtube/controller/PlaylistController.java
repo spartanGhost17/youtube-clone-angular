@@ -151,7 +151,7 @@ public class PlaylistController {
     public ResponseEntity<HttpResponse> addVideo(@RequestBody @Valid VideoItemForm videoItemForm) {
         playListService.addVideo(videoItemForm);
         VideoDto videoDto = playListService.getVideoById(videoItemForm.getVideoId(), videoItemForm.getPlaylistId());
-
+        videoDto.setPlaylistId(videoItemForm.getPlaylistId());
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .message("Video added to playlist updated.")
@@ -171,6 +171,7 @@ public class PlaylistController {
         PlaylistDto playlistDto = playListService.getByPlaylistId(playlistId);
         List<VideoDto> videoDtoList = playListService.getVideos(playlistId, pageSize, offset);
         playlistDto.setVideos(videoDtoList);
+        videoDtoList.forEach(v -> v.setPlaylistId(playlistDto.getId()));
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .message("Video added to playlist updated.")
