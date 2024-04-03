@@ -17,8 +17,14 @@
                 <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
                 <p [ngClass]="{'text': loading, 'animate-pulse': loading}"></p>
                 <div (click)="onChannelInfoClicked(video)" class="channel-name" *ngIf="!loading">
-                    <p *ngIf="!loading">{{user.channelName}}</p>
-                    <span *ngIf="user.verified && !loading" class="material-symbols-outlined">check_circle</span>
+                    <ng-container *ngIf="username">
+                        <p *ngIf="!loading || username">{{ channelName }}</p>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="user">
+                        <p *ngIf="!loading">{{user.channelName ? user.channelName : username }}</p>
+                        <span *ngIf="user.verified && !loading" class="material-symbols-outlined">check_circle</span>
+                    </ng-container>
                 </div>
                 <p *ngIf="!loading" class="views">{{video.likeCount}} Views &bull; {{video.createdAt | date }} </p>
             </div>

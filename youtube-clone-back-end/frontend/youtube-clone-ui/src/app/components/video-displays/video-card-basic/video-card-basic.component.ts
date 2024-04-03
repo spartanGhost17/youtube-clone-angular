@@ -21,6 +21,8 @@ export class VideoCardBasicComponent {
   @Input() size: string = 'default'; //either xtra-small, small or default
   @Input() showIcon: boolean = true;
   @Input() user: UserInterface;
+  @Input() username: string;
+  @Input() channelName: string; 
 
   constructor(
     private componentUpdatesService: ComponentUpdatesService,
@@ -45,7 +47,12 @@ export class VideoCardBasicComponent {
    */
   onChannelInfoClicked(video: any): void {
     if (this.default) {
-      this.router.navigate([`home/@${this.user.username}`]);
+      if(this.user) {
+        this.router.navigate([`home/@${this.user.username}`]);
+      } else {
+        this.router.navigate([`home/@${this.username}`]);
+      }
+      
     }
   }
 }
