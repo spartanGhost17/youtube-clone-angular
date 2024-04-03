@@ -214,9 +214,8 @@ export class VideoMiniComponent {
     //this.captionText = this.video.nativeElement.textTracks[0];
     //this.captionText.mode = 'hidden';
 
-    this.videoDurationSec = 2.9;//this.timeToSeconds(this.videoMetadata.duration);//this.video.nativeElement.duration;
+    this.videoDurationSec = 2.9;
     this.videoDuration = formatDuration(this.videoDurationSec);
-    console.log("loaded metadata milliseconds: ", this.videoDurationSec, " video duration: ", this.videoDuration);
   }
 
   timeToSeconds(timeString: any) {
@@ -229,7 +228,6 @@ export class VideoMiniComponent {
   }
 
   onTimeUpdate() {
-    console.log("current time update ==> ", this.video.nativeElement.currentTime);
     this.loop();
   }
 
