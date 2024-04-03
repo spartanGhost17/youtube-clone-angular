@@ -63,9 +63,9 @@ export class PlaylistService {
   /**
    * get the user's playlists
    * @param {number} userId the user id
-   * @returns {HttpResponseInterface<PlaylistInterface>} the user's playlists
+   * @returns {HttpResponseInterface<PlaylistInterface[]>} the user's playlists
    */
-  getUserPlaylists(userId: number): Observable<HttpResponseInterface<PlaylistInterface>> {
+  getUserPlaylists(userId: number): Observable<HttpResponseInterface<PlaylistInterface[]>> {
     const url: string = buildURL(this.apiUrl, this.PLAYLIST.GET_BY_USER);
     const params = new HttpParams()
                   .append('userId', userId);

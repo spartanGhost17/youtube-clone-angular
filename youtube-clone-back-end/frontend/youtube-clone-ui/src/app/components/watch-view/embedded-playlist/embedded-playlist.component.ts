@@ -84,7 +84,7 @@ export class EmbeddedPlaylistComponent implements OnInit {
     this.playlist = {
       id: 22,
       name: 'Anime and comics',
-      visibilityStatus: 'private',
+      visibilityStatus: {id: 0, statusName:'private'},
       description: 'This is the description',
       videos: this.playlistItems 
     }
@@ -101,10 +101,10 @@ export class EmbeddedPlaylistComponent implements OnInit {
   }
 
   checkStatus(): void {
-    if(this.playlist.visibilityStatus.toLocaleLowerCase() === 'public') {
+    if(this.playlist.visibilityStatus.statusName.toLocaleLowerCase() === 'public') {
       this.isPublic = true;
     }
-    else if(this.playlist.visibilityStatus.toLocaleLowerCase() === 'private') {
+    else if(this.playlist.visibilityStatus.statusName.toLocaleLowerCase() === 'private') {
       this.isPrivate = true;
     }
     else { 
