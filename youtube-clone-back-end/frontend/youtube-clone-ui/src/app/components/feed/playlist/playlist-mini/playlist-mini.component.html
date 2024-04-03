@@ -2,7 +2,7 @@
 <div #container class="mini-playlist-container">
     <div class="thumbnail-container">
         <div #thumbnailContainer class="thumbnail">
-            <img class="" [src]="playlist.videos![0].thumbnailUrl" alt="">
+            <img class="" [src]="playlist.thumbnailUrl!" alt="">
         </div>
         <div #hoverContainer class="thumbnail-hover-container">
             <span class="material-symbols-outlined big-icon non-selectable">play_arrow</span>
@@ -11,7 +11,7 @@
         <div #videoCountContainer class="video-count-container" >
             <span class="material-symbols-outlined small-icon non-selectable">playlist_play</span>
             <div class="video-count">
-                {{videoCount}}  videos
+                {{playlist.size}}  videos
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="visisibility non-selectable">
-            <span class="text-secondary lower-case capitalize">Private</span>
+            <span class="text-secondary lower-case capitalize">{{playlist.visibilityStatus.statusName}}</span>
             <span class="text-secondary">&bull;</span>
             <span class="text-secondary">Playlist</span>
         </div>

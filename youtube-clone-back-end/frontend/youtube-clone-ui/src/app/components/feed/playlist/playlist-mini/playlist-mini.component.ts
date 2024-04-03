@@ -12,7 +12,7 @@ import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/s
 export class PlaylistMiniComponent {
   @Input() playlist: PlaylistInterface;
 
-  videoCount: number = 0;
+  //videoCount: number = 0;
   dropDownSettingsItems: any[] = [];
   //hoverTop: string = '0px';
 
@@ -22,16 +22,11 @@ export class PlaylistMiniComponent {
   }
 
   ngOnInit() {
-    this.setVideoCount();
     this.setDropDownSettings();
   }
 
   ngAfterViewInit() {
     //this.updateTopValue();
-  }
-
-  setVideoCount() {
-    this.videoCount = this.playlist.size? this.playlist.size : 0; //this.playlist?.videos? this.playlist.videos.length : 0;
   }
 
   setDropDownSettings() {

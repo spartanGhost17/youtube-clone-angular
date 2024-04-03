@@ -85,7 +85,10 @@ img {
 }
 
 .metadata-container {
+    position: absolute;
     margin-top: 10px;
+    height: 80px;
+    width: 210px;
 }
 
 .playlist-title-container {
@@ -109,6 +112,8 @@ img {
 }
 
 .drop-down-container {
+    bottom: 0;
+    right: 0;
 }
 
 .visisibility {
