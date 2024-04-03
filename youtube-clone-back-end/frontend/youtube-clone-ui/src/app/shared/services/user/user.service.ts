@@ -79,6 +79,29 @@ export class UserService {
   } 
 
   /**
+   * check if logged-in user is subscribed to user (channel)
+   * @param { number } to id of channel to subscribe to
+   * @param { number } subscriberId id of logged-in user
+   * @returns { HttpResponseInterface<UserInterface[]> } the response
+   */
+  isSubscribed(to: number, subscriberId: number): Observable<HttpResponseInterface<UserInterface[]>> {
+    const url = buildURL(this.serverURL, this.userResource.IS_SUBSCRIBED);
+    const params = new HttpParams().append('to', to).append('subscriber', subscriberId);
+    return this.http.get<HttpResponseInterface<UserInterface[]>>(url, { params });
+  }
+
+  /**
+   * subscribe to a user
+   * @param { number } to id of channel (user) to subscribe to  
+   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response
+   */
+  subscribe(to: number): Observable<HttpResponseInterface<UserInterface>> {
+    const params: HttpParams = new HttpParams().append('to', to);
+    const url = buildURL(this.serverURL, this.userResource.SUBSCRIBE);
+    return this.http.get<HttpResponseInterface<UserInterface>>(url, { params })
+  }
+
+  /**
    * builds a URI path for any request 
    * @param {string} serverUrl the server URL
    * @param {string} resource the resource path
