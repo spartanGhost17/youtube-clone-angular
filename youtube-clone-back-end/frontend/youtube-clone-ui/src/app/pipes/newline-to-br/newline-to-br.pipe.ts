@@ -8,6 +8,6 @@ export class NewlineToBrPipe implements PipeTransform {
 
   transform(value: string): string {
     // Replace newline characters with HTML line break tags
-    return value.replace(/\n/g, '<br>');
+    return value? value.replace(/\n/g, '<br>') : value;
   }
 }
