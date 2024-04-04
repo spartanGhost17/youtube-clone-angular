@@ -35,7 +35,8 @@
         "UPDATE_PROFILE_IMAGE": "/api/v1/user/update/image",
         "GET_IMAGE": "/api/v1/user/image/",
         "SUBSCRIBE": "/api/v1/user/subscribe",
-        "IS_SUBSCRIBED": "/api/v1/user/isSubscribed"
+        "IS_SUBSCRIBED": "/api/v1/user/isSubscribed",
+        "UNSUBSCRIBE": "/api/v1/user/unsubscribe"
     },
     "ROLE_END_POINTS": {
         "GET_ALL": "/api/v1/role/"
