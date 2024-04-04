@@ -18,6 +18,7 @@ public interface UserService {
     void sendVerificationCode(UserDTO userDTO);
     UserPrincipal getUserPrincipal(UserDTO userDTO);
     UserDTO verifyCode(String username, String code);
+    UserDTO unsubscribe(Long subscriptionId, Long userId);
     UserDTO subscribe(Long subscriptionId, Long subscriberId);
     List<UserDTO> getSubscribedTo(Long subscriptionId, Long subscriberId);
     UserDTO subscribedTo(Long subscriptionId, Long subscriberId);

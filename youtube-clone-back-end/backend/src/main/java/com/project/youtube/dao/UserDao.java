@@ -30,7 +30,7 @@ public interface UserDao<T extends User> {
     User verifyCode(String username, String code); //TODO: Make return user DTO Instead of user
     List<User> getSubscribedTo(Long subscriptionId, Long subscriberId);
     Long videoCount(Long userId);
-
+    User unsubscribe(Long subscriptionId, Long userId);
     User subscribe(Long subscriptionId, Long subscriberId);
     Boolean isVerificationCodeExpired(String code, Long userId);
     void resetPassword(String email);

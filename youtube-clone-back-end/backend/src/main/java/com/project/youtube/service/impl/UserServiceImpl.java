@@ -125,6 +125,17 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * unsubscribe
+     * @param subscriptionId the user id to unsubscribe
+     * @param userId the logged-in user id
+     * @return
+     */
+    @Override
+    public UserDTO unsubscribe(Long subscriptionId, Long userId) {
+        return mapToUserDTO(userDaoImpl.unsubscribe(subscriptionId, userId));
+    }
+
+    /**
      * subscribe to a channel
      * @param subscriptionId the id of channel to subscribe to
      * @param subscriberId the logged-in user

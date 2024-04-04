@@ -298,6 +298,23 @@ public class UserDaoImpl implements UserDao<User> {
     }
 
     /**
+     * unsubscribe
+     * @param subscriptionId the user id to unsubscribe from
+     * @param userId the user id
+     * @return the user being unsubscribed from
+     */
+    @Override
+    public User unsubscribe(Long subscriptionId, Long userId) {
+        User user = get(subscriptionId);
+        try {
+            jdbcTemplate.update(DELETE_USER_FROM_SUBSCRIPTION_BY_USER_ID_QUERY, Map.of("subscriptionId", subscriptionId, "subscriberId", userId));
+            return user;
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while unsubscribing from user "+user.getUsername());
+        }
+    }
+
+    /**
      * subscribe to a user
      * @param subscriptionId the user being subscribed to
      * @param subscriberId the logged-in user
@@ -309,7 +326,8 @@ public class UserDaoImpl implements UserDao<User> {
             jdbcTemplate.update(SUBSCRIBE_TO_USER_QUERY, Map.of("subscriptionId", subscriptionId, "subscriberId", subscriberId));
             return get(subscriptionId);
         } catch (Exception exception) {
-            throw new APIException("An error occurred while subscribing");
+            throw exception;
+            //throw new APIException("An error occurred while subscribing");
         }
 
     }

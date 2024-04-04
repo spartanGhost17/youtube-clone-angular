@@ -224,10 +224,25 @@ public class UserController {
         );
     }
 
-    @GetMapping(value = "subscribe")
+    @PostMapping(value = "subscribe")
     public ResponseEntity<HttpResponse> subscribe(@RequestParam("to") Long subscriptionId) {
         Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
         UserDTO userDTO = userServiceImpl.subscribe(subscriptionId, userId);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", userDTO))
+                        .message("Profile updated")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @DeleteMapping(value = "unsubscribe")
+    public ResponseEntity<HttpResponse> unsubscribe(@RequestParam("from") Long subscriptionId) {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        UserDTO userDTO = userServiceImpl.unsubscribe(subscriptionId, userId);
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
