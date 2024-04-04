@@ -96,9 +96,20 @@ export class UserService {
    * @returns { Observable<HttpResponseInterface<UserInterface>> } the response
    */
   subscribe(to: number): Observable<HttpResponseInterface<UserInterface>> {
-    const params: HttpParams = new HttpParams().append('to', to);
+    const params: HttpParams = new HttpParams().set('to', to);
     const url = buildURL(this.serverURL, this.userResource.SUBSCRIBE);
-    return this.http.get<HttpResponseInterface<UserInterface>>(url, { params })
+    return this.http.post<HttpResponseInterface<UserInterface>>(url, params);
+  }
+
+  /**
+   * unsubscribe from a user
+   * @param { number } from id of user to unsubscribe from
+   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response
+  */
+  unsubscribe(from: number): Observable<HttpResponseInterface<UserInterface>> {
+    const url = buildURL(this.serverURL, this.userResource.UNSUBSCRIBE)
+    const params: HttpParams = new HttpParams().set('from', from);
+    return this.http.delete<HttpResponseInterface<UserInterface>>(url, { params });
   }
 
   /**
