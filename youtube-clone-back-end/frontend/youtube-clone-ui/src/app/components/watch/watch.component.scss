@@ -159,16 +159,6 @@
     border-radius: 8px;
 }
 
-.subscription-state-btn {
-    position: absolute;
-    height: fit-content;
-    width: fit-content;
-    z-index: 4;
-    //margin-right: 6px;
-    //padding-right: 8px;
-    background-color: pink;
-}
-
 .user-icon-container.skeleton_ {
     background-color: rgb(42, 41, 41);
     width: 40px;
@@ -207,11 +197,31 @@
     animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.subscribe-button {
+.subscribe {
+    display: flex;
+    justify-content: center;
+    align-self: center;
     border-radius: 24px;
     margin-right: 60px;
+    height: 40px;
+    width: 150px;
+}
+
+.subscribe.skeleton_ {
+    border-radius: 26px;
+    background-color: rgb(45, 42, 42);
+}
+
+.subscribe-button {
+    border-radius: 24px;
     background-color: var(--yt-color-active-btn-dark);
     color: black;
+}
+
+.subscription-state-btn {
+    height: fit-content;
+    width: fit-content;
+    z-index: 4;
 }
 
 .like, .dislike, .share, .save, .download {
@@ -221,14 +231,39 @@
     margin-right: 4px;
 }
 
+.share.skeleton_, .save.skeleton_, .download.skeleton_ {
+    height: 40px;
+    border-radius: 26px;
+    background-color: rgb(45, 42, 42);
+} 
+
+.share.skeleton_ {
+    width: 85px;
+}
+
+.save.skeleton_ {
+    width: 80px;
+}
+
+.download.skeleton_ {
+    width: 108px;
+}
+
 .like {
     width: 140px;
-    height: fit-content;
+    height: fit-content;//40px;//fit-content;
     justify-content: space-between;
 }
 
 .like:last-child {
     margin: auto;
+}
+
+.like.skeleton_ {
+    //width: 140px;
+    height: 40px;
+    border-radius: 26px;
+    background-color: rgb(45, 42, 42);
 }
 
 .like-btn {

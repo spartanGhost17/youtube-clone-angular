@@ -34,42 +34,48 @@
                         </div>
                     </div>
                     <div class="action-buttons">
-                        <div class="ytcp-button subscribe-button">Subscribe</div>
-                        <div class="subscription-state-btn">
-                            <app-standard-dropdown 
-                                [parentId]="videoId"
-                                [items]="subscriptionActions"
-                                [iconLeft]="'notifications_active'"
-                                [iconRight]="'expand_more'"
-                                [buttonText]="subscriptionState">
-                            </app-standard-dropdown>
+                        <div class="subscribe" [ngClass]="{'skeleton_': isSubscribedLoading, 'animate-pulse': isSubscribedLoading}">
+                            <div *ngIf="isNotUser && (!isSubscribedLoading && !isSubscribed)" (click)="onSubscribe()" class="ytcp-button subscribe-button">
+                                <span>Subscribe</span>
+                            </div>
+                            <div *ngIf=" isNotUser && (!isSubscribedLoading && isSubscribed)" class="subscription-state-btn">
+                                <app-standard-dropdown 
+                                    [parentId]="videoId"
+                                    [items]="subscriptionActions"
+                                    [iconLeft]="'notifications_active'"
+                                    [iconRight]="'expand_more'"
+                                    [buttonText]="subscriptionState">
+                                </app-standard-dropdown>
+                            </div>
                         </div>
+                        
+
                         <div class="interactive-buttons">
-                            <div class="like">
-                                <div class="ytcp-button like-btn" [appTooltip]="'Like'">
+                            <div class="like" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}">
+                                <div class="ytcp-button like-btn" [appTooltip]="'Like'" *ngIf="!loadingUserInfo">
                                     <span class="material-symbols-outlined non-selectable">thumb_up</span>
                                     <span class="non-selectable">120K</span>
                                 </div>
-                                <div class="ytcp-button dislike-btn" [appTooltip]="'Dislike'">
+                                <div class="ytcp-button dislike-btn"[appTooltip]="'Dislike'" *ngIf="!loadingUserInfo">
                                     <span class="material-symbols-outlined non-selectable">thumb_down</span>
                                 </div>
                             </div>
-                            <div class="ytcp-button share" [appTooltip]="'Share'">
-                                <span class="material-symbols-outlined non-selectable">share</span>
-                                <span>Share</span>
+                            <div class="ytcp-button share" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}" [appTooltip]="'Share'">
+                                <span class="material-symbols-outlined non-selectable" *ngIf="!loadingUserInfo">share</span>
+                                <span *ngIf="!loadingUserInfo">Share</span>
                             </div>
-                            <div class="ytcp-button save" [appTooltip]="'Save'">
-                                <span class="material-symbols-outlined non-selectable">playlist_add</span>
-                                <span>Save</span>
+                            <div class="ytcp-button save" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}" [appTooltip]="'Save'">
+                                <span class="material-symbols-outlined non-selectable" *ngIf="!loadingUserInfo">playlist_add</span>
+                                <span *ngIf="!loadingUserInfo">Save</span>
                             </div>
-                            <div class="ytcp-button download">
-                                <span class="material-symbols-outlined non-selectable">download</span>
-                                <span>Download</span>
+                            <div class="ytcp-button download" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}">
+                                <span class="material-symbols-outlined non-selectable" *ngIf="!loadingUserInfo">download</span>
+                                <span *ngIf="!loadingUserInfo">Download</span>
                             </div>
-                            <div class="ytcp-button download" (click)="report($event)">
-                                <span appSpinner [showSpinner]="true"></span>
-                                <span class="material-symbols-outlined non-selectable">flag</span>
-                                <span>Report</span>
+                            <div class="ytcp-button download" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}" (click)="report($event)">
+                                <span *ngIf="!loadingUserInfo" appSpinner [showSpinner]="true"></span>
+                                <span *ngIf="!loadingUserInfo" class="material-symbols-outlined non-selectable">flag</span>
+                                <span *ngIf="!loadingUserInfo">Report</span>
                             </div>
                         </div>
                     </div>

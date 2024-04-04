@@ -73,7 +73,7 @@ export class WatchComponent implements OnInit {
   
   comment: Comment = {};
 
-  test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  //test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   comments: Comment[]; //erase this test
   //string: string = 'SOME TEST TEXT'
@@ -93,6 +93,9 @@ export class WatchComponent implements OnInit {
   currentUser: CurrentUserInterface;
   subscriptionActions: any;
   subscriptionState: string = 'Subscribed';
+  isSubscribed: boolean;
+  isSubscribedLoading: boolean;
+  isNotUser: boolean = true;
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -119,7 +122,7 @@ export class WatchComponent implements OnInit {
     this.componentUpdatesService.sideBarTypeUpdate(this.sideBarType);
     this.getCurrentUser();
     this.populateSubscriptionActions();
-
+    
     this.componentUpdatesService.reportModal$.subscribe({
       next: (showModal) => {
         if(showModal) {
@@ -170,7 +173,7 @@ export class WatchComponent implements OnInit {
     this.comments = [this.comment]//, this.comment];
 
     console.log('COMMENT IN PARENT', this.comment);
-    console.log('COMMENT IN PARENT TEST', this.test);
+    //console.log('COMMENT IN PARENT TEST', this.test);
 
     this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -243,6 +246,9 @@ export class WatchComponent implements OnInit {
     this.userService.getUserByUserId(userId).subscribe({
       next: (response: any) => {
         this.user = response.data.user;
+        if(this.user) {
+          this.isUserSubscribed(this.metadata.userId!, this.currentUser.id);
+        } 
         this.loadingUserInfo = false;
       }
     });
@@ -275,20 +281,64 @@ export class WatchComponent implements OnInit {
 
   populateSubscriptionActions() {
     this.subscriptionActions = [
-      { icon: 'notifications_active', text: 'All',  action: () => this.subscribe() },
+      { icon: 'notifications_active', text: 'All',  action: () => this.onSubscribe() },
       { icon: 'notifications', text: 'Personalised', action: () => {} },
       { icon: 'notifications_off', text: 'None', action: () => {} },
-      { icon: 'person_remove', text: 'Unsubscribe', action: () => this.unsubscribe() }
+      { icon: 'person_remove', text: 'Unsubscribe', action: () => this.onUnsubscribe() }
     ];
   }
 
-  subscribe(): void {
+  /**
+   * check if user is subscribed
+   * @param { number } to id of user to subscribe to
+   * @param { number } currentUserId the current user id
+   * @returns 
+   */
+  isUserSubscribed(to: number, currentUserId: number) {
+    this.isSubscribedLoading = true;
+    if(to === currentUserId) {
+      this.isNotUser = false;
+      this.isSubscribedLoading = false;
+      return; 
+    }
     
-    console.log(" subscribe --> to ", this.metadata.username, " with id ", this.metadata.userId, " for user id ", this.currentUser.id);
+    this.userService.isSubscribed(to, currentUserId).subscribe({
+      next: (data) => {
+        if(data.data.user.length > 0) {
+          this.isSubscribed = true;        
+        }
+        this.isSubscribedLoading = false;
+      }
+    });
   }
 
-  unsubscribe(): void {
-    console.log(" unsubscribe --> from ", this.metadata.username, " with id ", this.metadata.userId, " for user id ", this.currentUser.id);
+  /**
+   * on subscribe 
+   */
+  onSubscribe(): void {
+    if(!this.isSubscribed) {
+      this.userService.subscribe(this.metadata.userId!).subscribe({
+        next: (data) => {
+          if(data.data.user) {
+            this.isSubscribed = true;
+          }
+        }
+      });
+    }
+    
+  }
+
+  /**
+   * on unsubscribe clicked
+   */
+  onUnsubscribe(): void {
+    if(this.isSubscribed) {
+      this.userService.unsubscribe(this.metadata.userId!).subscribe({
+        next: (data) => {
+          this.isSubscribed = false;
+        }
+      })
+    }
   }
 
 
