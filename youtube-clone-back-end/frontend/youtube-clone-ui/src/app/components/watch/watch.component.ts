@@ -28,6 +28,7 @@ import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embed
 import { Store } from '@ngrx/store';
 import { selectCurrentUser } from '../../shared/store/user/reducers';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
+import { LikeService } from '../../shared/services/like/like.service';
 
 @Component({
   selector: 'app-watch',
@@ -111,7 +112,8 @@ export class WatchComponent implements OnInit {
     private renderer: Renderer2,
     private videoService: VideoService,
     private userService: UserService,
-    private store: Store
+    private store: Store,
+    private likeService: LikeService
   ) {}
 
   /**

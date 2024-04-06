@@ -58,5 +58,8 @@
         "GET_BY_VIDEO_ID": "/api/v1/tag/video",
         "GET_BY_NAME": "/api/v1/tag/name",
         "DELETE_BY_TAG_ID": "/api/v1/tag/video/tagId"
+    },
+    "LIKE": {
+        "LIKE": "/api/v1/like"
     }
 }
