@@ -113,6 +113,26 @@ export class UserService {
   }
 
   /**
+   * get a logged in user subscriptions
+   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response
+   */
+  subscriptions(): Observable<HttpResponseInterface<UserInterface>> {
+    const url: string = buildURL(this.serverURL, this.userResource.SUBSCRIPTIONS)
+    return this.http.get<HttpResponseInterface<UserInterface>>(url);
+  }
+
+  /**
+   * get subscribers for a channel
+   * @param { number } id the user id 
+   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response
+   */
+  subscribers(id: number): Observable<HttpResponseInterface<UserInterface>> {
+    const url: string = buildURL(this.serverURL, this.userResource.SUBSCRIBERS);
+    const params: HttpParams = new HttpParams().append('id', id);
+    return this.http.get<HttpResponseInterface<UserInterface>>(url, { params });
+  }
+
+  /**
    * builds a URI path for any request 
    * @param {string} serverUrl the server URL
    * @param {string} resource the resource path
