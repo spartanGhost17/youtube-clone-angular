@@ -3,9 +3,11 @@ export interface SubComment {
     imageUrl?: string,
     userId?: number,
     username?: string;
-    postTime?: string,
+    createdAt: Date,
+    lastUpdated: Date,
     text: string,
     to: string,
+    parentId: number,
     likeCount: number,
     dislikeCount?: number, 
     like?: boolean,
