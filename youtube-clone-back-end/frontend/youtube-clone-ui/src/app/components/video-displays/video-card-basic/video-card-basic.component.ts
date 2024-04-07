@@ -5,13 +5,14 @@ import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/com
 import { UserInterface } from '../../../shared/types/user.interface';
 import { Video } from '../../../shared/types/video';
 import { VideoMiniComponent } from '../video-mini/video-mini.component';
+import { DatecstmPipe } from '../../../pipes/datecstm/datecstm.pipe';
 
 @Component({
   selector: 'app-video-card-basic',
   templateUrl: './video-card-basic.component.html',
   styleUrls: ['./video-card-basic.component.scss'],
   standalone: true,
-  imports: [NgClass, NgIf, VideoMiniComponent, DatePipe],
+  imports: [NgClass, NgIf, VideoMiniComponent, DatePipe, DatecstmPipe],
 })
 export class VideoCardBasicComponent {
   
