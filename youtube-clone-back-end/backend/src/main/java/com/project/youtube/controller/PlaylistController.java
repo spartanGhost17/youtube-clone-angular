@@ -222,10 +222,12 @@ public class PlaylistController {
     @DeleteMapping()
     public ResponseEntity<HttpResponse> deletePlaylist(@RequestParam("id") Long playlistId) {
         Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        PlaylistDto playlistDto = playListService.getByPlaylistId(playlistId);
         playListService.delete(playlistId, userId);
         return new ResponseEntity<>(
                 HttpResponse.builder()
                         .message("Playlist was deleted successfully.")
+                        .data(Map.of("playlist", playlistDto))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
