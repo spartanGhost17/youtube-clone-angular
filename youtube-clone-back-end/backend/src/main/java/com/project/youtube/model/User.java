@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.Column;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -32,7 +33,7 @@ public class User {
     private String password;
     private String phone;
     @Column(name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
     private Boolean verified;
     private String description;
     private Boolean enabled;

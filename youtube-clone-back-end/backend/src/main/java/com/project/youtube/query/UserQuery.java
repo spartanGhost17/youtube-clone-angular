@@ -13,6 +13,8 @@ public class UserQuery {
     public static final String SELECT_USER_BY_USER_CODE_QUERY = "SELECT * FROM Users WHERE id = (SELECT user_id FROM TwoFactorVerifications WHERE code = :code AND user_id = :userId)";
     //public static final String SELECT_USER_BY_USER_CODE_QUERY  = "SELECT u.* FROM Users u INNER JOIN TwoFactorVerifications tfa ON u.id = tfa.user_id WHERE tfa.code = :code AND tfa.user_id = :userId";
     public static final String SELECT_EXPIRED_CODE_QUERY = "SELECT expiration_date < NOW() AS is_expired FROM TwoFactorVerifications WHERE code = :code AND user_id = :userId";
+    public static final String SELECT_SUBSCRIPTIONS_BY_SUBSCRIBER_ID_QUERY = "SELECT u.* FROM Subscriptions AS s INNER JOIN Users AS u ON u.id = s.user_id WHERE s.subscriber_id = :subscriberId";
+    public static final String SELECT_SUBSCRIBERS_BY_USER_ID_QUERY = "SELECT u.* FROM Subscriptions AS s INNER JOIN Users AS u ON u.id = s.subscriber_id WHERE s.user_id = :userId";
     public static final String IS_SUBSCRIBE_TO_QUERY = "SELECT * FROM Subscriptions WHERE user_id = :subscriptionId AND subscriber_id = :subscriberId";
     public static final String SUBSCRIBE_TO_USER_QUERY = "INSERT INTO Subscriptions (user_id, subscriber_id, notification_type) VALUES (:subscriptionId, :subscriberId, 'PERSONALISED')";
     public static final String DELETE_USER_FROM_SUBSCRIPTION_BY_USER_ID_QUERY = "DELETE FROM Subscriptions WHERE subscriber_id = :subscriberId AND user_id = :subscriptionId";

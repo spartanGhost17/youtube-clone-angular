@@ -27,7 +27,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -266,6 +265,29 @@ public class UserDaoImpl implements UserDao<User> {
             throw new APIException("No user can be found.");
         } catch (Exception exception) {
             throw new APIException("An error occurred. Please try again.");
+        }
+    }
+
+    @Override
+    public List<User> getSubscribers(Long userId) {
+        try {
+            return jdbcTemplate.query(SELECT_SUBSCRIBERS_BY_USER_ID_QUERY, Map.of("userId", userId), new BeanPropertyRowMapper<>(User.class));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while loading subscribers");
+        }
+    }
+
+    /**
+     * get all user subscriptions
+     * @param userId the user id
+     * @return the list of accounts subscribed to by current user
+     */
+    @Override
+    public List<User> getAllSubscriptions(Long userId) {
+        try {
+            return jdbcTemplate.query(SELECT_SUBSCRIPTIONS_BY_SUBSCRIBER_ID_QUERY, Map.of("subscriberId", userId), new BeanPropertyRowMapper<>(User.class));
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while getting subscriptions");
         }
     }
 

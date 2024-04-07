@@ -28,6 +28,8 @@ public interface UserDao<T extends User> {
     void createVerificationCode(UserDTO userDTO, String verificationCode, String expirationDate);
     //void sendSMS(String phone, String s);
     User verifyCode(String username, String code); //TODO: Make return user DTO Instead of user
+    List<User> getSubscribers(Long userId);
+    List<User> getAllSubscriptions(Long userId);
     List<User> getSubscribedTo(Long subscriptionId, Long subscriberId);
     Long videoCount(Long userId);
     User unsubscribe(Long subscriptionId, Long userId);

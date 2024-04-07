@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -122,6 +123,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO verifyCode(String username, String code) {
         return mapToUserDTO(userDaoImpl.verifyCode(username, code));
+    }
+
+    /**
+     * get all subscriptions for user
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<UserDTO> getAllSubscriptions(Long userId) {
+        log.info("user id {}", userId);
+        userDaoImpl.getAllSubscriptions(userId).forEach(u -> log.info(" subbed to user {} ", u.getUsername()));
+        return userDaoImpl.getAllSubscriptions(userId).stream().map(this::mapToUserDTO).collect(Collectors.toList());
+    }
+
+    /**
+     * get subscribers for user id
+     * @param userId the user id
+     * @return the list of users
+     */
+    @Override
+    public List<UserDTO> getSubscribers(Long userId) {
+        return userDaoImpl.getSubscribers(userId).stream().map(this::mapToUserDTO).collect(Collectors.toList());
     }
 
     /**

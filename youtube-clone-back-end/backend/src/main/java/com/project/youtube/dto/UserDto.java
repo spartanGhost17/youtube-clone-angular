@@ -4,6 +4,7 @@ import com.project.youtube.model.Role;
 import lombok.*;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ public class UserDTO {
     private String lastName;
     private String username;
     private String channelName;
-    private Date createdAt;
+    private Timestamp createdAt;
     private String email;
     private String phone;
     private Boolean verified;
