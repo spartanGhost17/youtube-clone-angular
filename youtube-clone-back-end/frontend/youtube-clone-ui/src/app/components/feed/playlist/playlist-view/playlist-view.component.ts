@@ -18,16 +18,8 @@ export class PlaylistViewComponent {
   collapsedSideBar: boolean = false;
   sidebarWidth: string = '240px';//fix this, the subject update this at all times and not have a default value set here
   icons: Icons = new Icons();
-  //ICON_ELIPSIS: string = this.icons.iconsPaths['elipsis-light'];
-  //ICON_BURGER: string = this.icons.iconsPaths['burger-light'];
-  thumbnail: string; //= '../../../assets/goku_god_mode.jpg'
-
-  //videoTitle: string = 'Why Al Jordan came back | Crisis Event';
-  //channelName: string = 'DC Central';
-
+  thumbnail: string;
   videos: any[] = [];
-  
-  //this.sidebarWidth = '240px';
 
 
   constructor(private componentUpdatesService: ComponentUpdatesService) {
