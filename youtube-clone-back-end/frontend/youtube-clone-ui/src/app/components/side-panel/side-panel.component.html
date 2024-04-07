@@ -48,7 +48,7 @@
     <div class="panel-section" *ngIf="!collapse && sections.length>=3">
         <h3>Subscriptions</h3>
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners strecth" [ngStyle]="{'height':'50px', 'padding': '10px'}" [ngClass]="{'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[2]">
-            <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
+            <div id="start-icon-user" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
                 <img class="user-icon" [src]="buttonOpt.channel_user_icon" [alt]="buttonOpt.text"/>
             </div>
             <div class="desc-text hide-overflow non-selectable" [ngStyle]="{'justify-content': collapse? 'end': 'flex-start'}">
@@ -98,7 +98,7 @@
     <div class="panel-section" *ngIf="!collapse && sections.length>=3">
         <h3>Subscriptions</h3>
         <div (click)="makeButtonActive(buttonOpt)" class="ytcp-button button-rounded-corners strecth" [ngStyle]="{'height':'50px', 'padding': '10px'}" [ngClass]="{'button-active': buttonOpt.isActive, 'button-innactive': !buttonOpt.isActive}" *ngFor="let buttonOpt of sections[2]">
-            <div id="start-icon" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
+            <div id="start-icon-user" class="non-selectable" [ngStyle]="{'justify-content': collapse? 'center': 'flex-start', 'display': collapse? 'flex':'block'}">
                 <img class="user-icon" [src]="buttonOpt.channel_user_icon" [alt]="buttonOpt.text"/>
             </div>
             <div class="desc-text hide-overflow non-selectable" [ngStyle]="{'justify-content': collapse? 'end': 'flex-start'}">
