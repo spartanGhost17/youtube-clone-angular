@@ -1,7 +1,7 @@
 <div class="description-container">
     <div (click)="showMore()" #content class="content">
         <ng-container *ngIf="metadata">
-            <p>166 views {{metadata.createdAt | date: 'dd MM yyyy'}}</p>
+            <p>166 views {{metadata.createdAt | datecstm}}</p>
             <p [innerHTML]="metadata.description! | linkify | newlineToBr"></p>
         </ng-container>  
     </div>

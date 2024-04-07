@@ -4,13 +4,14 @@ import { LinkifyPipe } from '../../pipes/linkify/linkify.pipe';
 import { NewlineToBrPipe } from '../../pipes/newline-to-br/newline-to-br.pipe';
 import { Video } from '../../shared/types/video';
 import { style } from '@angular/animations';
+import { DatecstmPipe } from '../../pipes/datecstm/datecstm.pipe';
 
 @Component({
     selector: 'app-video-description',
     templateUrl: './video-description.component.html',
     styleUrls: ['./video-description.component.scss'],
     standalone: true,
-    imports: [LinkifyPipe, NewlineToBrPipe, NgIf, DatePipe]
+    imports: [LinkifyPipe, NewlineToBrPipe, NgIf, DatePipe, DatecstmPipe]
 })
 export class VideoDescriptionComponent {
   @ViewChild('content') content : ElementRef<any>;
