@@ -36,10 +36,15 @@ public class LikeController {
         return new ResponseEntity(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
-                        .message("Like created.")
+                        . message("Like created.")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
                         .build(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("video")
+    public ResponseEntity<HttpResponse> getLike(@RequestBody @Valid LikeForm likeForm) {
+        return null;
     }
 
     /**
