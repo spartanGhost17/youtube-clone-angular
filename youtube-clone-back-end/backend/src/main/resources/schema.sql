@@ -205,7 +205,7 @@ create TABLE VideoThumbnails (
     thumbnail_url       VARCHAR(255) NOT NULL,
     FOREIGN KEY (video_id) REFERENCES Videos (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
+--add a metadata tracker for each user (track start and stop times)
 DROP TABLE IF EXISTS Videos;
 
 create TABLE Videos
@@ -265,6 +265,7 @@ create TABLE Comments
     id                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id             BIGINT UNSIGNED NOT NULL,
     video_id            BIGINT UNSIGNED NOT NULL,
+    to_user_id          BIGINT UNSIGNED DEFAULT NULL,
     comment_text        VARCHAR(4000) NOT NULL,
     created_at          DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_updated        DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
