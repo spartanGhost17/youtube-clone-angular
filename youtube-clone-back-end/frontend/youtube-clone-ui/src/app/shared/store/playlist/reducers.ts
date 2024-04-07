@@ -1,6 +1,7 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
 import { PlaylistsStateInterface } from "../../types/state/playlistsState.interface";
 import { playlistActions } from "./actions";
+import { PlaylistInterface } from "../../types/playlist.interface";
 
 const initialState: PlaylistsStateInterface = {
     isLoading: false,
@@ -23,7 +24,13 @@ export const playlistFeature = createFeature({
         })),
         on(playlistActions.getByUserSuccess, (state, action) => ({
             ...state,
-            playlists: action.playlists,
+            playlists: action.playlists.reduce((acc, playlist) => {
+                // Check if the playlist doesn't already exist in the state
+                if (!playlistExistsInState(state.playlists, playlist)) {
+                  acc.push(playlist);
+                }
+                return acc;
+              }, [...state.playlists]),//state.playlists.length <= 0? action.playlists : [...state.playlists, ...action.playlists],
             ValidationMessages: action.responseMessages
         })),
         on(playlistActions.getByUserFailure, (state, action) => ({
@@ -128,8 +135,29 @@ export const playlistFeature = createFeature({
             ...state,
             ValidationErrors: action.errors
         })),
+
+        //delete playlist
+        on(playlistActions.delete, (state) => ({
+            ...state,
+            ValidationMessages: null,
+            ValidationErrors: null
+        })),
+        on(playlistActions.deleteSuccess, (state, action) => ({
+            ...state,
+            playlists: state.playlists.filter(pl => pl.id !== action.playlist.id),
+            ValidationMessages: action.responseMessages
+        })),
+        on(playlistActions.deleteFailure, (state, action) => ({
+            ...state,
+            ValidationErrors: action.errors
+        })),
     )
 });
+
+// Define a helper function to check if a playlist already exists in the state
+function playlistExistsInState(statePlaylists: PlaylistInterface[], playlist: PlaylistInterface): boolean {
+    return statePlaylists.some(p => p.id === playlist.id);
+} 
 
 export const {
     name: playlistFeatureKey,

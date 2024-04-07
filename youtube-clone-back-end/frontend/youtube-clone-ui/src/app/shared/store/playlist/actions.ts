@@ -52,7 +52,7 @@ export const playlistActions = createActionGroup({
         'Delete Video Failure': props<{errors: ResponseMessagesInterface}>(),
 
         'Delete': props<{request: number}>(),
-        'Delete Success': props<{responseMessages: ResponseMessagesInterface}>(),
+        'Delete Success': props<{playlist: PlaylistInterface, responseMessages: ResponseMessagesInterface}>(),
         'Delete Failure': props<{errors: ResponseMessagesInterface}>()
     }
 });

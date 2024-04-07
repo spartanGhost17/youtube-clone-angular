@@ -92,7 +92,7 @@ export const getHistoryEffect = createEffect((
     )
 },{functional: true});
 
-//get history playlist
+//get watch later playlist
 export const getWatchedLaterEffect = createEffect((
     actions$ = inject(Actions),
     progressBarService = inject(ProgressBarService),
@@ -183,6 +183,33 @@ export const deleteVideoEffect = createEffect((
             return playlistService.deleteVideo(request).pipe(
                 map((response: HttpResponseInterface<PlaylistInterface[]>) => {
                     return playlistActions.deleteVideoSuccess({
+                        responseMessages: toResponseMessage(response)
+                    })
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(playlistActions.deleteVideoFailure({
+                        errors: toResponseMessage(error.error)
+                    }))
+                })
+            );
+        })
+    )
+},{functional: true});
+
+//delete playlist
+export const deletePlaylistEffect = createEffect((
+    actions$ = inject(Actions),
+    playlistService = inject(PlaylistService)
+) => {
+    return actions$.pipe(
+        ofType(playlistActions.delete),
+        switchMap(({request}) => {
+            return playlistService.delete(request).pipe(
+                map((response: HttpResponseInterface<PlaylistInterface[]>) => {
+                    const playlist: PlaylistInterface = response.data['playlist'];
+
+                    return playlistActions.deleteSuccess({
+                        playlist: playlist,
                         responseMessages: toResponseMessage(response)
                     })
                 }),
