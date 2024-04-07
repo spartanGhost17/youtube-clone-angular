@@ -5,7 +5,7 @@
     <div class="user-info">
         <div class="user-id">
             <span>@{{comment.username}}</span>&nbsp;
-            <span class="postStamp">{{comment.postTime}} ago</span>
+            <span class="postStamp">{{comment.lastUpdated | datecstm}}</span>
         </div>
         <div class="comment-text">
             <span>{{comment.commentText}}</span>
@@ -36,9 +36,9 @@
                 <button class="ytcp-button" (click)="onReply('comment', comment)">Reply</button>
             </div>
         </div>
-        <div *ngIf="comment.subComments!.length>0" class="ytcp-button reply-button-container" (click)="onShowReplyClicked()">
+        <div *ngIf="comment.replyCount>0" class="ytcp-button reply-button-container" (click)="onShowReplyClicked()">
             <span class="material-symbols-outlined reply-button-container__icon non-selectable" [ngClass]="{'rotate-icon': showReplies}">arrow_drop_down</span>
-            <span class="reply-button-container__reply-count non-selectable">{{comment.subComments?.length}} replies</span>
+            <span class="reply-button-container__reply-count non-selectable">{{comment.replyCount}} replies</span>
         </div>
 
         <div *ngIf="showReplies" class="reply-comments">
@@ -49,7 +49,7 @@
                 <div class="reply-comments__subcomments">
                     <div class="user-id">
                         <span>@{{subComment.username}}</span>&nbsp;
-                        <span class="postStamp">{{subComment.postTime}} ago</span>
+                        <span class="postStamp">{{subComment.lastUpdated | datecstm}}</span>
                     </div>
                     <div class="comment-text">
                         <p>
@@ -73,7 +73,7 @@
                     <div *ngIf="subComment.showReply">
                         <div class="reply-input-section">
                             <div class="reply-input-section__icon-container">
-                                <img [src]="user.iconURL" alt="batman and superman standing next to each other">
+                                <img [src]="user.profilePicture" alt="batman and superman standing next to each other">
                             </div>
                             <div class="text-area-container">
                                 <textarea [(ngModel)]="commentInput" class="custom-textarea" name="text" wrap="soft" placeholder="Add a reply..."></textarea>

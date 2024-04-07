@@ -7,19 +7,23 @@ import { SubComment } from '../../../models/subComment';
 import { ComponentUpdatesService } from '../../../shared/services/app-updates/component-updates.service';
 import { UserInterface } from '../../../shared/types/user.interface';
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
+import { DatecstmPipe } from '../../../pipes/datecstm/datecstm.pipe';
+import { CommentService } from '../../../shared/services/comment/comment.service';
+import { CommentRequestForm } from '../../../shared/types/commentReqForm.interface';
 
 @Component({
     selector: 'app-comment',
     templateUrl: './comment.component.html',
     styleUrls: ['./comment.component.scss'],
     standalone: true,
-    imports: [NgIf, TooltipDirective, FormsModule, NgClass, NgFor, StandardDropdownComponent]
+    imports: [NgIf, TooltipDirective, FormsModule, NgClass, NgFor, StandardDropdownComponent, DatecstmPipe]
 })
 export class CommentComponent implements OnInit {
   @Input() comment: Comment;
   @Input() commentList: Comment[];
   @Output() commentUpdate: EventEmitter<Comment> = new EventEmitter<Comment>;
   @Input() user: UserInterface;
+  @Input() videoId: number;
 
   dropDownItems: any[];
   
@@ -31,10 +35,11 @@ export class CommentComponent implements OnInit {
   commentInput:string;
 
 
-  constructor(private componentUpdatesService: ComponentUpdatesService) {}
+  constructor(private componentUpdatesService: ComponentUpdatesService, private commentService: CommentService) {}
 
   
   ngOnInit(): void {
+    console.log("Initial state comment ", this.comment)
     this.loadActions();
   }
 
@@ -144,21 +149,22 @@ export class CommentComponent implements OnInit {
 
   onReply(commetType: string, parentPost: any) {
     
-    //if(commetType === 'subComment') {
     const subcomment: SubComment = {
       id: 1,
-      username: this.user!.username,
+      username: this.user.username,
       imageUrl: this.user.profilePicture!,
       userId: this.user.id,
       likeCount: 0,
-      postTime: '1',
+      createdAt: new Date(),
       text: this.commentInput,
-      to: parentPost.userId,
+      to: parentPost.username,
+      parentId: this.comment.id,
+      lastUpdated: new Date()
     }
 
     this.commentInput = '';
     this.onCancelReply(parentPost);
-    this.comment.subComments?.push(subcomment);
+    //this.comment.subComments?.push(subcomment);
     this.commentUpdate.emit(this.comment);
 
     console.log("subcomment added ", subcomment);
@@ -166,5 +172,36 @@ export class CommentComponent implements OnInit {
 
   onShowReplyClicked() {
     this.showReplies = !this.showReplies;
+    
+    if(this.showReplies) {
+      
+      const commentReqForm: CommentRequestForm = {
+        videoId: this.videoId,
+        pageSize: 100,
+        offset: 0,
+        parentId: this.comment.id,
+        isSubComment: true
+      }
+
+      this.commentService.get(commentReqForm).subscribe({
+        next: (response) => {
+          const subComment = response.data.comments.map((subComment: Comment) => {
+            const sbc: SubComment = {
+              id: subComment.id,
+              username: subComment.username,
+              imageUrl: subComment.imageUrl,
+              createdAt: subComment.createdAt,
+              lastUpdated: subComment.lastUpdated,
+              text: subComment.commentText,
+              to: subComment.to!,
+              parentId: subComment.parentCommentId!,
+              likeCount: subComment.likeCount,
+            }
+            return sbc;
+          });
+          this.comment.subComments = subComment; 
+        }
+      });  
+    }
   }
 }
