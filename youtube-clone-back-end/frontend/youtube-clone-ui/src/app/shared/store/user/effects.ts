@@ -96,3 +96,29 @@ export const updateProfileEffect = createEffect((
         })
     )
 }, {functional: true});
+
+//get subscriptions
+export const getSubscriptionsEffect = createEffect((
+    actions$ = inject(Actions),
+    userService = inject(UserService)
+) => {
+    return actions$.pipe(
+        ofType(userActions.loadProfile),
+        switchMap(() => {
+            return userService.subscriptions().pipe(
+                //tap(() => {}),
+                map((response: HttpResponseInterface<CurrentUserInterface>) => {
+                    return userActions.getSubscriptionsSuccess({
+                        subscriptions: response.data['user'],
+                        responseMessages: toResponseMessage(response)
+                    });
+                }),
+                catchError((error: HttpErrorResponse) => {
+                    return of(userActions.getSubscriptionsFailure({
+                        errors: toResponseMessage(error.error)
+                    }));
+                })
+            )
+        })
+    )
+}, {functional: true});

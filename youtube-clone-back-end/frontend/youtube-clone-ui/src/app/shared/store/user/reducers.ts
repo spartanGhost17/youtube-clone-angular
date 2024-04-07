@@ -6,6 +6,7 @@ import { act } from "@ngrx/effects";
 export const initialState: CurrentUserStateInterface = {
     isLoading: false,
     currentUser: undefined,
+    subscriptions: undefined,
     validationMessages: null,
     validationErrors: null
 }
@@ -30,7 +31,7 @@ export const userFeature = createFeature({
             isLoading: false,
             validationErrors: action.errors
         })),
-
+        //update profile picture
         on(userActions.updateProfilePicture, (state) => ({
             ...state,
             isLoading: true,
@@ -44,7 +45,7 @@ export const userFeature = createFeature({
         })),
         on(userActions.updateProfilePictureFailure, (state, action) => ({
             ...state,
-            isLoading: true,
+            isLoading: false,
             validationErrors: action.errors
         })),
 
@@ -62,7 +63,25 @@ export const userFeature = createFeature({
         })),
         on(userActions.updateFailure, (state, action) => ({
             ...state,
+            isLoading: false,
+            validationErrors: action.errors
+        })),
+
+        //load subscriptions
+        on(userActions.getSubscriptions, (state) => ({
+            ...state,
             isLoading: true,
+            validationErrors: null
+        })),
+        on(userActions.getSubscriptionsSuccess, (state, action) => ({
+            ...state,
+            isLoading: false,
+            subscriptions: action.subscriptions,
+            responseMessages: action.responseMessages
+        })),
+        on(userActions.getSubscriptionsFailure, (state, action) => ({
+            ...state,
+            isLoading: false,
             validationErrors: action.errors
         })),
     )
@@ -73,6 +92,7 @@ export const {
     name: userFeatureKey,
     reducer: userReducer,
     selectCurrentUser,
+    selectSubscriptions,
     selectIsLoading,
     selectValidationMessages,
     selectValidationErrors

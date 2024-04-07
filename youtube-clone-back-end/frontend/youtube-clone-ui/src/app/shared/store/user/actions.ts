@@ -2,6 +2,7 @@ import { createActionGroup, emptyProps, props } from "@ngrx/store";
 import { ResponseMessagesInterface } from '../../types/responseMessages.interface';
 import { CurrentUserInterface } from "../../types/currentUser.interface";
 import { UpdateUserForm } from "../../types/updateUserForm.interface";
+import { UserInterface } from "../../types/user.interface";
 
 export const userActions = createActionGroup({
     source: 'user',
@@ -13,6 +14,10 @@ export const userActions = createActionGroup({
         'Load Profile': emptyProps(),
         'Load Profile Success': props<{currentUser: CurrentUserInterface, responseMessages: ResponseMessagesInterface}>(),
         'Load Profile Failure': props<{errors: ResponseMessagesInterface}>(),
+
+        'Get subscriptions': emptyProps(),
+        'Get subscriptions Success': props<{subscriptions: UserInterface[], responseMessages: ResponseMessagesInterface}>(),
+        'Get subscriptions Failure': props<{errors: ResponseMessagesInterface}>(),
 
         'Update Profile Picture': props<{request: FormData}>(),
         'Update Profile Picture Success': props<{currentUser: CurrentUserInterface, responseMessages: ResponseMessagesInterface}>(),
