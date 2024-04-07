@@ -210,6 +210,35 @@ public class UserController {
         );
     }
 
+    @GetMapping(value = "subscriptions")
+    public ResponseEntity<HttpResponse> getAllSubscriptions() {
+        Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
+        List<UserDTO> user = userServiceImpl.getAllSubscriptions(userId);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", user))
+                        .message("subscriptions retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @GetMapping(value = "subscribers")
+    public ResponseEntity<HttpResponse> getAllSubscribers(@RequestParam("id") Long userId) {
+        List<UserDTO> user = userServiceImpl.getSubscribers(userId);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(Instant.now().toString())
+                        .data(Map.of("user", user))
+                        .message("subscribers retrieved")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
     @GetMapping(value = "isSubscribed")
     public ResponseEntity<HttpResponse> isSubscribed(@RequestParam("to") Long to, @RequestParam("subscriber") Long subscriber) {
         List<UserDTO> user = userServiceImpl.getSubscribedTo(to, subscriber);
@@ -217,7 +246,7 @@ public class UserController {
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .data(Map.of("user", user))
-                        .message("Profile updated")
+                        .message("is subscribed")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
@@ -232,7 +261,7 @@ public class UserController {
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .data(Map.of("user", userDTO))
-                        .message("Profile updated")
+                        .message("subscribed successfully")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
@@ -247,7 +276,7 @@ public class UserController {
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .data(Map.of("user", userDTO))
-                        .message("Profile updated")
+                        .message("unsubscribe successfully")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build()
