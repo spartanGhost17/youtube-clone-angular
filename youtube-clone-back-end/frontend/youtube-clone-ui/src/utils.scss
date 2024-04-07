@@ -106,7 +106,7 @@ input[type="range"]::-ms-thumb {
 .container { //TODO: FIX THIS REMOVE ALL PADDING AND MARGINS
     width: 100%;//only used when viewport is shrunk passed @media query
     height: 100%;
-    margin-left: 4px;
+    //margin-left: 4px;
     margin-right: 4px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
