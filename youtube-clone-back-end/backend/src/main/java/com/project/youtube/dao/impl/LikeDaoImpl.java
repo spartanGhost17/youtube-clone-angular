@@ -76,7 +76,7 @@ public class LikeDaoImpl implements LikeDao<Like> {
     public Long getLikeCount(LikeForm likeForm) {
         try {
             MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-            parameterSource.addValue("userId", likeForm.getUserId());
+            //parameterSource.addValue("userId", likeForm.getUserId());
 
             if(likeForm.getCommentId() != null) {
                 parameterSource.addValue("commentId", likeForm.getCommentId());
