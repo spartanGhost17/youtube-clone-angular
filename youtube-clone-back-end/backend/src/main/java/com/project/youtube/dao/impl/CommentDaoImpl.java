@@ -11,12 +11,16 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
 import static com.project.youtube.query.CommentQuery.*;
+import static java.util.Objects.requireNonNull;
 
 @Repository
 @RequiredArgsConstructor
@@ -46,8 +50,12 @@ public class CommentDaoImpl implements CommentDao<Comment> {
      * @return the created comment
      */
     @Override
-    public void create(CreateCommentForm commentForm) {
+    @Transactional
+    public Comment create(CreateCommentForm commentForm) {
         try {
+            //get key
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+
             MapSqlParameterSource parameterSource = new MapSqlParameterSource();
             parameterSource.addValue("userId", commentForm.getUserId());
             parameterSource.addValue("videoId", commentForm.getVideoId());
@@ -58,13 +66,15 @@ public class CommentDaoImpl implements CommentDao<Comment> {
                 parameterSource.addValue("parentCommentId", id);
             }
 
-            jdbcTemplate.update(commentForm.getParentCommentId() == null? INSERT_COMMENT_QUERY : INSERT_SUB_COMMENT_QUERY, parameterSource);
+            jdbcTemplate.update(commentForm.getParentCommentId() == null? INSERT_COMMENT_QUERY : INSERT_SUB_COMMENT_QUERY, parameterSource, keyHolder);
+            return get(requireNonNull(keyHolder.getKey().longValue()));
         } catch (DataIntegrityViolationException exception) {
             log.error(exception.getMessage());
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new APIException("An error occurred while posting comment, please try again. "+exception.getCause());
         }
+        return null;
     }
 
     /**
@@ -79,6 +89,34 @@ public class CommentDaoImpl implements CommentDao<Comment> {
             log.error(exception.getMessage());
             throw new APIException("An error occurred while deleting the comment. Please try again");
         }
+    }
+
+    @Override
+    public Long getCommentCount(Long id) {
+        Long count = 0L;
+        try {
+            count = jdbcTemplate.queryForObject(SELECT_COMMENT_REPLY_COUNT_QUERY, Map.of("parentId", id), Long.class);
+            return count;
+        } catch (Exception exception) {
+            throw new APIException("An error occurred while getting reply count");
+        }
+    }
+
+    @Override
+    public Long getVideoCommentsCount(Long videoId) {
+        Long count = 0L;
+        try {
+            count = jdbcTemplate.queryForObject(SELECT_VIDEO_COMMENT_COUNT_QUERY, Map.of("videoId", videoId), Long.class);
+            return count;
+        } catch (Exception exception) {
+            //throw exception;
+            throw new APIException("An error occurred while getting comments count for post ");
+        }
+    }
+
+    @Override
+    public Long getReplyCount(Long commentId) {
+        return null;
     }
 
     /**
@@ -103,14 +141,28 @@ public class CommentDaoImpl implements CommentDao<Comment> {
      * @param pageSize the page size
      * @param offset the offset
      * @param isSubComment if the request is for sub comments or top level comments
+     * @param parentId the parent of the comment id
      * @return the comment list
      */
     @Override
-    public List<Comment> getComments(Long videoId, int pageSize, Long offset, Boolean isSubComment) {
+    public List<Comment> getComments(Long videoId, Long pageSize, Long offset, Boolean isSubComment, Long parentId) {
         try {
-            return jdbcTemplate.query(isSubComment? SELECT_SUB_COMMENT_PAGE_QUERY : SELECT_COMMENT_PAGE_QUERY, Map.of("videoId", videoId, "pageSize", pageSize, "offset", offset), new BeanPropertyRowMapper<>(Comment.class));
+            MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+            parameterSource.addValue("videoId", videoId);
+            parameterSource.addValue("pageSize", pageSize);
+            parameterSource.addValue("offset", offset);
+
+            if(isSubComment) {
+                log.info("add parent id because is sub comments request {}",parentId);
+                parameterSource.addValue("parentId", parentId);
+            }
+            log.info("source map videoId: {}, pageSize: {}, offset: {}, isSubComment: {}, parentId: {}",videoId, pageSize, offset, isSubComment, parentId);
+
+            //Map.of("videoId", videoId, "pageSize", pageSize, "offset", offset)
+            return jdbcTemplate.query(isSubComment? SELECT_SUB_COMMENT_PAGE_QUERY : SELECT_COMMENT_PAGE_QUERY, parameterSource, new BeanPropertyRowMapper<>(Comment.class));
         } catch (Exception exception) {
-            throw new APIException("An error occurred white loading comments. Please try again.");
+            throw exception;
+            //throw new APIException("An error occurred white loading comments. Please try again.");
         }
     }
 }

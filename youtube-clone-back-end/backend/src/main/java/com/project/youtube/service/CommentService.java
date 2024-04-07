@@ -7,9 +7,11 @@ import com.project.youtube.model.Comment;
 import java.util.List;
 
 public interface CommentService {
-    void create(CreateCommentForm commentForm);
+    CommentDto create(CreateCommentForm commentForm);
     CommentDto get(Long id);
-    void delete(Long id);
+    CommentDto delete(Long id);
     CommentDto updateComment(String commentText, Long id);
-    List<CommentDto> getComments(Long videoId, int pageSize, Long offset, Boolean isSubComment);
+    Long getReplyCount(Long id);
+    Long getVideoCommentsCount(Long videoId);
+    List<CommentDto> getComments(Long videoId, Long pageSize, Long offset, Boolean isSubComment, Long parentId);
 }

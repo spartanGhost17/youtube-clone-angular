@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,4 +24,9 @@ public class CommentDto {
     private boolean reported;
     //extra fields
     private Long likeCount;
+    private Long replyCount;
+    private String imageUrl;
+    private String username;
+    private List<CommentDto> subComments = new ArrayList<>();
+    private String to;
 }

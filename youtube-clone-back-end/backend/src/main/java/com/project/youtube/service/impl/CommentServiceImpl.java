@@ -2,8 +2,11 @@ package com.project.youtube.service.impl;
 
 import com.project.youtube.dao.impl.CommentDaoImpl;
 import com.project.youtube.dto.CommentDto;
+import com.project.youtube.dto.UserDTO;
+import com.project.youtube.dtomapper.commentDTOMapper;
 import com.project.youtube.form.CreateCommentForm;
 import com.project.youtube.form.LikeForm;
+import com.project.youtube.model.Comment;
 import com.project.youtube.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.project.youtube.dtomapper.commentDTOMapper.toCommentDto;
+import static java.util.Objects.requireNonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +25,22 @@ import static com.project.youtube.dtomapper.commentDTOMapper.toCommentDto;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     private final CommentDaoImpl commentDao;
+    private final UserServiceImpl userService;
     private final LikeServiceImpl likeService;
     @Override
-    public void create(CreateCommentForm commentForm) {
-        commentDao.create(commentForm);
+    public CommentDto create(CreateCommentForm commentForm) {
+        UserDTO user = userService.getUser(commentForm.getUserId());
+        CommentDto commentDto = toCommentDto(commentDao.create(commentForm));
+        commentDto.setUsername(user.getUsername());
+        commentDto.setImageUrl(user.getProfilePicture());
+        commentDto.setReplyCount(getReplyCount(commentDto.getId()));
+        commentDto.setLikeCount(getLikeCount(commentDto));
+        if(commentForm.getParentCommentId() != null) {
+            Comment parentComment = commentDao.get(commentForm.getParentCommentId());
+            UserDTO to = userService.getUser(parentComment.getUserId());
+            commentDto.setTo(to.getUsername());
+        }
+        return commentDto;
     }
 
     @Override
@@ -37,15 +53,35 @@ public class CommentServiceImpl implements CommentService {
      * @param videoId the video id
      * @param pageSize the page size
      * @param offset the offset
+     * @param parentId the parent of id of sub-comments
      * @return the comments list
      */
     @Override //TODO: get primary comments with parent_comment_id null
-    public List<CommentDto> getComments(Long videoId, int pageSize, Long offset, Boolean isSubComment) {
-        return commentDao.getComments(videoId, pageSize, offset, isSubComment).stream()
-                .map(comment -> toCommentDto(comment))
-                .map(commentDto -> {
+    public List<CommentDto> getComments(Long videoId, Long pageSize, Long offset, Boolean isSubComment, Long parentId) {
+        Comment parentComment;
+        UserDTO to = new UserDTO();
+        if(isSubComment) {
+            parentComment = commentDao.get(parentId);
+            to = userService.getUser(parentComment.getUserId());
+        }
+
+        UserDTO finalTo = to;
+        return commentDao.getComments(videoId, pageSize, offset, isSubComment, parentId)
+                .stream()
+                .map(comment -> {
+                    CommentDto commentDto = toCommentDto(comment);
+                    log.info("CommentDto id: {} text: {}", commentDto.getId(), commentDto.getCommentText());
+                    UserDTO user = userService.getUser(commentDto.getUserId());
                     Long likes = getLikeCount(commentDto);
+                    commentDto.setUsername(user.getUsername());
+                    commentDto.setImageUrl(user.getProfilePicture());
+                    commentDto.setReplyCount(getReplyCount(commentDto.getId()));
                     commentDto.setLikeCount(likes);
+
+                    if(isSubComment) {
+                        //UserDTO to = userService.getUser(parentComment.getUserId());
+                        commentDto.setTo(finalTo.getUsername());
+                    }
                     return commentDto;
                 })
                 .collect(Collectors.toList());
@@ -56,8 +92,10 @@ public class CommentServiceImpl implements CommentService {
      * @param id the comment id
      */
     @Override
-    public void delete(Long id) {
+    public CommentDto delete(Long id) {
+        CommentDto commentDto = toCommentDto(commentDao.get(id));
         commentDao.delete(id);
+        return commentDto;
     }
 
     /**
@@ -68,8 +106,41 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto updateComment(String commentText, Long id) {
         CommentDto commentDto = toCommentDto(commentDao.updateComment(commentText, id));
+
+        UserDTO user = userService.getUser(commentDto.getUserId());
+        commentDto.setUsername(user.getUsername());
+        commentDto.setImageUrl(user.getProfilePicture());
+
+        commentDto.setReplyCount(getReplyCount(commentDto.getId()));
         commentDto.setLikeCount(getLikeCount(commentDto));
+
+        if(commentDto.getParentCommentId() != null) {
+            Comment parentComment = commentDao.get(commentDto.getParentCommentId());
+            UserDTO to = userService.getUser(parentComment.getUserId());
+            commentDto.setTo(to.getUsername());
+        }
         return commentDto;
+    }
+
+    /**
+     * get reply count for comment
+     * @param id the comment id
+     * @return the count
+     */
+    @Override
+    public Long getReplyCount(Long id) {
+        return commentDao.getCommentCount(id);
+    }
+
+
+    /**
+     * get comment count for video
+     * @param videoId the video id
+     * @return the count
+     */
+    @Override
+    public Long getVideoCommentsCount(Long videoId) {
+        return commentDao.getVideoCommentsCount(videoId);
     }
 
     /**
@@ -79,7 +150,12 @@ public class CommentServiceImpl implements CommentService {
      */
     private Long getLikeCount(CommentDto commentDto) {
         LikeForm likeForm = new LikeForm();
+        likeForm.setUserId(commentDto.getUserId());
         likeForm.setCommentId(commentDto.getId());
         return likeService.getLikeCount(likeForm);
+    }
+
+    private CommentDto toCommentDto(Comment comment) {
+        return commentDTOMapper.toCommentDto(comment);
     }
 }
