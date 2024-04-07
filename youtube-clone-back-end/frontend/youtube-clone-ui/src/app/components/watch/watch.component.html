@@ -86,7 +86,7 @@
                 <div class="comment-section">
                     <div class="meta-and-actions">
                         <div class="comments-count">
-                            <span class="text">2000 comments</span>
+                            <span class="text">{{commentsCount}} comments</span>
                         </div>
                         <div class="sort-button">
                             <app-standard-dropdown 
@@ -99,7 +99,8 @@
                         </div>
                     </div>
                     <div class="comments-container">
-                        <app-comments-holder 
+                        <app-comments-holder
+                            [videoId]="videoId" 
                             [comments]="comments"
                         >    
                         </app-comments-holder>

@@ -7,13 +7,19 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
 import { SpinnerDirective } from '../../directives/spinner/spinner.directive';
 import { TooltipDirective } from '../../directives/tooltip/tooltip.directive';
 import { Comment } from '../../models/comment';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
+import { CommentService } from '../../shared/services/comment/comment.service';
+import { LikeService } from '../../shared/services/like/like.service';
 import { UserService } from '../../shared/services/user/user.service';
 import { VideoService } from '../../shared/services/video/video.service';
+import { selectCurrentUser } from '../../shared/store/user/reducers';
+import { CommentRequestForm } from '../../shared/types/commentReqForm.interface';
+import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
 import { ReportTypeInterface } from '../../shared/types/reportType.interface';
 import { UserInterface } from '../../shared/types/user.interface';
 import { Video } from '../../shared/types/video';
@@ -25,10 +31,6 @@ import { VideoDescriptionComponent } from '../video-description/video-descriptio
 import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
 import { VideoComponent } from '../video-displays/video/video.component';
 import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embedded-playlist.component';
-import { Store } from '@ngrx/store';
-import { selectCurrentUser } from '../../shared/store/user/reducers';
-import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
-import { LikeService } from '../../shared/services/like/like.service';
 
 @Component({
   selector: 'app-watch',
@@ -72,7 +74,7 @@ export class WatchComponent implements OnInit {
   canShowNext: boolean = false;
   reportStep: number = 0;
   
-  comment: Comment = {};
+  comment: Comment;
 
   //test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -97,6 +99,9 @@ export class WatchComponent implements OnInit {
   isSubscribed: boolean;
   isSubscribedLoading: boolean;
   isNotUser: boolean = true;
+  commentPageSize: number = 100;
+  commentOffset: number = 0;
+  commentsCount: number = 0;
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -113,7 +118,8 @@ export class WatchComponent implements OnInit {
     private videoService: VideoService,
     private userService: UserService,
     private store: Store,
-    private likeService: LikeService
+    private likeService: LikeService,
+    private commentService: CommentService
   ) {}
 
   /**
@@ -136,7 +142,7 @@ export class WatchComponent implements OnInit {
 
     this.buildManifestUris();
 
-    this.comment = {
+    /*this.comment = {
       id: 0,
       commentText: `I’m upset Rey didn’t get to finish certain questions. I get the comedic aspect of the interview but let’s hear Rey’s answers more so than Kevin’s outburst.`,
       imageUrl: '../../../assets/batman_and_superman_detective_comics.jpg',
@@ -170,11 +176,11 @@ export class WatchComponent implements OnInit {
           dislikeCount: 0,
         },
       ],
-    };
+    };*/
 
-    this.comments = [this.comment]//, this.comment];
+    //this.comments = []//[this.comment]//, this.comment];
 
-    console.log('COMMENT IN PARENT', this.comment);
+    
     //console.log('COMMENT IN PARENT TEST', this.test);
 
     this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -235,6 +241,7 @@ export class WatchComponent implements OnInit {
           this.loadingMetadata = false;
           this.metadata = response.data.video;
           this.getUserInfo(this.metadata.userId!);
+          this.getCommentPage();
         }
       });
     });
@@ -343,6 +350,40 @@ export class WatchComponent implements OnInit {
     }
   }
 
+  getCommentPage() {
+    const commentReqForm: CommentRequestForm = {
+      videoId: this.metadata.id,
+      pageSize: this.commentPageSize,
+      offset: this.commentOffset,
+      parentId: 0,
+      isSubComment: false
+    };
+    this.commentService.get(commentReqForm).subscribe({
+      next: (response) => {
+        this.comments = response.data.comments.map((comment: any) => {
+          const commentM: Comment  ={
+            id: comment.id,
+            userId: comment.userId,
+            videoId: comment.videoId,
+            commentText: comment.commentText,
+            createdAt: comment.createdAt,
+            lastUpdated: comment.lastUpdated,
+            parentCommentId: comment.parentCommentId,
+            likeCount: comment.likeCount,
+            replyCount: comment.replyCount,
+            imageUrl: comment.imageUrl,
+            username: comment.username,
+            subComments: [],
+            offset: 0,
+            pageSize: 20
+          };
+          return commentM;
+        });
+        this.commentsCount = response.data.count;
+      }
+    })
+    
+  }
 
   /*resetInteractionsContainerWidth(): void {
     console.log("\n\n");
