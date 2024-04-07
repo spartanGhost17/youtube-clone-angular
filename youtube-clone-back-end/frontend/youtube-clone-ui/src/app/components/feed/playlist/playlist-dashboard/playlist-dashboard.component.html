@@ -77,9 +77,13 @@
                 </app-standard-dropdown>
             </div>
             <div class="section-content-container">
-                <div class="playlist-mini" *ngFor="let playlist of playlists">
-                    <app-playlist-mini [playlist]="playlist"></app-playlist-mini>
-                </div>
+                <ng-container *ngIf="(playlists$ | async) as pl">
+                    <ng-container *ngFor="let playlist of pl.playlists">
+                        <div class="playlist-mini" *ngIf="playlist.thumbnailUrl && playlist.thumbnailUrl != '' && !nonPlaylistNames.includes(playlist.name.toLowerCase())">
+                            <app-playlist-mini [playlist]="playlist"></app-playlist-mini>
+                        </div>
+                    </ng-container>
+                </ng-container>
             </div>
         </div>
         <!-- Liked videos -->

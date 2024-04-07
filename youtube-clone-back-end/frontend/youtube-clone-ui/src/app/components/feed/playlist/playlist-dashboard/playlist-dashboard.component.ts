@@ -37,6 +37,7 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class PlaylistDashboardComponent {
+  nonPlaylistNames: string[] = ['watch later', 'history', 'liked'];
   dropDownSettingsItems: any[] = [];
   dropDownText: string = 'A-Z';
   playlists: PlaylistInterface[];
@@ -54,6 +55,10 @@ export class PlaylistDashboardComponent {
     validationErrors: ResponseMessagesInterface | null;
   }>;
 
+  playlists$: Observable<{
+    playlists: PlaylistInterface[]
+  }>;
+
   constructor(
     private store: Store<{ user: CurrentUserStateInterface }>,
     private progressBarService: ProgressBarService,
@@ -62,10 +67,14 @@ export class PlaylistDashboardComponent {
 
   ngOnInit(): void {
     this.subscribeToCurrentUserState();
+    this.playlists$ = combineLatest({
+      playlists: this.store.select(selectPlaylists),
+    });
+ 
     this.setDropDownSettings();
     this.getPlaylists();
     this.getHistory();
-    
+       
     this.getLikedPlaylist();
     this.getWatchLaterPlaylist();
     
@@ -92,7 +101,7 @@ export class PlaylistDashboardComponent {
           this.currentUser = data.currentUser;
         }
       }
-    })
+    });
   }
 
   setDropDownSettings() {
@@ -115,10 +124,11 @@ export class PlaylistDashboardComponent {
   }
 
   getPlaylists(): void {
-    this.playlistService.getUserPlaylists(this.currentUser.id).subscribe({
-      next: (data) => {
-        if(data.data.playlist) {
-          this.playlists = data.data.playlist;
+    this.store.select(selectPlaylists).subscribe({
+      next: (playlists) => {
+        const length = playlists.length;
+        if(length <= 0) {
+          this.store.dispatch(playlistActions.getByUser({request: this.currentUser.id}));
         }
       }
     });
