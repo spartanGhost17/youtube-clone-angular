@@ -34,11 +34,12 @@ public class CommentController {
     public ResponseEntity<HttpResponse> postComment(@RequestBody @Valid CreateCommentForm createCommentForm) {
         Long userId =  getAuthenticatedUser(getAuthenticationFromContext()).getId();
         createCommentForm.setUserId(userId);
-        commentService.create(createCommentForm);
+        CommentDto commentDto = commentService.create(createCommentForm);
         return new ResponseEntity(
                 HttpResponse.builder()
                     .timeStamp(Instant.now().toString())
                     .message("Comment created")
+                    .data(Map.of("comment", commentDto))
                     .status(HttpStatus.CREATED)
                     .statusCode(HttpStatus.CREATED.value())
                     .build(), HttpStatus.CREATED);
@@ -51,11 +52,12 @@ public class CommentController {
      */
     @DeleteMapping()
     public ResponseEntity<HttpResponse> deleteComment(@RequestParam("id") Long id) {
-        commentService.delete(id);
+        CommentDto commentDto = commentService.delete(id);
         return new ResponseEntity(
             HttpResponse.builder()
                 .timeStamp(Instant.now().toString())
                 .message("Comment deleted.")
+                .data(Map.of("comment", commentDto))
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())
                 .build(), HttpStatus.OK);
@@ -82,17 +84,22 @@ public class CommentController {
 
     /**
      * get a page of comment
-     * @param pageRequestForm the page request form
-     * @return the response
+     * @param videoId
+     * @param pageSize
+     * @param offset
+     * @param isSubComment
+     * @return
      */
     @GetMapping()
-    public ResponseEntity<HttpResponse> getComments(@RequestBody CommentPageRequestForm pageRequestForm) {
-        List<CommentDto> commentList = commentService.getComments(pageRequestForm.getVideoId(), pageRequestForm.getPageSize(), pageRequestForm.getOffset(), pageRequestForm.getIsSubComment());
+    public ResponseEntity<HttpResponse> getComments(@RequestParam("videoId") Long videoId, @RequestParam("pageSize") Long pageSize, @RequestParam("offset") Long offset, @RequestParam("parentId") Long parentId, @RequestParam("isSubComment") Boolean isSubComment) {
+        //@RequestBody CommentPageRequestForm pageRequestForm
+        List<CommentDto> commentList = commentService.getComments(videoId, pageSize, offset, isSubComment, parentId);
+        Long commentCount = commentService.getVideoCommentsCount(videoId);
         return new ResponseEntity(
                 HttpResponse.builder()
                         .timeStamp(Instant.now().toString())
                         .message("Comments retrieved successfully.")
-                        .data(Map.of("comments", commentList))
+                        .data(Map.of("comments", commentList, "count", commentCount))
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .build(), HttpStatus.OK);
