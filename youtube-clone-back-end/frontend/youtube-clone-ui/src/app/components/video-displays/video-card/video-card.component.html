@@ -36,7 +36,7 @@
                 </div>&nbsp;
                 <div class="likes" *ngIf="size === 'large'" [ngStyle]="{'font-size':'.7rem'}">{{video.likeCount}}</div>&nbsp;
                 <div class="likes" *ngIf="size === 'large'">&bull;</div>&nbsp;
-                <div class="post-time" *ngIf="size === 'large'" [ngStyle]="{'font-size': '.7rem'}">{{video.createdAt | date: 'dd MM yyyy'}}</div>
+                <div class="post-time" *ngIf="size === 'large'" [ngStyle]="{'font-size': '.7rem'}">{{video.createdAt | datecstm}}</div>
             </div>
             <div class="description" *ngIf="size === 'large'">
                 <p [ngStyle]="{'font-size': '.7rem'}">
@@ -46,7 +46,7 @@
             <div class="channel-meta" *ngIf="size === 'small'">
                 <div class="likes" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{video.likeCount}}</div>
                 <div class="likes">&bull;</div>
-                <div class="post-time" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{video.createdAt | date: 'dd MM yyyy'}}</div>
+                <div class="post-time" [ngStyle]="{'font-size': size === 'small'? '.7rem':'.8rem'}">{{video.createdAt | datecstm}}</div>
             </div>
         </div>
     </div>

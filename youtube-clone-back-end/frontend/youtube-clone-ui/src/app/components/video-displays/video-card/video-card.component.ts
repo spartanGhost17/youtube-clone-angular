@@ -6,13 +6,14 @@ import { TooltipDirective } from '../../../directives/tooltip/tooltip.directive'
 import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/standard-dropdown.component';
 import { VideoMiniComponent } from '../video-mini/video-mini.component';
 import { Video } from '../../../shared/types/video';
+import { DatecstmPipe } from '../../../pipes/datecstm/datecstm.pipe';
 
 @Component({
     selector: 'app-video-card',
     templateUrl: './video-card.component.html',
     styleUrls: ['./video-card.component.scss'],
     standalone: true,
-    imports: [NgStyle, VideoMiniComponent, NgIf, TooltipDirective, StandardDropdownComponent, DatePipe]
+    imports: [NgStyle, VideoMiniComponent, NgIf, TooltipDirective, StandardDropdownComponent, DatePipe, DatecstmPipe]
 })
 export class VideoCardComponent {
   @Input() video: Video;
@@ -38,8 +39,7 @@ export class VideoCardComponent {
   }
 
   onChannelClicked(): void {
-    //this.componentUpdatesService.sideBarTypeUpdate('hover');
-    this.router.navigate([`home/@${this.channelId}`]);
+    this.router.navigate([`home/@${this.video.username}`]);
   }
 
   removeFromWatchHistory(id: any): void {
