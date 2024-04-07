@@ -21,12 +21,13 @@ import { permissionsActions } from '../../shared/store/permission/actions';
 import { playlistActions } from '../../shared/store/playlist/actions';
 import { StatusActions } from '../../shared/store/status/actions';
 import { userActions } from '../../shared/store/user/actions';
-import { selectCurrentUser } from '../../shared/store/user/reducers';
 import { CurrentUserInterface } from '../../shared/types/currentUser.interface';
 import { CurrentUserStateInterface } from '../../shared/types/state/currentUserState.interface';
 import { TokenType } from '../auth/enum/tokenType.enum';
 import { authActions } from '../auth/store/actions';
 import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standard-dropdown.component';
+import { selectCurrentUser } from '../../shared/store/user/reducers';
+import { PlaylistInterface } from '../../shared/types/playlist.interface';
 
 @Component({
   selector: 'app-header',
@@ -47,12 +48,14 @@ import { StandardDropdownComponent } from '../dropdown/standard-dropdown/standar
   ],
 })
 export class HeaderComponent {
-  avatarImage: string = '../../../assets/goku.jpg';
+  //avatarImage: string = '../../../assets/goku.jpg';
+  isPlaylistsLoaded: boolean = false;
   collapseSideBar: boolean = false;
   searchString: string = '';
   environemntName: string = '';
   searchResults: any[] = [];
   iconDropdown: any[] = [];
+
   resultBoxDisplay: string = 'none';
   @Input() showSearchBar: boolean = true;
   @Input() openModal: () => void;
@@ -97,7 +100,7 @@ export class HeaderComponent {
     this.data$ = combineLatest({
       currentUser: this.store.select(selectCurrentUser),
     });
-
+    this.subscribeToUser();
 
 
   }
@@ -108,21 +111,30 @@ export class HeaderComponent {
       this.collapseSideBar
     );
     this.componentUpdatesService.sideBarCollapsedEmit(this.collapseSideBar);
+
+    //if user is logged in
+    if(this.persistanceService.get(TokenType.ACCESS) as string) {
+      this.getAllRoles();
+      this.getProfile();
+      this.getAllStatus();
+    }
+
+    
     this.populateUserDrowpdown();
+  }
+
+  subscribeToUser() {
     this.data$.subscribe({
       next: (data) => {
         if(data.currentUser) {
           this.currentUser = data.currentUser
+          if(!this.isPlaylistsLoaded) {
+            this.getUserPlaylists();
+            this.isPlaylistsLoaded = true;
+          }
         }
       }
-    })
-    //if user is logged in
-    if(this.persistanceService.get(TokenType.ACCESS)) {
-      this.getAllRoles();
-      this.getProfile();
-      this.getAllStatus();
-      this.getUserPlaylists();
-    }
+    });
   }
 
   populateUserDrowpdown() {
@@ -152,7 +164,6 @@ export class HeaderComponent {
   }
 
   addVideoButtonClicked() {
-    console.log('add video button');
     this.uploadVideoButtonClicked.emit(true);
     this.componentUpdatesService.headerAddVideoEmit(true);
   }
