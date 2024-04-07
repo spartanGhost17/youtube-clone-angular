@@ -18,6 +18,7 @@
         "GET_VIDEOS": "/api/v1/playlist/videos",
         "UPDATE_VIDEO_POSITION": "/api/v1/playlist/update/videos/position",
         "DELETE_VIDEO": "/api/v1/playlist/video",
+        "DELETE": "/api/v1/playlist/",
         "GET_PLAYLIST_CONTAINING_VIDEO": "/api/v1/playlist/isIn",
         "GET_BY_NAME": "/api/v1/playlist/name"
     },
@@ -36,7 +37,9 @@
         "GET_IMAGE": "/api/v1/user/image/",
         "SUBSCRIBE": "/api/v1/user/subscribe",
         "IS_SUBSCRIBED": "/api/v1/user/isSubscribed",
-        "UNSUBSCRIBE": "/api/v1/user/unsubscribe"
+        "UNSUBSCRIBE": "/api/v1/user/unsubscribe",
+        "SUBSCRIPTIONS": "/api/v1/user/subscriptions",
+        "SUBSCRIBERS": "/api/v1/user/subscribers"
     },
     "ROLE_END_POINTS": {
         "GET_ALL": "/api/v1/role/"
@@ -61,5 +64,8 @@
     },
     "LIKE": {
         "LIKE": "/api/v1/like"
+    },
+    "COMMENT_END_POINTS": {
+        "COMMENT": "/api/v1/comment"
     }
 }
