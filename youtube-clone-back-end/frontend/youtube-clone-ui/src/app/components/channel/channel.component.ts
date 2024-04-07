@@ -18,6 +18,8 @@ import { ModalComponent } from '../modal/modal.component';
 import { SwitchComponent } from '../switch/switch.component';
 import { TabComponent } from '../tab/tab.component';
 import { VideoCardBasicComponent } from '../video-displays/video-card-basic/video-card-basic.component';
+import { subscribe } from 'diagnostics_channel';
+import { DatecstmPipe } from '../../pipes/datecstm/datecstm.pipe';
 
 @Component({
   selector: 'app-channel',
@@ -35,6 +37,7 @@ import { VideoCardBasicComponent } from '../video-displays/video-card-basic/vide
     ModalComponent,
     DatePipe,
     AsyncPipe,
+    DatecstmPipe
   ],
 })
 export class ChannelComponent {
@@ -63,6 +66,7 @@ export class ChannelComponent {
 
   videoPageSize: number = 20;
   videoOffset: number = 0;
+  subscribersCount: number = 0;
 
   data$: Observable<{
     currentUser: CurrentUserInterface | null | undefined;
@@ -107,6 +111,10 @@ export class ChannelComponent {
     this.populateTabs();
     this.getUsernameFromUrl();
     this.getVideos();
+  }
+
+  ngAfterViewInit() {
+    //this.getSubscriberCount();
   }
 
   populateTabs() {
@@ -165,6 +173,7 @@ export class ChannelComponent {
       this.userService.getUserById(this.username).subscribe({
         next: (data: HttpResponseInterface<CurrentUserInterface>) => {
           this.user = data.data.user;
+          this.getSubscriberCount();
         },
       });
     });
@@ -191,5 +200,15 @@ export class ChannelComponent {
       });
 
     }, 4000);
+  }
+
+  getSubscriberCount() {
+    this.userService.subscribers(this.user.id).subscribe({
+      next: (response) => {
+        if(response.data) {
+          this.subscribersCount = response.data.user.length;
+        }
+      }
+    })
   }
 }

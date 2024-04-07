@@ -98,7 +98,7 @@
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">record_voice_over</span>
-        <span class="info">{{'4'}} subscribers</span>
+        <span class="info">{{subscribersCount}} subscribers</span>
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">smart_display</span>
@@ -110,12 +110,12 @@
     </div>
     <div class="channel__info-item">
         <span class="material-symbols-outlined">info</span>
-        <span class="info">Joined {{user.createdAt | date}}</span>
+        <span class="info">Joined {{user.createdAt | datecstm}}</span>
     </div>
-    <div class="channel__info-item">
+    <!--<div class="channel__info-item">
         <span class="material-symbols-outlined">public</span>
         <span class="info">{{'4'}} subscribers</span>
-    </div>
+    </div>-->
     <div class="channel__info-item">
        <button class="ytcp-button share-btn">
             <span class="material-symbols-outlined">share</span>
