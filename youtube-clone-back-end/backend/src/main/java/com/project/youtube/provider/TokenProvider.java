@@ -42,8 +42,40 @@ public class TokenProvider {
     private String JWT_PRIVATE_KEY; //= System.getenv("JWT_PRIVATE_KEY");
     //@Value("${jwt.public_key}")
     private String JWT_PUBLIC_KEY; //= System.getenv("JWT_PUBLIC_KEY");
-    private String SSL_RSA_PUBLIC_KEY = "";
-    private String SSL_RSA_PRIVATE_KEY = "";
+    //rsa pub/private key for 2048 encoding using open ssl
+    private String SSL_RSA_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4hZvibM2IJC+T9lP42Wf\n" +
+            "ALVj52vg/Sa21fZS2lKSFfJ/70IkSYuQ1MiSUWZ0QbqnA+19JhM3CMnVEglehjw9\n" +
+            "cdIwCOV4NJds46kQIybeH3bvk/cwR6+cZ4b1fsISJ6XnD6PZLzhfXmR6/9JaOC6r\n" +
+            "t8hhuWjUKCiuOwyV9fEGle10tgnqoadE3GdAjMZEWuScfo6ZV7Q4r1V3FIYJ+5hD\n" +
+            "H+ZTwCljO1jZaZ5CU2k7pqbD4RpPmivTc82JV7K27F8coWE9n57+l79pMTLW6UM4\n" +
+            "B6NFR+Dpxt/PoH83UEX6jGk+cvC3oWdHRYDg+ZD2ECfjC7SFIAhJeK8LNKI53G8O\n" +
+            "JQIDAQAB";
+    private String SSL_RSA_PRIVATE_KEY = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDiFm+JszYgkL5P\n" +
+            "2U/jZZ8AtWPna+D9JrbV9lLaUpIV8n/vQiRJi5DUyJJRZnRBuqcD7X0mEzcIydUS\n" +
+            "CV6GPD1x0jAI5Xg0l2zjqRAjJt4fdu+T9zBHr5xnhvV+whInpecPo9kvOF9eZHr/\n" +
+            "0lo4Lqu3yGG5aNQoKK47DJX18QaV7XS2Ceqhp0TcZ0CMxkRa5Jx+jplXtDivVXcU\n" +
+            "hgn7mEMf5lPAKWM7WNlpnkJTaTumpsPhGk+aK9NzzYlXsrbsXxyhYT2fnv6Xv2kx\n" +
+            "MtbpQzgHo0VH4OnG38+gfzdQRfqMaT5y8LehZ0dFgOD5kPYQJ+MLtIUgCEl4rws0\n" +
+            "ojncbw4lAgMBAAECggEAAWLgKd4lRFDZjIrJZccJ5mALre+9kD/MWjEpno4SuDtl\n" +
+            "k8Ak5yXfFvboiBg9OT6dkeAYZtiHpgWlc/gGZ4NMtdBzRp1a6H5PMXF9baxqKz44\n" +
+            "R4DPVSPbV8/Thy9Fxjl1r7pc9WBT8V5jWgMzq2mEgwV3ApiFHdPrXDr+W7ovxKaO\n" +
+            "SipADUjZglbDGhm13ewKHDyks+w5cW/bxKCzyir61/c6X/Qx43UrJKZYYGRXa0Xi\n" +
+            "ixXyOlFbLqGLjlvYBYjKTKQZhaEgWviCRedz9gV1/QQIz8q5b0E9VqkELXGa4UTn\n" +
+            "RGxp2ciBKZaWMF23fGpMjH/YMe+NXxWnsjvCEZXcFwKBgQD4Zg9+/scziwBVox+w\n" +
+            "jB0wD9GixSP2+UYsAeofn7mTQc+rZo8/hdYj0vvcUuKyyO15RFPwYc3UpO9lZUdb\n" +
+            "Zc4pyhtEJsueFBGPaxmOGg6c+RIREBPN38/w2gzlfvSu64iDH/dHyeAEV5/WS/rJ\n" +
+            "X9WSwm/qX/xvCX8yi9PG7A18zwKBgQDpAZeI63V8+HZ1I/T1g+AklcHHmUyZa1RJ\n" +
+            "K5SJExItTQA/wMPBm5D6uJ6PJ6xZVKoDLAS2VPt12BEYAoQsdZdRtBX7xKZdzEla\n" +
+            "8bNwAZWl5vKTJbpG6zK+dD/hnF25f6zkhqzQBZi1ppRqYFkAwJkNakByHfbYpfV7\n" +
+            "FGVZxJMKywKBgDiQpT66LgqiwLS/rNu7THpBX++9DO+U3FHxLat95/iMqAnUFRLW\n" +
+            "G2mVBh2qEk28S7etw5+d5g1icdGZOqKpkEUb7RGb9ApPb6BFN1CQxnsgjOitzJS5\n" +
+            "PtUOEpnAS1/56uBRSzJh2k2i1pcqPjXVSQFenbW1nfp7IygTh2ppHrkpAoGAD2mS\n" +
+            "i3T/tX993mu9dUv+1IyvX7ONNIy764cdcR+40RRJ0u2+RR00LtFtc4ytQs9t233a\n" +
+            "5fCjHX1oTA1GjuZMVxQxbBDq7ENqCsD4HI2OR4YKP598Pdqq5Zws6ZB9RpriZc9e\n" +
+            "uPfVzRYytQKggIM83H1Nu/6taFE59qU3uwNcspcCgYBHJSWPrLuIRA6VKbuLFl9Q\n" +
+            "AYJurgJ7TWh12OM9HBqLApf7/v61Ig5L+8xjK5lzmcZDealnTpdlgGbphPmAwghm\n" +
+            "7dWuc9GTW7ZIUxHK5cdREflKPIIgZP+MkLzxHLqyttLCxx5dLrK2+R18kWLdrCry\n" +
+            "kyRavEWKhHMDjUbNRTDDNA==";
 
 
     private final RSAKeyConverter rsaKeyConverter = new RSAKeyConverter();
