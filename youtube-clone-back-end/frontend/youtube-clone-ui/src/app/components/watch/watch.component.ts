@@ -31,6 +31,7 @@ import { VideoDescriptionComponent } from '../video-description/video-descriptio
 import { VideoCardComponent } from '../video-displays/video-card/video-card.component';
 import { VideoComponent } from '../video-displays/video/video.component';
 import { EmbeddedPlaylistComponent } from '../watch-view/embedded-playlist/embedded-playlist.component';
+import { ReportType } from '../../models/enum/reportType.enum';
 
 @Component({
   selector: 'app-watch',
@@ -102,6 +103,7 @@ export class WatchComponent implements OnInit {
   commentPageSize: number = 100;
   commentOffset: number = 0;
   commentsCount: number = 0;
+  reportType: string = ReportType.VIDEO;
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -132,56 +134,16 @@ export class WatchComponent implements OnInit {
     this.populateSubscriptionActions();
     
     this.componentUpdatesService.reportModal$.subscribe({
-      next: (showModal) => {
-        if(showModal) {
-          console.log('modal show ', showModal);
+      next: ({show, type}) => {
+        if(show) {
+          console.log('modal show ', show, ' type ', type);
+          this.reportType = type;
           this.isReportModalVisible = true;
         }
       }
     });
 
     this.buildManifestUris();
-
-    /*this.comment = {
-      id: 0,
-      commentText: `I’m upset Rey didn’t get to finish certain questions. I get the comedic aspect of the interview but let’s hear Rey’s answers more so than Kevin’s outburst.`,
-      imageUrl: '../../../assets/batman_and_superman_detective_comics.jpg',
-      userId: 0,
-      username: '',
-      postTime: '1 hour',
-      likeCount: 10,
-      dislikeCount: 0,
-      replyCount: 64,
-      subComments: [
-        {
-          id: 1,
-          imageUrl: '../../../assets/light-yagami.png',
-          userId: 0,
-          username: 'louisBlaster',
-          postTime: '10 minutes',
-          text: `My brother, in Terminator 2. Wasn't the terminator more human than us??  👍 🔥`,
-          to: 'AceTempo',
-          likeCount: 30,
-          dislikeCount: 0,
-        },
-        {
-          id: 2,
-          imageUrl: '../../../assets/goku_god_mode.jpg',
-          userId: 1,
-          username: 'MonsterHunter2099',
-          postTime: '4 hours',
-          text: `The best terminator day are way behind us dude`,
-          to: 'taylorMacarrena267',
-          likeCount: 12,
-          dislikeCount: 0,
-        },
-      ],
-    };*/
-
-    //this.comments = []//[this.comment]//, this.comment];
-
-    
-    //console.log('COMMENT IN PARENT TEST', this.test);
 
     this.videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -385,6 +347,10 @@ export class WatchComponent implements OnInit {
     
   }
 
+  onSaveToPlaylist() {
+    this.videoId;
+  }
+
   /*resetInteractionsContainerWidth(): void {
     console.log("\n\n");
     const videoContainerWidth = this.getVideoContainerWidth();
@@ -409,8 +375,6 @@ export class WatchComponent implements OnInit {
    */
   resetWatchContainerPadding(): void {
     let viewport = window.innerWidth;
-
-    console.log('view port SIZE ====> ', viewport);
 
     if (viewport >= 2500) {
       if (!this.isCinemaMode) {
@@ -672,6 +636,7 @@ export class WatchComponent implements OnInit {
   */
   report(event: any) {
     console.log('show report modal');
+    this.componentUpdatesService.toggleReportModal(true, ReportType.VIDEO);
     this.isReportModalVisible = true;
   }
   
@@ -694,7 +659,7 @@ export class WatchComponent implements OnInit {
     this.selectedReportType = null;
     this.reportStep = 0;
     this.isReportModalVisible = false;
-    this.componentUpdatesService.toggleReportModal(false);
+    this.componentUpdatesService.toggleReportModal(false, ReportType.VIDEO);
   }
 
   /**

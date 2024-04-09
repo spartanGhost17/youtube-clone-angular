@@ -3,7 +3,7 @@ import { WatchComponent } from '../watch.component';
 
 export const watchRoutes: Routes = [
   {
-    path: '',
+    path: '', 
     component: WatchComponent,
   },
 ];

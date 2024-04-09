@@ -64,7 +64,7 @@
                                 <span class="material-symbols-outlined non-selectable" *ngIf="!loadingUserInfo">share</span>
                                 <span *ngIf="!loadingUserInfo">Share</span>
                             </div>
-                            <div class="ytcp-button save" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}" [appTooltip]="'Save'">
+                            <div class="ytcp-button save" (click)="onSaveToPlaylist()" [ngClass]="{'skeleton_': loadingUserInfo, 'animate-pulse': loadingUserInfo}" [appTooltip]="'Save'">
                                 <span class="material-symbols-outlined non-selectable" *ngIf="!loadingUserInfo">playlist_add</span>
                                 <span *ngIf="!loadingUserInfo">Save</span>
                             </div>
@@ -127,7 +127,7 @@
 </app-modal>
 
 <ng-template #header>
-    <h2 class="text-primary modal-title" *ngIf="reportStep < 2"> Report {{'Video'}}</h2>
+    <h2 class="text-primary modal-title" *ngIf="reportStep < 2"> Report {{reportType}}</h2>
     <h2 class="text-primary modal-title" *ngIf="reportStep === 2">Thanks for reporting</h2>
 </ng-template>
 
