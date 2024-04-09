@@ -42,48 +42,37 @@ export class CommentsHolderComponent implements OnInit {
   }
 
   onReply(): void {
-    let commentsCount = this.comments.length+1;
-    let comment: Comment = {
-      id: commentsCount, //ID will come from the db auto incrementing
-      username: this.user.username,
-      commentText: this.commentInput,
-      imageUrl: this.user.profilePicture!,
+    const commentForm: CommentForm = {
       userId: this.user.id,
-      likeCount: 0,
-      dislikeCount: 0,
-      createdAt: new Date(),
-      lastUpdated: new Date(),
-      replyCount: 0,
-      subComments: [],
       videoId: this.videoId,
-      parentCommentId: 0
-    }
+      //toUserId: updatedComment.toUserId,
+      commentText: this.commentInput,
+      //parentCommentId: updatedComment.parentId
+    };
+
+    this.commentService.create(commentForm).subscribe({
+      next: (response) => {
+        const comment: Comment = response.data.comment;
+        this.comments = [...this.comments, comment];
+      }
+    });
+
     this.commentInput = '';
-    this.comments = [...this.comments, comment];
     //this.comments_copy = JSON.parse(JSON. stringify(this.comments))
   }
 
-  onCommentUpdate(updatedComment: any, originalComment: Comment): void {
+  onSubCommentUpdate(updatedComment: SubComment): void {
 
-    console.log("comment updated", updatedComment);
-    console.log("old comment", originalComment);
+    const comm = this.comments.filter(c => c.id === updatedComment.parentId)[0];
+    const index = this.comments.indexOf(comm);
 
-    //console.log("CLONE ", this.comments_copy)
-    console.log("whole comment list before ", this.comments);
-
-    // Find the index of the originalComment in the comments array
-    const index = this.comments.indexOf(updatedComment)//(originalComment);
-    console.log("index", index);
-    
-    const ogIndex = this.comments.indexOf(originalComment)
-    console.log("ogIndex", ogIndex);
-    
     // Update the comments array with the updatedComment at the found index
     const commentForm: CommentForm = {
       userId: this.user.id,
       videoId: this.videoId,
-      commentText: updatedComment.commentText,//remove and replace 
-      parentCommentId: updatedComment.id
+      toUserId: updatedComment.toUserId,
+      commentText: updatedComment.text,//remove and replace 
+      parentCommentId: updatedComment.parentId
     };
     
     this.commentService.create(commentForm).subscribe({
@@ -94,21 +83,17 @@ export class CommentsHolderComponent implements OnInit {
             createdAt: comment.createdAt,
             lastUpdated: comment.lastUpdated,
             text: comment.commentText,
-            to: updatedComment.username,
+            to: comment.to!,//updatedComment.username!,
+            toUserId: comment.toUserId,
             username: comment.username,
             imageUrl: comment.imageUrl,
             parentId: comment.parentCommentId!,
             likeCount: comment.likeCount
-          }; //response.comment;
-
+          };
           this.comments[index].subComments = [...this.comments[index].subComments, subComment];//updatedComment;
+          this.comments[index].replyCount += 1;
         }
-
-        console.log("whole comment list after ", this.comments);
       }
-    })
-    
-
-    
+    });
   }
 }

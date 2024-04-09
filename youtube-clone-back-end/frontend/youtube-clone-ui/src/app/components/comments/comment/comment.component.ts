@@ -10,6 +10,7 @@ import { StandardDropdownComponent } from '../../dropdown/standard-dropdown/stan
 import { DatecstmPipe } from '../../../pipes/datecstm/datecstm.pipe';
 import { CommentService } from '../../../shared/services/comment/comment.service';
 import { CommentRequestForm } from '../../../shared/types/commentReqForm.interface';
+import { ReportType } from '../../../models/enum/reportType.enum';
 
 @Component({
     selector: 'app-comment',
@@ -21,11 +22,12 @@ import { CommentRequestForm } from '../../../shared/types/commentReqForm.interfa
 export class CommentComponent implements OnInit {
   @Input() comment: Comment;
   @Input() commentList: Comment[];
-  @Output() commentUpdate: EventEmitter<Comment> = new EventEmitter<Comment>;
+  @Output() commentUpdate: EventEmitter<SubComment> = new EventEmitter<SubComment>;
   @Input() user: UserInterface;
   @Input() videoId: number;
 
   dropDownItems: any[];
+  subCommDropDownItems: any[];
   
   showReplies: boolean = false;
   //fontVariationSettings: string = `'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24`;
@@ -47,22 +49,20 @@ export class CommentComponent implements OnInit {
    * Load edit and delete actions if comment owned by user,
    * else load only report action. 
   */
-  loadActions(): void {
-    if(this.user.id === this.comment.userId) { //if user is comment owner
-      this.dropDownItems =  [
-        {icon: 'edit', text: 'Edit', action: (id: any, childId: any) => this.edit(id, childId)},
-        {icon: 'delete', text: 'Delete', action: (id: any, childId: any) => this.delete(id, childId)},
-      ];
-    }
-    else {
-      this.dropDownItems =  [
-        {icon: 'flag', text: 'Report', action: (id: any, childId: any) => this.report(id, childId)},
-      ];
-    }
+  loadActions() {
+    this.dropDownItems =  [
+      {icon: 'edit', text: 'Edit', action: (id: any, childId: any) => this.edit(id, childId)},
+      {icon: 'delete', text: 'Delete', action: (id: any, childId: any) => this.delete(id, childId)},
+    ];
+
+    this.subCommDropDownItems =  [
+      {icon: 'flag', text: 'Report', action: (id: any, childId: any) => this.report(id, childId)},
+    ];
   }
 
   report(id: any, childId: any): void {
-    this.componentUpdatesService.toggleReportModal(true);
+    console.log('report id: ', id, ' childId: ',childId);
+    this.componentUpdatesService.toggleReportModal(true, ReportType.COMMENT);
     if(childId) {
       console.log('REPORT This is a subComment = ', childId, ' parent id ', id);
       //TODO: call backend
@@ -159,15 +159,15 @@ export class CommentComponent implements OnInit {
       text: this.commentInput,
       to: parentPost.username,
       parentId: this.comment.id,
+      toUserId: parentPost.userId,
       lastUpdated: new Date()
     }
 
     this.commentInput = '';
     this.onCancelReply(parentPost);
-    //this.comment.subComments?.push(subcomment);
-    this.commentUpdate.emit(this.comment);
-
+    console.log("type: ", commetType, " parent post ", parentPost);
     console.log("subcomment added ", subcomment);
+    this.commentUpdate.emit(subcomment);
   }
 
   onShowReplyClicked() {
@@ -194,12 +194,14 @@ export class CommentComponent implements OnInit {
               lastUpdated: subComment.lastUpdated,
               text: subComment.commentText,
               to: subComment.to!,
+              userId: subComment.userId,
+              toUserId: subComment.toUserId,
               parentId: subComment.parentCommentId!,
               likeCount: subComment.likeCount,
             }
             return sbc;
           });
-          this.comment.subComments = subComment; 
+          this.comment.subComments = subComment;
         }
       });  
     }

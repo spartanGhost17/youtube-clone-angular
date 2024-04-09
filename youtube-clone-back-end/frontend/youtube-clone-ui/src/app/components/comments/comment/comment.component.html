@@ -89,7 +89,7 @@
                     <app-standard-dropdown
                         [parentId]="comment.id!"
                         [childId]="subComment.id!" 
-                        [items]="dropDownItems"
+                        [items]="user.id === subComment.userId!? dropDownItems : subCommDropDownItems"
                         [circle]="true"
                         [icon]="'more_vert'">
                     </app-standard-dropdown>
@@ -102,7 +102,7 @@
     <div class="actions">
         <app-standard-dropdown 
             [parentId]="comment.id!"
-            [items]="dropDownItems" 
+            [items]="user.id === comment.userId!? dropDownItems : subCommDropDownItems" 
             [circle]="true"
             [icon]="'more_vert'">
         </app-standard-dropdown>
