@@ -32,5 +32,7 @@ public class Comment {
     private Timestamp lastUpdated;
     @Column(name = "parent_comment_id")
     private Long parentCommentId;
+    @Column(name = "to_user_id")
+    private Long toUserId;
     private boolean reported;
 }

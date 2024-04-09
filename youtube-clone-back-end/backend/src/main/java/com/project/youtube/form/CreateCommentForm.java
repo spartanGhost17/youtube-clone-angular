@@ -24,4 +24,6 @@ public class CreateCommentForm {
     private String commentText;
     @Nullable
     private Long parentCommentId;
+    @Nullable
+    private Long toUserId;
 }

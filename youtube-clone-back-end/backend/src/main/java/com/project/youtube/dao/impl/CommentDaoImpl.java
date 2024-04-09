@@ -62,8 +62,8 @@ public class CommentDaoImpl implements CommentDao<Comment> {
             parameterSource.addValue("commentText", commentForm.getCommentText());
 
             if(commentForm.getParentCommentId() != null) {
-                Long id = commentForm.getParentCommentId();
-                parameterSource.addValue("parentCommentId", id);
+                parameterSource.addValue("parentCommentId", commentForm.getParentCommentId());
+                parameterSource.addValue("toUserId", commentForm.getToUserId());
             }
 
             jdbcTemplate.update(commentForm.getParentCommentId() == null? INSERT_COMMENT_QUERY : INSERT_SUB_COMMENT_QUERY, parameterSource, keyHolder);

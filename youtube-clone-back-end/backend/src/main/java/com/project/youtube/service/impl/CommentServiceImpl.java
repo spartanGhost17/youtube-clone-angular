@@ -36,8 +36,8 @@ public class CommentServiceImpl implements CommentService {
         commentDto.setReplyCount(getReplyCount(commentDto.getId()));
         commentDto.setLikeCount(getLikeCount(commentDto));
         if(commentForm.getParentCommentId() != null) {
-            Comment parentComment = commentDao.get(commentForm.getParentCommentId());
-            UserDTO to = userService.getUser(parentComment.getUserId());
+            //Comment parentComment = commentDao.get(commentForm.getParentCommentId());
+            UserDTO to = userService.getUser(commentForm.getToUserId());//userService.getUser(parentComment.getUserId());
             commentDto.setTo(to.getUsername());
         }
         return commentDto;
@@ -58,19 +58,18 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override //TODO: get primary comments with parent_comment_id null
     public List<CommentDto> getComments(Long videoId, Long pageSize, Long offset, Boolean isSubComment, Long parentId) {
-        Comment parentComment;
-        UserDTO to = new UserDTO();
-        if(isSubComment) {
-            parentComment = commentDao.get(parentId);
-            to = userService.getUser(parentComment.getUserId());
-        }
+        //Comment parentComment;
+        //UserDTO to = new UserDTO();
+        //if(isSubComment) {
+        //    parentComment = commentDao.get(parentId);
+        //    to = userService.getUser(parentComment.getUserId());
+        //}
 
-        UserDTO finalTo = to;
+        //UserDTO finalTo = to;
         return commentDao.getComments(videoId, pageSize, offset, isSubComment, parentId)
                 .stream()
                 .map(comment -> {
                     CommentDto commentDto = toCommentDto(comment);
-                    log.info("CommentDto id: {} text: {}", commentDto.getId(), commentDto.getCommentText());
                     UserDTO user = userService.getUser(commentDto.getUserId());
                     Long likes = getLikeCount(commentDto);
                     commentDto.setUsername(user.getUsername());
@@ -79,8 +78,8 @@ public class CommentServiceImpl implements CommentService {
                     commentDto.setLikeCount(likes);
 
                     if(isSubComment) {
-                        //UserDTO to = userService.getUser(parentComment.getUserId());
-                        commentDto.setTo(finalTo.getUsername());
+                        UserDTO to = userService.getUser(commentDto.getToUserId());
+                        commentDto.setTo(to.getUsername());
                     }
                     return commentDto;
                 })
@@ -115,8 +114,8 @@ public class CommentServiceImpl implements CommentService {
         commentDto.setLikeCount(getLikeCount(commentDto));
 
         if(commentDto.getParentCommentId() != null) {
-            Comment parentComment = commentDao.get(commentDto.getParentCommentId());
-            UserDTO to = userService.getUser(parentComment.getUserId());
+            //Comment parentComment = commentDao.get(commentDto.getParentCommentId());
+            UserDTO to = userService.getUser(commentDto.getToUserId());//userService.getUser(parentComment.getUserId());
             commentDto.setTo(to.getUsername());
         }
         return commentDto;

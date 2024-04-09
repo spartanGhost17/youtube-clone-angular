@@ -29,4 +29,5 @@ public class CommentDto {
     private String username;
     private List<CommentDto> subComments = new ArrayList<>();
     private String to;
+    private Long toUserId;
 }
