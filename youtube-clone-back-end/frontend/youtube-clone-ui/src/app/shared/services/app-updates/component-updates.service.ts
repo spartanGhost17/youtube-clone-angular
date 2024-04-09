@@ -16,7 +16,7 @@ export class ComponentUpdatesService {
   videoTheaterMode$: Subject<boolean> = new Subject<boolean>();
   videoPrimaryColor$: Subject<string> = new Subject<string>();//updated every 30 frames
 
-  reportModal$: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  reportModal$: Subject<{show: boolean, type: string}> = new BehaviorSubject<{show: boolean, type: string}>({show: false, type: ''});
   
   constructor() { }
 
@@ -52,9 +52,10 @@ export class ComponentUpdatesService {
 
   /**
    * show report modal 
-   * @param {boolean} showModal  
+   * @param {boolean} showModal
+   * @param {string} type the report type  
   */
-  toggleReportModal(showModal: boolean) {
-    this.reportModal$.next(showModal);
+  toggleReportModal(showModal: boolean, type: string) {
+    this.reportModal$.next({show: showModal, type: type});
   }
 }
