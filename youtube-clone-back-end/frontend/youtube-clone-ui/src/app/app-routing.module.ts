@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { HomeExplorerViewComponent } from './components/home-explorer-view/home-explorer-view.component';
 import { HomeComponent } from './pages/home/home.component';
+import { WatchComponent } from './components/watch/watch.component';
 
 export const appRoutes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/home/explore'},//'/home/explore' },
+  { path: '', pathMatch: 'full', redirectTo: '/home/explore'},
   { path: 'login', loadChildren: () => import('./components/auth/routes/login.routes').then((m) => m.authRoutes) },
   { path: 'register', loadChildren: () => import('./components/auth/routes/register.routes').then((m) => m.authRoutes)},
   { path: 'reset/password', loadChildren: () => import('./components/auth/routes/resetPassword.routes').then((m) => m.authRoutes)},
