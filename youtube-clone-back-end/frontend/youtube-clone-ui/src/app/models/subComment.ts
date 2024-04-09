@@ -7,6 +7,7 @@ export interface SubComment {
     lastUpdated: Date,
     text: string,
     to: string,
+    toUserId?: number,
     parentId: number,
     likeCount: number,
     dislikeCount?: number, 
