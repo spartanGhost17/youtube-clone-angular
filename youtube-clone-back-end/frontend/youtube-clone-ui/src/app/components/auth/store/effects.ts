@@ -215,6 +215,7 @@ export const logOutEffect = createEffect((
 
 //redirect navigate to home page
 export const redirectAfterLoginEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
+  console.log("calling 1 redirectAfterLoginEffect");
   return actions$.pipe(
     ofType(authActions.loginSuccess),
     tap(() => {
@@ -225,7 +226,7 @@ export const redirectAfterLoginEffect = createEffect((actions$ = inject(Actions)
 
 //redirect to verify/password
 export const redirectAfterVerifyPasswordResetLinkEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
-  console.log("calling redirectAfterRegisterEffect");
+  console.log("calling 2 redirectAfterVerifyPasswordResetLinkEffect");
   return actions$.pipe(
     ofType(authActions.renewPassword),
     tap(() => {
@@ -236,6 +237,7 @@ export const redirectAfterVerifyPasswordResetLinkEffect = createEffect((actions$
 
 //redirect to login
 export const redirectAfterLogOutEffect = createEffect((actions$ = inject(Actions), router = inject(Router)) => {
+  console.log("calling 3 redirectAfterLogOutEffect")
   return actions$.pipe(
     ofType(authActions.logOut),
     tap(() => {
