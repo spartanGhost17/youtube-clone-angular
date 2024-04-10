@@ -1,6 +1,6 @@
-<div class="container content no-padding" [ngStyle]="{'border': '2px solid white'}">
+<div class="container content no-padding" ><!--[ngStyle]="{'border': '2px solid white'}"-->
     <app-header (showSideBar)="toggleSidebar($event)"></app-header>
-    <div class="container no-padding" [ngStyle]="{'border': '2px solid purple', 'margin-right': '400px', 'padding':'0'}">
+    <div class="container no-padding" > <!-- [ngStyle]="{'border': '2px solid green',  'padding':'0'}"'margin-right': '400px',-->
         <app-side-panel 
             [collapse]="sidebarOpen"
             [sections]="sideMenuOptions"
@@ -13,7 +13,7 @@
             <router-outlet></router-outlet>
         </div>
 
-        <div *ngIf="sidebarType === 'hover'" class="container content-fill-available no-padding" [ngStyle]="{'border': '2.5px solid pink'}">
+        <div *ngIf="sidebarType === 'hover'" class="container content-fill-available no-padding"> <!--[ngStyle]="{'border': '2.5px solid pink'}"-->
             <router-outlet></router-outlet>
         </div>
     </div>
