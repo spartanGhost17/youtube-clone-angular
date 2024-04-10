@@ -80,17 +80,20 @@ export class CommentComponent implements OnInit {
   }
 
   delete(id: any, childId: any): void {
+    console.log('delete id: ', id, ' childId: ', childId);
     if(childId) {
-      const subComment: SubComment[] = this.comment.subComments!.filter(x => x.id === childId);
-      const idx: number = this.comment.subComments!.indexOf(subComment[0]);
+      const subComment: SubComment[] = this.comment.subComments.filter(x => x.id === childId);
+      const idx: number = this.comment.subComments.indexOf(subComment[0]);
 
-      if(subComment!.length>0) {
+      if(subComment.length>0) {
         this.comment.subComments?.splice(idx, 1);
       }
+      this.commentService.delete(childId).subscribe({});
     }
     else {
       const idx = this.commentList.indexOf(this.comment);
       this.commentList.splice(idx, 1);
+      this.commentService.delete(id).subscribe({});
     }
   }
 
