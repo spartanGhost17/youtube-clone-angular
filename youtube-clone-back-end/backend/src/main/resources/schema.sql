@@ -253,6 +253,8 @@ create TABLE PlaylistVideos
     position                INTEGER UNSIGNED NOT NULL DEFAULT 0,
     playlist_id             BIGINT UNSIGNED NOT NULL,
     video_id                BIGINT UNSIGNED NOT NULL,
+    created_at              DATETIME DEFAULT CURRENT_TIMESTAMP,
+    --last_updated            DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (playlist_id) REFERENCES Playlists (id) ON delete CASCADE ON update CASCADE,
     FOREIGN KEY (video_id) REFERENCES Videos (id) ON delete CASCADE ON update CASCADE,
     CONSTRAINT PK_PlaylistVideos PRIMARY KEY (playlist_id, video_id)
