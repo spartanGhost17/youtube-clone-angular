@@ -107,10 +107,10 @@ input[type="range"]::-ms-thumb {
     width: 100%;//only used when viewport is shrunk passed @media query
     height: 100%;
     //margin-left: 4px;
-    margin-right: 4px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    border: 1px solid red;
+    //margin-right: 4px;
+    //padding-left: 0.5rem;
+    //padding-right: 0.5rem;
+    //border: 1px solid red;
 }
 
 .user-icon {
@@ -302,17 +302,17 @@ img {
 }
 
 /*4xl*/
-@media (min-width: 1645px) {
+@media (min-width: 1600px) {//1645px) {
     :root {
-        --view-port: 1645px;
+        --view-port: 1600px;
     }
 
     .container {
-        max-width: 1645px;
+        max-width: 1600px;
     }
 
     .frame-body {
-        max-width: calc(1645px - 247px);
+        max-width: calc(1600px - 247px);
     }
 }
 
@@ -479,7 +479,7 @@ img {
 }
 
 
-/*2xl*/
+//2xl
 @media (min-width: 1600px) {
     .channel-videos-container {
         grid-template-columns: 1fr 1fr 1fr 1fr;

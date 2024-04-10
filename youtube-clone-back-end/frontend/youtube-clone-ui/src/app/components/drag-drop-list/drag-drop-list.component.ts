@@ -87,9 +87,9 @@ export class DragDropListComponent {
       }
     });
     
-    if(this.playlistId) {//update playlist only if a playlist id
-      this.updatePlaylistItems(updatedPosSlice);
-    }
+    //if(this.playlistId) {//update playlist only if a playlist id
+    this.updatePlaylistItems(updatedPosSlice);
+    //}
     
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);    
     this.onListUpdate.emit(this.items);
