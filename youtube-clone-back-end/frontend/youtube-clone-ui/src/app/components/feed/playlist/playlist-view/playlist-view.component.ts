@@ -1,113 +1,118 @@
 import { Component } from '@angular/core';
 
+import { NgIf, NgStyle } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Icons } from 'src/app/models/icons';
 import { ComponentUpdatesService } from 'src/app/shared/services/app-updates/component-updates.service';
+import { PlaylistService } from '../../../../shared/services/playlist/playlist.service';
+import { selectCurrentUser } from '../../../../shared/store/user/reducers';
+import { CurrentUserInterface } from '../../../../shared/types/currentUser.interface';
+import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
 import { DragDropListComponent } from '../../../drag-drop-list/drag-drop-list.component';
 import { PlaylistMetadataComponent } from '../playlist-metadata/playlist-metadata.component';
-import { NgStyle } from '@angular/common';
 
 @Component({
-    selector: 'app-playlist-view',
-    templateUrl: './playlist-view.component.html',
-    styleUrls: ['./playlist-view.component.scss'],
-    standalone: true,
-    imports: [NgStyle, PlaylistMetadataComponent, DragDropListComponent]
+  selector: 'app-playlist-view',
+  templateUrl: './playlist-view.component.html',
+  styleUrls: ['./playlist-view.component.scss'],
+  standalone: true,
+  imports: [NgStyle, PlaylistMetadataComponent, DragDropListComponent, NgIf],
 })
 export class PlaylistViewComponent {
-
   collapsedSideBar: boolean = false;
-  sidebarWidth: string = '240px';//fix this, the subject update this at all times and not have a default value set here
+  sidebarWidth: string = '240px'; //fix this, the subject update this at all times and not have a default value set here
   icons: Icons = new Icons();
   thumbnail: string;
+  playlist: PlaylistInterface;
   videos: any[] = [];
+  currentuser: CurrentUserInterface;
 
+  constructor(
+    private componentUpdatesService: ComponentUpdatesService,
+    private playlistService: PlaylistService,
+    private route: ActivatedRoute,
+    private store: Store
+  ) {
+    this.componentUpdatesService.sideBarCollapsed$.subscribe(
+      (collapsedSideBar) => {
+        console.log('~~~~~~~~ > ', collapsedSideBar);
+        this.collapsedSideBar = collapsedSideBar;
+      }
+    );
 
-  constructor(private componentUpdatesService: ComponentUpdatesService) {
-    this.componentUpdatesService.sideBarCollapsed$.subscribe((collapsedSideBar) => {
-      console.log("~~~~~~~~ > ",collapsedSideBar);
-      this.collapsedSideBar = collapsedSideBar;
-    });
+    this.componentUpdatesService.sideBarCurrentWidth$.subscribe(
+      (sidebarWidth) => {
+        console.log('.....> sidebarWidth ', sidebarWidth);
+        this.sidebarWidth = sidebarWidth;
+      }
+    );
 
-    this.componentUpdatesService.sideBarCurrentWidth$.subscribe((sidebarWidth) => {
-      console.log(".....> sidebarWidth ",sidebarWidth);
-      this.sidebarWidth = sidebarWidth;
-    });
-
-    console.log("================================ " ,this.collapsedSideBar, ' val ', this.sidebarWidth);
+    console.log(
+      '================================ ',
+      this.collapsedSideBar,
+      ' val ',
+      this.sidebarWidth
+    );
   }
 
   ngOnInit() {
-    this.videos = [
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/superman_flying.jpg',
-        channelName: 'ALJordan',
-        title: 'Superman Number #1 DC rebirth',
-        viewCount: '12K',
-        postTime: '8 months'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/vagabon_manga.jpg',
-        channelName: 'ALJordan',
-        title: 'The Greatest Manga Ever Written | Vagabon a Story For The Ages',
-        viewCount: '2.4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/green_lanter_vs_sinestro.jpg',
-        channelName: 'DC Central',
-        title: 'Why AL Jordan Came Back | Crisis Event',
-        viewCount: '4K',
-        postTime: '10 months'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/batman_and_superman_detective_comics.jpg',
-        channelName: 'ALJordan',
-        title: 'Batman and Superman Defeats Perpetua',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/justice_league.jpg',
-        channelName: 'ALJordan',
-        title: 'Justice League Vs Perpetua',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/green_lantern_rising.png',
-        channelName: 'ALJordan',
-        title: 'AL Jordan\'s History',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../assets/superman_sits_on_clouds.jpg',
-        channelName: 'ALJordan',
-        title: 'Jorge Jimenez Superman',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-    ];
-    this.thumbnail = this.videos[0].thumbnailURL;
-    console.log("prior list: ", this.videos)
+    this.getCurrentUser();
+    this.getPlaylistByName();
+  }
+
+  /**
+   * get playlist by name
+   */
+  getPlaylistByName() {
+    this.route.queryParamMap.subscribe({
+      next: (data) => {
+        const playlistName = data.get('list');
+        if(playlistName) {
+          //userId: number, pageSize: number, offset: number
+          this.playlistService.getByName(this.currentuser.id, 100, 0, playlistName).subscribe({
+            next: (response) => {
+              this.playlist = response.data.playlist;
+              this.thumbnail = this.playlist.thumbnailUrl!;
+              this.getVideos();
+            }
+          });
+        }
+        
+      }
+    });
+  }
+
+  /**
+   * get current user from state
+   */
+  getCurrentUser() {
+    this.store.select(selectCurrentUser).subscribe({
+      next: (user) => {
+        if(user) {
+          this.currentuser = user;
+        }
+      }
+    })
+  }
+
+  /**
+   * get videos for playlist
+   */
+  getVideos() {
+    this.playlistService.getVideos(this.playlist.id!, 100, 0).subscribe({
+      next: (response) => {
+        this.videos = response.data.playlist.videos;
+      }
+    })
   }
 
   /**
    * update list of videos based on new order
-   * @param event list of objects 
-  */
-  onListUpdate(event : any[]) {
-    console.log("list updated now in parent \n", event);
-    console.log("old list  old list: ", this.videos)
+   * @param event list of objects
+   */
+  onListUpdate(event: any[]) {
     this.videos = event;
-    this.thumbnail = event[0].thumbnailURL;
+    this.thumbnail = event[0].thumbnailUrl;
   }
-
 }

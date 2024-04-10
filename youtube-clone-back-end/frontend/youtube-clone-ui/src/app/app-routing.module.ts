@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeExplorerViewComponent } from './components/home-explorer-view/home-explorer-view.component';
 import { HomeComponent } from './pages/home/home.component';
-import { WatchComponent } from './components/watch/watch.component';
 
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home/explore'},

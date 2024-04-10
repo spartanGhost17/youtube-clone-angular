@@ -41,7 +41,6 @@ export class AuthenticationService {
   login(
     loginForm: LoginFormInterface
   ): Observable<HttpResponseInterface<CurrentUserInterface>> {
-    console.log('LOGIN FORM IS THIS ', loginForm);
     return this.http.post<HttpResponseInterface<CurrentUserInterface>>(
       this.apiUrl + resources.USER_END_POINTS.LOGIN,
       loginForm
@@ -93,7 +92,6 @@ export class AuthenticationService {
     const params = new HttpParams()
       .append('type', verifyPasswordForm.type)
       .append('key', verifyPasswordForm.key);
-    console.log(`URL:  ${url}`);
     return this.http.post<HttpResponseInterface<ResponseMessagesInterface>>(
       url.toString(),
       params

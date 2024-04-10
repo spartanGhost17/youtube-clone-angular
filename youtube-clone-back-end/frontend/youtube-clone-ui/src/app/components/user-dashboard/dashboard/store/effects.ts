@@ -22,8 +22,6 @@ export const dashboardEffect = createEffect(
           return dashboardService.getAllCategories().pipe(
             map((response: HttpResponseInterface<CategoryInterface[]>) => {
               const categories: CategoryInterface[] = response.data.category;
-              //progressBarService.completeLoading(); //stop progress
-                console.log("CATEGORIES ====>>>>> ",categories)
               const responseMessages: ResponseMessagesInterface = toResponseMessage(response)
   
               return dashboardActions.getAllCategoriesSuccess({

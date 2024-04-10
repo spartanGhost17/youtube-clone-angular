@@ -1,58 +1,60 @@
 <div class="embedded-playlist-container">
-    <div class="header">
-        <div class="title-container">
-            <h1 class="text-primary title">{{playlist.name}}</h1>
-            <div class="action_btn non-selectable">
-                <span class="material-symbols-outlined">close</span>
+    <ng-container *ngIf="playlist">
+        <div class="header">
+            <div class="title-container">
+                <h1 class="text-primary title">{{playlist.name}}</h1>
+                <div class="action_btn non-selectable">
+                    <span class="material-symbols-outlined">close</span>
+                </div>
+            </div>
+            <div class="info">
+                <div class="visibility non-selectable">
+                    <span class="text-secondary material-symbols-outlined" *ngIf="playlist.visibilityStatus.statusName.toLowerCase() === 'public'">public</span>
+                    <span class="text-secondary material-symbols-outlined" *ngIf="playlist.visibilityStatus.statusName.toLowerCase() === 'private'">lock</span>
+                    <span class="text-secondary material-symbols-outlined" *ngIf="playlist.visibilityStatus.statusName.toLowerCase() === 'unlisted'">link</span>
+                    
+                    <div class="text-secondary status">
+                        {{status}}
+                    </div>
+                </div>
+                <div class="metadata">
+                    <div class="owner">
+                        <span>{{ownerUsername}}</span>
+                    </div>
+                    <span class="text-secondary">&bull;</span>
+                    <div class="text-secondary current-video-count">
+                        <span>2/{{playlistItems!.length}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="actions non-selectable">
+                <div class="actions__left">
+                    <div class="action_btn" (click)="onLoopingClicked()">
+                        <span *ngIf="!isLooping" class="material-symbols-outlined">repeat</span>
+                        <span *ngIf="isLooping" class="material-symbols-outlined">repeat_one</span>
+                    </div>
+                    <div class="action_btn" (click)="onShuffleClicked()">
+                        <span *ngIf="!isOnShuffle" class="material-symbols-outlined">shuffle</span>
+                        <span *ngIf="isOnShuffle" class="material-symbols-outlined">shuffle_on</span>
+                    </div>
+                </div>
+                <div class="actions__right">
+                    <div class="action_btn">
+                        <span class="material-symbols-outlined">more_vert</span>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="info">
-            <div class="visibility non-selectable">
-                <span class="text-secondary material-symbols-outlined" *ngIf="isPublic">public</span>
-                <span class="text-secondary material-symbols-outlined" *ngIf="isPrivate">lock</span>
-                <span class="text-secondary material-symbols-outlined" *ngIf="isUnlisted">link</span>
-                
-                <div class="text-secondary status">
-                    {{playlist.visibilityStatus}}
-                </div>
-            </div>
-            <div class="metadata">
-                <div class="owner">
-                    <span>Tintin_Dumbo_17</span>
-                </div>
-                <span class="text-secondary">&bull;</span>
-                <div class="text-secondary current-video-count">
-                    <span>2/{{playlistItems!.length}}</span>
-                </div>
+        <div class="embedded-content">
+            <div class="drag-drop">
+                <app-drag-drop-list
+                    [items]="playlistItems"
+                    [dropDownItems]="dropDownItems"
+                    [isSmall]="true"
+                    [showViews]="false"
+                    (onListUpdate)="onListUpdated($event)">
+                </app-drag-drop-list>
             </div>
         </div>
-        <div class="actions non-selectable">
-            <div class="actions__left">
-                <div class="action_btn" (click)="onLoopingClicked()">
-                    <span *ngIf="!isLooping" class="material-symbols-outlined">repeat</span>
-                    <span *ngIf="isLooping" class="material-symbols-outlined">repeat_one</span>
-                </div>
-                <div class="action_btn" (click)="onShuffleClicked()">
-                    <span *ngIf="!isOnShuffle" class="material-symbols-outlined">shuffle</span>
-                    <span *ngIf="isOnShuffle" class="material-symbols-outlined">shuffle_on</span>
-                </div>
-            </div>
-            <div class="actions__right">
-                <div class="action_btn">
-                    <span class="material-symbols-outlined">more_vert</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="embedded-content">
-        <div class="drag-drop">
-            <app-drag-drop-list
-                [items]="playlist.videos!"
-                [dropDownItems]="dropDownItems"
-                [isSmall]="true"
-                [showViews]="false"
-                (onListUpdate)="onListUpdated($event)">
-            </app-drag-drop-list>
-        </div>
-    </div>
+    </ng-container>
 </div>

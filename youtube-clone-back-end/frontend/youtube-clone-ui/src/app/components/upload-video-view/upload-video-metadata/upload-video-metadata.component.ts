@@ -131,7 +131,7 @@ export class UploadVideoMetadataComponent {
         this.thumbnails[i].isActive = true;
         this.largeThumbnailURL = this.thumbnails[i].thumbnailUrl;
         this.video.thumbnailId = this.thumbnails[i].id;
-        console.log("changing LARGE thumbnail ", this.largeThumbnailURL);
+        //console.log("changing LARGE thumbnail ", this.largeThumbnailURL);
       }
       else {
         this.thumbnails[i].isActive = false;
@@ -150,7 +150,6 @@ export class UploadVideoMetadataComponent {
   */
   showCreatePlaylistModal(event: boolean) {
     this.isNewPlaylist = event;
-    console.log("event create playlist ", event);
   }
 
   /**
@@ -162,7 +161,6 @@ export class UploadVideoMetadataComponent {
   }
 
   selectedNewPlVisisbility(event: any[]) {
-    console.log("new playlist visibility ", event);
     event.forEach((pl: any) => {
       if(pl.checked) {
         this.newPlVisibilityId = pl.playlist.id;

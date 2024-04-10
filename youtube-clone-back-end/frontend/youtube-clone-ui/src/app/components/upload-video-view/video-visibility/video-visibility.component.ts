@@ -25,7 +25,6 @@ export class VideoVisibilityComponent {
   }
 
   onRadioBtnClicked(event: any) { 
-    console.log(`selected radio button`, event)
     this.selected.emit(event);
   }
 

@@ -45,7 +45,6 @@ export class DashboardComponent {
     this.componentUpdatesService.headerAddVideo$.subscribe(
       (addVideoClicked) => {
         this.isShowModal = addVideoClicked;
-        console.log('addVideoClicked ', addVideoClicked);
       }
     );
   }

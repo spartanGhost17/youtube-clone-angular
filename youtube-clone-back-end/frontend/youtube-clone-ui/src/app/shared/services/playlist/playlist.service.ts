@@ -96,6 +96,16 @@ export class PlaylistService {
   }
 
   /**
+   * update playlist video items position
+   * @param videoItemFormList the list of video items
+   * @returns { Observable<HttpResponseInterface<null>> } the response 
+  */
+  updatePositions(videoItemFormList: VideoItemFormInterface[]): Observable<HttpResponseInterface<null>> {
+    const url: string = buildURL(this.apiUrl, this.PLAYLIST.UPDATE_VIDEO_POSITION);
+    return this.http.patch<HttpResponseInterface<null>>(url, videoItemFormList);
+  }
+
+  /**
    * delete a video from the playlist
    * @param {VideoItemFormInterface} videoItemForm the video id 
    * @returns {HttpResponseInterface<Video>} the response

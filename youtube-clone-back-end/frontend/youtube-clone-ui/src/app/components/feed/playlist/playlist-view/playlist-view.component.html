@@ -1,11 +1,22 @@
 <div class="container view-container" [ngStyle]="{ 'max-width': collapsedSideBar? 'calc(var(--view-port) - calc('+sidebarWidth+' + 40px))' : 'calc(var(--view-port) - calc('+sidebarWidth+' + 38px))'}">
-    <div class="left-container">
-        <app-playlist-metadata [thumbnail]="thumbnail"></app-playlist-metadata>
-    </div> <!--110px 276px-->
-    <div class="right-container">
-        <app-drag-drop-list 
-            [items]="videos"
-            (onListUpdate)="onListUpdate($event)">
-        </app-drag-drop-list>
-    </div>
+    <ng-container *ngIf="videos.length > 0 && playlist">
+        <div class="left-container">
+            <app-playlist-metadata [metadata]="playlist" [thumbnail]="thumbnail"></app-playlist-metadata>
+        </div> <!--110px 276px-->
+        <div class="right-container">
+            <app-drag-drop-list 
+                [playlistId]="playlist.id!"
+                [items]="videos"
+                (onListUpdate)="onListUpdate($event)">
+            </app-drag-drop-list>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="videos.length === 0">
+        <div class="no-data">
+            <div class="img-container__no_data">
+                <img [src]="'../../../../../assets/graphics/no_content_illustration_v3_darkmode.svg'" alt="">
+                <span class="text-primary">No fish in the bowl! Nothing to see yet</span>
+            </div>
+        </div>
+    </ng-container>
 </div>

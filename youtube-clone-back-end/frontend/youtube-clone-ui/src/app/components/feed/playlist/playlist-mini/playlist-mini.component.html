@@ -4,7 +4,7 @@
         <div #thumbnailContainer class="thumbnail">
             <img class="" [src]="playlist.thumbnailUrl!" alt="">
         </div>
-        <div #hoverContainer class="thumbnail-hover-container">
+        <div #hoverContainer class="thumbnail-hover-container" (click)="onPlayAll()">
             <span class="material-symbols-outlined big-icon non-selectable">play_arrow</span>
             <span class="non-selectable">PLAY ALL</span>
         </div>

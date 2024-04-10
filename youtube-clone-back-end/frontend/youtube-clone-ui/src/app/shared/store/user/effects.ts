@@ -25,10 +25,8 @@ export const updateProfilePictureEffect = createEffect((
                 map((response: HttpResponseInterface<CurrentUserInterface>) => {
                     progressBarService.completeLoading();
                     const user: CurrentUserInterface = response.data['user'];
-                    console.log(`the old url ${user.profilePicture}`)
+
                     user.profilePicture = `${response.data['user'].profilePicture}?time=${new Date().getTime()}`;
-                    console.log(`the new url: ${user.profilePicture}`);
-                    console.log(`user ${user}`)
                     return userActions.updateProfilePictureSuccess({
                         currentUser: user,
                         responseMessages: toResponseMessage(response)

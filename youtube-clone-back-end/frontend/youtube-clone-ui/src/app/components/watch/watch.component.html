@@ -3,11 +3,14 @@
     <div class="main-content-container">
         <!--<div #bgColorBlur class="bg-color-blur"></div>-->
         <div #videoContainer class="video-container" [ngClass]="{'expanded': isCinemaMode}">
-            <app-video [videoId]="videoId" [manifestHlsUrl]="manifestMpdUrl" [manifestMpdUrl]="manifestHlsUrl"></app-video>
+            <app-video (currentTime)="onVideoTimeUpdated($event)" [videoId]="videoId" [manifestHlsUrl]="manifestMpdUrl" [manifestMpdUrl]="manifestHlsUrl"></app-video>
         </div>
         
         <div #recommendationContainer class="recommendations-container">
-            <app-embedded-playlist></app-embedded-playlist>
+            <ng-container *ngIf="playlistName">
+                <app-embedded-playlist [owner]="plOwner" [name]="playlistName"></app-embedded-playlist>
+            </ng-container>
+            
 
             <!--<div class="recommendations-container__embedded-playlist">
             </div>-->
@@ -135,6 +138,7 @@
   <div class="report-modal-content-container">
     <app-report
         [step]="reportStep"
+        [videoTime]="videoCurrentTime"
         (onSelectedType)="onSelectedReportType($event)">
     </app-report>
   </div>

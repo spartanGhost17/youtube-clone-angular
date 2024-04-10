@@ -5,13 +5,14 @@ import { Icons } from '../../models/icons';
 import { selectCurrentUser, selectSubscriptions } from '../../shared/store/user/reducers';
 import { ComponentUpdatesService } from '../../shared/services/app-updates/component-updates.service';
 import { userActions } from '../../shared/store/user/actions';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
     standalone: true,
-    imports: [FrameComponent]
+    imports: [FrameComponent, HeaderComponent]
 })
 export class HomeComponent {
   sideMenuOptions: any[] = [];
@@ -52,8 +53,8 @@ export class HomeComponent {
       {'isActive':false, username: `${username}`, text: 'Your channel', icon: 'account_box', provider: 'google', type: 'outlined', color: 'white', navigateTo: `home/@`, sidebarType: 'side', isChannel: true},//this.ICON_LIBRARY_VIDEO
       {'isActive':false, text: 'History', icon: 'history', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'feed/history', sidebarType: 'side'},//this.ICON_HISTORY
       {'isActive':false, text: 'Your videos', icon: 'slideshow', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'studio/dashboard', sidebarType: 'side', newTab: true},//this.ICON_LIBRARY
-      {'isActive':false, text: 'Watch Later', icon: 'schedule', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'playlist', sidebarType: 'side', playlistName: 'WL'},//this.ICON_WATCH_LATER
-      {'isActive':false, text: 'Liked Videos', icon: 'thumb_up', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'playlist', sidebarType: 'side', playlistName: 'LL'},//this.ICON_LIKE playlistName: 'PLlFiFXELFq7g4nk3ydFeZLdvqacmEfPGG'
+      {'isActive':false, text: 'Watch Later', icon: 'schedule', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'playlist', sidebarType: 'side', playlistName: 'Watch Later'},//this.ICON_WATCH_LATER
+      {'isActive':false, text: 'Liked Videos', icon: 'thumb_up', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'playlist', sidebarType: 'side', playlistName: 'Likes'},//this.ICON_LIKE playlistName: 'PLlFiFXELFq7g4nk3ydFeZLdvqacmEfPGG'
       {'isActive':false, text: 'Show more', icon: 'expand_more', provider: 'google', type: 'outlined', color: 'white', navigateTo: 'feed/library', sidebarType: 'side'},
     ];
     this.subcribed_channels = subcribedChannels;
@@ -80,7 +81,6 @@ export class HomeComponent {
               sidebarType: 'side', 
               isChannel: true}
           });
-          console.log("subscriptions ", subsList);
           this.populateSidePanel(this.username, subsList);  
         } else {
           this.populateSidePanel(this.username, []);

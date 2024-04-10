@@ -22,12 +22,10 @@ export class AppComponent {
     public progressBarService: ProgressBarService
   ) {
 
-    console.log('sending side bar type ', this.sidebarType);
     this.componentUpdatesService.sideBarTypeUpdate(this.sidebarType);
     if (environment.production) {
       enableProdMode();
     }
-    console.log(`CURRENT API URL: ${environment.apiUrl}`);
   }
 
   ngOnInit() {

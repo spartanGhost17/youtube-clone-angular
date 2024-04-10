@@ -116,9 +116,7 @@ export class MetadataModalComponent {
   ) {}
 
   showModal() {
-    console.log('modal before ', this.isShowModal);
     this.isShowModal = !this.isShowModal;
-    console.log('modal after ', this.isShowModal);
   }
 
   ngOnInit(): void {
@@ -127,28 +125,9 @@ export class MetadataModalComponent {
       playlists: this.store.select(selectPlaylists),
       visibility: this.store.select(selectStatus)
     });
-
-    /*this.data$.subscribe({
-      next: (data) => {
-        this.currentUser = data.currentUser!;
-        //JSON.stringify(this.playlists) !== JSON.stringify(data.playlists) ||
-        if (!this.playlistSelection) {
-          this.playlists = data.playlists;
-          this.populateUserPlaylists();
-        }
-
-        console.log('\n\n');
-      },
-    });*/
   }
 
   ngAfterViewInit() {
-    /**this.componentUpdatesService.headerAddVideo$.subscribe(
-      (addVideoClicked) => {
-        this.isShowModal = addVideoClicked;
-        console.log('addVideoClicked ', addVideoClicked);
-      }
-    );*/
     this.data$.subscribe({
       next: (data) => {
         if(data.currentUser) {
@@ -180,7 +159,6 @@ export class MetadataModalComponent {
    * @param event
    */
   showModalUpdateEvent(event: boolean) {
-    console.log('  closed modal ====>  ', event);
     this.isShowModal = event;
     this.current = 0;
     this.modalVisibility.emit(event);
@@ -220,21 +198,15 @@ export class MetadataModalComponent {
   }
 
   videoTitleChanged(event: string): void {
-    //this.videoTitle = event;
-    //if(this.videoTitle=="")
-    //  this.videoTitle = "Upload video";
     this.video.title = event;
     if (this.video.title === '') {
       this.video.title = 'Upload video';
     }
-    //console.log("null ",this.videoTitle=="");
-    console.log('video TITLE : ' + event); //this.videoTitle);
   }
 
   onModalActiveSessionChange(event: number) {
     this.current = event;
     this.updateNextBtn();
-    console.log('active session change ', event);
   }
 
   /**
@@ -260,7 +232,6 @@ export class MetadataModalComponent {
   }
 
   done(): void {
-    console.log('done');
   }
 
   /**

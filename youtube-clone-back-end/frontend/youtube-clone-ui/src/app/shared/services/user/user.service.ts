@@ -29,8 +29,8 @@ export class UserService {
   }
 
   /**
-  * get user information by username
-  * @param { string } username
+  * get user information by user id
+  * @param { number } userId
   * @returns { Observable<HttpResponseInterface<UserInterface>> } the response 
   */
   getUserByUserId(id: number): Observable<HttpResponseInterface<UserInterface>> {

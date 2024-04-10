@@ -70,12 +70,10 @@ export class AuthInterceptor implements HttpInterceptor {
     private handleFreshToken(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
         if(!this.isTokenRefreshing) {
-            //console.log("refreshing token...");
             this.isTokenRefreshing = true;
             this.refreshedTokenSubject.next(null);
             return this.authService.getRefreshToken().pipe(
                 switchMap((response: HttpResponseInterface<ResponseMessagesInterface>) => {
-                    //console.log("token refreshed!");
                     this.isTokenRefreshing = false;
                     this.refreshedTokenSubject.next(response); //TODO: use NGRX TO RESET TOKEN
                     return next.handle(this.addAuthorizationHeader(request, response.tokens[TokenType.ACCESS]));
@@ -85,7 +83,6 @@ export class AuthInterceptor implements HttpInterceptor {
         else {
             this.refreshedTokenSubject.pipe(
                 switchMap((response: HttpResponseInterface<ResponseMessagesInterface>) => {
-                    //console.log("token already set");
                     return next.handle(this.addAuthorizationHeader(request, response.tokens[TokenType.ACCESS]));
                 })
             )

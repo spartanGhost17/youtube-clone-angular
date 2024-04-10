@@ -1,8 +1,10 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
+  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -120,6 +122,7 @@ export class VideoComponent {
   history: PlaylistInterface;
   currentUser: CurrentUserInterface;
   isInHistory: boolean;
+  @Output() currentTime: EventEmitter<any> = new EventEmitter<any>();
 
   //imports
   icons: Icons = new Icons();
@@ -193,7 +196,6 @@ export class VideoComponent {
     this.paused? this.video.nativeElement.pause() : this.video.nativeElement.play();
     //this.renderer.selectRootElement(this.video.nativeElement).focus();
     this.video.nativeElement.addEventListener('keydown', (event: any) => {
-      console.log('event keydown ', event);
       this.handleKeyboardEvent(event);
     });
 
@@ -246,7 +248,6 @@ export class VideoComponent {
       next: (response: HttpResponseInterface<PlaylistInterface[]>) => {
         if(response) {
           const history: PlaylistInterface = response.data.playlist.filter((pl: any) => pl.name.toLowerCase().trim() === 'history')[0];
-          console.log(" retrieved the history -------> ", response.data.playlist.filter((pl: any) => pl.name.toLowerCase().trim() === 'history'));
           if(!history) {
             let videoItemForm: VideoItemFormInterface = {
               videoId: this.videoId,
@@ -319,8 +320,6 @@ export class VideoComponent {
   //@HostListener('document:keydown', ['$event'])
   //@HostListener('keydown', ['$event'])
   handleKeyboardEvent(event: any) {
-    //KeyboardEvent) {
-    console.log('handleKeyboardEvent', event);
     //const tagName = document.activeElement?.tagName.toLocaleLowerCase();
     const tagName = (event.target as HTMLElement)?.tagName?.toLowerCase();
     if (tagName === 'input') return; //not want to trigger these on an input field
@@ -336,7 +335,6 @@ export class VideoComponent {
         this.toggleFullScreenMode();
         break;
       //case 'escape':
-      //  console.log('escape ')
       //  break;
 
       case 't':
@@ -410,7 +408,7 @@ export class VideoComponent {
       })
       .catch((error: any) => {
         this.onError(error);
-        console.log('Not an EME supported Browser? Remove the player.');
+        console.error('Not an EME supported Browser? Remove the player.');
         this.player.unload().then(this.manifestHlsUrl); //for Apple support
       }); // onError is executed if the asynchronous load fails.
   }
@@ -497,7 +495,6 @@ export class VideoComponent {
     );
 
     if (this.isScrubbing) {
-      console.log('handleTimelineUpdate scrubbing ? ', this.isScrubbing);
       event.preventDefault(); //prevent default behavior
       //thumbnail.src = previewImg;
       this.timelineContainer.nativeElement.style.setProperty(
@@ -529,7 +526,6 @@ export class VideoComponent {
    * On metadata loaded
    */
   onLoadedMetadata() {
-    console.log('metadata loaded');
     this.captionText = this.video.nativeElement.textTracks[0];
     //this.captionText.mode = 'hidden';
     this.videoDurationMillisec = this.video.nativeElement.duration;
@@ -594,7 +590,6 @@ export class VideoComponent {
         '--download-percentage',
         (endTime - startTime) / 100
       );
-      //console.log("Buffered range: " + startTime + " - " + endTime);
     }
   }
 
@@ -604,6 +599,7 @@ export class VideoComponent {
    */
   async timeUpdated(video: HTMLVideoElement) {
     this.videoCurrentTime = formatDuration(video.currentTime);
+    this.currentTime.emit(video.currentTime);
     const percentage = video.currentTime / this.videoDurationMillisec;
     this.timelineContainer.nativeElement.style.setProperty(
       '--progress-position',
@@ -623,7 +619,7 @@ export class VideoComponent {
    * @param event
    */
   onVolumeChange(event: any) {
-    //console.log('slider volume changed ', event.target.value);
+
     this.video.nativeElement.volume = event.target.value;
     this.currentVolume = event.target.value;
     if (event.target.value == 0) {
@@ -636,7 +632,6 @@ export class VideoComponent {
   }
 
   videoVolumeChange(event: any) {
-    console.log('volume video -> ', event);
   }
 
   /**
@@ -677,13 +672,10 @@ export class VideoComponent {
   toggleFullScreenMode() {
     if (document.fullscreenElement == null) {
       this.videoContainer.nativeElement.requestFullscreen();
-      console.log('REQUEST FULLSCREEN');
     } else {
       document.exitFullscreen();
-      console.log('exit full screen');
     }
     this.fullScreenMode = !this.fullScreenMode;
-    console.log('FULL SCREEN ', this.fullScreenMode);
   }
 
   /**
@@ -701,15 +693,11 @@ export class VideoComponent {
   toggleMiniMode() {
     this.miniMode = !this.miniMode;
 
-    if (
-      this.videoContainer.nativeElement.classList.contains('mini-player-button')
-    ) {
+    if (this.videoContainer.nativeElement.classList.contains('mini-player-button')) {
       //if true mini-player-button class is present
       document.exitPictureInPicture();
-      console.log('exit picture in picture mode');
     } else {
       this.video.nativeElement.requestPictureInPicture();
-      console.log('request picture in picture');
     }
   }
 
@@ -810,7 +798,6 @@ export class VideoComponent {
    * on destroy lifecycle hook
    */
   ngOnDestroy() {
-    console.log('destroying...');
     if (this.mediaSource) {
       if (this.mediaSource.readyState === 'open') {
         this.mediaSource.endOfStream();
@@ -876,19 +863,19 @@ export class VideoComponent {
     const percentage =
       Math.min(Math.max(0, event.x - rect.x), rect.width) / rect.width;
     this.isScrubbing = event.buttons === 1;
-    console.log('scrubbing ', this.isScrubbing);
+
     if (this.isScrubbing) {
       event.preventDefault(); //prevent default behavior
       this.videoWasPaused = this.video.nativeElement.paused;
       this.paused = true;
       this.video.nativeElement.pause();
     } else {
-      console.log('seeking ended ', this.isScrubbing);
+      //'seeking ended ', this.isScrubbing
       this.video.nativeElement.currentTime =
         percentage * this.videoDurationMillisec;
       if (!this.videoWasPaused) {
         //if video was not paused when scrubbing started
-        console.log('video was NOT paused when scrubbing started');
+        
         this.paused = false;
         this.video.nativeElement.play();
       }
@@ -926,7 +913,7 @@ export class VideoComponent {
         green /= data.length / 4;
         blue /= data.length / 4;
     
-        console.log(`Primary colors: rgb(${red}, ${green}, ${blue})`);
+        log(`Primary colors: rgb(${red}, ${green}, ${blue})`);
       }, 1000 / 3);
     }
   }*/

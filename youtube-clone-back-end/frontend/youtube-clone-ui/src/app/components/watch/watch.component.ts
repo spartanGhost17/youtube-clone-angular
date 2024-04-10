@@ -104,6 +104,9 @@ export class WatchComponent implements OnInit {
   commentOffset: number = 0;
   commentsCount: number = 0;
   reportType: string = ReportType.VIDEO;
+  videoCurrentTime: any;
+  playlistName: string;
+  plOwner: number;
 
   @ViewChild('watchContainer') watchContainer: ElementRef<any>;
   @ViewChild('videoContainer') videoContainer: ElementRef<any>;
@@ -136,7 +139,6 @@ export class WatchComponent implements OnInit {
     this.componentUpdatesService.reportModal$.subscribe({
       next: ({show, type}) => {
         if(show) {
-          console.log('modal show ', show, ' type ', type);
           this.reportType = type;
           this.isReportModalVisible = true;
         }
@@ -198,6 +200,10 @@ export class WatchComponent implements OnInit {
       this.loadingUserInfo = true;
       
       this.videoId = Number(params.i);
+      if(params.list){
+        this.playlistName = params.list;
+        this.plOwner = params.o;
+      }
       this.videoService.getVideoById(this.videoId).subscribe({
         next: (response: any) => {
           this.loadingMetadata = false;
@@ -348,27 +354,8 @@ export class WatchComponent implements OnInit {
   }
 
   onSaveToPlaylist() {
-    this.videoId;
+    //this.videoId;
   }
-
-  /*resetInteractionsContainerWidth(): void {
-    console.log("\n\n");
-    const videoContainerWidth = this.getVideoContainerWidth();
-    const recommendationContainerWidth = this.getRecommendationContainerWidth();  
-    console.log("current INTERACTION container width: " + this.videoContainerWidth + "\n");
-    console.log("get current video container width ", videoContainerWidth);
-    console.log("get current interaction container width ", recommendationContainerWidth);
-
-    if(!this.isCinemaMode) {
-      this.videoContainerWidth = `${videoContainerWidth}px`;
-    }
-    else {
-      this.videoContainerWidth = `${videoContainerWidth - recommendationContainerWidth}px`;
-    }
-
-    console.log("RESET INTERACTION container to width: " + this.videoContainerWidth + "\n");
-    console.log("\n\n");
-  }*/
 
   /**
    * If view port changes size change the padding accordingly
@@ -402,13 +389,11 @@ export class WatchComponent implements OnInit {
       {
         text: 'Top comments',
         action: () => {
-          console.log('sort by top comments');
         },
       },
       {
         text: 'Newest first',
         action: () => {
-          console.log('sort by newest first');
         },
       },
     ];
@@ -433,8 +418,6 @@ export class WatchComponent implements OnInit {
     }
     this.bgColorBlur.nativeElement.style.width = `${width + 10}px`;
     this.bgColorBlur.nativeElement.style.height = `${height + 10}px`;
-
-    console.log('new size width', width, ' new size height ', height);
   }
 
   /**
@@ -564,29 +547,13 @@ export class WatchComponent implements OnInit {
   }
 
   /**
-   * change column layout if video request more space for theaterMode, else use default layout
-   * @param isExpended
+   * video current time updated event
+   * @param videoCurrentTime the video current time
    */
-  /*onVideoContainerExpanded(): void {
-    console.log('HERE ', this.isSibeBarCollapsed)
-    if(!this.isCinemaMode) {      
-      console.log("display default");
-      //this.recommendationContainer.nativeElement.style.top = '0';
-      //->this.interactionContainer.nativeElement.style.top = '72vh';//'660px';
-      this.videoContainer.nativeElement.style.width = '70%';
-
-      this.videoContainer.nativeElement.style.maxWidth = '1280px';
-    }
-    else {
-      this.videoContainer.nativeElement.style.maxWidth = '100%';
-      //this.videoContainer.nativeElement.style.maxHeight = '100%';
-      //this.videoContainer.nativeElement.style.height = '75vh';
-
-      //->this.interactionContainer.nativeElement.style.top = '75vh';//'740px';
-      //->this.recommendationContainer.nativeElement.style.top = '75vh';//'740px';
-      this.videoContainer.nativeElement.style.width = '100%';
-    }
-  }*/
+  onVideoTimeUpdated(videoCurrentTime: any) {
+    this.videoCurrentTime = videoCurrentTime;
+    console.log("video current time updated", videoCurrentTime);
+  }
 
   /**
    * on channel icon click navigate to channel view
@@ -604,7 +571,6 @@ export class WatchComponent implements OnInit {
     const element = this.videoContainer.nativeElement as HTMLElement;
     const width = element.getBoundingClientRect().width;
     this.videoContainerWidth = `${width}px`;
-    console.log('width of video container ', this.videoContainerWidth);
     return width;
   }
 
@@ -616,8 +582,6 @@ export class WatchComponent implements OnInit {
     const element = this.recommendationContainer.nativeElement as HTMLElement;
     const width = element.getBoundingClientRect().width;
     const wd = window.innerWidth;
-
-    console.log('INNER WIDTH OF VIEWPORT ', wd);
     return width;
   }
 
@@ -635,7 +599,6 @@ export class WatchComponent implements OnInit {
    * @param event 
   */
   report(event: any) {
-    console.log('show report modal');
     this.componentUpdatesService.toggleReportModal(true, ReportType.VIDEO);
     this.isReportModalVisible = true;
   }

@@ -42,7 +42,6 @@ export class PermissionsComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log("loading data...")
   }
 
   ngAfterViewInit(): void {
@@ -79,7 +78,6 @@ export class PermissionsComponent {
    * @param role 
   */
   onOptionSelected(role: Role) {
-    console.log(role);
     this.permissions = role.permissions;
   }
 

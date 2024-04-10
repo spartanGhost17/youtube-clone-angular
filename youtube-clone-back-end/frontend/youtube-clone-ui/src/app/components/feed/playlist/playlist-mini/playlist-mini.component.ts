@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { PlaylistService } from '../../../../shared/services/playlist/playlist.service';
+import { playlistActions } from '../../../../shared/store/playlist/actions';
 import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
 import { StandardDropdownComponent } from '../../../dropdown/standard-dropdown/standard-dropdown.component';
-import { PlaylistService } from '../../../../shared/services/playlist/playlist.service';
-import { Store } from '@ngrx/store';
-import { playlistActions } from '../../../../shared/store/playlist/actions';
+import { Router } from '@angular/router';
+import { Video } from '../../../../shared/types/video';
 
 @Component({
     selector: 'app-playlist-mini',
@@ -14,19 +16,22 @@ import { playlistActions } from '../../../../shared/store/playlist/actions';
 })
 export class PlaylistMiniComponent {
   @Input() playlist: PlaylistInterface;
-
-  //videoCount: number = 0;
+  firstVideo: Video;
   dropDownSettingsItems: any[] = [];
-  //hoverTop: string = '0px';
 
 
-  constructor(private playlistService: PlaylistService, private store: Store) {}
+  constructor(private playlistService: PlaylistService, private store: Store, private router: Router) {}
 
   ngOnInit() {
     this.setDropDownSettings();
   }
 
   ngAfterViewInit() {
+    this.playlistService.getVideos(this.playlist.id!, 1, 0).subscribe({
+      next: (response) => {
+        this.firstVideo = response.data.playlist.videos[0];
+      }
+    });
     //this.updateTopValue();
   }
 
@@ -42,11 +47,21 @@ export class PlaylistMiniComponent {
   }
 
   delete(id: any) {
-    console.log("delete playlist with id: " + id);
     this.store.dispatch(playlistActions.delete({request: id}));
   }
 
   onOpenPlaylist() {
+    const url = 'home/playlist'
+    this.router.navigate([url], { queryParams: { list: `${this.playlist.name}` } });
+  }
 
+  onPlayAll() {
+    //https://www.youtube.com/watch?v=bheUCRpuIzU&list=PLlFiFXELFq7gk7lhceZgqdVoDOvXwX8Pw
+    //http://localhost:4200/home/watch?v=b1d8d6e5-ef5f-46f8-9c26-4fb62206c392&i=77
+    
+    const url = 'home/watch'
+    const urlParts = this.firstVideo.videoUrl!.split("/");
+    const videoManifestId = urlParts[urlParts.length - 1]; 
+    this.router.navigate([url], { queryParams: { v: `${videoManifestId}`, i: `${this.firstVideo.id}`, list: `${this.playlist.name}`, o: `${this.playlist.userId}` } });
   }
 }

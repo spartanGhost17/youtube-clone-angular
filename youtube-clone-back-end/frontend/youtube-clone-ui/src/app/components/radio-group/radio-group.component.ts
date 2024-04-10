@@ -23,7 +23,6 @@ export class RadioGroupComponent {
    * @param value the selected value
   */
   onRadioBtnClicked(value: any) {
-    console.log(value)
     this.selected.emit(value);
   }
 }

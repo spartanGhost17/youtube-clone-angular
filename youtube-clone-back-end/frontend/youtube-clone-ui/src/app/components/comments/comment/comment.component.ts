@@ -41,7 +41,6 @@ export class CommentComponent implements OnInit {
 
   
   ngOnInit(): void {
-    console.log("Initial state comment ", this.comment)
     this.loadActions();
   }
 
@@ -75,18 +74,13 @@ export class CommentComponent implements OnInit {
 
   edit(id: any, childId: any): void {
     if(childId) {
-      console.log('EDIT This is a subComment = ', childId, ' parent id ', id);
-
     }
     else {
-      console.log('EDIT This is a parent comment = ', id);
-      //this.comment.showReply = true;
     }
   }
 
   delete(id: any, childId: any): void {
     if(childId) {
-      console.log('DELETE This is a subComment = ', childId, ' parent id ', id);
       const subComment: SubComment[] = this.comment.subComments!.filter(x => x.id === childId);
       const idx: number = this.comment.subComments!.indexOf(subComment[0]);
 
@@ -95,14 +89,12 @@ export class CommentComponent implements OnInit {
       }
     }
     else {
-      console.log('DELETE This is a parent comment = ', id);
       const idx = this.commentList.indexOf(this.comment);
       this.commentList.splice(idx, 1);
     }
   }
 
   onLikeClicked(comment: any) {
-    console.log(` comment \n comment `, comment)
     comment.like = !comment.like;
     if(comment.dislike) {
       comment.dislike = false;
@@ -119,7 +111,6 @@ export class CommentComponent implements OnInit {
   }
 
   onDislikeClicked(comment: any): void {
-    console.log(` comment \n ${comment}`)
     comment.dislike = !comment.dislike;
     if(comment.like) {
       comment.like = false;
@@ -165,8 +156,7 @@ export class CommentComponent implements OnInit {
 
     this.commentInput = '';
     this.onCancelReply(parentPost);
-    console.log("type: ", commetType, " parent post ", parentPost);
-    console.log("subcomment added ", subcomment);
+
     this.commentUpdate.emit(subcomment);
   }
 

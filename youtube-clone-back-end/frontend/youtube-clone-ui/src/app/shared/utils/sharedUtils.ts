@@ -13,11 +13,9 @@ export function toResponseMessage<T>(
     status: source.status,
   };
   if (source.path !== undefined) {
-    console.log('path: ' + source.path);
     target.path = source.path;
   }
   if (source.reason !== undefined) {
-    console.log('reason: ' + source.reason);
     target.reason = source.reason;
   }
   if (source.message !== undefined) {

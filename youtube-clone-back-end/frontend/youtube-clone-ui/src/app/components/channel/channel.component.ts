@@ -167,7 +167,7 @@ export class ChannelComponent {
    */
   getUsernameFromUrl(): void {
     this.route.params.subscribe((params) => {
-      console.log("PARAMS", params);
+
       const user: string = params.channelName;
       this.username = user.substring(1, user.length);
       this.userService.getUserById(this.username).subscribe({

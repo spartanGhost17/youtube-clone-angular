@@ -15,7 +15,6 @@ export class SwitchComponent {
 
   onCheckboxClick(event: any) {
     if(event.target.checked !== undefined) {
-      console.log("onCheckboxClick ", event.target.checked);
     }
   }
 }

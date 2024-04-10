@@ -79,22 +79,11 @@ export class ResetPasswordComponent {
         if(data.isResetEmailSent) {
           this.isResetEmailSent = data.isResetEmailSent;
         }
-        console.log(" DATA IS UPDATED!! ");
-        console.log(data);
       }
     });
 
-    /*this.isPasswordLinkValid$.subscribe({
-      next: (isValid) => {
-        this.isPasswordLinkValid = isValid;
-        this.resetFormGroup = this.createForm();//reset form if link is valid
-      } 
-    });
-    this.isResetEmailSent$.subscribe({
-      next: (isResetEmailSent) => this.isResetEmailSent = isResetEmailSent
-    });*/
     this.store.select(selectAuthState).subscribe({
-      next: (authState) => {console.log("AUTH STATE \n"); console.log(authState)}
+      next: (authState) => {}
     });
   }
 
@@ -106,12 +95,9 @@ export class ResetPasswordComponent {
       this.type = params['type'];
       this.key = params['key'];
       const isPasswordResetLinkValid = (this.currentKey !== this.key && this.currentType !== this.type);
-      console.log(`passwordLink valid? ${isPasswordResetLinkValid}`);
-      console.log(`type: ${this.type} current type: ${this.currentType} key: ${this.key} current key: ${this.currentKey}`);
       if(isPasswordResetLinkValid) {
         this.currentKey = this.key;
         this.currentType = this.type;
-        console.log("isPasswordResetLinkValid ");
         if (this.type && this.key) {
           const verifyResetLink: VerifyPasswordInterface = {
             type: this.type,
@@ -151,8 +137,7 @@ export class ResetPasswordComponent {
         );
       }
     } else {
-      console.error('Invalid form');
-      console.log(`ERROR VALUES ${this.resetFormGroup.value}`);
+      //console.error('Invalid form');
     }
   }
 
@@ -181,7 +166,6 @@ export class ResetPasswordComponent {
    * @returns {FormGroup} the form group
    */
   createForm(): FormGroup<any> {
-    console.log(`create form link valid: ${!this.isPasswordLinkValid} email sent: ${!this.isResetEmailSent}`)
     if (!this.isPasswordLinkValid || !this.isResetEmailSent) {
       return this.fb.group({
         email: ['', [Validators.required, Validators.email]],

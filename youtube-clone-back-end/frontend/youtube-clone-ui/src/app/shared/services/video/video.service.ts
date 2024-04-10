@@ -46,7 +46,6 @@ export class VideoService {
               const percentDone = Math.round(
                 (100 * event.loaded) / event.total!
               );
-              console.log('Upload progress: ', percentDone);
               observer.next(percentDone);
             } else if (event instanceof HttpResponse) {
               // If the upload is complete and the response body is not null, emit the response

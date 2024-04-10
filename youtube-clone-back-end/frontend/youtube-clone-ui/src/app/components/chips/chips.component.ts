@@ -27,7 +27,6 @@ export class ChipsComponent {
   }
 
   removeChip(chip: Tag) {
-    console.log("chip name ", chip.tagName!);
     this.chips.splice(this.chips.indexOf(chip), 1);
     this.chipsUpdated.emit(this.chips);
   }

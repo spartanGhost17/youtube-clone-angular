@@ -137,10 +137,8 @@ export class CustomizationComponent {
       this.updateUserForm.username !== this.currentUser.username.trim()
     ) {
       this.isMetaUploadReady = true;
-      //console.log('CAN UPLOAD METADATA', this.isMetaUploadReady);
     } else {
       this.isMetaUploadReady = false;
-      //console.log('CAN UPLOAD METADATA', this.isMetaUploadReady);
     }
   }
 
@@ -163,7 +161,6 @@ export class CustomizationComponent {
    * update the user information
    */
   updateUserMetadata() {
-    console.log('update user metadata ', this.updateUserForm);
     this.store.dispatch(userActions.update({ request: this.updateUserForm }));
   }
 
@@ -217,8 +214,6 @@ export class CustomizationComponent {
    */
   onPublish() {
     if (this.isUplaodReady) {
-      //!.name) {
-      console.log(this.selectedFile);
       const formData: FormData = getFormData(this.selectedFile!, 'image');
       this.store.dispatch(
         userActions.updateProfilePicture({ request: formData })
@@ -245,8 +240,8 @@ export class CustomizationComponent {
       this.isUplaodReady = true;
       this.selectedFile = files[0];
       // Now you can use the selectedFile as needed (e.g., upload it, display it, etc.)
-      //console.log('Selected file:', this.selectedFile!.name);
-      //console.log(this.selectedFile)
+      //('Selected file:', this.selectedFile!.name);
+      //(this.selectedFile)
     }
   }
 }

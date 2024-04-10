@@ -7,14 +7,14 @@
                 </div>
                 <div class="center thumbnail-container non-selectable">
                     <div class="thumbnail__center" [ngStyle]="{'width': isSmall? '140px':'180px', 'height': isSmall? '80px': '100px'}">
-                        <img draggable="false" class="image" alt="" [src]="item.thumbnailURL">
+                        <img draggable="false" class="image" alt="" [src]="item.thumbnailUrl">
                         <div class="video-length">
-                            4:00
+                            {{item.duration}}
                         </div>
                     </div>
                     <div class="metadata__center">
                         <h2 class="text-primary primary-meta" [ngStyle]="{'margin-bottom': '6px'}">{{item.title}}</h2>
-                        <p *ngIf="showViews" class="text-secondary">{{item.channelName}} &bull; {{item.viewCount}} views &bull; {{item.postTime}} ago</p>
+                        <p *ngIf="showViews" class="text-secondary">{{item.channelName}} &bull; {{item.views}} views &bull; {{item.createdAt | datecstm}}</p>
                         <p *ngIf="!showViews" class="text-secondary">{{item.channelName}}</p>
                     </div>
                 </div>

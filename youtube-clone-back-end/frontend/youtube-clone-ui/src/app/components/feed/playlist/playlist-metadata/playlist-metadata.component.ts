@@ -1,15 +1,18 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { Icons } from 'src/app/models/icons';
 import { FormsModule } from '@angular/forms';
-import { NgStyle, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgIf, NgTemplateOutlet, DatePipe } from '@angular/common';
 import { ContainerBgGradiantDirective } from '../../../../directives/background-gradiant/container-bg-gradiant.directive';
+import { PlaylistInterface } from '../../../../shared/types/playlist.interface';
+import { UserService } from '../../../../shared/services/user/user.service';
+import { PlaylistService } from '../../../../shared/services/playlist/playlist.service';
 
 @Component({
     selector: 'app-playlist-metadata',
     templateUrl: './playlist-metadata.component.html',
     styleUrls: ['./playlist-metadata.component.scss'],
     standalone: true,
-    imports: [ContainerBgGradiantDirective, NgStyle, NgIf, NgTemplateOutlet, FormsModule]
+    imports: [ContainerBgGradiantDirective, NgStyle, NgIf, NgTemplateOutlet, FormsModule, DatePipe]
 })
 export class PlaylistMetadataComponent {
   icons: Icons = new Icons();
@@ -19,13 +22,9 @@ export class PlaylistMetadataComponent {
   ICON_PLAY: string = this.icons.iconsPaths['play-dark'];
   ICON_PLAY_LIGHT: string = this.icons.iconsPaths['play-light'];
   ICON_SHUFFLE: string = this.icons.iconsPaths['shuffle-light'];
-  //THUMBNAIL: string = '../../../assets/mr_wick.jpeg';
-  //THUMBNAIL: string = '../../../assets/goku_god_mode.jpg';
-  //THUMBNAIL: string = '../../../assets/batman.jpg';
-  //THUMBNAIL: string = '../../../assets/batman2.jpg';
+
   @Input() thumbnail: string; //= '../../../assets/superman_jorge_jimenez.jpg';
-  //THUMBNAIL: string = '../../../assets/green-lantern.jpg';
-  //THUMBNAIL: string = '../../../assets/light-yagami.png';
+  @Input() metadata: PlaylistInterface;
 
   editSection: string = '';
 
@@ -33,23 +32,34 @@ export class PlaylistMetadataComponent {
   //playlistTitle: string = 'John Wick Lore';
   playlistTitle: string = 'Green Lantern\'s Home';
   userHandle: string = 'Mr Fiction';
-  totalVideos: number = 2;
+  //totalVideos: number = 2;
   totalViews: string = 'No';
   description: string = 'No description';
 
 
   editTitleText: string = '';
   
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private userService: UserService, private playlistService: PlaylistService) {}
 
   ngOnInit() {
-    console.log('restart side data!!!! \n new image is ', this.thumbnail);
+  }
+
+  ngAfterViewInit() {
+    this.description = this.metadata?.description!;
+    this.getOwner();
+  }
+
+  getOwner() {
+    this.userService.getUserByUserId(this.metadata.userId!).subscribe({
+      next: (response) => {
+        this.userHandle = response.data.user.username;
+      }
+    });
   }
 
   onEdit(sectionName: string) {
     this.editSection = sectionName;
     this.editTitleText = this.editSection==='title'? this.playlistTitle : this.description;
-    //this.title.nativeElement.classList.add('hover-underline-animation');
   }
 
   cancelEdit(): void {
@@ -79,14 +89,11 @@ export class PlaylistMetadataComponent {
    * @param event 
    */
   checkLength(event: any) {
-    console.log("char count ==> ",event);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.thumbnail) {
-      console.log('Input value has changed:', changes.thumbnail.currentValue);
-      //this.cdr.markForCheck();
-      this.ngOnInit();
+      //this.ngOnInit();
     }
   }
 

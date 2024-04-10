@@ -69,11 +69,8 @@ export class LoginComponent {
   ngAfterViewInit() {
     this.store.select(selectAuthState).subscribe({
       next: (authState) => {
-        console.log('AUTH STATE \n');
-        console.log(authState);
       },
       error: (error) => {
-        console.log(error);
       },
     });
   }

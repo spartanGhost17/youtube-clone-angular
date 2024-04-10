@@ -56,61 +56,33 @@ export class UploadVideoComponent implements OnInit {
         this.fileEntry.file((file: File) => {
 
           // Here you can access the real file
-          console.log("Dropped ",droppedFile.relativePath, file);
           this.fileName = droppedFile.relativePath;
           this.fileUploaded = true;
         });
       } else {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
       }
     }
   }
 
   public fileOver(event: any){
-    console.log(event);
   }
 
   public fileLeave(event: any){
-    console.log(event);
   }
-  /*beforeUpload = (file: NzUploadFile): boolean => {
-    console.log(file);
-    this.file = file;
-    this.fileList = this.fileList.concat(file);
-    return false;
-  }*/
-
-  /*handleChange({ file, fileList }: NzUploadChangeParam): void {
-    this.file = file;
-    const status = file.status;
-    if (status !== 'uploading') {
-      console.log(file, fileList);
-      console.log('uploading');
-    }
-    if (status === 'done') {
-      console.log(`${file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      //say something error
-      console.log(`${file.name} file uploaded failed :(.`);
-    }
-  }*/
 
   uploadVideo() { 
     if(this.fileEntry){
       this.fileEntry.file(file => {
-        console.log(file);
         this.isLoading = true;
         this.videoService.uploadVideo(file).subscribe({
           next: (data) => {
-            console.log("uploaded ", data);
             if(typeof data === 'number') {
-              console.log("upload at percentage ", data);
+              //console.log("upload at percentage ", data);
             } else {
               this.isLoading = false;
-              this.videoUploadResponse = data.data.video;
-              console.log("success !", data); 
+              this.videoUploadResponse = data.data.video; 
               this.uploadSuccess();
             }
 

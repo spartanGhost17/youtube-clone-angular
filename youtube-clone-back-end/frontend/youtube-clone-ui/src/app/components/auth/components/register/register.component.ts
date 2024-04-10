@@ -60,13 +60,7 @@ export class RegisterComponent {
         email: this.registerFormGroup.value.email,
         password: this.registerFormGroup.value.password,
       };
-      
-      console.log("valid form");
-      console.log(registrationForm);
       this.store.dispatch(authActions.register({ request: registrationForm }));
-    } else {
-      console.log("invalid");
-      console.log(this.registerFormGroup.value)
     } 
   }
 

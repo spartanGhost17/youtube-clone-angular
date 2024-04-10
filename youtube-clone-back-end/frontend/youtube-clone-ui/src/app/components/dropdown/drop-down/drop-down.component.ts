@@ -96,14 +96,11 @@ export class DropDownComponent implements OnInit {
    */
   toggleBody() {
     this.isShowBody = !this.isShowBody;
-    console.log('toggle body ', this.isShowBody);
+
     if(this.isShowBody) {
-      console.log("should display block \n\n")
       this.dropdownBody.nativeElement.style.display = 'block';
     }
     else {
-      console.log("should display none \n\n")
-      //this.savedPlaylists();
       this.dropdownBody.nativeElement.style.display = 'none';
     }
   }
@@ -136,11 +133,10 @@ export class DropDownComponent implements OnInit {
     this.previousSelectedIdx = checkboxIdx;
     if(this.multiSelect) {
       this.playlists[checkboxIdx].checked = input.checked;
-      console.log("playlist clicked ==> ",this.playlists[checkboxIdx], " input checked ", input.checked);
       this.selectedPlaylists = this.tallySelectedPlaylist(this.playlists);
     }
     else{
-      console.log("multiSelect ?id ",input.id, ' selected ', input.checked);
+
       for(let i = 0; i < this.playlists.length; i++){
         if(i === checkboxIdx && input.checked) {
           //reset previous checkbox

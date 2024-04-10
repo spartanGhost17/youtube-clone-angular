@@ -93,8 +93,10 @@
     align-items: center;
     bottom: 10px;
     right: 10px;
-    width: 40px;
+    width: fit-content;//40px;
     height: 20px;
+    padding: 4px;
+    font-size: .7rem;
     border-radius: 6px;
     background-color: rgb(43, 40, 40);
 }

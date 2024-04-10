@@ -19,7 +19,7 @@ import { ProgressBarService } from '../../../../shared/services/progress-bar/pro
 import { selectPlaylists } from '../../../../shared/store/playlist/reducers';
 import { PlaylistService } from '../../../../shared/services/playlist/playlist.service';
 import { playlistActions } from '../../../../shared/store/playlist/actions';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-playlist-dashboard',
@@ -62,7 +62,8 @@ export class PlaylistDashboardComponent {
   constructor(
     private store: Store<{ user: CurrentUserStateInterface }>,
     private progressBarService: ProgressBarService,
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -391,6 +392,10 @@ export class PlaylistDashboardComponent {
         //{id: '', title: 'video 8', videoStatus: 'DRAFT', createDate: '4 hours ago', thumbnailURL: '../../../../assets/green_lantern_rising.png', videoURL: '../../../../assets/test-videos/demon_slayer_opening_4_Kizuna_no_Kiseki_720p.mp4', user: {id: 'tintin', username:'tintin', channelName: 'channel 1', iconURL: '../../../../assets/Killowog.jpg'}},
       ],
     };
+  }
+
+  onSeeHistory() {
+    this.router.navigate(['home/feed/history']);
   }
 
   onSeePlaylist(title: string) {}

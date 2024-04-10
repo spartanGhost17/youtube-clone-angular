@@ -29,8 +29,6 @@ export class ComponentUpdatesService {
    * @param type 
   */
   sideBarTypeUpdate(type: string) {
-    console.log(`sideBarTypeUpdate IN SERVICE:${type}`);
-    console.log(`len :${type.length}`);
     this.sideBarType$.next(type);
   }
 

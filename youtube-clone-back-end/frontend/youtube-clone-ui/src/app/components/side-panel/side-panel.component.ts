@@ -86,28 +86,10 @@ export class SidePanelComponent {
     this.makeButtonActive(this.sections[0][0]);
   }
 
-  /**
-   * Lifecycle hook
-   */
-  /*ngOnChanges(changes: SimpleChanges) {
-    if(!this.hoverPanel) {
-      if(changes.collapse.currentValue) {
-        //console.log('collapse => ', changes.collapse.currentValue);
-        this.componentUpdatesService.sideBarWidthUpdate(this.MIN_WIDTH);//broadcast width of side panel
-      }
-      else if(!changes.collapse.currentValue) {
-        //console.log('false =>  ', changes.collapse.currentValue);
-        this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
-      }
-    }
-  }*/
-
   onCollapse(collapsed: boolean) {
     if (collapsed) {
-      //console.log('collapse => ', changes.collapse.currentValue);
       this.componentUpdatesService.sideBarWidthUpdate(this.MIN_WIDTH); //broadcast width of side panel
     } else {
-      //console.log('false =>  ', changes.collapse.currentValue);
       this.componentUpdatesService.sideBarWidthUpdate(this.MAX_WIDTH);
     }
   }
@@ -117,7 +99,6 @@ export class SidePanelComponent {
    * @param button
    */
   makeButtonActive(button: any) {
-    //console.log(this.section1.indexOf(button));
     for (const section of this.sections) {
       this.activeButtonHelper(button, section);
     }
@@ -135,10 +116,6 @@ export class SidePanelComponent {
           section[i].isActive = true;
           section[i].type = 'fill';
 
-          console.log('Active button \n\n\n');
-          console.log(section[i]);
-
-          console.log('navigate to upload-video');
           this.componentUpdatesService.sideBarTypeUpdate(
             section[i].sidebarType
           );
@@ -183,12 +160,5 @@ export class SidePanelComponent {
         section[i].type = 'outlined';
       }
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes.sections) {
-      console.log("Current value of change sections in panels  ", changes.sections);
-    }
-    
   }
 }

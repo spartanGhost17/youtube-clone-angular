@@ -45,15 +45,10 @@ export class VideoMiniComponent {
   }
 
   ngAfterViewInit() {
-    this.video.nativeElement.addEventListener('timeUpdate', () => {
-      console.log("Time update ", this.video.nativeElement.currentTime);
-    });
-
     this.video.nativeElement.muted = true; //mute video
 
     const video = this.elementRef.nativeElement.querySelector('video');
     const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    //console.log('isFirefox', isFirefox);
 
     video.addEventListener('loadedmetadata', () => {
       //once video is loaded
@@ -61,7 +56,7 @@ export class VideoMiniComponent {
         const pipButton = video.querySelector(
           'button[title="Picture-in-Picture"]'
         );
-        console.log('pipButton ', pipButton);
+        //('pipButton ', pipButton);
         if (pipButton) {
           this.renderer.removeChild(video, pipButton);
         }
@@ -90,7 +85,6 @@ export class VideoMiniComponent {
         if (!sourceBuffer.updating) {
             // Remove all media segments from the start to the end of the buffer
             sourceBuffer.remove(0, Infinity);
-            console.log("Source buffer cleared successfully.");
         } else {
             console.error("Source buffer is currently updating. Cannot clear.");
         }
@@ -133,7 +127,6 @@ export class VideoMiniComponent {
               Number(rngHeader[0].split('-')[1]) /
               Number(rngHeader[rngHeader.length - 1]);
             
-            console.log("Loading video content range ", contentRange)
             //this.timelineContainer.nativeElement.style.setProperty(
             //  '--download-percentage',
             //  percentage

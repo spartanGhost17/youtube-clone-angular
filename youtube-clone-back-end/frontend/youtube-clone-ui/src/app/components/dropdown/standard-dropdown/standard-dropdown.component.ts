@@ -43,10 +43,7 @@ export class StandardDropdownComponent {
   onDocumentClick(event: Event): void {
     const clickedInside = this.dropdown.nativeElement.contains(event.target);
     if (!clickedInside) {
-      
       this.toggleDropdown = false;
-      console.log("clicked not inside TOGGLE ", this.toggleDropdown);
-      //this.toggleSubMenuDropdown = false;
     }
   }
 
@@ -54,7 +51,6 @@ export class StandardDropdownComponent {
   constructor() {}
 
   ngOnInit(): void {
-    //console.log("this is the icon ", this.icon)
   }
 
   showDropdown(): void {
@@ -63,7 +59,6 @@ export class StandardDropdownComponent {
 
   onShowSubMenu(item: any): void {
     this.currentMenu = item;//.subMenu;
-    console.log("SHOW SUBMENU", this.currentMenu);
     this.toggleSubMenuDropdown = true; //show submenu
     if(item.subMenu) {
       this.showSubMenu = true;
@@ -71,7 +66,6 @@ export class StandardDropdownComponent {
   }
 
   onChangeSubMenuSelection(selectedItem: any): void {
-    console.log("selected sub item ", selectedItem.text);
     this.showSubMenu = false;
     this.toggleSubMenuDropdown = false; //show submenu
     
@@ -90,11 +84,8 @@ export class StandardDropdownComponent {
       
       if(selectedItem === item) {
         item.isSelected = true;
-        console.log("selected item ", selectedItem.text);
-        console.log(selectedItem);
       }
       else {
-        console.log("not selected ", item.text);
       }
     });
 
@@ -110,8 +101,6 @@ export class StandardDropdownComponent {
 
   onCloseSubMenu(): void {
     this.showSubMenu = false;
-    //this.toggleDropdown = true;
-    console.log("clicked not inside TOGGLE ", this.toggleDropdown);
     this.subMenuUpdated.emit(this.currentMenu);
   }
 }

@@ -43,7 +43,7 @@ export class VideoCardComponent {
   }
 
   removeFromWatchHistory(id: any): void {
-    console.log("remove from watch list id ", this.channelId);
+    
   }
 
   addToQueue(id: any): void {

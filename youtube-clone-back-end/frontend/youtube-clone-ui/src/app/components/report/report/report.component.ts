@@ -24,6 +24,7 @@ export class ReportComponent {
   selection: ReportTypeInterface[];
   selectedIssue: ReportTypeInterface;
   reportDescription: string;
+  time: Date;
   reportForm: ReportFormInterface = {
     userId: 0,
     videoId: 0,
@@ -33,6 +34,7 @@ export class ReportComponent {
     description: undefined,
   };
 
+  @Input() videoTime: any;
   @Input() step: number = 0;
   @Output() onSelectedType: EventEmitter<ReportTypeInterface> =
     new EventEmitter<ReportTypeInterface>();
@@ -40,6 +42,7 @@ export class ReportComponent {
   constructor(private reportService: ReportService) {}
 
   ngOnInit(): void {
+    this.time = new Date(this.videoTime * 1000);
     this.getReportTypes();
   }
 
@@ -91,9 +94,12 @@ export class ReportComponent {
    * @param changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes.step) {
       changes.step.currentValue === 2 ? undefined : this.sendReport();
+    }
+
+    if (changes.videoTime) {
+      this.time = new Date(changes.step.currentValue * 1000);
     }
   }
 }

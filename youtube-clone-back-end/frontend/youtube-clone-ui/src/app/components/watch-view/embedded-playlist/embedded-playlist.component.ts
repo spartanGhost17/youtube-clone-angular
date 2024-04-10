@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { DragDropListComponent } from '../../drag-drop-list/drag-drop-list.component';
+import { Component, Input, OnInit } from '@angular/core';
 import { PlaylistInterface } from '../../../shared/types/playlist.interface';
+import { DragDropListComponent } from '../../drag-drop-list/drag-drop-list.component';
+import { Video } from '../../../shared/types/video';
+import { PlaylistService } from '../../../shared/services/playlist/playlist.service';
+import { UserService } from '../../../shared/services/user/user.service';
 
 @Component({
   selector: 'app-embedded-playlist',
@@ -11,83 +14,23 @@ import { PlaylistInterface } from '../../../shared/types/playlist.interface';
   styleUrls: ['./embedded-playlist.component.scss']
 })
 export class EmbeddedPlaylistComponent implements OnInit {
-  playlistItems: any[] = [];
+  playlistItems: Video[] = [];
   isLooping: boolean = false;
   isOnShuffle: boolean = false;
   playlist: PlaylistInterface;
   dropDownItems: any[] = [];
-  isPublic: boolean = false;
-  isPrivate: boolean = false;
-  isUnlisted: boolean = false;
+  active: number;
+  pageSize: number = 100;
+  offset: number = 0;
+  ownerUsername: string;
+  status: string;
+  @Input() name: string;
+  @Input() owner: number;
+
+  constructor(private playlistService: PlaylistService, private userService: UserService) {}
   
   ngOnInit(): void {
-    this.playlistItems = [
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/goku_god_mode.jpg',
-        channelName: 'ALJordan',
-        title: 'Superman Number #1 DC rebirth',
-        viewCount: '12K',
-        postTime: '8 months'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/vagabon_manga.jpg',
-        channelName: 'ALJordan',
-        title: 'The Greatest Manga Ever Written | Vagabon a Story For The Ages',
-        viewCount: '2.4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/green_lanter_vs_sinestro.jpg',
-        channelName: 'DC Central',
-        title: 'Why AL Jordan Came Back | Crisis Event',
-        viewCount: '4K',
-        postTime: '10 months'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/batman_and_superman_detective_comics.jpg',
-        channelName: 'ALJordan',
-        title: 'Batman and Superman Defeats Perpetua',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/justice_league.jpg',
-        channelName: 'ALJordan',
-        title: 'Justice League Vs Perpetua',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/green_lantern_rising.png',
-        channelName: 'ALJordan',
-        title: 'AL Jordan\'s History',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-      {
-        playlistName: 'District 59 trailer Inspiration',
-        thumbnailURL: '../../../../assets/superman_sits_on_clouds.jpg',
-        channelName: 'ALJordan',
-        title: 'Jorge Jimenez Superman',
-        viewCount: '4K',
-        postTime: '4 hours'
-      },
-    ];
-
-    
-    this.playlist = {
-      id: 22,
-      name: 'Anime and comics',
-      visibilityStatus: {id: 0, statusName:'private'},
-      description: 'This is the description',
-      videos: this.playlistItems 
-    }
+    this.getPlaylist();
 
     this.dropDownItems = [
       { icon: 'schedule', text: 'Save to Watch Later', action: () => {} },
@@ -97,19 +40,47 @@ export class EmbeddedPlaylistComponent implements OnInit {
       { icon: 'share', text: 'Share', action: () => {} }
     ]
 
-    this.checkStatus();
+    
+  }
+
+  /**
+   * get playlist by name
+   */
+  getPlaylist() {
+    this.playlistService.getByName(this.owner, 100, 0, this.name).subscribe({
+      next: (res) => {
+        this.playlist = res.data.playlist;
+        this.getVideos();      
+        this.getOwnerUsername();
+        this.checkStatus();
+      }
+    });
+  }
+
+  /**
+   * get user name of owner
+   */
+  getOwnerUsername() {
+    this.userService.getUserByUserId(this.owner).subscribe({
+      next: (res) => {
+        this.ownerUsername = res.data.user.username
+      }
+    })
+  }
+
+  /**
+   * get playlist videos
+   */
+  getVideos() {
+    this.playlistService.getVideos(this.playlist.id!, this.pageSize, this.offset).subscribe({
+      next: (res) => {
+        this.playlistItems = res.data.playlist.videos;
+      }
+    });
   }
 
   checkStatus(): void {
-    if(this.playlist.visibilityStatus.statusName.toLocaleLowerCase() === 'public') {
-      this.isPublic = true;
-    }
-    else if(this.playlist.visibilityStatus.statusName.toLocaleLowerCase() === 'private') {
-      this.isPrivate = true;
-    }
-    else { 
-      this.isUnlisted = true;
-    }
+    this.status = this.playlist.visibilityStatus.statusName.charAt(0).toUpperCase() + this.playlist.visibilityStatus.statusName.substring(1, this.playlist.visibilityStatus.statusName.length + 1).toLowerCase()//.slice(1).toLowerCase();
   }
 
   onListUpdated(list: any) {

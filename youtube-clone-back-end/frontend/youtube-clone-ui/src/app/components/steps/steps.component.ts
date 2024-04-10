@@ -43,7 +43,6 @@ export class StepsComponent {
   }
 
   onStepClicked(index: any): void {
-    console.log("index ", index);
     this.currentActive = index;//+1;
     this.emitActiveSection();
     this.update();
@@ -91,9 +90,7 @@ export class StepsComponent {
         
         const distance = Math.abs(currentCenterX - firstCenterX);
 
-        console.log(`current center ${currentCenterX} first center ${firstCenterX}`);
-
-        this.progressBarLength = `${distance}px`;//`${currentCenterX}px`;
+        this.progressBarLength = `${distance}px`;
         step.nativeElement.classList.add("active");
       }
       else {

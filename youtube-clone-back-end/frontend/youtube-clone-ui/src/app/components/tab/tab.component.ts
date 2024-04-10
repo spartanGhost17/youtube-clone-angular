@@ -67,7 +67,6 @@ export class TabComponent {
   onTabClicked(clickedTab: any) {
 
     let idx = this.tabs.indexOf(clickedTab)
-    console.log("index ",idx)
 
     for(const tab of this.tabs) {
       if (tab.active){
