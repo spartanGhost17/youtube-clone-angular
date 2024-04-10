@@ -19,13 +19,14 @@ export class EmbeddedPlaylistComponent implements OnInit {
   isOnShuffle: boolean = false;
   playlist: PlaylistInterface;
   dropDownItems: any[] = [];
-  active: number;
+  active: number = 0;
   pageSize: number = 100;
   offset: number = 0;
   ownerUsername: string;
   status: string;
   @Input() name: string;
   @Input() owner: number;
+  @Input() index: number;
 
   constructor(private playlistService: PlaylistService, private userService: UserService) {}
   

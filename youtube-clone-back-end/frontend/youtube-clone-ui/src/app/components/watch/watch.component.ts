@@ -74,6 +74,7 @@ export class WatchComponent implements OnInit {
   selectedReportType: ReportTypeInterface | null;
   canShowNext: boolean = false;
   reportStep: number = 0;
+  index: number = 0;
   
   comment: Comment;
 
@@ -204,6 +205,11 @@ export class WatchComponent implements OnInit {
         this.playlistName = params.list;
         this.plOwner = params.o;
       }
+
+      if(params.index) {
+        this.index = params.index;
+      }
+
       this.videoService.getVideoById(this.videoId).subscribe({
         next: (response: any) => {
           this.loadingMetadata = false;
@@ -552,7 +558,6 @@ export class WatchComponent implements OnInit {
    */
   onVideoTimeUpdated(videoCurrentTime: any) {
     this.videoCurrentTime = videoCurrentTime;
-    console.log("video current time updated", videoCurrentTime);
   }
 
   /**

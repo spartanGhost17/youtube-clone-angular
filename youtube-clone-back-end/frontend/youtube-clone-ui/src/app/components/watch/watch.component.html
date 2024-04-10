@@ -8,7 +8,7 @@
         
         <div #recommendationContainer class="recommendations-container">
             <ng-container *ngIf="playlistName">
-                <app-embedded-playlist [owner]="plOwner" [name]="playlistName"></app-embedded-playlist>
+                <app-embedded-playlist [index]="index" [owner]="plOwner" [name]="playlistName"></app-embedded-playlist>
             </ng-container>
             
 
