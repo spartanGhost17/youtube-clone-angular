@@ -13,9 +13,69 @@
 #      host: localhost
 #      port: 27017
 #      database: youtube
+server:
+  error:
+    #include-message: always
+    #include-stacktrace: never
+    #path: /error #/api/v1/user/error
+    # Whether to enable the default error page displayed in browsers in case of a server error.
+    whitelabel:
+      enabled: false
+  port: ${CONTAINER_PORT:8080}
 spring:
+  #autoconfigure:
+  #  exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  #autoconfigure:
+  #  exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   profiles:
-    active: @spring.profiles.active@ #global property <spring.profiles.active>
+    active: ${ACTIVE_PROFILE:dev}
+  #127.0.0.1:3306/youtube
+  #password
+  #root
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    password: ${MYSQL_PASSWORD}
+    username: ${MYSQL_USERNAME}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+  sql:
+    init:
+      mode: never #always
+      continue-on-error: false
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web:
+            filterChainProxy: DEBUG
+###### Amazon credentials #####
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region:
+      static: eu-west-2
+    stack:
+      auto: false
+
+ui:
+  app:
+    url: ${UI_APP_URL}
 
 application:
   ##@project.parent.artifactId@

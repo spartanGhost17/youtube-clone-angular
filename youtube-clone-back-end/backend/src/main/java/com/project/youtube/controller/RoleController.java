@@ -4,6 +4,7 @@ import com.project.youtube.model.HttpResponse;
 import com.project.youtube.model.Role;
 import com.project.youtube.service.impl.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import static com.project.youtube.constants.ApplicationConstants.API_VERSION;
 @RequestMapping(value = API_VERSION+ "role/")
 @RequiredArgsConstructor
 public class RoleController {
+    @Autowired
     private final RoleServiceImpl roleService;
 
     @GetMapping
