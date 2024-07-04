@@ -1,0 +1,15 @@
+services:
+  youtubecloneui:
+    container_name: youtubecloneuicontainer
+    build: .
+    image: youtubecloneui:v1
+    ports:
+      - 80:80
+    expose:
+      - 80
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
