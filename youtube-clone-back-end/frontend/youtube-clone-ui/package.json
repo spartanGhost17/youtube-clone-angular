@@ -7,7 +7,7 @@
     "dev": "ng serve --configuration development",
     "prod": "ng serve --configuration production",
     "tst": "ng serve --configuration testing",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
